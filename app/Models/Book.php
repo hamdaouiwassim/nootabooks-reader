@@ -32,6 +32,7 @@ class Book extends Model
         'description_short',
         'description',
         'cover_image',
+        'file_path',
         'pages_count',
         'language',
         'published_year',
@@ -82,5 +83,10 @@ class Book extends Model
     protected function coverImageUrl(): Attribute
     {
         return Attribute::make(get: fn () => $this->resolveFileUrl($this->cover_image));
+    }
+
+    protected function fileUrl(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->resolveFileUrl($this->file_path));
     }
 }

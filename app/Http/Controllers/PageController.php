@@ -125,7 +125,11 @@ class PageController extends Controller
 
     public function read(?string $book = null): View
     {
-        return view('read', ['bookSlug' => $book ?? 'zikola-land']);
+        $currentBook = Book::with('writer')
+            ->where('slug', $book ?? 'blue-elephant')
+            ->firstOrFail();
+
+        return view('read', ['currentBook' => $currentBook]);
     }
 
     public function community(): View

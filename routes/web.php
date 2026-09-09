@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthPageController;
+use App\Http\Controllers\BookDownloadController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WriterFollowController;
@@ -23,6 +24,7 @@ Route::post('/books/{book}/reviews', [ReviewController::class, 'store'])
     ->middleware('auth')
     ->name('reviews.store');
 Route::get('/read/{book?}', [PageController::class, 'read'])->name('read');
+Route::get('/books/{book}/download', [BookDownloadController::class, 'download'])->name('books.download');
 
 Route::get('/community', [PageController::class, 'community'])->name('community');
 Route::get('/clubs', [PageController::class, 'readingClubs'])->name('reading-clubs');

@@ -18,7 +18,13 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // RedirectIfAuthenticated only knows routes named "dashboard" or
+        // "home"; the admin dashboard is named "admin.dashboard", so an
+        // already-logged-in admin hitting /admin/login was falling through
+        // to the reader's home page instead of /admin.
+        $middleware->redirectUsersTo(fn ($request) => $request->is('admin/*')
+            ? route('admin.dashboard')
+            : route('home'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -17,7 +17,13 @@ trait GeneratesUniqueSlug
 
     protected static function generateUniqueSlug(string $source): string
     {
-        $base = Str::slug($source) ?: Str::lower(Str::random(8));
+        // Default Str::slug() transliterates to ASCII, which strips Arabic
+        // (and other non-Latin scripts) down to an empty string. Retrying
+        // with a null $language skips that transliteration and keeps the
+        // original letters, so an Arabic title gets an Arabic slug instead
+        // of falling through to a random one.
+        $base = Str::slug($source) ?: Str::slug($source, '-', null);
+        $base = $base ?: Str::lower(Str::random(8));
         $slug = $base;
         $suffix = 2;
 

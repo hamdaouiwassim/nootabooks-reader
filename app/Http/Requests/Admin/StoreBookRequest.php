@@ -27,6 +27,7 @@ class StoreBookRequest extends FormRequest
             'formats.*' => ['string', 'in:PDF,EPUB,MOBI'],
             'tags' => ['nullable', 'string', 'max:1000'],
             'cover_image' => ['nullable', 'image', 'max:4096'],
+            'book_file' => ['nullable', 'file', 'mimes:pdf,epub,mobi', 'max:102400'],
         ];
     }
 }

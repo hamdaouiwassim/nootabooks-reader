@@ -82,6 +82,10 @@ class BookController extends Controller
             Storage::disk('public')->delete($relativePath);
         }
 
+        if ($relativePath = $this->relativeStoragePath($book->file_path)) {
+            Storage::disk('public')->delete($relativePath);
+        }
+
         $book->delete();
 
         return redirect()->route('admin.books.index')->with('status', 'تم حذف الكتاب بنجاح');
@@ -107,27 +111,38 @@ class BookController extends Controller
             unset($data['cover_image']);
         }
 
+        if ($request->hasFile('book_file')) {
+            if ($relativePath = $this->relativeStoragePath($book?->file_path)) {
+                Storage::disk('public')->delete($relativePath);
+            }
+
+            $path = $request->file('book_file')->store('books', 'public');
+            $data['file_path'] = rtrim(config('app.url'), '/').'/storage/'.$path;
+        }
+
+        unset($data['book_file']);
+
         return $data;
     }
 
     /**
-     * Extract the disk-relative path from a stored cover_image value, whether
-     * it's a full URL (current format) or a bare "storage/..." path (legacy
-     * rows saved before cover images were stored as absolute URLs).
+     * Extract the disk-relative path from a stored file value, whether it's a
+     * full URL (current format) or a bare "storage/..." path (legacy rows
+     * saved before files were stored as absolute URLs).
      */
-    private function relativeStoragePath(?string $coverImage): ?string
+    private function relativeStoragePath(?string $storedValue): ?string
     {
-        if (! $coverImage) {
+        if (! $storedValue) {
             return null;
         }
 
-        if (str_starts_with($coverImage, 'storage/')) {
-            return substr($coverImage, strlen('storage/'));
+        if (str_starts_with($storedValue, 'storage/')) {
+            return substr($storedValue, strlen('storage/'));
         }
 
         $marker = '/storage/';
-        $position = strpos($coverImage, $marker);
+        $position = strpos($storedValue, $marker);
 
-        return $position !== false ? substr($coverImage, $position + strlen($marker)) : null;
+        return $position !== false ? substr($storedValue, $position + strlen($marker)) : null;
     }
 }

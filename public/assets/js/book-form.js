@@ -18,6 +18,15 @@ document.addEventListener('DOMContentLoaded', () => {
     reader.readAsDataURL(file);
   });
 
+  // ---- Book file upload: echo the chosen filename ----
+  const bookFileInput = document.getElementById('bookFile');
+  const bookFileName = document.getElementById('bookFileName');
+
+  bookFileInput?.addEventListener('change', () => {
+    const file = bookFileInput.files?.[0];
+    bookFileName.textContent = file ? file.name : '';
+  });
+
   // ---- Form submit feedback (real submission — just disable the button) ----
   const form = document.getElementById('bookForm') || coverUpload?.closest('form');
   form?.addEventListener('submit', () => {

@@ -100,6 +100,20 @@
               @endforeach
             </div>
           </div>
+          <div class="admin-form-field full">
+            <label for="bookFile">ملف الكتاب (PDF، EPUB أو MOBI)</label>
+            <input type="file" id="bookFile" name="book_file" class="admin-input" accept=".pdf,.epub,.mobi">
+            @if ($book->file_path)
+              <div class="admin-file-current">
+                <i class="fa-solid fa-file-arrow-down"></i>
+                <a href="{{ $book->file_url }}" target="_blank" rel="noopener">عرض الملف الحالي</a>
+              </div>
+            @endif
+            <span class="admin-file-name" id="bookFileName"></span>
+            @error('book_file')
+              <span class="admin-field-error">{{ $message }}</span>
+            @enderror
+          </div>
         </div>
       </div>
 

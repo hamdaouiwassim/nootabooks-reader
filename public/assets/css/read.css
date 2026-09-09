@@ -81,6 +81,19 @@ html, body.reader-body { height: 100%; overflow: hidden; }
   min-height: 0;
 }
 .reader-frame { width: 100%; height: 100%; border: none; display: block; }
+.reader-empty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #d7d9da;
+  text-align: center;
+}
+.reader-empty i { font-size: 42px; opacity: .7; }
+.reader-empty p { font-size: 15px; font-weight: 600; }
 
 /* ============ MOBILE ============ */
 @media (max-width: 640px) {

@@ -82,7 +82,11 @@
 
     <div class="book-actions">
       <a href="{{ route('read', $currentBook->slug) }}" class="btn btn-teal"><i class="fa-solid fa-headphones"></i> قراءة الآن</a>
-      <button class="btn btn-gold"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
+      @if ($currentBook->file_path)
+        <a href="{{ route('books.download', $currentBook) }}" class="btn btn-gold"><i class="fa-solid fa-download"></i> تحميل الكتاب</a>
+      @else
+        <button class="btn btn-gold" disabled title="الملف غير متوفر حاليًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
+      @endif
       <button class="icon-btn-outline" aria-label="share"><i class="fa-solid fa-share-nodes"></i></button>
     </div>
   </div>
