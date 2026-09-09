@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\PostTooLargeException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -27,5 +29,13 @@ return Application::configure(basePath: dirname(__DIR__))
             : route('home'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // The whole upload (file + other form fields) exceeded PHP's
+        // post_max_size before the request even reached validation — PHP
+        // discards $_POST/$_FILES in that case, so this must be caught here
+        // rather than as a normal validation rule.
+        $exceptions->render(function (PostTooLargeException $e, Request $request) {
+            return back()->withInput($request->except(['cover_image', 'book_file']))->withErrors([
+                'upload' => 'الملف الذي حاولت رفعه كبير جدًا ولا يمكن للخادم استقباله، يرجى رفع ملف أصغر حجمًا أو التواصل مع الدعم الفني.',
+            ]);
+        });
     })->create();
