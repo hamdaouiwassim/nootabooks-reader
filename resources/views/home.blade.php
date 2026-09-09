@@ -60,7 +60,7 @@
       @foreach ($trendingBooks as $book)
         <article class="book-card">
           @if ($book->cover_image)
-            <img class="book-cover cover-photo" src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}">
+            <img class="book-cover cover-photo" src="{{ $book->cover_image_url }}" alt="{{ $book->title }}">
           @else
             <div class="book-cover cover-{{ ($book->id % 5) + 1 }}">
               <span class="cover-badge">B</span>
