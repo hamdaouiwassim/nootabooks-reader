@@ -13,7 +13,11 @@ trait ResolvesUploadedFileUrl
     {
         return match (true) {
             ! $value => null,
-            str_starts_with($value, 'http://'),
+            // Upgrade to https regardless of what was stored: this app is
+            // always served over https in production, and an http:// URL
+            // embedded in an https:// page (e.g. the PDF reader's <iframe>)
+            // gets blocked outright as mixed content.
+            str_starts_with($value, 'http://') => 'https://'.substr($value, strlen('http://')),
             str_starts_with($value, 'https://') => $value,
             default => asset($value),
         };

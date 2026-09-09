@@ -79,7 +79,7 @@ class WriterController extends Controller
             }
 
             $path = $request->file('photo')->store('writers', 'public');
-            $data['photo'] = rtrim(config('app.url'), '/').'/storage/'.$path;
+            $data['photo'] = str_replace('http://', 'https://', rtrim(config('app.url'), '/')).'/storage/'.$path;
         } else {
             unset($data['photo']);
         }

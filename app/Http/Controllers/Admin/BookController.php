@@ -108,7 +108,7 @@ class BookController extends Controller
             }
 
             $path = $request->file('cover_image')->store('covers', 'public');
-            $data['cover_image'] = rtrim(config('app.url'), '/').'/storage/'.$path;
+            $data['cover_image'] = str_replace('http://', 'https://', rtrim(config('app.url'), '/')).'/storage/'.$path;
         } else {
             unset($data['cover_image']);
         }
@@ -122,7 +122,7 @@ class BookController extends Controller
             $this->detectFileMetadata($bookFile, $data);
 
             $path = $bookFile->store('books', 'public');
-            $data['file_path'] = rtrim(config('app.url'), '/').'/storage/'.$path;
+            $data['file_path'] = str_replace('http://', 'https://', rtrim(config('app.url'), '/')).'/storage/'.$path;
         }
 
         unset($data['book_file']);
