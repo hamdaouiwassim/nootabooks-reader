@@ -23,7 +23,7 @@
     <a href="#"><i class="fa-solid fa-comments"></i> المناقشات</a>
 
     <span class="admin-nav-label">النظام</span>
-    <a href="#"><i class="fa-solid fa-chart-line"></i> الإحصائيات</a>
+    <a href="{{ route('admin.statistics') }}" @class(['active' => $activeNav === 'statistics'])><i class="fa-solid fa-chart-line"></i> الإحصائيات</a>
     <a href="#"><i class="fa-solid fa-gear"></i> الإعدادات</a>
   </nav>
 

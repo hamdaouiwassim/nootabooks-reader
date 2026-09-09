@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -f \"C:\\\\Users\\\\USER\\\\Desktop\\\\nootabooksui-reader/storage/framework/views/\"*.php)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\USER\\Desktop\\nootabooksui-reader\\storage\\framework\\views"
+    ]
+  }
+}

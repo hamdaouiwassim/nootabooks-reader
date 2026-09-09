@@ -169,7 +169,7 @@
     @endauth
 
     <div class="review-list">
-      @forelse (($currentBook->reviews ?? []) as $review)
+      @forelse ($reviews as $review)
         <article class="review-card">
           <img src="{{ $review->user->avatar ?? 'https://i.pravatar.cc/72?img=' . (($review->user_id % 70) + 1) }}" alt="{{ $review->user->name }}">
           <div class="review-body">
@@ -192,7 +192,7 @@
       @endforelse
     </div>
 
-    <button class="btn btn-outline center">عرض كل التقييمات</button>
+    {{ $reviews->links() }}
   </div>
 
   <div class="tab-panel" id="tab-author">

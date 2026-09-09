@@ -40,11 +40,9 @@
 <section class="section">
   <div class="top-categories-strip">
     <span class="strip-label"><i class="fa-solid fa-fire"></i> الأكثر رواجًا</span>
-    <a href="#" class="strip-chip">روايات</a>
-    <a href="#" class="strip-chip">أدب عربي</a>
-    <a href="#" class="strip-chip">تنمية ذاتية</a>
-    <a href="#" class="strip-chip">أدب عالمي</a>
-    <a href="#" class="strip-chip">تاريخ</a>
+    @foreach ($topCategories as $category)
+      <a href="{{ route('discover') }}" class="strip-chip">{{ $category->name }}</a>
+    @endforeach
   </div>
 </section>
 
@@ -52,43 +50,24 @@
 <section class="section">
   <div class="section-head">
     <h2 class="section-title">جميع التصنيفات</h2>
-    <span class="results-count"><span id="resultsCount">16</span> تصنيف</span>
+    <span class="results-count"><span id="resultsCount">{{ $categories->total() }}</span> تصنيف</span>
   </div>
 
   <div class="categories-full-grid" id="categoriesGrid">
 
-    @php
-      $categories = [
-        ['name' => 'روايات', 'count' => 1560, 'color' => 'cat-purple', 'icon' => 'fa-bookmark'],
-        ['name' => 'أدب عربي', 'count' => 1240, 'color' => 'cat-navy', 'icon' => 'fa-book'],
-        ['name' => 'أدب عالمي', 'count' => 980, 'color' => 'cat-teal', 'icon' => 'fa-earth-africa'],
-        ['name' => 'تنمية ذاتية', 'count' => 720, 'color' => 'cat-brown', 'icon' => 'fa-bell'],
-        ['name' => 'تاريخ', 'count' => 610, 'color' => 'cat-navy', 'icon' => 'fa-landmark'],
-        ['name' => 'علوم', 'count' => 540, 'color' => 'cat-green', 'icon' => 'fa-atom'],
-        ['name' => 'أطفال', 'count' => 450, 'color' => 'cat-rose', 'icon' => 'fa-child'],
-        ['name' => 'دين وروحانيات', 'count' => 480, 'color' => 'cat-gold', 'icon' => 'fa-mosque'],
-        ['name' => 'شعر', 'count' => 390, 'color' => 'cat-teal', 'icon' => 'fa-feather'],
-        ['name' => 'تكنولوجيا', 'count' => 340, 'color' => 'cat-teal', 'icon' => 'fa-microchip'],
-        ['name' => 'فلسفة', 'count' => 320, 'color' => 'cat-green', 'icon' => 'fa-leaf'],
-        ['name' => 'تنمية ذهنية', 'count' => 310, 'color' => 'cat-green', 'icon' => 'fa-brain'],
-        ['name' => 'قصص قصيرة', 'count' => 275, 'color' => 'cat-navy', 'icon' => 'fa-file-lines'],
-        ['name' => 'اقتصاد وأعمال', 'count' => 260, 'color' => 'cat-navy', 'icon' => 'fa-chart-line'],
-        ['name' => 'سياسة', 'count' => 210, 'color' => 'cat-navy', 'icon' => 'fa-landmark-dome'],
-        ['name' => 'فنون وتصميم', 'count' => 190, 'color' => 'cat-rose', 'icon' => 'fa-palette'],
-      ];
-    @endphp
-
     @foreach ($categories as $category)
-      <a href="#" class="category-full-card" data-name="{{ $category['name'] }}" data-count="{{ $category['count'] }}">
-        <span class="cat-icon-circle {{ $category['color'] }}"><i class="fa-solid {{ $category['icon'] }}"></i></span>
-        <h3>{{ $category['name'] }}</h3>
-        <p>{{ number_format($category['count']) }} كتاب</p>
+      <a href="{{ route('discover') }}" class="category-full-card" data-name="{{ $category->name }}" data-count="{{ $category->books_count }}">
+        <span class="cat-icon-circle {{ $category->color ?? 'cat-navy' }}"><i class="fa-solid {{ $category->icon ?? 'fa-book' }}"></i></span>
+        <h3>{{ $category->name }}</h3>
+        <p>{{ number_format($category->books_count) }} كتاب</p>
       </a>
     @endforeach
 
   </div>
 
   <p class="no-results" id="noResults" hidden>لا يوجد تصنيفات مطابقة لبحثك.</p>
+
+  {{ $categories->links() }}
 </section>
 
 </main>

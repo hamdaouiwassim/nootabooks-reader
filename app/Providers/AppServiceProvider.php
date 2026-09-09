@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Writer;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::defaultView('pagination.default');
+
         View::composer('admin.partials.admin-sidebar', function ($view) {
             $view->with([
                 'sidebarBooksCount' => Book::count(),

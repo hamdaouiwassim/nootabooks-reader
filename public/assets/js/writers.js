@@ -54,13 +54,4 @@ document.addEventListener('DOMContentLoaded', () => {
     card.addEventListener('click', () => { window.location.href = href; });
   });
 
-  // ---- Load more (demo placeholder) ----
-  const loadMoreBtn = document.querySelector('.load-more-btn');
-  if (loadMoreBtn) {
-    loadMoreBtn.addEventListener('click', () => {
-      loadMoreBtn.textContent = 'لا يوجد المزيد من المؤلفين';
-      loadMoreBtn.disabled = true;
-    });
-  }
-
 });

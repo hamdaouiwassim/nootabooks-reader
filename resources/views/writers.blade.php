@@ -41,26 +41,27 @@
   </div>
 </section>
 
+@if ($featuredWriter)
 <!-- ===================== FEATURED AUTHOR ===================== -->
 <section class="section">
   <div class="featured-author">
-    <img src="https://i.pravatar.cc/240?img=59" alt="نجيب محفوظ" class="featured-photo">
+    <img src="{{ $featuredWriter->photo_url ?? 'https://i.pravatar.cc/240?img=' . (($featuredWriter->id % 70) + 1) }}" alt="{{ $featuredWriter->name }}" class="featured-photo">
     <div class="featured-info">
       <span class="featured-chip"><i class="fa-solid fa-star"></i> مؤلف الأسبوع</span>
-      <h2>نجيب محفوظ</h2>
-      <p>روائي مصري، حائز على جائزة نوبل للآداب عام 1988، ويُعد أحد أعمدة الرواية العربية الحديثة. تركت أعماله مثل "الثلاثية" و"أولاد حارتنا" أثرًا عميقًا في الأدب العربي والعالمي.</p>
+      <h2>{{ $featuredWriter->name }}</h2>
+      <p>{{ $featuredWriter->bio }}</p>
       <div class="featured-stats">
-        <span><i class="fa-solid fa-book"></i> 34 كتاب</span>
-        <span><i class="fa-solid fa-users"></i> 289,000 متابع</span>
-        <span><i class="fa-solid fa-star"></i> 4.8 تقييم</span>
+        <span><i class="fa-solid fa-book"></i> {{ number_format($featuredWriter->books_count) }} كتاب</span>
+        <span><i class="fa-solid fa-users"></i> {{ number_format($featuredWriter->followers_count) }} متابع</span>
+        <span><i class="fa-solid fa-star"></i> {{ number_format($featuredWriter->rating_average, 1) }} تقييم</span>
       </div>
       <div class="featured-actions">
-        <a href="{{ route('writer-details', 'naguib-mahfouz') }}" class="btn btn-gold">عرض الأعمال</a>
+        <a href="{{ route('writer-details', $featuredWriter->slug) }}" class="btn btn-gold">عرض الأعمال</a>
         @auth
-          <form method="POST" action="{{ route('writers.follow', 'naguib-mahfouz') }}">
+          <form method="POST" action="{{ route('writers.follow', $featuredWriter->slug) }}">
             @csrf
-            <button type="submit" class="btn btn-gold follow-btn @if (in_array('naguib-mahfouz', $followedSlugs)) following @endif">
-              {{ in_array('naguib-mahfouz', $followedSlugs) ? 'تتم المتابعة' : 'متابعة' }}
+            <button type="submit" class="btn btn-gold follow-btn @if (in_array($featuredWriter->slug, $followedSlugs)) following @endif">
+              {{ in_array($featuredWriter->slug, $followedSlugs) ? 'تتم المتابعة' : 'متابعة' }}
             </button>
           </form>
         @else
@@ -70,46 +71,41 @@
     </div>
   </div>
 </section>
+@endif
 
 <!-- ===================== WRITERS GRID ===================== -->
 <section class="section">
   <div class="section-head">
     <h2 class="section-title">جميع المؤلفين</h2>
-    <span class="results-count"><span id="resultsCount">10</span> مؤلف</span>
+    <span class="results-count"><span id="resultsCount">{{ $writers->total() }}</span> مؤلف</span>
   </div>
 
   <div class="writers-grid" id="writersGrid">
 
-    @php
-      $writers = [
-        ['slug' => 'naguib-mahfouz', 'img' => 59, 'name' => 'نجيب محفوظ', 'tags' => 'arabic classic popular', 'tag' => 'أدب عربي كلاسيكي', 'desc' => 'حائز على جائزة نوبل للآداب، من أعمدة الرواية العربية الحديثة.', 'books' => '34 كتاب', 'followers' => '289K'],
-        ['slug' => 'ahmed-mourad', 'img' => 14, 'name' => 'أحمد مراد', 'tags' => 'arabic popular', 'tag' => 'إثارة وغموض', 'desc' => 'روائي وسيناريست مصري، من أبرز كتاب الرواية البوليسية المعاصرة.', 'books' => '8 كتب', 'followers' => '152K'],
-        ['slug' => 'ahmed-khaled-tawfik', 'img' => 68, 'name' => 'أحمد خالد توفيق', 'tags' => 'arabic popular', 'tag' => 'رعب وخيال علمي', 'desc' => 'رائد أدب الرعب والخيال العلمي في المكتبة العربية.', 'books' => '21 كتاب', 'followers' => '198K'],
-        ['slug' => 'ihsan-abdel-quddous', 'img' => 52, 'name' => 'أحسان عبد القدوس', 'tags' => 'arabic', 'tag' => 'أدب عربي كلاسيكي', 'desc' => 'رائد الرواية الرومانسية والاجتماعية في الأدب المصري.', 'books' => '45 كتاب', 'followers' => '97K'],
-        ['slug' => 'amr-abdelhamid', 'img' => 13, 'name' => 'عمرو عبد الحميد', 'tags' => 'arabic', 'tag' => 'أدب عربي معاصر', 'desc' => 'روايات فلسفية وتشويقية حظيت بانتشار واسع بين الشباب.', 'books' => '12 كتاب', 'followers' => '134K'],
-        ['slug' => 'youssef-ziedan', 'img' => 33, 'name' => 'يوسف زيدان', 'tags' => 'arabic', 'tag' => 'أدب عربي معاصر', 'desc' => 'روائي ومفكر إسلامي، صاحب رواية "عزازيل" الشهيرة.', 'books' => '15 كتاب', 'followers' => '88K'],
-        ['slug' => 'gabriel-garcia-marquez', 'img' => 8, 'name' => 'غابرييل غارسيا ماركيز', 'tags' => 'world classic popular', 'tag' => 'أدب عالمي', 'desc' => 'رائد الواقعية السحرية، حائز على جائزة نوبل للآداب.', 'books' => '19 كتاب', 'followers' => '210K'],
-        ['slug' => 'paulo-coelho', 'img' => 51, 'name' => 'باولو كويلو', 'tags' => 'world', 'tag' => 'أدب عالمي', 'desc' => 'روائي برازيلي عالمي الشهرة، صاحب رواية "الخيميائي".', 'books' => '30 كتاب', 'followers' => '176K'],
-        ['slug' => 'george-orwell', 'img' => 12, 'name' => 'جورج أورويل', 'tags' => 'world classic popular', 'tag' => 'أدب عالمي', 'desc' => 'كاتب بريطاني وناقد سياسي، صاحب رواية "1984" الخالدة.', 'books' => '9 كتب', 'followers' => '245K'],
-        ['slug' => 'tayeb-salih', 'img' => 53, 'name' => 'الطيب صالح', 'tags' => 'arabic classic', 'tag' => 'أدب عربي كلاسيكي', 'desc' => 'روائي سوداني عالمي، صاحب "موسم الهجرة إلى الشمال".', 'books' => '7 كتب', 'followers' => '76K'],
-      ];
-    @endphp
-
     @foreach ($writers as $writer)
-      <article class="writer-card" data-tags="{{ $writer['tags'] }}" data-href="{{ route('writer-details', $writer['slug']) }}">
-        <img src="https://i.pravatar.cc/140?img={{ $writer['img'] }}" alt="{{ $writer['name'] }}">
-        <h3>{{ $writer['name'] }}</h3>
-        <span class="writer-tag">{{ $writer['tag'] }}</span>
-        <p>{{ $writer['desc'] }}</p>
+      @php
+        $writerTags = [str_contains($writer->genre_tag ?? '', 'عالمي') ? 'world' : 'arabic'];
+        if ($writer->joined_year && $writer->joined_year < 1970) $writerTags[] = 'classic';
+        if ($writer->followers_count >= 150000) $writerTags[] = 'popular';
+      @endphp
+      <article class="writer-card" data-tags="{{ implode(' ', $writerTags) }}" data-href="{{ route('writer-details', $writer->slug) }}">
+        <img src="{{ $writer->photo_url ?? 'https://i.pravatar.cc/140?img=' . (($writer->id % 70) + 1) }}" alt="{{ $writer->name }}">
+        <h3>{{ $writer->name }}</h3>
+        @if ($writer->genre_tag)
+          <span class="writer-tag">{{ $writer->genre_tag }}</span>
+        @endif
+        @if ($writer->bio)
+          <p>{{ $writer->bio }}</p>
+        @endif
         <div class="writer-stats">
-          <span><i class="fa-solid fa-book"></i> {{ $writer['books'] }}</span>
-          <span><i class="fa-solid fa-users"></i> {{ $writer['followers'] }}</span>
+          <span><i class="fa-solid fa-book"></i> {{ number_format($writer->books_count) }} كتاب</span>
+          <span><i class="fa-solid fa-users"></i> {{ number_format($writer->followers_count) }} متابع</span>
         </div>
         @auth
-          <form method="POST" action="{{ route('writers.follow', $writer['slug']) }}">
+          <form method="POST" action="{{ route('writers.follow', $writer->slug) }}">
             @csrf
-            <button type="submit" class="btn btn-outline follow-btn @if (in_array($writer['slug'], $followedSlugs)) following @endif">
-              {{ in_array($writer['slug'], $followedSlugs) ? 'تتم المتابعة' : 'متابعة' }}
+            <button type="submit" class="btn btn-outline follow-btn @if (in_array($writer->slug, $followedSlugs)) following @endif">
+              {{ in_array($writer->slug, $followedSlugs) ? 'تتم المتابعة' : 'متابعة' }}
             </button>
           </form>
         @else
@@ -122,7 +118,7 @@
 
   <p class="no-results" id="noResults" hidden>لا يوجد مؤلفون مطابقون لبحثك.</p>
 
-  <button class="btn btn-outline center load-more-btn">تحميل المزيد</button>
+  {{ $writers->links() }}
 </section>
 
 </main>

@@ -785,3 +785,22 @@ img { display: block; }
   .discover-left { width: 100%; }
   .newsletter-banner { padding: 24px 24px 24px 45%; }
 }
+
+/* ============ PAGINATION ============ */
+.pagination { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 34px; }
+.page-btn {
+  width: 38px; height: 38px;
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+  background: #fff;
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.page-btn:hover { background: var(--cream-alt); }
+.page-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.page-btn:disabled { opacity: .4; cursor: not-allowed; }
+.page-btn span { display: block; }

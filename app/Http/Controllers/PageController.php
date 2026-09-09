@@ -39,12 +39,19 @@ class PageController extends Controller
 
     public function discover(): View
     {
-        return view('discover', ['activeNav' => 'discover']);
+        return view('discover', [
+            'activeNav' => 'discover',
+            'books' => Book::with(['category', 'writer'])->paginate(9)->withQueryString(),
+        ]);
     }
 
     public function categories(): View
     {
-        return view('categories', ['activeNav' => 'categories']);
+        return view('categories', [
+            'activeNav' => 'categories',
+            'categories' => Category::withCount('books')->orderBy('id')->paginate(12)->withQueryString(),
+            'topCategories' => Category::withCount('books')->orderByDesc('books_count')->take(5)->get(),
+        ]);
     }
     public function myLibrary(): View
     {
@@ -53,26 +60,52 @@ class PageController extends Controller
 
     public function writers(): View
     {
-        return view('writers', ['activeNav' => 'writers']);
+        return view('writers', [
+            'activeNav' => 'writers',
+            'writers' => Writer::withCount('books')->orderBy('name')->paginate(9)->withQueryString(),
+            'featuredWriter' => Writer::withCount('books')->where('is_featured', true)->first(),
+        ]);
     }
 
     public function writerDetails(?string $writer = null): View
     {
-        return view('writer-details', ['activeNav' => 'writers', 'writerSlug' => $writer]);
+        $currentWriter = Writer::withCount('books')
+            ->where('slug', $writer ?? 'ahmed-mourad')
+            ->firstOrFail();
+
+        $writerBooks = $currentWriter->books()
+            ->orderByDesc('published_year')
+            ->paginate(8)
+            ->withQueryString();
+
+        $similarWriters = Writer::where('id', '!=', $currentWriter->id)
+            ->orderByDesc('followers_count')
+            ->take(4)
+            ->get();
+
+        return view('writer-details', [
+            'activeNav' => 'writers',
+            'currentWriter' => $currentWriter,
+            'writerBooks' => $writerBooks,
+            'similarWriters' => $similarWriters,
+        ]);
     }
 
     public function bookDetails(?string $book = null): View
     {
-        $currentBook = Book::with(['category', 'writer', 'reviews.user'])
+        $currentBook = Book::with(['category', 'writer'])
             ->where('slug', $book ?? 'blue-elephant')
             ->firstOrFail();
 
-        $totalReviews = $currentBook->reviews->count();
         $ratingBreakdown = [];
         foreach ([5, 4, 3, 2, 1] as $stars) {
-            $count = $currentBook->reviews->where('rating', $stars)->count();
-            $ratingBreakdown[$stars] = $totalReviews > 0 ? round($count / $totalReviews * 100) : 0;
+            $count = $currentBook->reviews()->where('rating', $stars)->count();
+            $ratingBreakdown[$stars] = $currentBook->rating_count > 0
+                ? round($count / $currentBook->rating_count * 100)
+                : 0;
         }
+
+        $reviews = $currentBook->reviews()->with('user')->latest()->paginate(5)->withQueryString();
 
         $similarBooks = Book::with('writer')
             ->where('category_id', $currentBook->category_id)
@@ -85,6 +118,7 @@ class PageController extends Controller
             'activeNav' => null,
             'currentBook' => $currentBook,
             'ratingBreakdown' => $ratingBreakdown,
+            'reviews' => $reviews,
             'similarBooks' => $similarBooks,
         ]);
     }

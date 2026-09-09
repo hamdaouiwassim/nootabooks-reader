@@ -193,6 +193,36 @@
 .admin-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .admin-panel-head h3 { font-size: 15px; font-weight: 800; color: var(--navy); }
 
+/* ============ STATISTICS: MAGNITUDE BAR LIST ============ */
+.admin-bar-list { display: flex; flex-direction: column; gap: 14px; }
+.admin-bar-row { display: flex; align-items: center; gap: 12px; }
+.admin-bar-row .admin-bar-label {
+  flex: 0 0 130px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dark);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-bar-track { flex: 1; height: 10px; border-radius: 6px; background: var(--cream-alt); overflow: hidden; }
+.admin-bar-track .fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--gold), var(--gold-dark)); }
+.admin-bar-row .admin-bar-value { flex: 0 0 auto; font-size: 12px; font-weight: 700; color: var(--text-gray); min-width: 34px; text-align: left; }
+.admin-bar-empty { color: var(--text-gray); font-size: 13px; text-align: center; padding: 20px 0; }
+
+/* ============ STATISTICS: MONTHLY TREND CHART ============ */
+.admin-trend-chart { display: flex; align-items: flex-end; gap: 14px; height: 160px; padding-top: 20px; }
+.admin-trend-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 8px; }
+.admin-trend-value { font-size: 12px; font-weight: 800; color: var(--navy); }
+.admin-trend-bar {
+  width: 100%;
+  max-width: 34px;
+  border-radius: 6px 6px 2px 2px;
+  background: linear-gradient(180deg, var(--gold), var(--gold-dark));
+  min-height: 3px;
+}
+.admin-trend-label { font-size: 12px; color: var(--text-gray); font-weight: 600; }
+
 /* ============ PAGE HEAD ============ */
 .admin-page-head { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-bottom: 22px; }
 .admin-page-head h1 { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
