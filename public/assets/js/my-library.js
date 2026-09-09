@@ -1,0 +1,62 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+  const grid = document.getElementById('libraryGrid');
+  const cards = Array.from(document.querySelectorAll('.library-card'));
+  const tabs = document.querySelectorAll('.filter-tab');
+  const emptyState = document.getElementById('emptyState');
+
+  function applyFilter(filter) {
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+      let visible;
+      if (filter === 'all') visible = true;
+      else if (filter === 'favorite') visible = card.dataset.favorite === 'true';
+      else visible = card.dataset.status === filter;
+
+      card.hidden = !visible;
+      if (visible) visibleCount++;
+    });
+
+    emptyState.hidden = visibleCount !== 0;
+    grid.hidden = visibleCount === 0;
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      applyFilter(tab.dataset.filter);
+    });
+  });
+
+  // ---- Favorite toggle ----
+  document.querySelectorAll('.fav-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const card = btn.closest('.library-card');
+      const nowFavorite = btn.classList.toggle('active');
+      card.dataset.favorite = nowFavorite.toString();
+      const icon = btn.querySelector('i');
+      icon.classList.toggle('fa-regular');
+      icon.classList.toggle('fa-solid');
+      updateStats();
+
+      const activeFilter = document.querySelector('.filter-tab.active').dataset.filter;
+      if (activeFilter === 'favorite') applyFilter('favorite');
+    });
+  });
+
+  function updateStats() {
+    const total = cards.length;
+    const reading = cards.filter(c => c.dataset.status === 'reading').length;
+    const completed = cards.filter(c => c.dataset.status === 'completed').length;
+    const favorite = cards.filter(c => c.dataset.favorite === 'true').length;
+
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statReading').textContent = reading;
+    document.getElementById('statCompleted').textContent = completed;
+    document.getElementById('statFavorite').textContent = favorite;
+  }
+
+});

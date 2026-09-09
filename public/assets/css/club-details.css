@@ -1,0 +1,130 @@
+/* ============ BREADCRUMB (shared pattern) ============ */
+.breadcrumb-wrap { padding-bottom: 0; }
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-gray);
+  flex-wrap: wrap;
+}
+.breadcrumb a { color: var(--text-gray); }
+.breadcrumb a:hover { color: var(--teal); }
+.breadcrumb i { font-size: 10px; }
+.breadcrumb span { color: var(--navy); font-weight: 700; }
+
+/* ============ CLUB HERO ============ */
+.club-hero {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.club-hero-icon {
+  width: 120px; height: 120px;
+  border-radius: 24px;
+  background: linear-gradient(120deg, #0d2b30, #1c4a45);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 42px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.14);
+}
+.club-hero-name { font-size: 28px; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+.club-hero-desc { color: #4a4a4a; font-size: 15px; line-height: 1.9; margin-bottom: 22px; max-width: 720px; }
+
+.club-hero-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+  max-width: 680px;
+}
+.club-hero-actions { display: flex; align-items: center; gap: 12px; }
+.join-club-btn.joined { background: var(--navy); }
+
+/* ============ CURRENT BOOK ============ */
+.current-book-card {
+  display: flex;
+  gap: 24px;
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 30px;
+}
+.current-book-card .book-cover { width: 130px; height: 190px; flex: none; display: flex; }
+.current-book-info { flex: 1; min-width: 0; }
+.current-book-info h3 { font-size: 19px; font-weight: 800; color: var(--navy); margin: 6px 0 2px; }
+.current-book-info .author { color: var(--text-gray); font-size: 13px; margin-bottom: 14px; }
+
+.progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.progress-bar { flex: 1; max-width: 240px; height: 7px; border-radius: 6px; background: #e6e2d8; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--gold); border-radius: 6px; }
+.progress-pct { font-size: 12px; font-weight: 700; color: var(--text-gray); }
+
+.schedule-text { font-size: 13px; color: var(--teal); font-weight: 700; margin-bottom: 16px; }
+.schedule-text i { margin-left: 6px; }
+
+.mini-heading { font-size: 15px; font-weight: 800; color: var(--navy); margin: 26px 0 14px; }
+
+.past-books-row { display: flex; gap: 18px; flex-wrap: wrap; }
+.mini-book { width: 110px; text-align: center; }
+.mini-book .book-cover.mini {
+  height: 140px;
+  padding: 8px;
+  margin-bottom: 8px;
+  display: flex;
+}
+.mini-book .cover-title { font-size: 12px; }
+.mini-book p { font-size: 12px; font-weight: 700; color: var(--text-dark); }
+
+/* gradients for past-book covers not defined elsewhere on this page */
+.wcover-4 { background: linear-gradient(160deg,#4a3a2a,#1c140c); }
+.dcover-9 { background: linear-gradient(160deg,#b23a2e,#5c1c16); }
+.dcover-10 { background: linear-gradient(160deg,#1c1c24,#3a2f4a); }
+
+/* ============ MEMBERS ============ */
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.member-card {
+  text-align: center;
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 18px 10px;
+}
+.member-card img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; }
+.member-card strong { display: block; font-size: 13px; margin-bottom: 6px; }
+.member-role {
+  font-size: 11px;
+  color: var(--text-gray);
+  background: #fff;
+  border: 1px solid var(--border-light);
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+.member-role.admin { color: var(--gold-dark); border-color: var(--gold-dark); font-weight: 700; }
+.members-more { text-align: center; color: var(--text-gray); font-size: 13px; }
+
+/* ============ ABOUT / RULES ============ */
+.club-rules { list-style: none; display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
+.club-rules li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: #4a4a4a; line-height: 1.7; }
+.club-rules i { color: #2f7a4a; margin-top: 3px; flex: none; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .club-hero { grid-template-columns: 1fr; text-align: center; }
+  .club-hero-icon { margin: 0 auto; }
+  .club-hero-meta { grid-template-columns: repeat(2, 1fr); max-width: none; }
+  .club-hero-actions { justify-content: center; }
+  .current-book-card { flex-direction: column; align-items: center; text-align: center; }
+  .progress-row { justify-content: center; }
+  .members-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 480px) {
+  .members-grid { grid-template-columns: repeat(2, 1fr); }
+}

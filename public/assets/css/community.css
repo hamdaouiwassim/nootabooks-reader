@@ -1,0 +1,158 @@
+/* ============ BREADCRUMB (shared pattern) ============ */
+.breadcrumb-wrap { padding-bottom: 0; }
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-gray);
+}
+.breadcrumb a { color: var(--text-gray); }
+.breadcrumb a:hover { color: var(--teal); }
+.breadcrumb i { font-size: 10px; }
+.breadcrumb span { color: var(--navy); font-weight: 700; }
+
+/* ============ LAYOUT ============ */
+.community-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ============ NEW POST BOX ============ */
+.new-post-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+}
+.new-post-box img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; flex: none; }
+.new-post-box input {
+  flex: 1;
+  border: 1px solid var(--border-light);
+  border-radius: 24px;
+  padding: 11px 18px;
+  font-size: 13px;
+  outline: none;
+  background: #fff;
+}
+.new-post-box .btn.small { flex: none; }
+
+/* ============ DISCUSSION FEED ============ */
+.discussion-feed { display: flex; flex-direction: column; gap: 18px; margin-bottom: 24px; }
+
+.discussion-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 20px;
+}
+.discussion-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.discussion-head img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex: none; }
+.discussion-head strong { display: block; font-size: 14px; }
+.discussion-time { font-size: 12px; color: var(--text-gray); }
+.book-tag {
+  margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.book-tag:hover { background: #fff; }
+
+.discussion-text { color: #333; font-size: 14px; line-height: 1.9; margin-bottom: 16px; }
+
+.discussion-footer { display: flex; align-items: center; gap: 22px; border-top: 1px solid var(--border-light); padding-top: 12px; }
+.engage-btn { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-gray); font-weight: 600; }
+.engage-btn:hover { color: var(--teal); }
+.engage-btn.liked { color: #d1493f; }
+.engage-btn.liked i { font-weight: 900; }
+
+.btn-outline.center { display: flex; margin: 0 auto; max-width: 220px; }
+
+/* ============ SIDEBAR ============ */
+.community-sidebar { display: flex; flex-direction: column; gap: 20px; position: sticky; top: 90px; }
+.sidebar-card {
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 20px;
+}
+.sidebar-card h3 { font-size: 15px; font-weight: 800; color: var(--navy); margin-bottom: 16px; }
+
+/* ---- reading clubs ---- */
+.club-item { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.club-item-link { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.club-icon {
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  background: var(--navy);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex: none;
+}
+.club-info { flex: 1; min-width: 0; }
+.club-info strong { display: block; font-size: 13px; margin-bottom: 2px; }
+.club-info p { font-size: 11px; color: var(--text-gray); margin-bottom: 2px; }
+.club-members { font-size: 11px; color: var(--gold-dark); font-weight: 700; }
+.join-btn { flex: none; width: auto; padding: 7px 14px; font-size: 12px; }
+.join-btn.joined { background: var(--teal); color: #fff; border-color: var(--teal); }
+
+.view-all-link { display: flex; align-items: center; gap: 6px; color: var(--teal); font-size: 13px; font-weight: 700; }
+
+/* ---- top contributors ---- */
+.contributor-item { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.contributor-item:last-child { margin-bottom: 0; }
+.rank {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--border-light);
+  color: var(--text-gray);
+  font-size: 11px;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex: none;
+}
+.rank.gold { background: #e8b93f; color: #fff; border-color: #e8b93f; }
+.rank.silver { background: #b8c0c8; color: #fff; border-color: #b8c0c8; }
+.rank.bronze { background: #c07a3f; color: #fff; border-color: #c07a3f; }
+.contributor-item img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex: none; }
+.contributor-info strong { display: block; font-size: 13px; }
+.contributor-info span { font-size: 11px; color: var(--text-gray); }
+
+/* ---- trending tags ---- */
+.trend-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.trend-tags a {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 16px;
+}
+.trend-tags a:hover { background: var(--teal); color: #fff; border-color: var(--teal); }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1000px) {
+  .community-layout { grid-template-columns: 1fr; }
+  .community-sidebar { position: static; }
+}
+@media (max-width: 560px) {
+  .discussion-head { flex-wrap: wrap; }
+  .book-tag { margin-right: 0; }
+}

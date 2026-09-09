@@ -1,0 +1,242 @@
+/* ============ BREADCRUMB ============ */
+.breadcrumb-wrap { padding-bottom: 0; }
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-gray);
+  flex-wrap: wrap;
+}
+.breadcrumb a { color: var(--text-gray); }
+.breadcrumb a:hover { color: var(--teal); }
+.breadcrumb i { font-size: 10px; }
+.breadcrumb span { color: var(--navy); font-weight: 700; }
+
+/* ============ BOOK HERO ============ */
+.book-hero {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.book-hero-cover { position: relative; }
+.hero-cover-img {
+  position: relative;
+  height: 420px;
+  border-radius: 16px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.18);
+}
+.hero-cover-img .cover-title { font-size: 28px; }
+.hero-cover-img .cover-sub { font-size: 14px; }
+.hero-cover-img .cover-badge { width: 30px; height: 30px; font-size: 13px; }
+
+.wishlist-btn {
+  position: absolute;
+  top: 14px; left: 14px;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  color: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.15);
+}
+.wishlist-btn:hover { color: #d1493f; }
+.wishlist-btn.active { color: #d1493f; }
+.wishlist-btn.active i { font-weight: 900; }
+
+.genre-chip {
+  display: inline-block;
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+
+.book-title { font-size: 32px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+.book-author { font-size: 15px; color: var(--text-gray); margin-bottom: 14px; }
+.book-author a { color: var(--gold-dark); font-weight: 700; }
+
+.rating-row { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.stars i { color: var(--star); font-size: 15px; }
+.stars.sm i { font-size: 12px; }
+.rating-row strong { font-size: 16px; }
+.review-count { color: var(--text-gray); font-size: 13px; }
+
+.book-desc-short {
+  color: #4a4a4a;
+  font-size: 15px;
+  line-height: 1.9;
+  margin-bottom: 24px;
+  max-width: 640px;
+}
+
+.book-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 26px;
+  max-width: 640px;
+}
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 12px;
+}
+.meta-item i { color: var(--gold-dark); font-size: 16px; }
+.meta-item span { color: var(--text-gray); }
+.meta-item strong { font-size: 14px; color: var(--text-dark); }
+
+.book-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.icon-btn-outline {
+  width: 46px; height: 46px;
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  background: #fff;
+  color: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.icon-btn-outline:hover { background: var(--cream-alt); }
+
+/* ============ TABS ============ */
+.tabs-nav {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 28px;
+  overflow-x: auto;
+}
+.tab-btn {
+  padding: 14px 22px;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-gray);
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+}
+.tab-btn.active { color: var(--navy); border-bottom-color: var(--gold); }
+.tab-btn:hover { color: var(--teal); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.tab-panel h2 { font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 16px; }
+.tab-panel p { color: #4a4a4a; font-size: 15px; line-height: 1.9; margin-bottom: 16px; max-width: 800px; }
+
+.genre-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+.genre-tags span {
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+/* ============ REVIEWS ============ */
+.reviews-overview {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 26px 30px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.rating-big { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: none; }
+.big-number { font-size: 42px; font-weight: 800; color: var(--navy); }
+
+.rating-bars { flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 8px; }
+.bar-row { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+.bar-row > span:first-child { width: 12px; font-weight: 700; color: var(--text-gray); }
+.bar { flex: 1; height: 8px; border-radius: 6px; background: #e6e2d8; overflow: hidden; }
+.bar .fill { height: 100%; background: var(--gold); border-radius: 6px; }
+.pct { width: 36px; color: var(--text-gray); }
+
+.add-review-btn { flex: none; margin-right: auto; }
+
+.add-review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 22px 26px;
+  margin-bottom: 28px;
+}
+.add-review-form .form-field { display: flex; flex-direction: column; gap: 6px; }
+.add-review-form label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.add-review-form select,
+.add-review-form textarea {
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  background: #fff;
+  resize: vertical;
+}
+.add-review-form .btn { align-self: flex-start; }
+
+.review-list { display: flex; flex-direction: column; gap: 20px; margin-bottom: 24px; }
+.review-card { display: flex; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--border-light); }
+.review-card img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex: none; }
+.review-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
+.review-head strong { font-size: 14px; }
+.review-date { color: var(--text-gray); font-size: 12px; margin-right: auto; }
+.review-body p { color: #4a4a4a; font-size: 14px; line-height: 1.8; margin: 0; max-width: none; }
+.review-list .no-results { text-align: center; color: var(--text-gray); padding: 30px 0; }
+
+.btn-outline.center { display: flex; margin: 0 auto; max-width: 220px; }
+
+/* ============ AUTHOR MINI CARD ============ */
+.author-mini-card {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 26px;
+  flex-wrap: wrap;
+}
+.author-mini-card img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; flex: none; }
+.author-mini-info { flex: 1; min-width: 240px; }
+.author-mini-info h3 { font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+.author-mini-info p { color: var(--text-gray); font-size: 14px; line-height: 1.8; margin-bottom: 12px; max-width: 560px; }
+.author-mini-stats { display: flex; gap: 20px; font-size: 13px; font-weight: 700; color: var(--navy); }
+.author-mini-stats i { color: var(--gold-dark); margin-left: 6px; }
+
+/* extra cover gradients reused for similar-book carousel */
+.mc-1-lg { background: linear-gradient(160deg,#1c1c24,#3a2f4a); }
+.mc-3-lg { background: linear-gradient(160deg,#b23a2e,#5c1c16); }
+.mc-4-lg { background: linear-gradient(160deg,#7a1f1f,#2a1414); }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .book-hero { grid-template-columns: 1fr; }
+  .book-hero-cover { max-width: 260px; margin: 0 auto; }
+  .book-meta-grid { grid-template-columns: repeat(2, 1fr); max-width: none; }
+  .reviews-overview { flex-direction: column; align-items: stretch; }
+  .add-review-btn { margin: 0 auto; }
+}

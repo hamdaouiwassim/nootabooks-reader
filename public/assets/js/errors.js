@@ -1,0 +1,31 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+  const retryBtn = document.getElementById('retryBtn');
+  const retryNote = document.getElementById('retryNote');
+  const retryCountdown = document.getElementById('retryCountdown');
+  if (!retryBtn || !retryCountdown) return;
+
+  let secondsLeft = 30;
+
+  const formatTime = (s) => {
+    const m = Math.floor(s / 60).toString().padStart(2, '0');
+    const sec = (s % 60).toString().padStart(2, '0');
+    return `${m}:${sec}`;
+  };
+
+  const timer = setInterval(() => {
+    secondsLeft--;
+    if (secondsLeft <= 0) {
+      clearInterval(timer);
+      retryBtn.disabled = false;
+      retryNote.innerHTML = '<i class="fa-solid fa-circle-check"></i> يمكنك الآن إعادة المحاولة';
+    } else {
+      retryCountdown.textContent = formatTime(secondsLeft);
+    }
+  }, 1000);
+
+  retryBtn.addEventListener('click', () => {
+    if (!retryBtn.disabled) location.reload();
+  });
+
+});

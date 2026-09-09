@@ -1,0 +1,158 @@
+/* ============ BREADCRUMB (shared pattern) ============ */
+.breadcrumb-wrap { padding-bottom: 0; }
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-gray);
+}
+.breadcrumb a { color: var(--text-gray); }
+.breadcrumb a:hover { color: var(--teal); }
+.breadcrumb i { font-size: 10px; }
+.breadcrumb span { color: var(--navy); font-weight: 700; }
+
+/* ============ PROFILE CARD ============ */
+.profile-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.profile-cover {
+  height: 180px;
+  background: linear-gradient(120deg, #051417 0%, #0a2830 45%, #123a3f 75%, #1c4a45 100%);
+}
+
+.profile-header {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  padding: 0 32px;
+  flex-wrap: wrap;
+}
+.profile-avatar-wrap { position: relative; flex: none; margin-top: -60px; }
+.profile-avatar-wrap img {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  object-fit: cover;
+}
+.avatar-edit-btn {
+  position: absolute;
+  bottom: 4px; left: 4px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  border: 3px solid #fff;
+}
+.avatar-edit-btn:hover { background: var(--teal); }
+
+.profile-info { flex: 1; min-width: 240px; padding-bottom: 18px; }
+.profile-info h1 { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+.profile-bio { color: #4a4a4a; font-size: 14px; line-height: 1.8; margin-bottom: 10px; max-width: 560px; }
+.profile-meta-row { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12px; color: var(--text-gray); }
+.profile-meta-row i { margin-left: 5px; color: var(--gold-dark); }
+
+.profile-actions { padding-bottom: 18px; flex: none; }
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid var(--border-light);
+  margin-top: 24px;
+}
+.profile-stat {
+  text-align: center;
+  padding: 18px 10px;
+  border-left: 1px solid var(--border-light);
+}
+.profile-stat:last-child { border-left: none; }
+.profile-stat strong { display: block; font-size: 19px; color: var(--navy); }
+.profile-stat span { font-size: 12px; color: var(--text-gray); }
+
+/* ============ ACTIVITY TAB ============ */
+.activity-list { display: flex; flex-direction: column; gap: 4px; }
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-icon {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: #fff; flex: none;
+}
+.activity-icon.completed { background: #2f7a4a; }
+.activity-icon.review { background: var(--gold-dark); }
+.activity-icon.club { background: var(--navy); }
+.activity-icon.comment { background: #1c6c78; }
+.activity-icon.follow { background: #5c3f78; }
+.activity-item p { font-size: 14px; color: var(--text-dark); }
+.activity-item a { color: var(--teal); font-weight: 700; }
+.activity-time { color: var(--text-gray); font-size: 12px; margin-right: 8px; }
+
+/* ============ FAVORITES TAB ============ */
+.favorites-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.favorites-grid .book-card { flex: none; }
+.pcover-1 { background: linear-gradient(160deg,#4a3a2a,#1c140c); }
+
+/* ============ REVIEWS TAB ============ */
+.my-reviews-list { display: flex; flex-direction: column; gap: 20px; }
+.my-review-card { display: flex; gap: 18px; padding-bottom: 20px; border-bottom: 1px solid var(--border-light); }
+.my-review-card:last-child { border-bottom: none; }
+.my-review-card .book-cover.mini { width: 70px; height: 100px; padding: 8px; flex: none; display: flex; }
+.my-review-card .book-cover.mini .cover-title { font-size: 11px; }
+.my-review-body h4 { font-size: 15px; font-weight: 800; margin-bottom: 2px; }
+.my-review-author { font-size: 12px; color: var(--text-gray); margin-bottom: 6px; }
+.my-review-body .stars i { color: var(--star); font-size: 13px; }
+.my-review-text { font-size: 14px; color: #4a4a4a; line-height: 1.8; margin: 8px 0; }
+.my-review-date { font-size: 12px; color: var(--text-gray); }
+
+/* ============ ACHIEVEMENTS TAB ============ */
+.achievements-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.achievement-card {
+  text-align: center;
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 26px 16px;
+  opacity: .45;
+  filter: grayscale(60%);
+}
+.achievement-card.unlocked { opacity: 1; filter: none; background: #fff; }
+.achievement-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin: 0 auto 14px;
+}
+.achievement-card.unlocked .achievement-icon { background: var(--gold-dark); }
+.achievement-card strong { display: block; font-size: 15px; color: var(--navy); margin-bottom: 6px; }
+.achievement-card p { font-size: 12px; color: var(--text-gray); }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .profile-header { flex-direction: column; align-items: center; text-align: center; }
+  .profile-meta-row { justify-content: center; }
+  .profile-stats { grid-template-columns: repeat(3, 1fr); }
+  .profile-stat:nth-child(3) { border-left: none; }
+  .favorites-grid { grid-template-columns: repeat(2, 1fr); }
+  .achievements-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .profile-stats { grid-template-columns: repeat(2, 1fr); }
+  .favorites-grid { grid-template-columns: 1fr; }
+  .achievements-grid { grid-template-columns: 1fr; }
+  .my-review-card { flex-direction: column; }
+}
