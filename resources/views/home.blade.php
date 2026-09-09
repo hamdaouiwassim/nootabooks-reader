@@ -134,22 +134,14 @@
       <a href="{{ route('writers') }}" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
     </div>
     <div class="authors-row">
-      <a href="{{ route('writers') }}" class="author-card">
-        <img src="https://i.pravatar.cc/120?img=52" alt="أحسان عبد القدوس">
-        <p>أحسان عبد القدوس</p>
-      </a>
-      <a href="{{ route('writers') }}" class="author-card">
-        <img src="https://i.pravatar.cc/120?img=14" alt="عمرو عبد الحميد">
-        <p>عمرو عبد الحميد</p>
-      </a>
-      <a href="{{ route('writers') }}" class="author-card">
-        <img src="https://i.pravatar.cc/120?img=59" alt="نجيب محفوظ">
-        <p>نجيب محفوظ</p>
-      </a>
-      <a href="{{ route('writers') }}" class="author-card">
-        <img src="https://i.pravatar.cc/120?img=68" alt="أحمد خالد توفيق">
-        <p>أحمد خالد توفيق</p>
-      </a>
+      @forelse ($popularWriters as $writer)
+        <a href="{{ route('writer-details', $writer->slug) }}" class="author-card">
+          <img src="{{ $writer->photo_url ?? 'https://i.pravatar.cc/120?img=' . (($writer->id % 70) + 1) }}" alt="{{ $writer->name }}">
+          <p>{{ $writer->name }}</p>
+        </a>
+      @empty
+        <p class="no-results">لا يوجد مؤلفون بعد</p>
+      @endforelse
     </div>
   </div>
 </section>

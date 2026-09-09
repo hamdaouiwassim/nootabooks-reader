@@ -26,11 +26,14 @@ class PageController extends Controller
 
         $categories = Category::orderBy('id')->take(8)->get();
 
+        $popularWriters = Writer::orderByDesc('followers_count')->take(4)->get();
+
         return view('home', [
             'activeNav' => 'home',
             'trendingBooks' => $trendingBooks,
             'similarBooks' => $similarBooks,
             'categories' => $categories,
+            'popularWriters' => $popularWriters,
             'booksCount' => Book::count(),
             'writersCount' => Writer::count(),
             'categoriesCount' => Category::count(),
