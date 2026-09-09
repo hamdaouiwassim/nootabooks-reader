@@ -10,8 +10,10 @@ use App\Models\Category;
 use App\Models\Writer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Smalot\PdfParser\Parser as PdfParser;
 
 class BookController extends Controller
 {
@@ -116,13 +118,37 @@ class BookController extends Controller
                 Storage::disk('public')->delete($relativePath);
             }
 
-            $path = $request->file('book_file')->store('books', 'public');
+            $bookFile = $request->file('book_file');
+            $this->detectFileMetadata($bookFile, $data);
+
+            $path = $bookFile->store('books', 'public');
             $data['file_path'] = rtrim(config('app.url'), '/').'/storage/'.$path;
         }
 
         unset($data['book_file']);
 
         return $data;
+    }
+
+    /**
+     * Auto-fill file_size_mb (any format) and, for PDFs, pages_count — read
+     * straight from the uploaded file rather than trusting manual admin
+     * input, which overrides whatever was typed in those two form fields.
+     */
+    private function detectFileMetadata(UploadedFile $file, array &$data): void
+    {
+        $data['file_size_mb'] = round($file->getSize() / 1024 / 1024, 2);
+
+        if (strtolower($file->getClientOriginalExtension()) !== 'pdf') {
+            return;
+        }
+
+        try {
+            $pdf = (new PdfParser())->parseFile($file->getRealPath());
+            $data['pages_count'] = count($pdf->getPages());
+        } catch (\Throwable) {
+            // Corrupted/encrypted/unreadable PDF — keep the manually entered value, if any.
+        }
     }
 
     /**

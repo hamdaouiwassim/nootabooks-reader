@@ -67,6 +67,7 @@
           <div class="admin-form-field">
             <label for="bookPages">عدد الصفحات</label>
             <input type="number" id="bookPages" name="pages_count" class="admin-input" value="{{ old('pages_count', $book->pages_count) }}" min="1">
+            <span class="hint">يتم تعبئته تلقائيًا عند رفع ملف PDF</span>
           </div>
           <div class="admin-form-field full">
             <label for="bookDescShort">نبذة مختصرة</label>
@@ -85,6 +86,7 @@
           <div class="admin-form-field">
             <label for="bookFileSize">حجم الملف (ميجابايت)</label>
             <input type="number" id="bookFileSize" name="file_size_mb" class="admin-input" value="{{ old('file_size_mb', $book->file_size_mb) }}" min="0" step="0.01">
+            <span class="hint">يتم تعبئته تلقائيًا عند رفع ملف الكتاب</span>
           </div>
           <div class="admin-form-field">
             <label for="bookTags">الوسوم (مفصولة بفاصلة)</label>
