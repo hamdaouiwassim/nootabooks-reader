@@ -16,3 +16,10 @@ yarn-error.log
 /.idea
 /.vscode
 /.zed
+/storage/*
+/storage/framework/*
+/storage/logs/*
+/storage/app/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
