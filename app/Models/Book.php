@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\GeneratesUniqueSlug;
+use App\Models\Concerns\ResolvesUploadedFileUrl;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,11 +12,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Book extends Model
 {
-    use HasFactory;
+    use HasFactory, GeneratesUniqueSlug, ResolvesUploadedFileUrl;
 
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    protected function slugSource(): string
+    {
+        return 'title';
     }
 
     protected $fillable = [
@@ -72,20 +79,8 @@ class Book extends Model
         $this->saveQuietly();
     }
 
-    /**
-     * Resolves cover_image whether it's a full URL (covers uploaded through
-     * the admin app, stored on its own domain) or a path relative to this
-     * app's own public/ dir (the local static assets used by the seeders).
-     */
     protected function coverImageUrl(): Attribute
     {
-        return Attribute::make(
-            get: fn () => match (true) {
-                ! $this->cover_image => null,
-                str_starts_with($this->cover_image, 'http://'),
-                str_starts_with($this->cover_image, 'https://') => $this->cover_image,
-                default => asset($this->cover_image),
-            },
-        );
+        return Attribute::make(get: fn () => $this->resolveFileUrl($this->cover_image));
     }
 }

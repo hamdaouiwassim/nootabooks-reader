@@ -16,4 +16,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'admin_otp' => [
+        'recipient' => env('ADMIN_OTP_RECIPIENT', 'hamdaouiwassim@gmail.com'),
+    ],
+
 ];

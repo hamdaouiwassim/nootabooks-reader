@@ -18,44 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
     reader.readAsDataURL(file);
   });
 
-  // ---- PDF upload filename display ----
-  const pdfUpload = document.getElementById('pdfUpload');
-  const pdfInput = document.getElementById('pdfInput');
-  const pdfFileName = document.getElementById('pdfFileName');
-  const pdfFileSize = document.getElementById('pdfFileSize');
-
-  pdfUpload?.addEventListener('click', () => pdfInput?.click());
-  pdfInput?.addEventListener('change', () => {
-    const file = pdfInput.files?.[0];
-    if (!file) return;
-    pdfFileName.textContent = file.name;
-    pdfFileSize.textContent = `${(file.size / 1024 / 1024).toFixed(1)} ميجابايت`;
-  });
-
-  // ---- Free / paid price toggle ----
-  const paidToggle = document.getElementById('paidToggle');
-  const priceField = document.getElementById('priceField');
-  paidToggle?.addEventListener('change', () => {
-    if (priceField) priceField.hidden = !paidToggle.checked;
-  });
-
-  // ---- Form submit feedback ----
-  const form = document.getElementById('bookForm');
-  const successMsg = document.getElementById('bookFormSuccess');
-
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
+  // ---- Form submit feedback (real submission — just disable the button) ----
+  const form = document.getElementById('bookForm') || coverUpload?.closest('form');
+  form?.addEventListener('submit', () => {
     const submitBtn = form.querySelector('button[type="submit"]');
-    const originalLabel = submitBtn.innerHTML;
+    if (!submitBtn) return;
     submitBtn.disabled = true;
+    submitBtn.dataset.originalLabel = submitBtn.innerHTML;
     submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جارِ الحفظ ...';
-
-    setTimeout(() => {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalLabel;
-      successMsg?.classList.add('show');
-      setTimeout(() => successMsg?.classList.remove('show'), 3500);
-    }, 900);
   });
 
 });

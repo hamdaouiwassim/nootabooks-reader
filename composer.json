@@ -1,7 +1,7 @@
 {
-    "name": "nootabooksui/reader",
+    "name": "nootabooksui/app",
     "type": "project",
-    "description": "Nootabook (نوته بوك) — reader-facing Laravel application.",
+    "description": "Nootabook (نوته بوك) — reader site and admin panel in one Laravel application.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {

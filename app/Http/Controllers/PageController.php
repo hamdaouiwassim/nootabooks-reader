@@ -63,24 +63,29 @@ class PageController extends Controller
 
     public function bookDetails(?string $book = null): View
     {
-        $currentBook = Book::with(['reviews.user'])
+        $currentBook = Book::with(['category', 'writer', 'reviews.user'])
             ->where('slug', $book ?? 'blue-elephant')
-            ->first();
+            ->firstOrFail();
 
+        $totalReviews = $currentBook->reviews->count();
         $ratingBreakdown = [];
-        if ($currentBook) {
-            $totalReviews = $currentBook->reviews->count();
-            foreach ([5, 4, 3, 2, 1] as $stars) {
-                $count = $currentBook->reviews->where('rating', $stars)->count();
-                $ratingBreakdown[$stars] = $totalReviews > 0 ? round($count / $totalReviews * 100) : 0;
-            }
+        foreach ([5, 4, 3, 2, 1] as $stars) {
+            $count = $currentBook->reviews->where('rating', $stars)->count();
+            $ratingBreakdown[$stars] = $totalReviews > 0 ? round($count / $totalReviews * 100) : 0;
         }
+
+        $similarBooks = Book::with('writer')
+            ->where('category_id', $currentBook->category_id)
+            ->where('id', '!=', $currentBook->id)
+            ->orderByDesc('rating_average')
+            ->take(5)
+            ->get();
 
         return view('book-details', [
             'activeNav' => null,
-            'bookSlug' => $book,
             'currentBook' => $currentBook,
             'ratingBreakdown' => $ratingBreakdown,
+            'similarBooks' => $similarBooks,
         ]);
     }
 
