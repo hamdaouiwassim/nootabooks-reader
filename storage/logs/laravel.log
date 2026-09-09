@@ -1009,3 +1009,5 @@ Stack trace:
 #63 C:/Users/USER/Desktop/nootabooksui-reader/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://Users//USER//D...')
 #64 {main}
 "} 
+[2026-09-09 15:12:08] local.WARNING: PDF page count detection failed {"file":"الختم_الكرزي_نوته_بوك.pdf","error":"foreach() argument must be of type array|object, string given"} 
+[2026-09-09 15:14:59] local.WARNING: PDF page count detection failed, trying raw fallback {"file":"الختم_الكرزي_نوته_بوك.pdf","error":"foreach() argument must be of type array|object, string given"} 

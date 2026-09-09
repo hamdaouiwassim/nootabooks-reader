@@ -145,10 +145,63 @@ class BookController extends Controller
 
         try {
             $pdf = (new PdfParser())->parseFile($file->getRealPath());
-            $data['pages_count'] = count($pdf->getPages());
-        } catch (\Throwable) {
-            // Corrupted/encrypted/unreadable PDF — keep the manually entered value, if any.
+            $pageCount = count($pdf->getPages());
+
+            if ($pageCount > 0) {
+                $data['pages_count'] = $pageCount;
+
+                return;
+            }
+        } catch (\Throwable $e) {
+            // smalot/pdfparser chokes on some PDFs whose /Kids tree isn't a
+            // plain array (see smalot/pdfparser#331) — fall back to reading
+            // the page count straight off the raw PDF bytes below.
+            logger()->warning('PDF page count detection failed, trying raw fallback', [
+                'file' => $file->getClientOriginalName(),
+                'error' => $e->getMessage(),
+            ]);
         }
+
+        if ($pageCount = $this->countPdfPagesFromRawBytes($file->getRealPath())) {
+            $data['pages_count'] = $pageCount;
+        }
+    }
+
+    /**
+     * Last-resort page count for PDFs that smalot/pdfparser can't walk:
+     * scan each indirect object for a /Type /Pages dictionary and read its
+     * /Count directly, falling back to counting bare /Type /Page objects.
+     * Won't find pages hidden inside compressed object streams, but covers
+     * the common case where only the page tree itself is malformed.
+     */
+    private function countPdfPagesFromRawBytes(string $path): ?int
+    {
+        $raw = file_get_contents($path);
+
+        if ($raw === false) {
+            return null;
+        }
+
+        if (preg_match_all('/\d+\s+\d+\s+obj(.*?)endobj/s', $raw, $objectMatches)) {
+            $counts = [];
+
+            foreach ($objectMatches[1] as $objectBody) {
+                if (preg_match('/\/Type\s*\/Pages\b/', $objectBody)
+                    && preg_match('/\/Count\s+(\d+)/', $objectBody, $countMatch)) {
+                    $counts[] = (int) $countMatch[1];
+                }
+            }
+
+            if ($counts) {
+                return max($counts);
+            }
+        }
+
+        if (preg_match_all('/\/Type\s*\/Page(?!s)\b/', $raw, $pageMatches)) {
+            return count($pageMatches[0]) ?: null;
+        }
+
+        return null;
     }
 
     /**
