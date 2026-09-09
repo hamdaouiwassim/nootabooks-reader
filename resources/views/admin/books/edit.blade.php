@@ -132,17 +132,6 @@
         </div>
       </div>
 
-      <div class="admin-form-section" style="border-color:#f3c7c1; background:#fdecea;">
-        <h3 style="color:#c0392b;"><i class="fa-solid fa-triangle-exclamation"></i> منطقة الخطر</h3>
-        <p style="font-size:13px; color:#7a3129; line-height:1.8; margin-bottom:16px;">حذف هذا الكتاب إجراء نهائي ولا يمكن التراجع عنه. سيتم إزالته فورًا من المنصة ومن مكتبات جميع المستخدمين.</p>
-        <form method="POST" action="{{ route('admin.books.destroy', $book) }}" data-confirm-delete data-item-title="{{ $book->title }}">
-          @csrf
-          @method('DELETE')
-          <button type="submit" class="btn btn-danger">
-            <i class="fa-solid fa-trash"></i> حذف هذا الكتاب نهائيًا
-          </button>
-        </form>
-      </div>
     </div>
 
     <!-- ---- Cover sidebar ---- -->
@@ -165,6 +154,18 @@
     <button type="submit" class="btn btn-gold"><i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات</button>
   </div>
 </form>
+
+<div class="admin-form-section" style="border-color:#f3c7c1; background:#fdecea; margin-top:22px;">
+  <h3 style="color:#c0392b;"><i class="fa-solid fa-triangle-exclamation"></i> منطقة الخطر</h3>
+  <p style="font-size:13px; color:#7a3129; line-height:1.8; margin-bottom:16px;">حذف هذا الكتاب إجراء نهائي ولا يمكن التراجع عنه. سيتم إزالته فورًا من المنصة ومن مكتبات جميع المستخدمين.</p>
+  <form method="POST" action="{{ route('admin.books.destroy', $book) }}" data-confirm-delete data-item-title="{{ $book->title }}">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-danger">
+      <i class="fa-solid fa-trash"></i> حذف هذا الكتاب نهائيًا
+    </button>
+  </form>
+</div>
 
 @endsection
 

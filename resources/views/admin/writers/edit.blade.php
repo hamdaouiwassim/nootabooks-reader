@@ -103,17 +103,6 @@
         </div>
       </div>
 
-      <div class="admin-form-section" style="border-color:#f3c7c1; background:#fdecea;">
-        <h3 style="color:#c0392b;"><i class="fa-solid fa-triangle-exclamation"></i> منطقة الخطر</h3>
-        <p style="font-size:13px; color:#7a3129; line-height:1.8; margin-bottom:16px;">حذف هذا المؤلف نهائي. تبقى كتبه على المنصة لكنها تصبح بدون مؤلف محدد.</p>
-        <form method="POST" action="{{ route('admin.writers.destroy', $writer) }}" data-confirm-delete data-item-title="{{ $writer->name }}">
-          @csrf
-          @method('DELETE')
-          <button type="submit" class="btn btn-danger">
-            <i class="fa-solid fa-trash"></i> حذف هذا المؤلف نهائيًا
-          </button>
-        </form>
-      </div>
     </div>
 
     <!-- ---- Photo sidebar ---- -->
@@ -136,6 +125,18 @@
     <button type="submit" class="btn btn-gold"><i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات</button>
   </div>
 </form>
+
+<div class="admin-form-section" style="border-color:#f3c7c1; background:#fdecea; margin-top:22px;">
+  <h3 style="color:#c0392b;"><i class="fa-solid fa-triangle-exclamation"></i> منطقة الخطر</h3>
+  <p style="font-size:13px; color:#7a3129; line-height:1.8; margin-bottom:16px;">حذف هذا المؤلف نهائي. تبقى كتبه على المنصة لكنها تصبح بدون مؤلف محدد.</p>
+  <form method="POST" action="{{ route('admin.writers.destroy', $writer) }}" data-confirm-delete data-item-title="{{ $writer->name }}">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-danger">
+      <i class="fa-solid fa-trash"></i> حذف هذا المؤلف نهائيًا
+    </button>
+  </form>
+</div>
 
 @endsection
 
