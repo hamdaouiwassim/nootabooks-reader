@@ -154,6 +154,13 @@ img { display: block; }
 }
 .btn-teal:hover { background: var(--teal-dark); }
 
+.btn-navy {
+  background: var(--navy);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(13, 43, 48, .3);
+}
+.btn-navy:hover { background: var(--navy-dark); }
+
 .btn-outline {
   width: 100%;
   justify-content: center;

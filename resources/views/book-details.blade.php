@@ -125,7 +125,7 @@
       @else
         <button class="btn btn-gold" disabled title="الملف غير متوفر حاليًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
       @endif
-      <button class="btn btn-outline" aria-label="مشاركة"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
+      <button class="btn btn-navy" aria-label="مشاركة"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
     </div>
   </div>
 </section>

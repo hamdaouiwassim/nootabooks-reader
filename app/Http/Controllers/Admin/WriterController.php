@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreWriterRequest;
 use App\Http\Requests\Admin\UpdateWriterRequest;
 use App\Models\Writer;
+use App\Services\Image\ImageOptimizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -78,7 +79,7 @@ class WriterController extends Controller
                 Storage::disk('public')->delete($relativePath);
             }
 
-            $path = $request->file('photo')->store('writers', 'public');
+            $path = app(ImageOptimizer::class)->optimize($request->file('photo'), 'writers', 600, 600, 85);
             $data['photo'] = str_replace('http://', 'https://', rtrim(config('app.url'), '/')).'/storage/'.$path;
         } else {
             unset($data['photo']);

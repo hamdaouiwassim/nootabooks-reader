@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\FlushesAppCache;
 use App\Models\Concerns\GeneratesUniqueSlug;
 use App\Models\Concerns\ResolvesUploadedFileUrl;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Book extends Model
 {
-    use HasFactory, GeneratesUniqueSlug, ResolvesUploadedFileUrl;
+    use HasFactory, GeneratesUniqueSlug, ResolvesUploadedFileUrl, FlushesAppCache;
 
     public function getRouteKeyName(): string
     {

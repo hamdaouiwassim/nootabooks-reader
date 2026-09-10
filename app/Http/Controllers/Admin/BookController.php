@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Writer;
+use App\Services\Image\ImageOptimizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -107,7 +108,7 @@ class BookController extends Controller
                 Storage::disk('public')->delete($relativePath);
             }
 
-            $path = $request->file('cover_image')->store('covers', 'public');
+            $path = app(ImageOptimizer::class)->optimize($request->file('cover_image'), 'covers', 800, 1200, 85);
             $data['cover_image'] = str_replace('http://', 'https://', rtrim(config('app.url'), '/')).'/storage/'.$path;
         } else {
             unset($data['cover_image']);

@@ -7,37 +7,37 @@ use App\Models\Category;
 use App\Models\Writer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 class PageController extends Controller
 {
     public function home(): View
     {
-        $trendingBooks = Book::with('writer')
-            ->orderByDesc('downloads_count')
-            ->take(10)
-            ->get();
+        $data = Cache::remember('home.page.data', now()->addHours(6), function () {
+            $trendingBooks = Book::with('writer')
+                ->orderByDesc('downloads_count')
+                ->take(10)
+                ->get();
 
-        $similarBooks = Book::with('writer')
-            ->whereNotIn('id', $trendingBooks->pluck('id'))
-            ->orderByDesc('rating_average')
-            ->take(4)
-            ->get();
+            $similarBooks = Book::with('writer')
+                ->whereNotIn('id', $trendingBooks->pluck('id'))
+                ->orderByDesc('rating_average')
+                ->take(4)
+                ->get();
 
-        $categories = Category::orderBy('id')->take(8)->get();
+            return [
+                'trendingBooks' => $trendingBooks,
+                'similarBooks' => $similarBooks,
+                'categories' => Category::orderBy('id')->take(8)->get(),
+                'popularWriters' => Writer::orderByDesc('followers_count')->take(4)->get(),
+                'booksCount' => Book::count(),
+                'writersCount' => Writer::count(),
+                'categoriesCount' => Category::count(),
+            ];
+        });
 
-        $popularWriters = Writer::orderByDesc('followers_count')->take(4)->get();
-
-        return view('home', [
-            'activeNav' => 'home',
-            'trendingBooks' => $trendingBooks,
-            'similarBooks' => $similarBooks,
-            'categories' => $categories,
-            'popularWriters' => $popularWriters,
-            'booksCount' => Book::count(),
-            'writersCount' => Writer::count(),
-            'categoriesCount' => Category::count(),
-        ]);
+        return view('home', ['activeNav' => 'home', ...$data]);
     }
 
     public function discover(Request $request): View
