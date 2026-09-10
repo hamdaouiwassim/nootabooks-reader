@@ -18,7 +18,8 @@ class BookDownloadController extends Controller
 
         if ($relativePath && Storage::disk('public')->exists($relativePath)) {
             $extension = pathinfo($relativePath, PATHINFO_EXTENSION) ?: 'pdf';
-            $filename = trim(preg_replace('/[\\\\\/:*?"<>|]+/', '', $book->title)).'.'.$extension;
+            $title = trim(preg_replace('/[\\\\\/:*?"<>|]+/', '', $book->title));
+            $filename = "{$title}-(nootabooks.com).{$extension}";
 
             return Storage::disk('public')->download($relativePath, $filename);
         }
