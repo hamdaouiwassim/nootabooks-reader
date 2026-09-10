@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'المؤلفون - نوته بوك')
+@section('meta_description', 'تعرّف على أبرز المؤلفين العرب، تابعهم واكتشف أعمالهم وأحدث إصداراتهم على نوته بوك.')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">

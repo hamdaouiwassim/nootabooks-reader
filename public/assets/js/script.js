@@ -15,16 +15,43 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => {
       track.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
     });
-  }
 
-  // ---- Download buttons feedback ----
-  document.querySelectorAll('.btn-outline').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const original = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-check"></i> تم التحميل';
-      setTimeout(() => { btn.innerHTML = original; }, 1800);
-    });
-  });
+    // ---- Autoplay ----
+    const AUTOPLAY_INTERVAL = 4000;
+    let autoplayTimer = null;
+
+    function isAtEnd() {
+      // RTL: scrollLeft goes negative as the track scrolls further into the list
+      return Math.abs(track.scrollLeft) + track.clientWidth >= track.scrollWidth - 5;
+    }
+
+    function autoplayStep() {
+      if (isAtEnd()) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        track.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+      }
+    }
+
+    function startAutoplay() {
+      stopAutoplay();
+      autoplayTimer = setInterval(autoplayStep, AUTOPLAY_INTERVAL);
+    }
+    function stopAutoplay() {
+      if (autoplayTimer) clearInterval(autoplayTimer);
+    }
+
+    startAutoplay();
+    // Pause on hover/touch so users can browse without fighting the autoplay,
+    // and restart the timer after a manual click so it doesn't immediately
+    // advance again right after the user just navigated.
+    track.addEventListener('mouseenter', stopAutoplay);
+    track.addEventListener('mouseleave', startAutoplay);
+    track.addEventListener('touchstart', stopAutoplay, { passive: true });
+    track.addEventListener('touchend', startAutoplay);
+    prevBtn.addEventListener('click', startAutoplay);
+    nextBtn.addEventListener('click', startAutoplay);
+  }
 
   // ---- Newsletter form ----
   const form = document.getElementById('newsletterForm');

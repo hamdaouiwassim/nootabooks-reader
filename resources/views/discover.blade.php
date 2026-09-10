@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'استكشاف - نوته بوك')
+@section('meta_description', 'تصفح واستكشف مجموعة واسعة من الكتب والروايات العربية حسب التصنيف والتقييم وعدد التحميلات على نوته بوك.')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">
@@ -26,7 +27,7 @@
 
   <div class="writers-search">
     <i class="fa-solid fa-magnifying-glass"></i>
-    <input type="text" id="discoverSearch" placeholder="ابحث بعنوان الكتاب أو اسم المؤلف ...">
+    <input type="text" id="discoverSearch" name="q" form="discoverFilters" value="{{ $search }}" placeholder="ابحث بعنوان الكتاب أو اسم المؤلف ...">
   </div>
 </section>
 
@@ -34,42 +35,43 @@
 <section class="section discover-layout">
 
   <!-- ---- Filters Sidebar ---- -->
-  <aside class="filters-sidebar">
+  <form class="filters-sidebar" id="discoverFilters" method="GET" action="{{ route('discover') }}">
     <div class="filters-head">
       <h3>الفلاتر</h3>
-      <button class="clear-filters-btn" id="clearFilters">مسح الكل</button>
+      <button type="button" class="clear-filters-btn" id="clearFilters" data-clear-url="{{ route('discover') }}">مسح الكل</button>
     </div>
 
     <div class="filter-group">
       <h4>التصنيف</h4>
-      <label class="checkbox-row"><input type="checkbox" value="روايات"> <span>روايات</span></label>
-      <label class="checkbox-row"><input type="checkbox" value="أدب عربي"> <span>أدب عربي</span></label>
-      <label class="checkbox-row"><input type="checkbox" value="أدب عالمي"> <span>أدب عالمي</span></label>
-      <label class="checkbox-row"><input type="checkbox" value="تنمية ذاتية"> <span>تنمية ذاتية</span></label>
-      <label class="checkbox-row"><input type="checkbox" value="تاريخ"> <span>تاريخ</span></label>
+      @foreach ($categories as $category)
+        <label class="checkbox-row">
+          <input type="checkbox" name="category[]" value="{{ $category->slug }}" onchange="this.form.submit()" @checked(in_array($category->slug, $selectedCategorySlugs))>
+          <span>{{ $category->name }}</span>
+        </label>
+      @endforeach
     </div>
 
     <div class="filter-group">
       <h4>اللغة</h4>
-      <label class="checkbox-row"><input type="radio" name="lang" value="all" checked> <span>الكل</span></label>
-      <label class="checkbox-row"><input type="radio" name="lang" value="عربي"> <span>العربية</span></label>
-      <label class="checkbox-row"><input type="radio" name="lang" value="أجنبي"> <span>مترجم</span></label>
+      <label class="checkbox-row"><input type="radio" name="lang" value="all" onchange="this.form.submit()" @checked($selectedLanguage === 'all')> <span>الكل</span></label>
+      <label class="checkbox-row"><input type="radio" name="lang" value="عربي" onchange="this.form.submit()" @checked($selectedLanguage === 'عربي')> <span>العربية</span></label>
+      <label class="checkbox-row"><input type="radio" name="lang" value="أجنبي" onchange="this.form.submit()" @checked($selectedLanguage === 'أجنبي')> <span>مترجم</span></label>
     </div>
 
     <div class="filter-group">
       <h4>التقييم</h4>
-      <label class="checkbox-row rating-filter" data-min="4.5"><input type="checkbox" value="4.5"> <span class="stars sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></span> فأعلى</label>
-      <label class="checkbox-row rating-filter" data-min="4"><input type="checkbox" value="4"> <span class="stars sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></span> فأعلى</label>
-      <label class="checkbox-row rating-filter" data-min="3"><input type="checkbox" value="3"> <span class="stars sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></span> فأعلى</label>
+      <label class="checkbox-row rating-filter" data-min="4.5"><input type="checkbox" name="rating[]" value="4.5" onchange="this.form.submit()" @checked(in_array(4.5, $selectedRatings))> <span class="stars sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></span> فأعلى</label>
+      <label class="checkbox-row rating-filter" data-min="4"><input type="checkbox" name="rating[]" value="4" onchange="this.form.submit()" @checked(in_array(4.0, $selectedRatings))> <span class="stars sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></span> فأعلى</label>
+      <label class="checkbox-row rating-filter" data-min="3"><input type="checkbox" name="rating[]" value="3" onchange="this.form.submit()" @checked(in_array(3.0, $selectedRatings))> <span class="stars sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></span> فأعلى</label>
     </div>
 
     <div class="filter-group">
       <h4>الصيغة</h4>
-      <label class="checkbox-row"><input type="checkbox" value="PDF"> <span>PDF</span></label>
-      <label class="checkbox-row"><input type="checkbox" value="EPUB"> <span>EPUB</span></label>
-      <label class="checkbox-row"><input type="checkbox" value="صوتي"> <span>كتاب صوتي</span></label>
+      <label class="checkbox-row"><input type="checkbox" name="format[]" value="PDF" onchange="this.form.submit()" @checked(in_array('PDF', $selectedFormats))> <span>PDF</span></label>
+      <label class="checkbox-row"><input type="checkbox" name="format[]" value="EPUB" onchange="this.form.submit()" @checked(in_array('EPUB', $selectedFormats))> <span>EPUB</span></label>
+      <label class="checkbox-row"><input type="checkbox" name="format[]" value="MOBI" onchange="this.form.submit()" @checked(in_array('MOBI', $selectedFormats))> <span>MOBI</span></label>
     </div>
-  </aside>
+  </form>
 
   <!-- ---- Results ---- -->
   <div class="discover-results">
@@ -77,19 +79,19 @@
       <span class="results-count"><strong id="resultsCount">{{ $books->total() }}</strong> كتاب متاح</span>
       <div class="sort-wrap">
         <label for="sortSelect">ترتيب حسب</label>
-        <select id="sortSelect">
-          <option value="popular">الأكثر شعبية</option>
-          <option value="newest">الأحدث</option>
-          <option value="rating">الأعلى تقييمًا</option>
-          <option value="az">أبجديًا</option>
+        <select id="sortSelect" name="sort" form="discoverFilters" onchange="this.form.submit()">
+          <option value="popular" @selected($sort === 'popular')>الأكثر شعبية</option>
+          <option value="newest" @selected($sort === 'newest')>الأحدث</option>
+          <option value="rating" @selected($sort === 'rating')>الأعلى تقييمًا</option>
+          <option value="az" @selected($sort === 'az')>أبجديًا</option>
         </select>
       </div>
     </div>
 
-    <div class="discover-grid" id="discoverGrid">
+    <div class="discover-grid" id="discoverGrid" @if ($books->isEmpty()) hidden @endif>
 
       @foreach ($books as $book)
-        <article class="book-card" data-title="{{ $book->title }}" data-author="{{ $book->writer?->name }}" data-rating="{{ $book->rating_average }}" data-year="{{ $book->published_year }}" data-category="{{ $book->category?->name }}">
+        <article class="book-card" data-title="{{ $book->title }}" data-author="{{ $book->writer?->name }}" data-rating="{{ $book->rating_average }}" data-year="{{ $book->published_year }}">
           @if ($book->cover_image)
             <img class="book-cover cover-photo" src="{{ $book->cover_image_url }}" alt="{{ $book->title }}">
           @else
@@ -107,7 +109,7 @@
 
     </div>
 
-    <p class="no-results" id="noResults" hidden>لا توجد كتب مطابقة لهذا البحث أو الفلاتر المحددة.</p>
+    <p class="no-results" id="noResults" @unless ($books->isEmpty()) hidden @endunless>لا توجد كتب مطابقة لهذا البحث أو الفلاتر المحددة.</p>
 
     {{ $books->links() }}
   </div>

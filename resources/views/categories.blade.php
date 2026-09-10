@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'التصنيفات - نوته بوك')
+@section('meta_description', 'تصفح تصنيفات الكتب والروايات العربية على نوته بوك، من الأدب والتاريخ إلى التنمية الذاتية والخيال العلمي.')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">
@@ -41,7 +42,7 @@
   <div class="top-categories-strip">
     <span class="strip-label"><i class="fa-solid fa-fire"></i> الأكثر رواجًا</span>
     @foreach ($topCategories as $category)
-      <a href="{{ route('discover') }}" class="strip-chip">{{ $category->name }}</a>
+      <a href="{{ route('category-details', $category->slug) }}" class="strip-chip">{{ $category->name }}</a>
     @endforeach
   </div>
 </section>
@@ -56,7 +57,7 @@
   <div class="categories-full-grid" id="categoriesGrid">
 
     @foreach ($categories as $category)
-      <a href="{{ route('discover') }}" class="category-full-card" data-name="{{ $category->name }}" data-count="{{ $category->books_count }}">
+      <a href="{{ route('category-details', $category->slug) }}" class="category-full-card" data-name="{{ $category->name }}" data-count="{{ $category->books_count }}">
         <span class="cat-icon-circle {{ $category->color ?? 'cat-navy' }}"><i class="fa-solid {{ $category->icon ?? 'fa-book' }}"></i></span>
         <h3>{{ $category->name }}</h3>
         <p>{{ number_format($category->books_count) }} كتاب</p>

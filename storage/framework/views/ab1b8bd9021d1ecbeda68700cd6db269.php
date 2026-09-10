@@ -1,4 +1,5 @@
 <?php $__env->startSection('title', 'نوته بوك - عالم من الكتب بين يديك'); ?>
+<?php $__env->startSection('meta_description', 'اكتشف أفضل الروايات والكتب العربية على نوته بوك، اقرأ وحمّل مجانًا، وتابع مؤلفيك المفضلين واطّلع على مراجعات القراء.'); ?>
 
 <?php $__env->startSection('content'); ?>
 
@@ -102,7 +103,7 @@
       <div class="discover-text">
         <h3>اكتشف عوالم جديدة</h3>
         <p>ألاف الكتب في انتظارك ...</p>
-        <button class="btn btn-gold small"><i class="fa-solid fa-arrow-left"></i> استكشف</button>
+        <button class="btn btn-gold small"><i class="fa-solid fa-arrow-left"></i> <span class="btn-label">استكشف</span></button>
       </div>
     </div>
   </div>
@@ -132,22 +133,14 @@
       <a href="<?php echo e(route('writers')); ?>" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
     </div>
     <div class="authors-row">
-      <a href="<?php echo e(route('writers')); ?>" class="author-card">
-        <img src="https://i.pravatar.cc/120?img=52" alt="أحسان عبد القدوس">
-        <p>أحسان عبد القدوس</p>
-      </a>
-      <a href="<?php echo e(route('writers')); ?>" class="author-card">
-        <img src="https://i.pravatar.cc/120?img=14" alt="عمرو عبد الحميد">
-        <p>عمرو عبد الحميد</p>
-      </a>
-      <a href="<?php echo e(route('writers')); ?>" class="author-card">
-        <img src="https://i.pravatar.cc/120?img=59" alt="نجيب محفوظ">
-        <p>نجيب محفوظ</p>
-      </a>
-      <a href="<?php echo e(route('writers')); ?>" class="author-card">
-        <img src="https://i.pravatar.cc/120?img=68" alt="أحمد خالد توفيق">
-        <p>أحمد خالد توفيق</p>
-      </a>
+      <?php $__empty_1 = true; $__currentLoopData = $popularWriters; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $writer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+        <a href="<?php echo e(route('writer-details', $writer->slug)); ?>" class="author-card">
+          <img src="<?php echo e($writer->photo_url ?? 'https://i.pravatar.cc/120?img=' . (($writer->id % 70) + 1)); ?>" alt="<?php echo e($writer->name); ?>">
+          <p><?php echo e($writer->name); ?></p>
+        </a>
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+        <p class="no-results">لا يوجد مؤلفون بعد</p>
+      <?php endif; ?>
     </div>
   </div>
 </section>
@@ -161,7 +154,7 @@
 
   <div class="categories-grid">
     <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-      <a href="<?php echo e(route('categories')); ?>" class="category-card"><i class="fa-solid <?php echo e($category->icon); ?>"></i><span><?php echo e($category->name); ?></span></a>
+      <a href="<?php echo e(route('category-details', $category->slug)); ?>" class="category-card"><i class="fa-solid <?php echo e($category->icon); ?>"></i><span><?php echo e($category->name); ?></span></a>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
   </div>
 </section>
@@ -175,7 +168,7 @@
     </div>
     <form class="newsletter-form" id="newsletterForm">
       <input type="email" placeholder="أدخل بريدك الاكتروني" required>
-      <button type="submit" class="btn btn-teal"><i class="fa-solid fa-paper-plane"></i> اشترك الآن</button>
+      <button type="submit" class="btn btn-teal"><i class="fa-solid fa-paper-plane"></i> <span class="btn-label">اشترك الآن</span></button>
     </form>
   </div>
 </section>

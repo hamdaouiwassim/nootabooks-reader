@@ -1,11 +1,25 @@
 @extends('layouts.app')
 
 @section('title', $currentWriter->name.' - نوته بوك')
+@section('meta_description', $currentWriter->bio ? \Illuminate\Support\Str::limit($currentWriter->bio, 160) : 'تعرّف على '.$currentWriter->name.' وتصفح جميع أعماله على نوته بوك.')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/book-details.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/writer-details.css') }}">
+@endpush
+
+@push('schema')
+<script type="application/ld+json">
+{!! json_encode(array_filter([
+    '@context' => 'https://schema.org',
+    '@type' => 'Person',
+    'name' => $currentWriter->name,
+    'description' => $currentWriter->bio,
+    'image' => $currentWriter->photo_url,
+    'url' => route('writer-details', $currentWriter->slug),
+]), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
 @endpush
 
 @section('content')

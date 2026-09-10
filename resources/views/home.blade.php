@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'نوته بوك - عالم من الكتب بين يديك')
+@section('meta_description', 'اكتشف أفضل الروايات والكتب العربية على نوته بوك، اقرأ وحمّل مجانًا، وتابع مؤلفيك المفضلين واطّلع على مراجعات القراء.')
 
 @section('content')
 
@@ -104,7 +105,7 @@
       <div class="discover-text">
         <h3>اكتشف عوالم جديدة</h3>
         <p>ألاف الكتب في انتظارك ...</p>
-        <button class="btn btn-gold small"><i class="fa-solid fa-arrow-left"></i> استكشف</button>
+        <button class="btn btn-gold small"><i class="fa-solid fa-arrow-left"></i> <span class="btn-label">استكشف</span></button>
       </div>
     </div>
   </div>
@@ -155,7 +156,7 @@
 
   <div class="categories-grid">
     @foreach ($categories as $category)
-      <a href="{{ route('categories') }}" class="category-card"><i class="fa-solid {{ $category->icon }}"></i><span>{{ $category->name }}</span></a>
+      <a href="{{ route('category-details', $category->slug) }}" class="category-card"><i class="fa-solid {{ $category->icon }}"></i><span>{{ $category->name }}</span></a>
     @endforeach
   </div>
 </section>
@@ -169,7 +170,7 @@
     </div>
     <form class="newsletter-form" id="newsletterForm">
       <input type="email" placeholder="أدخل بريدك الاكتروني" required>
-      <button type="submit" class="btn btn-teal"><i class="fa-solid fa-paper-plane"></i> اشترك الآن</button>
+      <button type="submit" class="btn btn-teal"><i class="fa-solid fa-paper-plane"></i> <span class="btn-label">اشترك الآن</span></button>
     </form>
   </div>
 </section>

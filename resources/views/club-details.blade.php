@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'أدب عربي معاصر - نوته بوك')
+@section('robots', 'noindex, follow')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">

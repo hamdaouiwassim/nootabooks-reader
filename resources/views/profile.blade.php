@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'الملف الشخصي - نوته بوك')
+@section('robots', 'noindex, nofollow')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">

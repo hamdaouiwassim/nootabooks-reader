@@ -1,10 +1,10 @@
 @php
   $navItems = [
-    'home' => ['url' => route('home'), 'label' => 'الرئيسية'],
-    'discover' => ['url' => route('discover'), 'label' => 'استكشاف'],
-    'categories' => ['url' => route('categories'), 'label' => 'التصنيفات'],
-    'writers' => ['url' => route('writers'), 'label' => 'المؤلفون'],
-    'community' => ['url' => route('community'), 'label' => 'المجتمع'],
+    'home' => ['url' => route('home'), 'label' => 'الرئيسية', 'icon' => 'fa-house'],
+    'discover' => ['url' => route('discover'), 'label' => 'استكشاف', 'icon' => 'fa-compass'],
+    'categories' => ['url' => route('categories'), 'label' => 'التصنيفات', 'icon' => 'fa-layer-group'],
+    'writers' => ['url' => route('writers'), 'label' => 'المؤلفون', 'icon' => 'fa-feather'],
+    'community' => ['url' => route('community'), 'label' => 'المجتمع', 'icon' => 'fa-users'],
   ];
 @endphp
 <!-- ===================== HEADER ===================== -->
@@ -25,7 +25,7 @@
     <nav class="main-nav" id="mainNav">
       <ul>
         @foreach ($navItems as $key => $item)
-          <li><a href="{{ $item['url'] }}" @class(['active' => ($activeNav ?? null) === $key])>{{ $item['label'] }}</a></li>
+          <li><a href="{{ $item['url'] }}" @class(['active' => ($activeNav ?? null) === $key])><i class="fa-solid {{ $item['icon'] }}"></i> {{ $item['label'] }}</a></li>
         @endforeach
       </ul>
 

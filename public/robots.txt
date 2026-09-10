@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /profile
+Disallow: /settings
+Disallow: /notifications
+Disallow: /my-library
+Disallow: /community
+Disallow: /clubs
+Disallow: /discussions
+
+Sitemap: https://nootabooks.nootapedia.com/sitemap.xml

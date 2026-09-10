@@ -1,10 +1,10 @@
 <?php
   $navItems = [
-    'home' => ['url' => route('home'), 'label' => 'الرئيسية'],
-    'discover' => ['url' => route('discover'), 'label' => 'استكشاف'],
-    'categories' => ['url' => route('categories'), 'label' => 'التصنيفات'],
-    'writers' => ['url' => route('writers'), 'label' => 'المؤلفون'],
-    'community' => ['url' => route('community'), 'label' => 'المجتمع'],
+    'home' => ['url' => route('home'), 'label' => 'الرئيسية', 'icon' => 'fa-house'],
+    'discover' => ['url' => route('discover'), 'label' => 'استكشاف', 'icon' => 'fa-compass'],
+    'categories' => ['url' => route('categories'), 'label' => 'التصنيفات', 'icon' => 'fa-layer-group'],
+    'writers' => ['url' => route('writers'), 'label' => 'المؤلفون', 'icon' => 'fa-feather'],
+    'community' => ['url' => route('community'), 'label' => 'المجتمع', 'icon' => 'fa-users'],
   ];
 ?>
 <!-- ===================== HEADER ===================== -->
@@ -25,7 +25,7 @@
     <nav class="main-nav" id="mainNav">
       <ul>
         <?php $__currentLoopData = $navItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <li><a href="<?php echo e($item['url']); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => ($activeNav ?? null) === $key]); ?>"><?php echo e($item['label']); ?></a></li>
+          <li><a href="<?php echo e($item['url']); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => ($activeNav ?? null) === $key]); ?>"><i class="fa-solid <?php echo e($item['icon']); ?>"></i> <?php echo e($item['label']); ?></a></li>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
       </ul>
 

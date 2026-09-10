@@ -160,9 +160,9 @@ img { display: block; }
   background: #fff;
   border: 1px solid var(--border-light);
   color: var(--text-dark);
-  font-weight: 600;
-  font-size: 14px;
-  padding: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 13px 26px;
 }
 .btn-outline:hover { background: var(--cream-alt); }
 
@@ -200,6 +200,7 @@ img { display: block; }
   position: relative;
   white-space: nowrap;
 }
+.main-nav a i { display: none; }
 .main-nav a.active { color: var(--gold-dark); font-weight: 700; }
 .main-nav a.active::after {
   content: "";
@@ -750,25 +751,38 @@ img { display: block; }
     transition: max-height .3s ease, visibility .3s ease;
   }
   .main-nav.open { max-height: calc(100vh - 100%); overflow-y: auto; visibility: visible; }
-  .main-nav ul { flex-direction: column; gap: 0; height: auto; padding: 8px 32px 16px; }
+  .main-nav ul { flex-direction: column; gap: 0; height: auto; padding: 8px 32px 0; }
   .main-nav a {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     height: auto;
-    padding: 14px 0;
+    padding: 20px 0;
     border-bottom: 1px solid var(--border-light);
   }
-  .main-nav li:last-child a { border-bottom: none; }
+  .main-nav a i { display: inline-block; font-size: 15px; color: var(--gold-dark); }
   .main-nav a.active::after { display: none; }
   .main-nav a.active { color: var(--gold-dark); }
+  .main-nav a:hover, .main-nav a:active,
+  .mobile-nav-account .dropdown-item:hover, .mobile-nav-account .dropdown-item:active { background: var(--cream-alt); color: var(--gold-dark); }
+  .main-nav a:hover i, .main-nav a:active i,
+  .mobile-nav-account .dropdown-item:hover i, .mobile-nav-account .dropdown-item:active i { color: var(--gold-dark); }
+  .mobile-nav-account .dropdown-item.logout:hover, .mobile-nav-account .dropdown-item.logout:active,
+  .mobile-nav-account .dropdown-item.logout:hover i, .mobile-nav-account .dropdown-item.logout:active i { color: #c0392b; }
 
   .mobile-nav-account {
     display: block;
-    border-top: 1px solid var(--border-light);
-    margin: 4px 32px 16px;
-    padding-top: 10px;
+    margin: 0 32px 16px;
   }
   .mobile-nav-account .user-panel-head { padding: 6px 0 14px; }
-  .mobile-nav-account .dropdown-item { padding: 12px 0; }
+  .mobile-nav-account .dropdown-item {
+    justify-content: center;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .mobile-nav-account > .dropdown-item:last-child,
+  .mobile-nav-account > :last-child .dropdown-item { border-bottom: none; }
 }
 
 @media (max-width: 640px) {
@@ -779,11 +793,41 @@ img { display: block; }
   .header-icons { gap: 2px; }
   .icon-btn { width: 34px; height: 34px; font-size: 15px; }
   .hero-title { font-size: 30px; }
+  .section-title { font-size: 18px; }
   .categories-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-top { grid-template-columns: 1fr; }
-  .discover-banner { flex-direction: column; align-items: stretch; padding: 20px 20px 20px 0; min-height: 140px; }
-  .discover-left { width: 100%; }
-  .newsletter-banner { padding: 24px 24px 24px 45%; }
+  .discover-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    padding: 24px;
+    min-height: 140px;
+    background: none;
+  }
+  .discover-banner::before {
+    width: 100%;
+    background:
+      linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)),
+      url('../images/discover-section.jpg') center / cover no-repeat;
+  }
+  .discover-tags { position: relative; z-index: 1; color: #fff; gap: 11px; }
+  .discover-left { width: 100%; padding-left: 0; position: relative; z-index: 1; }
+  .discover-text h3 { color: #fff; }
+  .discover-text p { color: #e7e7e2; }
+  .discover-left .btn-label { display: none; }
+  .newsletter-banner {
+    padding: 24px;
+    background: none;
+  }
+  .newsletter-banner::before {
+    width: 100%;
+    background:
+      linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)),
+      url('../images/subscribe-section.jpg') center / cover no-repeat;
+  }
+  .newsletter-text { width: 100%; position: relative; z-index: 1; }
+  .newsletter-form { width: 100%; max-width: none; position: relative; z-index: 1; }
+  .newsletter-form .btn-label { display: none; }
 }
 
 /* ============ PAGINATION ============ */

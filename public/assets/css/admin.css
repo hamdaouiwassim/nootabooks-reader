@@ -22,6 +22,7 @@
 
 /* ============ ADMIN SHELL ============ */
 .admin-body { background: var(--cream-alt); }
+.admin-body .btn-outline { padding: 10px; font-size: 14px; font-weight: 600; }
 
 .admin-shell {
   display: flex;

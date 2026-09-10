@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'تواصل معنا - نوته بوك')
+@section('meta_description', 'تواصل مع فريق نوته بوك لأي استفسار أو اقتراح أو مشكلة تقنية.')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">

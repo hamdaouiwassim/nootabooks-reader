@@ -1,9 +1,47 @@
 @extends('layouts.app')
 
 @section('title', $currentBook->title.' - نوته بوك')
+@section('meta_description', $currentBook->description_short ?: \Illuminate\Support\Str::limit(strip_tags((string) $currentBook->description), 160) ?: 'اقرأ وحمّل كتاب '.$currentBook->title.' على نوته بوك.')
+@section('og_type', 'book')
+@section('og_image', $currentBook->cover_image_url ?? asset('assets/images/hero-section.jpg'))
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/book-details.css') }}">
+@endpush
+
+@push('schema')
+<script type="application/ld+json">
+{!! json_encode(array_filter([
+    '@context' => 'https://schema.org',
+    '@type' => 'Book',
+    'name' => $currentBook->title,
+    'description' => $currentBook->description_short ?: strip_tags((string) $currentBook->description),
+    'inLanguage' => $currentBook->language,
+    'numberOfPages' => $currentBook->pages_count,
+    'image' => $currentBook->cover_image_url,
+    'author' => $currentBook->writer ? [
+        '@type' => 'Person',
+        'name' => $currentBook->writer->name,
+    ] : null,
+    'aggregateRating' => $currentBook->rating_count > 0 ? [
+        '@type' => 'AggregateRating',
+        'ratingValue' => (string) $currentBook->rating_average,
+        'reviewCount' => $currentBook->rating_count,
+    ] : null,
+]), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => array_values(array_filter([
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'التصنيفات', 'item' => route('categories')],
+        $currentBook->category ? ['@type' => 'ListItem', 'position' => 3, 'name' => $currentBook->category->name, 'item' => route('category-details', $currentBook->category->slug)] : null,
+        ['@type' => 'ListItem', 'position' => $currentBook->category ? 4 : 3, 'name' => $currentBook->title, 'item' => route('book-details', $currentBook->slug)],
+    ])),
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
 @endpush
 
 @section('content')
@@ -21,7 +59,7 @@
     <a href="{{ route('categories') }}">التصنيفات</a>
     @if ($currentBook->category)
       <i class="fa-solid fa-chevron-left"></i>
-      <a href="{{ route('categories') }}">{{ $currentBook->category->name }}</a>
+      <a href="{{ route('category-details', $currentBook->category->slug) }}">{{ $currentBook->category->name }}</a>
     @endif
     <i class="fa-solid fa-chevron-left"></i>
     <span>{{ $currentBook->title }}</span>
@@ -87,7 +125,7 @@
       @else
         <button class="btn btn-gold" disabled title="الملف غير متوفر حاليًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
       @endif
-      <button class="icon-btn-outline" aria-label="share"><i class="fa-solid fa-share-nodes"></i></button>
+      <button class="btn btn-outline" aria-label="مشاركة"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
     </div>
   </div>
 </section>

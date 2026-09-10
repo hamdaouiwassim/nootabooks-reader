@@ -4,13 +4,16 @@ use App\Http\Controllers\AuthPageController;
 use App\Http\Controllers\BookDownloadController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\WriterFollowController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 Route::get('/discover', [PageController::class, 'discover'])->name('discover');
 Route::get('/categories', [PageController::class, 'categories'])->name('categories');
+Route::get('/categories/{category?}', [PageController::class, 'categoryDetails'])->name('category-details');
 Route::get('/my-library', [PageController::class, 'myLibrary'])->name('my-library');
 
 Route::get('/writers', [PageController::class, 'writers'])->name('writers');

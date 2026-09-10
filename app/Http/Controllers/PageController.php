@@ -40,11 +40,55 @@ class PageController extends Controller
         ]);
     }
 
-    public function discover(): View
+    public function discover(Request $request): View
     {
+        $selectedCategorySlugs = array_filter((array) $request->input('category', []));
+        $language = $request->string('lang', 'all')->toString();
+        $selectedRatings = array_filter(array_map('floatval', (array) $request->input('rating', [])));
+        $selectedFormats = array_values(array_intersect((array) $request->input('format', []), ['PDF', 'EPUB', 'MOBI']));
+        $search = trim((string) $request->input('q', ''));
+        $sort = $request->string('sort', 'popular')->toString();
+
+        $query = Book::with(['category', 'writer'])
+            ->when($selectedCategorySlugs, function ($q) use ($selectedCategorySlugs) {
+                $q->whereHas('category', fn ($cq) => $cq->whereIn('slug', $selectedCategorySlugs));
+            })
+            ->when($language === 'عربي', fn ($q) => $q->where('language', 'العربية'))
+            ->when($language === 'أجنبي', fn ($q) => $q->where('language', '!=', 'العربية'))
+            ->when($selectedRatings, fn ($q) => $q->where('rating_average', '>=', min($selectedRatings)))
+            ->when($selectedFormats, function ($q) use ($selectedFormats) {
+                $q->where(function ($fq) use ($selectedFormats) {
+                    foreach ($selectedFormats as $format) {
+                        $fq->orWhereJsonContains('formats', $format);
+                    }
+                });
+            })
+            ->when($search !== '', function ($q) use ($search) {
+                $q->where(function ($sq) use ($search) {
+                    $sq->where('title', 'like', "%{$search}%")
+                        ->orWhereHas('writer', fn ($wq) => $wq->where('name', 'like', "%{$search}%"));
+                });
+            });
+
+        match ($sort) {
+            'newest' => $query->orderByDesc('published_year'),
+            'rating' => $query->orderByDesc('rating_average'),
+            'az' => $query->orderBy('title'),
+            default => $query->orderByDesc('downloads_count'),
+        };
+
+        $books = $query->paginate(9)->withQueryString();
+
         return view('discover', [
             'activeNav' => 'discover',
-            'books' => Book::with(['category', 'writer'])->paginate(9)->withQueryString(),
+            'books' => $books,
+            'categories' => Category::orderBy('name')->get(),
+            'selectedCategorySlugs' => $selectedCategorySlugs,
+            'selectedLanguage' => $language,
+            'selectedRatings' => $selectedRatings,
+            'selectedFormats' => $selectedFormats,
+            'search' => $search,
+            'sort' => $sort,
         ]);
     }
 
@@ -56,6 +100,33 @@ class PageController extends Controller
             'topCategories' => Category::withCount('books')->orderByDesc('books_count')->take(5)->get(),
         ]);
     }
+
+    public function categoryDetails(?string $category = null): View
+    {
+        $currentCategory = Category::withCount('books')
+            ->where('slug', $category ?? 'novels')
+            ->firstOrFail();
+
+        $categoryBooks = $currentCategory->books()
+            ->with('writer')
+            ->orderByDesc('rating_average')
+            ->paginate(9)
+            ->withQueryString();
+
+        $similarCategories = Category::withCount('books')
+            ->where('id', '!=', $currentCategory->id)
+            ->orderByDesc('books_count')
+            ->take(5)
+            ->get();
+
+        return view('category-details', [
+            'activeNav' => 'categories',
+            'currentCategory' => $currentCategory,
+            'categoryBooks' => $categoryBooks,
+            'similarCategories' => $similarCategories,
+        ]);
+    }
+
     public function myLibrary(): View
     {
         return view('my-library', ['activeNav' => 'my-library']);

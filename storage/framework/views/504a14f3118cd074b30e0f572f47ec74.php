@@ -1,7 +1,53 @@
 <?php $__env->startSection('title', $currentBook->title.' - نوته بوك'); ?>
+<?php $__env->startSection('meta_description', $currentBook->description_short ?: \Illuminate\Support\Str::limit(strip_tags((string) $currentBook->description), 160) ?: 'اقرأ وحمّل كتاب '.$currentBook->title.' على نوته بوك.'); ?>
+<?php $__env->startSection('og_type', 'book'); ?>
+<?php $__env->startSection('og_image', $currentBook->cover_image_url ?? asset('assets/images/hero-section.jpg')); ?>
 
 <?php $__env->startPush('styles'); ?>
 <link rel="stylesheet" href="<?php echo e(asset('assets/css/book-details.css')); ?>">
+<?php $__env->stopPush(); ?>
+
+<?php $__env->startPush('schema'); ?>
+<script type="application/ld+json">
+<?php echo json_encode(array_filter([
+    '<?php $__contextArgs = [];
+if (context()->has($__contextArgs[0])) :
+if (isset($value)) { $__contextPrevious[] = $value; }
+$value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
+    '@type' => 'Book',
+    'name' => $currentBook->title,
+    'description' => $currentBook->description_short ?: strip_tags((string) $currentBook->description),
+    'inLanguage' => $currentBook->language,
+    'numberOfPages' => $currentBook->pages_count,
+    'image' => $currentBook->cover_image_url,
+    'author' => $currentBook->writer ? [
+        '@type' => 'Person',
+        'name' => $currentBook->writer->name,
+    ] : null,
+    'aggregateRating' => $currentBook->rating_count > 0 ? [
+        '@type' => 'AggregateRating',
+        'ratingValue' => (string) $currentBook->rating_average,
+        'reviewCount' => $currentBook->rating_count,
+    ] : null,
+]), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>
+
+</script>
+<script type="application/ld+json">
+<?php echo json_encode([
+    '<?php $__contextArgs = [];
+if (context()->has($__contextArgs[0])) :
+if (isset($value)) { $__contextPrevious[] = $value; }
+$value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => array_values(array_filter([
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'التصنيفات', 'item' => route('categories')],
+        $currentBook->category ? ['@type' => 'ListItem', 'position' => 3, 'name' => $currentBook->category->name, 'item' => route('category-details', $currentBook->category->slug)] : null,
+        ['@type' => 'ListItem', 'position' => $currentBook->category ? 4 : 3, 'name' => $currentBook->title, 'item' => route('book-details', $currentBook->slug)],
+    ])),
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>
+
+</script>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -19,7 +65,7 @@
     <a href="<?php echo e(route('categories')); ?>">التصنيفات</a>
     <?php if($currentBook->category): ?>
       <i class="fa-solid fa-chevron-left"></i>
-      <a href="<?php echo e(route('categories')); ?>"><?php echo e($currentBook->category->name); ?></a>
+      <a href="<?php echo e(route('category-details', $currentBook->category->slug)); ?>"><?php echo e($currentBook->category->name); ?></a>
     <?php endif; ?>
     <i class="fa-solid fa-chevron-left"></i>
     <span><?php echo e($currentBook->title); ?></span>
@@ -85,7 +131,7 @@
       <?php else: ?>
         <button class="btn btn-gold" disabled title="الملف غير متوفر حاليًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
       <?php endif; ?>
-      <button class="icon-btn-outline" aria-label="share"><i class="fa-solid fa-share-nodes"></i></button>
+      <button class="btn btn-outline" aria-label="مشاركة"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
     </div>
   </div>
 </section>

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'شروط الاستخدام - نوته بوك')
+@section('meta_description', 'اطّلع على شروط وأحكام استخدام منصة نوته بوك.')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/legal.css') }}">

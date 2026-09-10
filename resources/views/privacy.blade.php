@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'سياسة الخصوصية - نوته بوك')
+@section('meta_description', 'اطّلع على سياسة الخصوصية الخاصة بمنصة نوته بوك وكيفية التعامل مع بياناتك الشخصية.')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/legal.css') }}">

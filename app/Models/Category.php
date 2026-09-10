@@ -11,6 +11,11 @@ class Category extends Model
 {
     use HasFactory, GeneratesUniqueSlug;
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     protected $fillable = [
         'name',
         'slug',
