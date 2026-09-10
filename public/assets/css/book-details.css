@@ -39,7 +39,8 @@
 
 .wishlist-btn {
   position: absolute;
-  top: 14px; left: 14px;
+  top: 14px;
+  right: 14px;
   width: 38px; height: 38px;
   border-radius: 50%;
   background: rgba(255,255,255,.9);
