@@ -1,12 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ---- Trending books carousel ----
-  const track = document.querySelector('.book-carousel');
-  const prevBtn = document.querySelector('.carousel-btn.prev');
-  const nextBtn = document.querySelector('.carousel-btn.next');
+  // ---- Book carousels (trending, recent, ...) — a page can have more than one ----
+  function initCarousel(wrap) {
+    const track = wrap.querySelector('.book-carousel');
+    const prevBtn = wrap.querySelector('.carousel-btn.prev');
+    const nextBtn = wrap.querySelector('.carousel-btn.next');
 
-  if (track && prevBtn && nextBtn) {
-    const scrollAmount = () => track.querySelector('.book-card').offsetWidth + 20;
+    if (!track || !prevBtn || !nextBtn) return;
+
+    // Read the actual CSS gap instead of hardcoding it, since it's 0 on
+    // mobile but 20px on desktop — a fixed number would overshoot on mobile.
+    const scrollAmount = () => {
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return track.querySelector('.book-card').offsetWidth + gap;
+    };
 
     // RTL: "next" (left arrow) moves further into the list, "prev" (right arrow) moves back
     nextBtn.addEventListener('click', () => {
@@ -53,6 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
     nextBtn.addEventListener('click', startAutoplay);
   }
 
+  document.querySelectorAll('.carousel-wrap').forEach(initCarousel);
+
   // ---- Newsletter form ----
   const form = document.getElementById('newsletterForm');
   if (form) {
@@ -70,8 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---- Mobile nav toggle ----
   const mobileNavToggle = document.getElementById('mobileNavToggle');
   const mainNav = document.getElementById('mainNav');
-  const mobileSearchToggle = document.getElementById('mobileSearchToggle');
-  const headerSearch = document.getElementById('headerSearch');
 
   function closeMobileNav() {
     mainNav?.classList.remove('open');
@@ -80,14 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.remove('nav-open');
   }
 
-  function closeMobileSearch() {
-    headerSearch?.classList.remove('mobile-open');
-    mobileSearchToggle?.setAttribute('aria-expanded', 'false');
-  }
-
   mobileNavToggle?.addEventListener('click', (e) => {
     e.stopPropagation();
-    closeMobileSearch();
     closeAllDropdowns();
     const willOpen = !mainNav.classList.contains('open');
     mainNav.classList.toggle('open', willOpen);
@@ -97,20 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.toggle('nav-open', willOpen);
   });
 
-  mobileSearchToggle?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    closeMobileNav();
-    const willOpen = !headerSearch.classList.contains('mobile-open');
-    headerSearch.classList.toggle('mobile-open', willOpen);
-    mobileSearchToggle.setAttribute('aria-expanded', String(willOpen));
-    if (willOpen) headerSearch.querySelector('input')?.focus();
-  });
-
   mainNav?.addEventListener('click', (e) => e.stopPropagation());
-  headerSearch?.addEventListener('click', (e) => e.stopPropagation());
-  document.addEventListener('click', () => { closeMobileNav(); closeMobileSearch(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeMobileNav(); closeMobileSearch(); } });
-  window.addEventListener('resize', () => { if (window.innerWidth > 1024) { closeMobileNav(); closeMobileSearch(); } });
+  document.addEventListener('click', () => closeMobileNav());
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMobileNav(); });
+  window.addEventListener('resize', () => { if (window.innerWidth > 1024) closeMobileNav(); });
 
   // ---- Header dropdowns: notifications + user menu ----
   const notifBtn = document.getElementById('notifBtn');

@@ -54,15 +54,7 @@
       </div>
     </nav>
 
-    <div class="header-search" id="headerSearch">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" placeholder="ابحث عن كتاب، مؤلف، او موضوع ...">
-    </div>
-
     <div class="header-icons">
-      <button class="icon-btn mobile-search-toggle" id="mobileSearchToggle" aria-label="search">
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </button>
       <?php if(auth()->guard()->check()): ?>
         <div class="dropdown notif-dropdown">
           <button class="icon-btn" aria-label="notifications" id="notifBtn">

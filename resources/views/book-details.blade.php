@@ -296,7 +296,7 @@
           <h3>{{ $similarBook->title }}</h3>
           <p class="author">{{ $similarBook->writer?->name }}</p>
           <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($similarBook->rating_average, 1) }}</p>
-          <a href="{{ route('book-details', $similarBook->slug) }}" class="btn btn-outline"><i class="fa-solid fa-eye"></i> شاهد</a>
+          <a href="{{ route('book-details', $similarBook->slug) }}" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
         </article>
       @empty
         <p class="no-results">لا توجد كتب مشابهة في نفس التصنيف حاليًا.</p>

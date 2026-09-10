@@ -43,6 +43,15 @@ body { min-height: 100vh; }
   background-repeat: no-repeat, no-repeat;
 }
 
+.auth-visual.admin-visual {
+  background-image:
+    linear-gradient(120deg, rgba(5,20,23,.90) 0%, rgba(10,40,48,.80) 45%, rgba(18,58,63,.62) 75%, rgba(28,74,69,.45) 100%),
+    url('../images/admin-login-hero.webp');
+  background-size: cover, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+}
+
 .auth-visual-heading { display: none; }
 
 .auth-quote {
@@ -170,6 +179,21 @@ body { min-height: 100vh; }
 @media (max-width: 900px) {
   .auth-wrapper { flex-direction: column; }
   .auth-visual { min-height: 260px; padding: 28px 30px; }
+  .auth-visual.login-visual {
+    background-image:
+      linear-gradient(120deg, rgba(5,20,23,.90) 0%, rgba(10,40,48,.80) 45%, rgba(18,58,63,.62) 75%, rgba(28,74,69,.45) 100%),
+      url('../images/login-hero-sm.webp');
+  }
+  .auth-visual.register-visual {
+    background-image:
+      linear-gradient(120deg, rgba(5,20,23,.90) 0%, rgba(10,40,48,.80) 45%, rgba(18,58,63,.62) 75%, rgba(28,74,69,.45) 100%),
+      url('../images/register-hero-sm.webp');
+  }
+  .auth-visual.admin-visual {
+    background-image:
+      linear-gradient(120deg, rgba(5,20,23,.90) 0%, rgba(10,40,48,.80) 45%, rgba(18,58,63,.62) 75%, rgba(28,74,69,.45) 100%),
+      url('../images/admin-login-hero-sm.webp');
+  }
   .auth-illustration { display: none; }
   .auth-quote { display: none; }
   .auth-form-panel { padding: 36px 20px 50px; }

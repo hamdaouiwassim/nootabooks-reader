@@ -4,7 +4,7 @@
 <?php $__env->startSection('og_image', $currentBook->cover_image_url ?? asset('assets/images/hero-section.jpg')); ?>
 
 <?php $__env->startPush('styles'); ?>
-<link rel="stylesheet" href="<?php echo e(asset('assets/css/book-details.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset_min('assets/css/book-details.css')); ?>">
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startPush('schema'); ?>
@@ -212,6 +212,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
           </select>
         </div>
         <textarea name="comment" rows="3" placeholder="اكتب رأيك في الكتاب (اختياري) ..."></textarea>
+        <?php echo $__env->make('partials.recaptcha', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
         <button type="submit" class="btn btn-teal">إرسال التقييم</button>
       </form>
     <?php endif; ?>
@@ -293,7 +294,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
       <?php $__empty_1 = true; $__currentLoopData = $similarBooks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $similarBook): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <article class="book-card">
           <?php if($similarBook->cover_image): ?>
-            <img class="book-cover cover-photo" src="<?php echo e($similarBook->cover_image_url); ?>" alt="<?php echo e($similarBook->title); ?>">
+            <img class="book-cover cover-photo" src="<?php echo e($similarBook->cover_image_sm_url); ?>" alt="<?php echo e($similarBook->title); ?>">
           <?php else: ?>
             <div class="book-cover cover-<?php echo e(($similarBook->id % 5) + 1); ?>">
               <span class="cover-badge">B</span>
@@ -303,7 +304,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
           <h3><?php echo e($similarBook->title); ?></h3>
           <p class="author"><?php echo e($similarBook->writer?->name); ?></p>
           <p class="rating"><i class="fa-solid fa-star"></i> <?php echo e(number_format($similarBook->rating_average, 1)); ?></p>
-          <a href="<?php echo e(route('book-details', $similarBook->slug)); ?>" class="btn btn-outline"><i class="fa-solid fa-eye"></i> شاهد</a>
+          <a href="<?php echo e(route('book-details', $similarBook->slug)); ?>" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
         </article>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <p class="no-results">لا توجد كتب مشابهة في نفس التصنيف حاليًا.</p>
@@ -318,7 +319,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
-<script src="<?php echo e(asset('assets/js/book-details.js')); ?>"></script>
+<script src="<?php echo e(asset_min('assets/js/book-details.js')); ?>"></script>
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\USER\Desktop\nootabooksui-reader\resources\views/book-details.blade.php ENDPATH**/ ?>

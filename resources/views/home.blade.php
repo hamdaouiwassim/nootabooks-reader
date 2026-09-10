@@ -8,13 +8,26 @@
 <!-- ===================== HERO ===================== -->
 <section class="hero">
   <div class="hero-content">
-    <blockquote class="hero-quote">"الكتب هي نوافذ نرى<br>من خلالها عوالم أخرى".</blockquote>
+    @if ($heroQuotes->isNotEmpty())
+      <div class="hero-quote-stack @if ($heroQuotes->count() < 2) static @endif">
+        @foreach ($heroQuotes as $quote)
+          <blockquote class="hero-quote-card" style="animation-delay: {{ ($loop->index / $heroQuotes->count()) * 15 }}s">
+            <i class="fa-solid fa-quote-right"></i>
+            <p>"{{ $quote->text }}"</p>
+            @if ($quote->author)
+              <cite>— {{ $quote->author }}</cite>
+            @endif
+          </blockquote>
+        @endforeach
+      </div>
+    @endif
     <h1 class="hero-title">إقرأ . اكتشف . حمّل</h1>
     <p class="hero-subtitle">عالم من الكتب بين يديك</p>
-    <button class="btn btn-gold">
-      <i class="fa-solid fa-arrow-left"></i>
-      ابدأ الأن
-    </button>
+    <form class="hero-search" method="GET" action="{{ route('discover') }}">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" name="q" value="{{ request('q') }}" placeholder="ابحث عن كتاب، مؤلف، او موضوع ...">
+      <button type="submit" class="btn btn-gold">ابحث</button>
+    </form>
   </div>
 </section>
 
@@ -71,7 +84,7 @@
           <h3><a href="{{ route('book-details', $book->slug) }}">{{ $book->title }}</a></h3>
           <p class="author">{{ $book->writer?->name }}</p>
           <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
-          <a href="{{ route('book-details', $book->slug) }}" class="btn btn-outline"><i class="fa-solid fa-eye"></i> شاهد</a>
+          <a href="{{ route('book-details', $book->slug) }}" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
         </article>
       @endforeach
     </div>
@@ -79,6 +92,44 @@
     <button class="carousel-btn next" aria-label="next"><i class="fa-solid fa-chevron-left"></i></button>
   </div>
 </section>
+
+@if ($booksCount > 10)
+<!-- ===================== RECENT BOOKS ===================== -->
+<section class="section trending-section">
+  <div class="section-head">
+    <div class="section-title-wrap">
+      <h2 class="section-title">أحدث الكتب <i class="fa-solid fa-clock-rotate-left fire-icon"></i></h2>
+      <p class="section-sub">آخر الكتب المضافة إلى المنصة</p>
+    </div>
+    <a href="{{ route('discover', ['sort' => 'newest']) }}" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
+  </div>
+
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" aria-label="previous"><i class="fa-solid fa-chevron-right"></i></button>
+
+    <div class="book-carousel">
+      @foreach ($recentBooks as $book)
+        <article class="book-card">
+          @if ($book->cover_image)
+            <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
+          @else
+            <div class="book-cover cover-{{ ($book->id % 5) + 1 }}">
+              <span class="cover-badge">B</span>
+              <span class="cover-title">{{ $book->title }}</span>
+            </div>
+          @endif
+          <h3><a href="{{ route('book-details', $book->slug) }}">{{ $book->title }}</a></h3>
+          <p class="author">{{ $book->writer?->name }}</p>
+          <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
+          <a href="{{ route('book-details', $book->slug) }}" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
+        </article>
+      @endforeach
+    </div>
+
+    <button class="carousel-btn next" aria-label="next"><i class="fa-solid fa-chevron-left"></i></button>
+  </div>
+</section>
+@endif
 
 <!-- ===================== DISCOVER BANNER ===================== -->
 <section class="section">

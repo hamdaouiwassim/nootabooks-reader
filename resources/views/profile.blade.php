@@ -100,7 +100,7 @@
         <h3><a href="{{ route('book-details', 'blue-elephant') }}">الفيل الأزرق</a></h3>
         <p class="author">أحمد مراد</p>
         <p class="rating"><i class="fa-solid fa-star"></i> 4.5</p>
-        <a href="{{ route('book-details', 'blue-elephant') }}" class="btn btn-outline"><i class="fa-solid fa-eye"></i> شاهد</a>
+        <a href="{{ route('book-details', 'blue-elephant') }}" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
       </article>
       <article class="book-card">
         <span class="book-cover cover-3">
@@ -110,7 +110,7 @@
         <h3>الخيميائي</h3>
         <p class="author">باولو كويلو</p>
         <p class="rating"><i class="fa-solid fa-star"></i> 4.6</p>
-        <a href="{{ route('book-details', 'the-alchemist') }}" class="btn btn-outline"><i class="fa-solid fa-eye"></i> شاهد</a>
+        <a href="{{ route('book-details', 'the-alchemist') }}" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
       </article>
       <article class="book-card">
         <span class="book-cover cover-4">
@@ -120,7 +120,7 @@
         <h3>منذ عام من العزلة</h3>
         <p class="author">غابرييل غارسيا ماركيز</p>
         <p class="rating"><i class="fa-solid fa-star"></i> 4.7</p>
-        <a href="{{ route('book-details', 'one-hundred-years-of-solitude') }}" class="btn btn-outline"><i class="fa-solid fa-eye"></i> شاهد</a>
+        <a href="{{ route('book-details', 'one-hundred-years-of-solitude') }}" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
       </article>
       <article class="book-card">
         <a href="{{ route('writer-details', 'ahmed-mourad') }}" class="book-cover pcover-1">
@@ -130,7 +130,7 @@
         <h3><a href="{{ route('writer-details', 'ahmed-mourad') }}">تراب الماس</a></h3>
         <p class="author">أحمد مراد</p>
         <p class="rating"><i class="fa-solid fa-star"></i> 4.6</p>
-        <a href="{{ route('book-details', 'turab-al-mas') }}" class="btn btn-outline"><i class="fa-solid fa-eye"></i> شاهد</a>
+        <a href="{{ route('book-details', 'turab-al-mas') }}" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
       </article>
     </div>
   </div>

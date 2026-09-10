@@ -38,6 +38,7 @@
       <p class="footer-about">منصة عربية تجمع عشاق الفراءة. نوفر لك الاف الكتب للقراءة أونلاين والتحميل في مختلف المجالات.</p>
     </div>
 
+    {{-- Store badges hidden for now — no mobile app yet, re-enable once one exists.
     <div class="footer-col store-badges">
       <a href="#" class="store-badge">
         <i class="fa-brands fa-google-play"></i>
@@ -48,6 +49,7 @@
         <span><small>Download on the</small><strong>App Store</strong></span>
       </a>
     </div>
+    --}}
   </div>
 
   <div class="footer-bottom">

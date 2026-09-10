@@ -16,6 +16,7 @@
     <a href="<?php echo e(route('admin.books.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'books']); ?>"><i class="fa-solid fa-book"></i> إدارة الكتب <span class="badge-count"><?php echo e($sidebarBooksCount); ?></span></a>
     <a href="<?php echo e(route('admin.writers.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'writers']); ?>"><i class="fa-solid fa-feather"></i> المؤلفون <span class="badge-count"><?php echo e($sidebarWritersCount); ?></span></a>
     <a href="<?php echo e(route('admin.categories.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'categories']); ?>"><i class="fa-solid fa-layer-group"></i> التصنيفات <span class="badge-count"><?php echo e($sidebarCategoriesCount); ?></span></a>
+    <a href="<?php echo e(route('admin.quotes.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'quotes']); ?>"><i class="fa-solid fa-quote-right"></i> الاقتباسات <span class="badge-count"><?php echo e($sidebarQuotesCount); ?></span></a>
 
     <span class="admin-nav-label">المجتمع</span>
     <a href="<?php echo e(route('admin.users.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'users']); ?>"><i class="fa-solid fa-users"></i> المستخدمون</a>

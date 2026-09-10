@@ -16,6 +16,7 @@
     <a href="{{ route('admin.books.index') }}" @class(['active' => $activeNav === 'books'])><i class="fa-solid fa-book"></i> إدارة الكتب <span class="badge-count">{{ $sidebarBooksCount }}</span></a>
     <a href="{{ route('admin.writers.index') }}" @class(['active' => $activeNav === 'writers'])><i class="fa-solid fa-feather"></i> المؤلفون <span class="badge-count">{{ $sidebarWritersCount }}</span></a>
     <a href="{{ route('admin.categories.index') }}" @class(['active' => $activeNav === 'categories'])><i class="fa-solid fa-layer-group"></i> التصنيفات <span class="badge-count">{{ $sidebarCategoriesCount }}</span></a>
+    <a href="{{ route('admin.quotes.index') }}" @class(['active' => $activeNav === 'quotes'])><i class="fa-solid fa-quote-right"></i> الاقتباسات <span class="badge-count">{{ $sidebarQuotesCount }}</span></a>
 
     <span class="admin-nav-label">المجتمع</span>
     <a href="{{ route('admin.users.index') }}" @class(['active' => $activeNav === 'users'])><i class="fa-solid fa-users"></i> المستخدمون</a>

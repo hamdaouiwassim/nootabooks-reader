@@ -41,7 +41,7 @@
           <td>
             <div class="admin-book-cell">
               <?php if($writer->photo): ?>
-                <img class="admin-book-cover" style="border-radius:50%; width:44px; height:44px;" src="<?php echo e($writer->photo_url); ?>" alt="<?php echo e($writer->name); ?>">
+                <img class="admin-book-cover" style="border-radius:50%; width:44px; height:44px;" src="<?php echo e($writer->photo_sm_url); ?>" alt="<?php echo e($writer->name); ?>">
               <?php else: ?>
                 <span class="admin-book-cover placeholder" style="border-radius:50%; width:44px; height:44px;"><i class="fa-solid fa-feather"></i></span>
               <?php endif; ?>

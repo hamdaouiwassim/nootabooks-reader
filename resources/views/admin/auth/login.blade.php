@@ -14,7 +14,7 @@
 <body>
 
 <div class="auth-wrapper">
-  <div class="auth-visual">
+  <div class="auth-visual admin-visual">
     <div class="admin-sidebar-head" style="border:none; padding:0;">
       <i class="fa-solid fa-book-bookmark logo-icon"></i>
       <div class="logo-text">

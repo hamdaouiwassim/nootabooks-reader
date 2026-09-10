@@ -12,7 +12,7 @@
 
     <div class="reader-book-info">
       <?php if($currentBook->cover_image): ?>
-        <img src="<?php echo e($currentBook->cover_image_url); ?>" alt="<?php echo e($currentBook->title); ?>" class="reader-mini-cover">
+        <img src="<?php echo e($currentBook->cover_image_sm_url); ?>" alt="<?php echo e($currentBook->title); ?>" class="reader-mini-cover">
       <?php endif; ?>
       <div class="reader-book-info-text">
         <strong><?php echo e($currentBook->title); ?></strong>

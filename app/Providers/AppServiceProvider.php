@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Quote;
 use App\Models\Writer;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\URL;
@@ -41,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
                 'sidebarBooksCount' => Book::count(),
                 'sidebarWritersCount' => Writer::count(),
                 'sidebarCategoriesCount' => Category::count(),
+                'sidebarQuotesCount' => Quote::count(),
             ]);
         });
     }

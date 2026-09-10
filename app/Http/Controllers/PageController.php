@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Quote;
 use App\Models\Writer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,12 +27,18 @@ class PageController extends Controller
                 ->take(4)
                 ->get();
 
+            $booksCount = Book::count();
+
             return [
                 'trendingBooks' => $trendingBooks,
                 'similarBooks' => $similarBooks,
+                'recentBooks' => $booksCount > 10
+                    ? Book::with('writer')->orderByDesc('created_at')->take(10)->get()
+                    : collect(),
                 'categories' => Category::orderBy('id')->take(8)->get(),
                 'popularWriters' => Writer::orderByDesc('followers_count')->take(4)->get(),
-                'booksCount' => Book::count(),
+                'heroQuotes' => Quote::orderByDesc('id')->take(3)->get(),
+                'booksCount' => $booksCount,
                 'writersCount' => Writer::count(),
                 'categoriesCount' => Category::count(),
             ];

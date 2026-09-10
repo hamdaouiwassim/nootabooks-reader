@@ -103,7 +103,7 @@
           <h3><a href="{{ route('book-details', $book->slug) }}">{{ $book->title }}</a></h3>
           <p class="author">{{ $book->writer?->name }}</p>
           <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
-          <a href="{{ route('book-details', $book->slug) }}" class="btn btn-outline"><i class="fa-solid fa-eye"></i> شاهد</a>
+          <a href="{{ route('book-details', $book->slug) }}" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
         </article>
       @endforeach
 

@@ -144,7 +144,7 @@ unset($__errorArgs, $__bag); ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
-<script src="<?php echo e(asset('assets/js/book-form.js')); ?>"></script>
+<script src="<?php echo e(asset_min('assets/js/book-form.js')); ?>"></script>
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('admin.layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\USER\Desktop\nootabooksui-reader\resources\views/admin/books/create.blade.php ENDPATH**/ ?>

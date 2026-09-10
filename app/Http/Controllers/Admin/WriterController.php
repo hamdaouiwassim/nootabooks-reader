@@ -87,7 +87,7 @@ class WriterController extends Controller
                 ['' => [600, 600], '-sm' => [300, 300]],
                 85,
             );
-            $data['photo'] = str_replace('http://', 'https://', rtrim(config('app.url'), '/')).'/storage/'.$paths[''];
+            $data['photo'] = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$paths[''];
         } else {
             unset($data['photo']);
         }

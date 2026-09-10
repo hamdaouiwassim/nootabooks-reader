@@ -48,7 +48,7 @@
           <td>
             <div class="admin-book-cell">
               <?php if($book->cover_image): ?>
-                <img class="admin-book-cover" src="<?php echo e($book->cover_image_url); ?>" alt="<?php echo e($book->title); ?>">
+                <img class="admin-book-cover" src="<?php echo e($book->cover_image_sm_url); ?>" alt="<?php echo e($book->title); ?>">
               <?php else: ?>
                 <span class="admin-book-cover placeholder"><i class="fa-solid fa-book"></i></span>
               <?php endif; ?>

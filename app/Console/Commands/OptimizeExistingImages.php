@@ -60,7 +60,7 @@ class OptimizeExistingImages extends Command
             Storage::disk('public')->delete($smallPath); // harmless if it never existed
 
             /** @var Model $row */
-            $row->{$column} = str_replace('http://', 'https://', rtrim(config('app.url'), '/')).'/storage/'.$paths[''];
+            $row->{$column} = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$paths[''];
             $row->save();
 
             $this->line("  #{$row->id}: {$relativePath} -> {$paths['']} (+ small variant)");

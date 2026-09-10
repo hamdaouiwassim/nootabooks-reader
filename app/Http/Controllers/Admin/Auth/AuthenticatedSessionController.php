@@ -41,6 +41,16 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
+        // Skip the email OTP step in local dev — there's no point waiting on
+        // a real inbox just to test the admin panel on your own machine.
+        if (app()->environment('local')) {
+            $request->session()->regenerate();
+
+            Auth::guard('admin')->loginUsingId($admin->id, (bool) $request->boolean('remember'));
+
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
         $this->issueCode($request, $admin, (bool) $request->boolean('remember'));
 
         return redirect()->route('admin.login.verify');

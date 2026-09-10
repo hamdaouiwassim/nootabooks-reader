@@ -18,3 +18,19 @@ if (! function_exists('asset_min')) {
         return asset($path).'?v='.filemtime(public_path($path));
     }
 }
+
+if (! function_exists('force_https_url')) {
+    /**
+     * Upgrades a stored http:// URL to https:// everywhere except local dev,
+     * where nothing actually serves HTTPS (APP_URL is plain http://localhost)
+     * — forcing it there just breaks every uploaded cover/photo/file link.
+     */
+    function force_https_url(string $value): string
+    {
+        if (app()->environment('local')) {
+            return $value;
+        }
+
+        return str_starts_with($value, 'http://') ? 'https://'.substr($value, strlen('http://')) : $value;
+    }
+}
