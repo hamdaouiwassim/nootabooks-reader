@@ -538,7 +538,7 @@ img { display: block; }
   width: 40%;
   background:
     linear-gradient(to right, transparent 55%, var(--cream-alt) 100%),
-    url('../images/discover-section.jpg') center / cover no-repeat;
+    url('../images/discover-section.webp') center / cover no-repeat;
 }
 .discover-left {
   flex: 1;
@@ -640,7 +640,7 @@ img { display: block; }
   width: 40%;
   background:
     linear-gradient(to right, transparent 55%, var(--navy) 100%),
-    url('../images/subscribe-section.jpg') center / cover no-repeat;
+    url('../images/subscribe-section.webp') center / cover no-repeat;
 }
 .newsletter-text h3 { color: #fff; font-size: 22px; font-weight: 800; margin-bottom: 8px; }
 .newsletter-text p { color: #dcdcd6; font-size: 14px; }
@@ -815,7 +815,7 @@ img { display: block; }
     width: 100%;
     background:
       linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)),
-      url('../images/discover-section.jpg') center / cover no-repeat;
+      url('../images/discover-section.webp') center / cover no-repeat;
   }
   .discover-tags { position: relative; z-index: 1; color: #fff; gap: 11px; }
   .discover-left { width: 100%; padding-left: 0; position: relative; z-index: 1; }
@@ -830,7 +830,7 @@ img { display: block; }
     width: 100%;
     background:
       linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)),
-      url('../images/subscribe-section.jpg') center / cover no-repeat;
+      url('../images/subscribe-section.webp') center / cover no-repeat;
   }
   .newsletter-text { width: 100%; position: relative; z-index: 1; }
   .newsletter-form { width: 100%; max-width: none; position: relative; z-index: 1; }

@@ -4,8 +4,8 @@
 @section('meta_description', 'تصفح واستكشف مجموعة واسعة من الكتب والروايات العربية حسب التصنيف والتقييم وعدد التحميلات على نوته بوك.')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/discover.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/discover.css') }}">
 @endpush
 
 @section('content')
@@ -120,5 +120,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/js/discover.js') }}"></script>
+<script src="{{ asset_min('assets/js/discover.js') }}"></script>
 @endpush

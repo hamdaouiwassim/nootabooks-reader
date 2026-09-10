@@ -4,8 +4,8 @@
 @section('meta_description', 'تواصل مع فريق نوته بوك لأي استفسار أو اقتراح أو مشكلة تقنية.')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/contact.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/auth.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/contact.css') }}">
 @endpush
 
 @section('content')
@@ -130,5 +130,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/js/contact.js') }}"></script>
+<script src="{{ asset_min('assets/js/contact.js') }}"></script>
 @endpush

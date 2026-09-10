@@ -138,5 +138,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/js/book-form.js') }}"></script>
+<script src="{{ asset_min('assets/js/book-form.js') }}"></script>
 @endpush

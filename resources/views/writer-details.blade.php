@@ -4,9 +4,9 @@
 @section('meta_description', $currentWriter->bio ? \Illuminate\Support\Str::limit($currentWriter->bio, 160) : 'تعرّف على '.$currentWriter->name.' وتصفح جميع أعماله على نوته بوك.')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/book-details.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/writer-details.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/book-details.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/writer-details.css') }}">
 @endpush
 
 @push('schema')
@@ -145,5 +145,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/js/writer-details.js') }}"></script>
+<script src="{{ asset_min('assets/js/writer-details.js') }}"></script>
 @endpush

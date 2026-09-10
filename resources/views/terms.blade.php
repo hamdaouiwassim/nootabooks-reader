@@ -4,7 +4,7 @@
 @section('meta_description', 'اطّلع على شروط وأحكام استخدام منصة نوته بوك.')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/legal.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/legal.css') }}">
 @endpush
 
 @section('content')

@@ -4,10 +4,10 @@
 @section('meta_description', 'تصفح أفضل كتب وروايات '.$currentCategory->name.' على نوته بوك، مع تقييمات القراء وإمكانية القراءة والتحميل.')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/book-details.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/writer-details.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/categories.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/book-details.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/writer-details.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/categories.css') }}">
 @endpush
 
 @push('schema')

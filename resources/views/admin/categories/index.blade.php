@@ -8,7 +8,7 @@
 @endphp
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/categories.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/categories.css') }}">
 @endpush
 
 @section('content')
@@ -124,5 +124,5 @@
 @endpush
 
 @push('scripts')
-<script src="{{ asset('assets/js/categories-admin.js') }}"></script>
+<script src="{{ asset_min('assets/js/categories-admin.js') }}"></script>
 @endpush

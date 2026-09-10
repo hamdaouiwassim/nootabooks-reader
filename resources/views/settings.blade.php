@@ -4,9 +4,9 @@
 @section('robots', 'noindex, nofollow')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/settings.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/auth.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/settings.css') }}">
 @endpush
 
 @section('content')
@@ -201,6 +201,6 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/js/auth.js') }}"></script>
-<script src="{{ asset('assets/js/settings.js') }}"></script>
+<script src="{{ asset_min('assets/js/auth.js') }}"></script>
+<script src="{{ asset_min('assets/js/settings.js') }}"></script>
 @endpush

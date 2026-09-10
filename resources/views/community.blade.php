@@ -4,9 +4,9 @@
 @section('robots', 'noindex, follow')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/my-library.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/community.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/my-library.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/community.css') }}">
 @endpush
 
 @section('content')
@@ -240,5 +240,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/js/community.js') }}"></script>
+<script src="{{ asset_min('assets/js/community.js') }}"></script>
 @endpush

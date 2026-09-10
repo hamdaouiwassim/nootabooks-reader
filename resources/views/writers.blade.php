@@ -4,7 +4,7 @@
 @section('meta_description', 'تعرّف على أبرز المؤلفين العرب، تابعهم واكتشف أعمالهم وأحدث إصداراتهم على نوته بوك.')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
 @endpush
 
 @section('content')
@@ -126,5 +126,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/js/writers.js') }}"></script>
+<script src="{{ asset_min('assets/js/writers.js') }}"></script>
 @endpush

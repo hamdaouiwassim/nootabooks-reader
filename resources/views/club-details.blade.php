@@ -4,10 +4,10 @@
 @section('robots', 'noindex, follow')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/book-details.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/community.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/club-details.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/book-details.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/community.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/club-details.css') }}">
 @endpush
 
 @section('content')
@@ -185,5 +185,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/js/club-details.js') }}"></script>
+<script src="{{ asset_min('assets/js/club-details.js') }}"></script>
 @endpush

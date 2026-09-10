@@ -4,4 +4,4 @@
     <i class="fa-solid fa-book-bookmark loader-mark"></i>
   </div>
 </div>
-<script src="{{ asset('assets/js/loader.js') }}"></script>
+<script src="{{ asset_min('assets/js/loader.js') }}"></script>

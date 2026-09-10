@@ -4,8 +4,8 @@
 @section('meta_description', 'تصفح تصنيفات الكتب والروايات العربية على نوته بوك، من الأدب والتاريخ إلى التنمية الذاتية والخيال العلمي.')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/categories.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/categories.css') }}">
 @endpush
 
 @section('content')
@@ -75,5 +75,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/js/categories.js') }}"></script>
+<script src="{{ asset_min('assets/js/categories.js') }}"></script>
 @endpush

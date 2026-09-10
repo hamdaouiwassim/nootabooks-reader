@@ -4,8 +4,8 @@
 @section('robots', 'noindex, follow')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/writers.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/reading-clubs.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/reading-clubs.css') }}">
 @endpush
 
 @section('content')
@@ -94,5 +94,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/js/reading-clubs.js') }}"></script>
+<script src="{{ asset_min('assets/js/reading-clubs.js') }}"></script>
 @endpush
