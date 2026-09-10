@@ -59,7 +59,7 @@
       <?php $__currentLoopData = $trendingBooks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $book): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <article class="book-card">
           <?php if($book->cover_image): ?>
-            <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_url); ?>" alt="<?php echo e($book->title); ?>">
+            <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>" alt="<?php echo e($book->title); ?>">
           <?php else: ?>
             <div class="book-cover cover-<?php echo e(($book->id % 5) + 1); ?>">
               <span class="cover-badge">B</span>
@@ -135,7 +135,7 @@
     <div class="authors-row">
       <?php $__empty_1 = true; $__currentLoopData = $popularWriters; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $writer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <a href="<?php echo e(route('writer-details', $writer->slug)); ?>" class="author-card">
-          <img src="<?php echo e($writer->photo_url ?? 'https://i.pravatar.cc/120?img=' . (($writer->id % 70) + 1)); ?>" alt="<?php echo e($writer->name); ?>">
+          <img src="<?php echo e($writer->photo_sm_url ?? 'https://i.pravatar.cc/120?img=' . (($writer->id % 70) + 1)); ?>" alt="<?php echo e($writer->name); ?>">
           <p><?php echo e($writer->name); ?></p>
         </a>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>

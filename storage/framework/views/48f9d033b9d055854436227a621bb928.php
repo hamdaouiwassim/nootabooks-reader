@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="<?php echo e(asset('assets/css/style.css')); ?>?v=<?php echo e(filemtime(public_path('assets/css/style.css'))); ?>">
-<link rel="stylesheet" href="<?php echo e(asset('assets/css/errors.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset_min('assets/css/style.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset_min('assets/css/errors.css')); ?>">
 </head>
 <body>
 
@@ -36,7 +36,7 @@
   <p class="error-footer-note">ما زلت بحاجة لمساعدة؟ <a href="<?php echo e(route('contact')); ?>">تواصل مع الدعم</a></p>
 </div>
 
-<script src="<?php echo e(asset('assets/js/script.js')); ?>"></script>
+<script src="<?php echo e(asset_min('assets/js/script.js')); ?>"></script>
 </body>
 </html>
 <?php /**PATH C:\Users\USER\Desktop\nootabooksui-reader\resources\views/errors/404.blade.php ENDPATH**/ ?>

@@ -206,6 +206,7 @@
           </select>
         </div>
         <textarea name="comment" rows="3" placeholder="اكتب رأيك في الكتاب (اختياري) ..."></textarea>
+        @include('partials.recaptcha')
         <button type="submit" class="btn btn-teal">إرسال التقييم</button>
       </form>
     @endauth

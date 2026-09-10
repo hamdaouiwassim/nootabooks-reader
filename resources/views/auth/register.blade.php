@@ -85,6 +85,8 @@
         </label>
         <span class="field-error" id="registerTermsError">@error('terms'){{ $message }}@enderror</span>
 
+        @include('partials.recaptcha')
+
         <button type="submit" class="btn btn-teal full">إنشاء حساب</button>
       </form>
       <p class="form-success" id="registerSuccess" hidden><i class="fa-solid fa-circle-check"></i> تم إنشاء حسابك بنجاح، جارِ التحويل ...</p>

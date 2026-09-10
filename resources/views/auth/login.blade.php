@@ -61,6 +61,8 @@
           <a href="#" class="forgot-link">نسيت كلمة المرور؟</a>
         </div>
 
+        @include('partials.recaptcha')
+
         <button type="submit" class="btn btn-teal full">تسجيل الدخول</button>
       </form>
       <p class="form-success" id="loginSuccess" hidden><i class="fa-solid fa-circle-check"></i> تم تسجيل الدخول بنجاح، جارِ التحويل ...</p>
