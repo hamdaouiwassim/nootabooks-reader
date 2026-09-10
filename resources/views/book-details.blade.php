@@ -77,6 +77,7 @@
         <span class="cover-title">{{ $currentBook->title }}</span>
       </div>
     @endif
+    <span class="brand-ribbon">nootabooks.com</span>
     @if ($currentBook->is_coming_soon)
       <span class="coming-soon-badge">قريبًا</span>
     @endif

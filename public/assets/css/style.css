@@ -562,22 +562,28 @@ img { display: block; }
 
 .cover-wrap { position: relative; overflow: hidden; border-radius: 10px; }
 .coming-soon-badge {
-  position: absolute; top: 10px; left: 10px;
-  background: var(--gold-dark); color: #fff;
-  font-size: 11px; font-weight: 800;
-  padding: 4px 10px; border-radius: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--gold-dark);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
   z-index: 2;
 }
 
 .brand-ribbon {
   position: absolute;
-  bottom: 16px; left: -38px;
-  width: 150px;
-  transform: rotate(45deg);
+  top: 37px;
+  left: -51px;
+  width: 200px;
+  transform: rotate(-45deg);
   background: var(--navy);
   color: #fff;
   text-align: center;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 800;
   letter-spacing: .3px;
   padding: 4px 0;

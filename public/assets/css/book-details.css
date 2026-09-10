@@ -21,7 +21,7 @@
   align-items: start;
 }
 
-.book-hero-cover { position: relative; }
+.book-hero-cover { position: relative; overflow: hidden; border-radius: 16px; }
 .hero-cover-img {
   position: relative;
   height: 420px;
