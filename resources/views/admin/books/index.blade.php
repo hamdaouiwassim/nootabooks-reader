@@ -28,6 +28,11 @@
       <option value="{{ $category->id }}" @selected(request('category') == $category->id)>{{ $category->name }}</option>
     @endforeach
   </select>
+  <select class="admin-filter-select" name="status" onchange="this.form.submit()">
+    <option value="">كل الحالات</option>
+    <option value="published" @selected(request('status') === 'published')>منشور</option>
+    <option value="draft" @selected(request('status') === 'draft')>مخفي</option>
+  </select>
   <button type="submit" class="btn btn-outline">بحث</button>
 </form>
 
@@ -54,7 +59,16 @@
               @else
                 <span class="admin-book-cover placeholder"><i class="fa-solid fa-book"></i></span>
               @endif
-              <div><strong>{{ $book->title }}</strong><span>{{ $book->writer?->name ?? 'بدون مؤلف' }}</span></div>
+              <div>
+                <strong>{{ $book->title }}</strong>
+                <span>{{ $book->writer?->name ?? 'بدون مؤلف' }}</span>
+                @if ($book->status === 'draft')
+                  <span class="status-badge draft">مخفي</span>
+                @endif
+                @if ($book->is_coming_soon)
+                  <span class="status-badge coming-soon">قريبًا</span>
+                @endif
+              </div>
             </div>
           </td>
           <td>{{ $book->category->name }}</td>

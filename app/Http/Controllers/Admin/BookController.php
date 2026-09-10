@@ -30,6 +30,7 @@ class BookController extends Controller
                 });
             })
             ->when($request->filled('category'), fn ($query) => $query->where('category_id', $request->integer('category')))
+            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')))
             ->latest()
             ->paginate(10)
             ->withQueryString();
@@ -99,6 +100,7 @@ class BookController extends Controller
     {
         $data = $request->validated();
 
+        $data['is_coming_soon'] = $request->boolean('is_coming_soon');
         $data['formats'] = $request->input('formats', []);
         $data['tags'] = $request->filled('tags')
             ? array_values(array_filter(array_map('trim', preg_split('/[,،]/u', (string) $request->string('tags')))))

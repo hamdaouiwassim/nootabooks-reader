@@ -16,24 +16,24 @@ class PageController extends Controller
     public function home(): View
     {
         $data = Cache::remember('home.page.data', now()->addHours(6), function () {
-            $trendingBooks = Book::with('writer')
+            $trendingBooks = Book::published()->with('writer')
                 ->orderByDesc('downloads_count')
                 ->take(10)
                 ->get();
 
-            $similarBooks = Book::with('writer')
+            $similarBooks = Book::published()->with('writer')
                 ->whereNotIn('id', $trendingBooks->pluck('id'))
                 ->orderByDesc('rating_average')
                 ->take(4)
                 ->get();
 
-            $booksCount = Book::count();
+            $booksCount = Book::published()->count();
 
             return [
                 'trendingBooks' => $trendingBooks,
                 'similarBooks' => $similarBooks,
                 'recentBooks' => $booksCount > 10
-                    ? Book::with('writer')->orderByDesc('created_at')->take(10)->get()
+                    ? Book::published()->with('writer')->orderByDesc('created_at')->take(10)->get()
                     : collect(),
                 'categories' => Category::orderBy('id')->take(8)->get(),
                 'popularWriters' => Writer::orderByDesc('followers_count')->take(4)->get(),
@@ -56,7 +56,7 @@ class PageController extends Controller
         $search = trim((string) $request->input('q', ''));
         $sort = $request->string('sort', 'popular')->toString();
 
-        $query = Book::with(['category', 'writer'])
+        $query = Book::published()->with(['category', 'writer'])
             ->when($selectedCategorySlugs, function ($q) use ($selectedCategorySlugs) {
                 $q->whereHas('category', fn ($cq) => $cq->whereIn('slug', $selectedCategorySlugs));
             })
@@ -103,24 +103,25 @@ class PageController extends Controller
     {
         return view('categories', [
             'activeNav' => 'categories',
-            'categories' => Category::withCount('books')->orderBy('id')->paginate(12)->withQueryString(),
-            'topCategories' => Category::withCount('books')->orderByDesc('books_count')->take(5)->get(),
+            'categories' => Category::withCount(['books' => fn ($q) => $q->published()])->orderBy('id')->paginate(12)->withQueryString(),
+            'topCategories' => Category::withCount(['books' => fn ($q) => $q->published()])->orderByDesc('books_count')->take(5)->get(),
         ]);
     }
 
     public function categoryDetails(?string $category = null): View
     {
-        $currentCategory = Category::withCount('books')
+        $currentCategory = Category::withCount(['books' => fn ($q) => $q->published()])
             ->where('slug', $category ?? 'novels')
             ->firstOrFail();
 
         $categoryBooks = $currentCategory->books()
+            ->published()
             ->with('writer')
             ->orderByDesc('rating_average')
             ->paginate(9)
             ->withQueryString();
 
-        $similarCategories = Category::withCount('books')
+        $similarCategories = Category::withCount(['books' => fn ($q) => $q->published()])
             ->where('id', '!=', $currentCategory->id)
             ->orderByDesc('books_count')
             ->take(5)
@@ -143,18 +144,19 @@ class PageController extends Controller
     {
         return view('writers', [
             'activeNav' => 'writers',
-            'writers' => Writer::withCount('books')->orderBy('name')->paginate(9)->withQueryString(),
-            'featuredWriter' => Writer::withCount('books')->where('is_featured', true)->first(),
+            'writers' => Writer::withCount(['books' => fn ($q) => $q->published()])->orderBy('name')->paginate(9)->withQueryString(),
+            'featuredWriter' => Writer::withCount(['books' => fn ($q) => $q->published()])->where('is_featured', true)->first(),
         ]);
     }
 
     public function writerDetails(?string $writer = null): View
     {
-        $currentWriter = Writer::withCount('books')
+        $currentWriter = Writer::withCount(['books' => fn ($q) => $q->published()])
             ->where('slug', $writer ?? 'ahmed-mourad')
             ->firstOrFail();
 
         $writerBooks = $currentWriter->books()
+            ->published()
             ->orderByDesc('published_year')
             ->paginate(8)
             ->withQueryString();
@@ -174,7 +176,7 @@ class PageController extends Controller
 
     public function bookDetails(?string $book = null): View
     {
-        $currentBook = Book::with(['category', 'writer'])
+        $currentBook = Book::published()->with(['category', 'writer'])
             ->where('slug', $book ?? 'blue-elephant')
             ->firstOrFail();
 
@@ -188,7 +190,7 @@ class PageController extends Controller
 
         $reviews = $currentBook->reviews()->with('user')->latest()->paginate(5)->withQueryString();
 
-        $similarBooks = Book::with('writer')
+        $similarBooks = Book::published()->with('writer')
             ->where('category_id', $currentBook->category_id)
             ->where('id', '!=', $currentBook->id)
             ->orderByDesc('rating_average')
@@ -204,11 +206,16 @@ class PageController extends Controller
         ]);
     }
 
-    public function read(?string $book = null): View
+    public function read(?string $book = null): View|RedirectResponse
     {
-        $currentBook = Book::with('writer')
+        $currentBook = Book::published()->with('writer')
             ->where('slug', $book ?? 'blue-elephant')
             ->firstOrFail();
+
+        if ($currentBook->is_coming_soon) {
+            return redirect()->route('book-details', $currentBook->slug)
+                ->with('info', 'هذا الكتاب سيتوفر قريبًا، لا يمكن قراءته الآن.');
+        }
 
         return view('read', ['currentBook' => $currentBook]);
     }

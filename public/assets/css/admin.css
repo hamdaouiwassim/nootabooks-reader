@@ -300,6 +300,7 @@
 .status-badge.draft { background: var(--cream-alt); color: var(--text-gray); }
 .status-badge.free { background: #e8f2f1; color: var(--teal); }
 .status-badge.paid { background: #fbf1e0; color: var(--gold-dark); }
+.status-badge.coming-soon { background: #fbf1e0; color: var(--gold-dark); }
 
 .admin-row-actions { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
 .admin-icon-btn {

@@ -27,7 +27,8 @@ Route::post('/books/{book}/reviews', [ReviewController::class, 'store'])
     ->middleware('auth')
     ->name('reviews.store');
 Route::get('/read/{book?}', [PageController::class, 'read'])->name('read');
-Route::get('/books/{book}/download', [BookDownloadController::class, 'download'])->name('books.download');
+Route::get('/books/{book}/stream', [BookDownloadController::class, 'stream'])->name('books.stream')->middleware('signed');
+Route::get('/books/{book}/download', [BookDownloadController::class, 'download'])->name('books.download')->middleware('signed');
 
 Route::get('/community', [PageController::class, 'community'])->name('community');
 Route::get('/clubs', [PageController::class, 'readingClubs'])->name('reading-clubs');

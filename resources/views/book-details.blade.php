@@ -77,6 +77,9 @@
         <span class="cover-title">{{ $currentBook->title }}</span>
       </div>
     @endif
+    @if ($currentBook->is_coming_soon)
+      <span class="coming-soon-badge">قريبًا</span>
+    @endif
     <button class="wishlist-btn" aria-label="add to wishlist"><i class="fa-regular fa-heart"></i></button>
   </div>
 
@@ -119,11 +122,16 @@
     </div>
 
     <div class="book-actions">
-      <a href="{{ route('read', $currentBook->slug) }}" class="btn btn-teal"><i class="fa-solid fa-headphones"></i> قراءة الآن</a>
-      @if ($currentBook->file_path)
-        <a href="{{ route('books.download', $currentBook) }}" class="btn btn-gold"><i class="fa-solid fa-download"></i> تحميل الكتاب</a>
+      @if ($currentBook->is_coming_soon)
+        <button class="btn btn-teal" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-clock"></i> قريبًا</button>
+        <button class="btn btn-gold" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
       @else
-        <button class="btn btn-gold" disabled title="الملف غير متوفر حاليًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
+        <a href="{{ route('read', $currentBook->slug) }}" class="btn btn-teal"><i class="fa-solid fa-headphones"></i> قراءة الآن</a>
+        @if ($currentBook->downloadUrl())
+          <a href="{{ $currentBook->downloadUrl() }}" class="btn btn-gold"><i class="fa-solid fa-download"></i> تحميل الكتاب</a>
+        @else
+          <button class="btn btn-gold" disabled title="الملف غير متوفر حاليًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
+        @endif
       @endif
       <button class="btn btn-navy" aria-label="مشاركة"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
     </div>
@@ -286,11 +294,19 @@
       @forelse ($similarBooks as $similarBook)
         <article class="book-card">
           @if ($similarBook->cover_image)
-            <img class="book-cover cover-photo" src="{{ $similarBook->cover_image_sm_url }}" alt="{{ $similarBook->title }}">
+            <div class="cover-wrap">
+              <img class="book-cover cover-photo" src="{{ $similarBook->cover_image_sm_url }}" alt="{{ $similarBook->title }}">
+              @if ($similarBook->is_coming_soon)
+                <span class="coming-soon-badge">قريبًا</span>
+              @endif
+            </div>
           @else
             <div class="book-cover cover-{{ ($similarBook->id % 5) + 1 }}">
               <span class="cover-badge">B</span>
               <span class="cover-title">{{ $similarBook->title }}</span>
+              @if ($similarBook->is_coming_soon)
+                <span class="coming-soon-badge">قريبًا</span>
+              @endif
             </div>
           @endif
           <h3>{{ $similarBook->title }}</h3>

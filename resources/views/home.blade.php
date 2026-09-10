@@ -74,11 +74,19 @@
       @foreach ($trendingBooks as $book)
         <article class="book-card">
           @if ($book->cover_image)
-            <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
+            <div class="cover-wrap">
+              <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
+              @if ($book->is_coming_soon)
+                <span class="coming-soon-badge">قريبًا</span>
+              @endif
+            </div>
           @else
             <div class="book-cover cover-{{ ($book->id % 5) + 1 }}">
               <span class="cover-badge">B</span>
               <span class="cover-title">{{ $book->title }}</span>
+              @if ($book->is_coming_soon)
+                <span class="coming-soon-badge">قريبًا</span>
+              @endif
             </div>
           @endif
           <h3><a href="{{ route('book-details', $book->slug) }}">{{ $book->title }}</a></h3>
@@ -111,11 +119,19 @@
       @foreach ($recentBooks as $book)
         <article class="book-card">
           @if ($book->cover_image)
-            <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
+            <div class="cover-wrap">
+              <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
+              @if ($book->is_coming_soon)
+                <span class="coming-soon-badge">قريبًا</span>
+              @endif
+            </div>
           @else
             <div class="book-cover cover-{{ ($book->id % 5) + 1 }}">
               <span class="cover-badge">B</span>
               <span class="cover-title">{{ $book->title }}</span>
+              @if ($book->is_coming_soon)
+                <span class="coming-soon-badge">قريبًا</span>
+              @endif
             </div>
           @endif
           <h3><a href="{{ route('book-details', $book->slug) }}">{{ $book->title }}</a></h3>

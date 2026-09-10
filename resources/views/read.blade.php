@@ -3,6 +3,12 @@
 @section('title', 'قراءة: '.$currentBook->title.' - نوته بوك')
 
 @section('content')
+
+@php
+  $bookDownloadUrl = $currentBook->downloadUrl();
+  $bookStreamUrl = $currentBook->streamUrl();
+@endphp
+
 <div class="reader-page">
 
   <!-- ===================== READER TOPBAR ===================== -->
@@ -23,8 +29,8 @@
     </div>
 
     <div class="reader-actions">
-      @if ($currentBook->file_path)
-        <a href="{{ route('books.download', $currentBook) }}" class="reader-action-btn" title="تحميل الكتاب" aria-label="download">
+      @if ($bookDownloadUrl)
+        <a href="{{ $bookDownloadUrl }}" class="reader-action-btn" title="تحميل الكتاب" aria-label="download">
           <i class="fa-solid fa-download"></i>
         </a>
       @endif
@@ -36,8 +42,8 @@
 
   <!-- ===================== PDF VIEWER ===================== -->
   <main class="reader-frame-wrap" id="readerFrameWrap">
-    @if ($currentBook->file_path)
-      <iframe src="{{ $currentBook->file_url }}" class="reader-frame" title="{{ $currentBook->title }}"></iframe>
+    @if ($bookStreamUrl)
+      <iframe src="{{ $bookStreamUrl }}" class="reader-frame" title="{{ $currentBook->title }}"></iframe>
     @else
       <div class="reader-empty">
         <i class="fa-solid fa-file-circle-exclamation"></i>

@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Models\Concerns\FlushesAppCache;
 use App\Models\Concerns\GeneratesUniqueSlug;
 use App\Models\Concerns\ResolvesUploadedFileUrl;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\URL;
 
 class Book extends Model
 {
@@ -33,6 +35,8 @@ class Book extends Model
         'description_short',
         'description',
         'cover_image',
+        'is_coming_soon',
+        'status',
         'file_path',
         'pages_count',
         'language',
@@ -50,6 +54,7 @@ class Book extends Model
         return [
             'formats' => 'array',
             'tags' => 'array',
+            'is_coming_soon' => 'boolean',
             'pages_count' => 'integer',
             'published_year' => 'integer',
             'file_size_mb' => 'decimal:2',
@@ -57,6 +62,11 @@ class Book extends Model
             'rating_average' => 'decimal:1',
             'rating_count' => 'integer',
         ];
+    }
+
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('status', 'published');
     }
 
     public function category(): BelongsTo
@@ -94,5 +104,27 @@ class Book extends Model
     protected function fileUrl(): Attribute
     {
         return Attribute::make(get: fn () => $this->resolveFileUrl($this->file_path));
+    }
+
+    /**
+     * A short-lived signed URL for inline reading, generated fresh on every
+     * call so the real storage path is never exposed to the client.
+     */
+    public function streamUrl(): ?string
+    {
+        return $this->file_path
+            ? URL::temporarySignedRoute('books.stream', now()->addHours(2), ['book' => $this])
+            : null;
+    }
+
+    /**
+     * A short-lived signed URL for downloading, generated fresh on every
+     * call so the real storage path is never exposed to the client.
+     */
+    public function downloadUrl(): ?string
+    {
+        return $this->file_path
+            ? URL::temporarySignedRoute('books.download', now()->addMinutes(30), ['book' => $this])
+            : null;
     }
 }

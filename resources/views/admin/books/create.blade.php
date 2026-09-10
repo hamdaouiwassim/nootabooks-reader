@@ -61,6 +61,13 @@
             </select>
           </div>
           <div class="admin-form-field">
+            <label for="bookStatus">حالة النشر</label>
+            <select id="bookStatus" name="status" class="admin-select">
+              <option value="published" @selected(old('status', 'published') === 'published')>منشور (ظاهر للجميع)</option>
+              <option value="draft" @selected(old('status') === 'draft')>مخفي (غير ظاهر على المنصة)</option>
+            </select>
+          </div>
+          <div class="admin-form-field">
             <label for="bookYear">سنة النشر</label>
             <input type="number" id="bookYear" name="published_year" class="admin-input" value="{{ old('published_year') }}" placeholder="2024" min="1900" max="2100">
           </div>
@@ -110,6 +117,16 @@
               <span class="admin-field-error">{{ $message }}</span>
             @enderror
           </div>
+        </div>
+        <div class="admin-toggle-row" style="margin-top:16px;">
+          <div>
+            <strong>كتاب قريبًا</strong>
+            <p>يظهر الكتاب بدون إمكانية القراءة أو التحميل مع إشارة "قريبًا"</p>
+          </div>
+          <label class="admin-switch">
+            <input type="checkbox" name="is_coming_soon" value="1" @checked(old('is_coming_soon'))>
+            <span class="admin-switch-slider"></span>
+          </label>
         </div>
       </div>
     </div>

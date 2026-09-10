@@ -28,6 +28,8 @@ class StoreBookRequest extends FormRequest
             'tags' => ['nullable', 'string', 'max:1000'],
             'cover_image' => ['nullable', 'image', 'max:4096'],
             'book_file' => ['nullable', 'file', 'mimes:pdf,epub,mobi', 'max:102400'],
+            'is_coming_soon' => ['nullable', 'boolean'],
+            'status' => ['required', 'in:published,draft'],
         ];
     }
 
@@ -57,6 +59,8 @@ class StoreBookRequest extends FormRequest
             'book_file.mimes' => 'صيغة ملف الكتاب غير مدعومة، يجب أن يكون بصيغة PDF أو EPUB أو MOBI.',
             'book_file.max' => 'حجم ملف الكتاب يجب ألا يتجاوز 100 ميجابايت.',
             'book_file.uploaded' => 'فشل رفع ملف الكتاب، تأكد أن حجمه لا يتجاوز الحد المسموح به من الخادم وحاول مرة أخرى.',
+            'status.required' => 'يجب تحديد حالة الكتاب.',
+            'status.in' => 'حالة الكتاب غير صحيحة.',
         ];
     }
 }

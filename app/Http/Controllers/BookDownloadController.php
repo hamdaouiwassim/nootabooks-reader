@@ -10,6 +10,8 @@ class BookDownloadController extends Controller
 {
     public function download(Book $book): Response
     {
+        abort_if($book->is_coming_soon, 404);
+        abort_unless($book->status === 'published', 404);
         abort_unless($book->file_path, 404);
 
         $book->increment('downloads_count');
@@ -26,6 +28,23 @@ class BookDownloadController extends Controller
 
         // Not on local storage (e.g. a legacy external URL) — best effort.
         return redirect()->away($book->file_url);
+    }
+
+    /**
+     * Streams the book file inline (for the in-app reader iframe) instead of
+     * exposing the permanent /storage/... URL directly to the client.
+     */
+    public function stream(Book $book): Response
+    {
+        abort_if($book->is_coming_soon, 404);
+        abort_unless($book->status === 'published', 404);
+        abort_unless($book->file_path, 404);
+
+        $relativePath = $this->relativeStoragePath($book->file_path);
+
+        abort_unless($relativePath && Storage::disk('public')->exists($relativePath), 404);
+
+        return Storage::disk('public')->response($relativePath);
     }
 
     /**

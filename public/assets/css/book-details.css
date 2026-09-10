@@ -52,6 +52,8 @@
 .wishlist-btn.active { color: #d1493f; }
 .wishlist-btn.active i { font-weight: 900; }
 
+.book-hero-cover .coming-soon-badge { top: 14px; left: auto; right: 14px; font-size: 13px; }
+
 .genre-chip {
   display: inline-block;
   background: var(--cream-alt);
