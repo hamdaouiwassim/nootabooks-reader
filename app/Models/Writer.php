@@ -61,4 +61,9 @@ class Writer extends Model
     {
         return Attribute::make(get: fn () => $this->resolveFileUrl($this->photo));
     }
+
+    protected function photoSmUrl(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->resolveSmallVariantUrl($this->photo));
+    }
 }

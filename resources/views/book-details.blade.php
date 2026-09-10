@@ -285,7 +285,7 @@
       @forelse ($similarBooks as $similarBook)
         <article class="book-card">
           @if ($similarBook->cover_image)
-            <img class="book-cover cover-photo" src="{{ $similarBook->cover_image_url }}" alt="{{ $similarBook->title }}">
+            <img class="book-cover cover-photo" src="{{ $similarBook->cover_image_sm_url }}" alt="{{ $similarBook->title }}">
           @else
             <div class="book-cover cover-{{ ($similarBook->id % 5) + 1 }}">
               <span class="cover-badge">B</span>

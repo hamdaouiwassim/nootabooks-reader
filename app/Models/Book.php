@@ -86,6 +86,11 @@ class Book extends Model
         return Attribute::make(get: fn () => $this->resolveFileUrl($this->cover_image));
     }
 
+    protected function coverImageSmUrl(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->resolveSmallVariantUrl($this->cover_image));
+    }
+
     protected function fileUrl(): Attribute
     {
         return Attribute::make(get: fn () => $this->resolveFileUrl($this->file_path));

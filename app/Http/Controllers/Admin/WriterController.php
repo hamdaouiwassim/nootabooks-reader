@@ -62,6 +62,7 @@ class WriterController extends Controller
     {
         if ($relativePath = $this->relativeStoragePath($writer->photo)) {
             Storage::disk('public')->delete($relativePath);
+            Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-sm$1', $relativePath));
         }
 
         $writer->delete();
@@ -77,10 +78,16 @@ class WriterController extends Controller
         if ($request->hasFile('photo')) {
             if ($relativePath = $this->relativeStoragePath($writer?->photo)) {
                 Storage::disk('public')->delete($relativePath);
+                Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-sm$1', $relativePath));
             }
 
-            $path = app(ImageOptimizer::class)->optimize($request->file('photo'), 'writers', 600, 600, 85);
-            $data['photo'] = str_replace('http://', 'https://', rtrim(config('app.url'), '/')).'/storage/'.$path;
+            $paths = app(ImageOptimizer::class)->optimizeResponsive(
+                $request->file('photo'),
+                'writers',
+                ['' => [600, 600], '-sm' => [300, 300]],
+                85,
+            );
+            $data['photo'] = str_replace('http://', 'https://', rtrim(config('app.url'), '/')).'/storage/'.$paths[''];
         } else {
             unset($data['photo']);
         }

@@ -61,7 +61,7 @@
       @foreach ($trendingBooks as $book)
         <article class="book-card">
           @if ($book->cover_image)
-            <img class="book-cover cover-photo" src="{{ $book->cover_image_url }}" alt="{{ $book->title }}">
+            <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
           @else
             <div class="book-cover cover-{{ ($book->id % 5) + 1 }}">
               <span class="cover-badge">B</span>
@@ -137,7 +137,7 @@
     <div class="authors-row">
       @forelse ($popularWriters as $writer)
         <a href="{{ route('writer-details', $writer->slug) }}" class="author-card">
-          <img src="{{ $writer->photo_url ?? 'https://i.pravatar.cc/120?img=' . (($writer->id % 70) + 1) }}" alt="{{ $writer->name }}">
+          <img src="{{ $writer->photo_sm_url ?? 'https://i.pravatar.cc/120?img=' . (($writer->id % 70) + 1) }}" alt="{{ $writer->name }}">
           <p>{{ $writer->name }}</p>
         </a>
       @empty

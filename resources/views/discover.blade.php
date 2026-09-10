@@ -93,7 +93,7 @@
       @foreach ($books as $book)
         <article class="book-card" data-title="{{ $book->title }}" data-author="{{ $book->writer?->name }}" data-rating="{{ $book->rating_average }}" data-year="{{ $book->published_year }}">
           @if ($book->cover_image)
-            <img class="book-cover cover-photo" src="{{ $book->cover_image_url }}" alt="{{ $book->title }}">
+            <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
           @else
             <a href="{{ route('book-details', $book->slug) }}" class="book-cover cover-{{ ($book->id % 5) + 1 }}">
               <span class="cover-badge">B</span>

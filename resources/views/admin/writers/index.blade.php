@@ -43,7 +43,7 @@
           <td>
             <div class="admin-book-cell">
               @if ($writer->photo)
-                <img class="admin-book-cover" style="border-radius:50%; width:44px; height:44px;" src="{{ $writer->photo_url }}" alt="{{ $writer->name }}">
+                <img class="admin-book-cover" style="border-radius:50%; width:44px; height:44px;" src="{{ $writer->photo_sm_url }}" alt="{{ $writer->name }}">
               @else
                 <span class="admin-book-cover placeholder" style="border-radius:50%; width:44px; height:44px;"><i class="fa-solid fa-feather"></i></span>
               @endif

@@ -38,4 +38,37 @@ class ImageOptimizer
 
         return $path;
     }
+
+    /**
+     * Generate several sized variants of the same upload sharing one UUID
+     * base name (e.g. "covers/{uuid}.webp" + "covers/{uuid}-sm.webp"), so a
+     * small-context display (a card thumbnail) doesn't have to download the
+     * full-size version just to be scaled down by the browser.
+     *
+     * $variants: ['' => [800, 1200], '-sm' => [300, 450]] — key is the
+     * filename suffix, value is [maxWidth, maxHeight]. Returns the same keys
+     * mapped to each variant's disk-relative path.
+     */
+    public function optimizeResponsive(UploadedFile $file, string $directory, array $variants, int $quality = 82): array
+    {
+        return $this->optimizeResponsivePath($file->getRealPath(), $directory, $variants, $quality);
+    }
+
+    public function optimizeResponsivePath(string $sourcePath, string $directory, array $variants, int $quality = 82): array
+    {
+        $baseName = (string) Str::uuid();
+        $paths = [];
+
+        foreach ($variants as $suffix => [$maxWidth, $maxHeight]) {
+            $image = (new ImageManager(new Driver()))->read($sourcePath);
+            $image->scaleDown(width: $maxWidth, height: $maxHeight);
+
+            $path = trim($directory, '/')."/{$baseName}{$suffix}.webp";
+            Storage::disk('public')->put($path, (string) $image->toWebp(quality: $quality));
+
+            $paths[$suffix] = $path;
+        }
+
+        return $paths;
+    }
 }

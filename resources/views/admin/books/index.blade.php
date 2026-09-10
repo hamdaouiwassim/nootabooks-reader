@@ -50,7 +50,7 @@
           <td>
             <div class="admin-book-cell">
               @if ($book->cover_image)
-                <img class="admin-book-cover" src="{{ $book->cover_image_url }}" alt="{{ $book->title }}">
+                <img class="admin-book-cover" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
               @else
                 <span class="admin-book-cover placeholder"><i class="fa-solid fa-book"></i></span>
               @endif

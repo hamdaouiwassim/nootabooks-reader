@@ -42,7 +42,7 @@
 
 <!-- ===================== AUTHOR HERO ===================== -->
 <section class="section writer-hero">
-  <img src="{{ $currentWriter->photo_url ?? 'https://i.pravatar.cc/240?img=' . (($currentWriter->id % 70) + 1) }}" alt="{{ $currentWriter->name }}" class="writer-hero-photo">
+  <img src="{{ $currentWriter->photo_sm_url ?? 'https://i.pravatar.cc/240?img=' . (($currentWriter->id % 70) + 1) }}" alt="{{ $currentWriter->name }}" class="writer-hero-photo">
 
   <div class="writer-hero-info">
     @if ($currentWriter->genre_tag)
@@ -103,7 +103,7 @@
       @foreach ($writerBooks as $book)
         <article class="book-card" data-year="{{ $book->published_year }}" data-downloads="{{ $book->downloads_count }}">
           @if ($book->cover_image)
-            <img class="book-cover cover-photo" src="{{ $book->cover_image_url }}" alt="{{ $book->title }}">
+            <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
           @else
             <a href="{{ route('book-details', $book->slug) }}" class="book-cover cover-{{ ($book->id % 5) + 1 }}">
               <span class="cover-badge">B</span>
@@ -134,7 +134,7 @@
   <div class="authors-row wide">
     @foreach ($similarWriters as $similarWriter)
       <a href="{{ route('writer-details', $similarWriter->slug) }}" class="author-card">
-        <img src="{{ $similarWriter->photo_url ?? 'https://i.pravatar.cc/120?img=' . (($similarWriter->id % 70) + 1) }}" alt="{{ $similarWriter->name }}">
+        <img src="{{ $similarWriter->photo_sm_url ?? 'https://i.pravatar.cc/120?img=' . (($similarWriter->id % 70) + 1) }}" alt="{{ $similarWriter->name }}">
         <p>{{ $similarWriter->name }}</p>
       </a>
     @endforeach
