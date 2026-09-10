@@ -296,6 +296,7 @@
           @if ($similarBook->cover_image)
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $similarBook->cover_image_sm_url }}" alt="{{ $similarBook->title }}">
+              <span class="brand-ribbon">nootabooks.com</span>
               @if ($similarBook->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
               @endif
@@ -304,6 +305,7 @@
             <div class="book-cover cover-{{ ($similarBook->id % 5) + 1 }}">
               <span class="cover-badge">B</span>
               <span class="cover-title">{{ $similarBook->title }}</span>
+              <span class="brand-ribbon">nootabooks.com</span>
               @if ($similarBook->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
               @endif
