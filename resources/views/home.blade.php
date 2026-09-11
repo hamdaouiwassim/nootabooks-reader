@@ -58,7 +58,7 @@
 <main>
 
 <!-- ===================== TRENDING BOOKS ===================== -->
-<section class="section trending-section">
+<section class="section trending-section home-books-section">
   <div class="section-head">
     <div class="section-title-wrap">
       <h2 class="section-title">الأكثر قراءة هذا الأسبوع <i class="fa-solid fa-fire fire-icon"></i></h2>
@@ -105,7 +105,7 @@
 
 @if ($booksCount > 10)
 <!-- ===================== RECENT BOOKS ===================== -->
-<section class="section trending-section">
+<section class="section trending-section home-books-section">
   <div class="section-head">
     <div class="section-title-wrap">
       <h2 class="section-title">أحدث الكتب <i class="fa-solid fa-clock-rotate-left fire-icon"></i></h2>

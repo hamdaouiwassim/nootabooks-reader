@@ -868,6 +868,14 @@ img { display: block; }
   .header-icons { gap: 2px; }
   .icon-btn { width: 34px; height: 34px; font-size: 15px; }
   .book-card { flex-basis: 220px; }
+  .home-books-section .carousel-btn { display: none; }
+  .home-books-section .book-carousel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    overflow: visible;
+  }
+  .home-books-section .book-card:nth-child(n+7) { display: none; }
   .hero-title { font-size: 30px; }
   .hero {
     background-image:
