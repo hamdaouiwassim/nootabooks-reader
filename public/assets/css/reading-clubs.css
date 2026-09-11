@@ -26,6 +26,32 @@
 .create-club-banner h3 { color: #fff; font-size: 19px; font-weight: 800; margin-bottom: 6px; }
 .create-club-banner p { color: #dfe6e4; font-size: 14px; }
 
+/* ============ CREATE CLUB FORM ============ */
+.create-club-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 22px 26px;
+  margin-top: 18px;
+}
+.create-club-form .form-field { display: flex; flex-direction: column; gap: 6px; }
+.create-club-form label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.create-club-form input,
+.create-club-form select,
+.create-club-form textarea {
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  background: #fff;
+  resize: vertical;
+}
+.create-club-form .btn { align-self: flex-start; }
+
 /* ============ CLUBS GRID ============ */
 .results-count { color: var(--text-gray); font-size: 13px; font-weight: 700; }
 .results-count #resultsCount { color: var(--navy); }

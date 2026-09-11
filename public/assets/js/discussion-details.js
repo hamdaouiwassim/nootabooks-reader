@@ -1,102 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  function toggleLike(btn) {
-    const countEl = btn.querySelector('.count');
-    const icon = btn.querySelector('i');
-    const count = parseInt(countEl.textContent, 10);
-    const liked = btn.classList.toggle('liked');
-    countEl.textContent = liked ? count + 1 : count - 1;
-    icon.classList.toggle('fa-regular');
-    icon.classList.toggle('fa-solid');
-  }
-
-  function buildComment(name, avatar, text) {
-    const item = document.createElement('article');
-    item.className = 'comment-item';
-    item.innerHTML = `
-      <img src="${avatar}" alt="${name}">
-      <div class="comment-body">
-        <div class="comment-bubble">
-          <strong>${name}</strong>
-          <p></p>
-        </div>
-        <div class="comment-actions">
-          <span class="comment-time">الآن</span>
-          <button class="mini-like-btn"><i class="fa-regular fa-thumbs-up"></i> <span class="count">0</span></button>
-          <button class="reply-btn">رد</button>
-        </div>
-      </div>
-    `;
-    item.querySelector('p').textContent = text;
-    return item;
-  }
-
-  function toggleReplyForm(commentBody) {
-    let replyForm = commentBody.querySelector(':scope > .inline-reply-form');
-    if (replyForm) { replyForm.remove(); return; }
-
-    replyForm = document.createElement('form');
-    replyForm.className = 'inline-reply-form comment-form';
-    replyForm.innerHTML = `
-      <img src="https://i.pravatar.cc/64?img=13" alt="أحمد محمد">
-      <input type="text" placeholder="اكتب ردًا ...">
-      <button type="submit" class="btn btn-gold small">رد</button>
-    `;
-    commentBody.appendChild(replyForm);
-    replyForm.querySelector('input').focus();
-
-    replyForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const input = replyForm.querySelector('input');
-      const text = input.value.trim();
-      if (!text) return;
-      const reply = buildComment('أحمد محمد', 'https://i.pravatar.cc/64?img=13', text);
-      reply.classList.add('reply');
-      commentBody.appendChild(reply);
-      replyForm.remove();
-    });
-  }
-
-  // ---- Main post like ----
-  document.querySelectorAll('.subject-post-footer .like-btn').forEach(btn => {
-    btn.addEventListener('click', () => toggleLike(btn));
-  });
-
-  // ---- Delegated: comment likes + reply toggles (covers dynamically added comments too) ----
+  // ---- Delegated: reply form toggles ----
   document.getElementById('commentList')?.addEventListener('click', (e) => {
-    const likeBtn = e.target.closest('.mini-like-btn');
-    if (likeBtn) { toggleLike(likeBtn); return; }
-
     const replyBtn = e.target.closest('.reply-btn');
-    if (replyBtn) { toggleReplyForm(replyBtn.closest('.comment-body')); }
-  });
+    if (!replyBtn) return;
 
-  // ---- Follow topic / follow user toggles ----
-  const followTopicBtn = document.querySelector('.follow-topic-btn');
-  followTopicBtn?.addEventListener('click', () => {
-    const following = followTopicBtn.classList.toggle('following');
-    followTopicBtn.innerHTML = following
-      ? '<i class="fa-solid fa-bell"></i> تتم متابعة المناقشة'
-      : '<i class="fa-regular fa-bell"></i> متابعة المناقشة';
-  });
+    const target = document.getElementById(replyBtn.dataset.replyTarget);
+    if (!target) return;
 
-  const followUserBtn = document.querySelector('.follow-user-btn');
-  followUserBtn?.addEventListener('click', () => {
-    const following = followUserBtn.classList.toggle('following');
-    followUserBtn.textContent = following ? 'تتم المتابعة' : 'متابعة';
-  });
-
-  // ---- New top-level comment form ----
-  const commentForm = document.getElementById('commentForm');
-  const commentList = document.getElementById('commentList');
-
-  commentForm?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const input = document.getElementById('commentInput');
-    const text = input.value.trim();
-    if (!text) return;
-    commentList.prepend(buildComment('أحمد محمد', 'https://i.pravatar.cc/64?img=13', text));
-    input.value = '';
+    target.hidden = !target.hidden;
+    if (!target.hidden) target.querySelector('input[name="body"]')?.focus();
   });
 
 });

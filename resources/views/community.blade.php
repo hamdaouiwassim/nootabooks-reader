@@ -40,7 +40,7 @@
     </div>
     <div class="lib-stat-card">
       <i class="fa-solid fa-people-group"></i>
-      <div><strong>85</strong><span>نادي قراءة</span></div>
+      <div><strong>{{ number_format($clubsCount) }}</strong><span>نادي قراءة</span></div>
     </div>
     <div class="lib-stat-card">
       <i class="fa-solid fa-fire"></i>
@@ -64,6 +64,11 @@
     @if ($chatBook)
       <div class="new-post-box" style="margin-bottom:12px;">
         <span><i class="fa-solid fa-book"></i> تعرض الآن المناقشات المتعلقة بكتاب <strong>{{ $chatBook->title }}</strong></span>
+        <a href="{{ route('community') }}" class="btn btn-outline small">إلغاء الفلتر</a>
+      </div>
+    @elseif ($tag)
+      <div class="new-post-box" style="margin-bottom:12px;">
+        <span><i class="fa-solid fa-hashtag"></i> تعرض الآن المنشورات الموسومة بـ <strong>#{{ $tag }}</strong></span>
         <a href="{{ route('community') }}" class="btn btn-outline small">إلغاء الفلتر</a>
       </div>
     @endif
@@ -114,7 +119,7 @@
             @else
               <span class="engage-btn"><i class="fa-regular fa-thumbs-up"></i> <span class="count">{{ $discussion->liked_by_count }}</span></span>
             @endauth
-            <button class="engage-btn"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
+            <a href="{{ route('discussion-details', $discussion->id) }}" class="engage-btn"><i class="fa-regular fa-comment"></i> <span class="count">{{ $discussion->comments_count }}</span></a>
           </div>
         </article>
       @empty
@@ -138,41 +143,23 @@
     <div class="sidebar-card">
       <h3>نوادي القراءة النشطة</h3>
 
-      <div class="club-item">
-        <a href="{{ route('club-details', 'arabic-literature') }}" class="club-item-link">
-          <span class="club-icon"><i class="fa-solid fa-people-group"></i></span>
-          <div class="club-info">
-            <strong>أدب عربي معاصر</strong>
-            <p>يقرأون الآن: تراب الماس</p>
-            <span class="club-members">1,240 عضو</span>
-          </div>
-        </a>
-        <button class="btn btn-outline small join-btn">انضمام</button>
-      </div>
-
-      <div class="club-item">
-        <a href="{{ route('club-details', 'sci-fi-lovers') }}" class="club-item-link">
-          <span class="club-icon"><i class="fa-solid fa-people-group"></i></span>
-          <div class="club-info">
-            <strong>عشاق الخيال العلمي</strong>
-            <p>يقرأون الآن: 1984</p>
-            <span class="club-members">890 عضو</span>
-          </div>
-        </a>
-        <button class="btn btn-outline small join-btn">انضمام</button>
-      </div>
-
-      <div class="club-item">
-        <a href="{{ route('club-details', 'translated-novels') }}" class="club-item-link">
-          <span class="club-icon"><i class="fa-solid fa-people-group"></i></span>
-          <div class="club-info">
-            <strong>روايات مترجمة</strong>
-            <p>يقرأون الآن: الخيميائي</p>
-            <span class="club-members">670 عضو</span>
-          </div>
-        </a>
-        <button class="btn btn-outline small join-btn">انضمام</button>
-      </div>
+      @forelse ($topClubs as $topClub)
+        @php $topClubBook = $topClub->currentBook(); @endphp
+        <div class="club-item">
+          <a href="{{ route('club-details', $topClub->slug) }}" class="club-item-link">
+            <span class="club-icon"><i class="fa-solid fa-people-group"></i></span>
+            <div class="club-info">
+              <strong>{{ $topClub->name }}</strong>
+              @if ($topClubBook)
+                <p>يقرأون الآن: {{ $topClubBook->title }}</p>
+              @endif
+              <span class="club-members">{{ number_format($topClub->members_count) }} عضو</span>
+            </div>
+          </a>
+        </div>
+      @empty
+        <p class="no-results">لا توجد نوادي بعد</p>
+      @endforelse
 
       <a href="{{ route('reading-clubs') }}" class="view-all-link">عرض جميع النوادي <i class="fa-solid fa-arrow-left"></i></a>
     </div>
@@ -180,39 +167,27 @@
     <div class="sidebar-card">
       <h3>أفضل المساهمين</h3>
 
-      <div class="contributor-item">
-        <span class="rank gold">1</span>
-        <img src="https://i.pravatar.cc/64?img=32" alt="سارة محمود">
-        <div class="contributor-info"><strong>سارة محمود</strong><span>3,450 نقطة</span></div>
-      </div>
-      <div class="contributor-item">
-        <span class="rank silver">2</span>
-        <img src="https://i.pravatar.cc/64?img=45" alt="محمد العتيبي">
-        <div class="contributor-info"><strong>محمد العتيبي</strong><span>2,980 نقطة</span></div>
-      </div>
-      <div class="contributor-item">
-        <span class="rank bronze">3</span>
-        <img src="https://i.pravatar.cc/64?img=21" alt="ليلى حسن">
-        <div class="contributor-info"><strong>ليلى حسن</strong><span>2,410 نقطة</span></div>
-      </div>
-      <div class="contributor-item">
-        <span class="rank">4</span>
-        <img src="https://i.pravatar.cc/64?img=68" alt="عمر خالد">
-        <div class="contributor-info"><strong>عمر خالد</strong><span>1,875 نقطة</span></div>
-      </div>
+      @forelse ($topContributors as $index => $contributor)
+        <div class="contributor-item">
+          <span class="rank @if ($index === 0) gold @elseif ($index === 1) silver @elseif ($index === 2) bronze @endif">{{ $index + 1 }}</span>
+          <img src="{{ $contributor->avatar ?? 'https://i.pravatar.cc/64?img=' . (($contributor->id % 70) + 1) }}" alt="{{ $contributor->name }}">
+          <div class="contributor-info"><strong>{{ $contributor->name }}</strong><span>{{ number_format($contributor->points) }} نقطة</span></div>
+        </div>
+      @empty
+        <p class="no-results">لا يوجد مساهمون بعد</p>
+      @endforelse
     </div>
 
-    <div class="sidebar-card">
-      <h3>مواضيع رائجة</h3>
-      <div class="trend-tags">
-        <a href="#">#الفيل_الأزرق</a>
-        <a href="#">#أدب_عربي</a>
-        <a href="#">#روايات_2026</a>
-        <a href="#">#نادي_القراءة</a>
-        <a href="#">#عزازيل</a>
-        <a href="#">#1984</a>
+    @if ($trendingTags)
+      <div class="sidebar-card">
+        <h3>مواضيع رائجة</h3>
+        <div class="trend-tags">
+          @foreach ($trendingTags as $trendingTag)
+            <a href="{{ route('community', ['tag' => $trendingTag]) }}">#{{ $trendingTag }}</a>
+          @endforeach
+        </div>
       </div>
-    </div>
+    @endif
 
   </aside>
 

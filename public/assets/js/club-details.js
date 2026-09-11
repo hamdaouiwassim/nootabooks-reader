@@ -13,13 +13,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ---- Join club toggle ----
-  const joinBtn = document.querySelector('.join-club-btn');
-  joinBtn?.addEventListener('click', () => {
-    const joined = joinBtn.classList.toggle('joined');
-    joinBtn.innerHTML = joined
-      ? '<i class="fa-solid fa-check"></i> منضم للنادي'
-      : '<i class="fa-solid fa-user-plus"></i> انضمام للنادي';
-  });
-
 });

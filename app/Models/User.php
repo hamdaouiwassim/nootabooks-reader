@@ -66,4 +66,19 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Discussion::class, 'discussion_likes')->withTimestamps();
     }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(DiscussionComment::class);
+    }
+
+    public function likedComments(): BelongsToMany
+    {
+        return $this->belongsToMany(DiscussionComment::class, 'comment_likes', 'user_id', 'comment_id')->withTimestamps();
+    }
+
+    public function clubs(): BelongsToMany
+    {
+        return $this->belongsToMany(Club::class, 'club_user')->withPivot('role')->withTimestamps();
+    }
 }

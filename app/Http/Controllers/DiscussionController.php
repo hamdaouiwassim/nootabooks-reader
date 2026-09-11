@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Club;
 use App\Models\Discussion;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ class DiscussionController extends Controller
         $validated = $request->validate([
             'body' => ['required', 'string', 'max:2000'],
             'book' => ['nullable', 'string', 'exists:books,slug'],
+            'club' => ['nullable', 'string', 'exists:clubs,slug'],
         ], [
             'body.required' => 'اكتب شيئًا قبل النشر.',
             'body.max' => 'المنشور طويل جدًا (الحد الأقصى 2000 حرف).',
@@ -23,10 +25,17 @@ class DiscussionController extends Controller
             ? Book::published()->where('slug', $validated['book'])->first()
             : null;
 
+        $club = $validated['club'] ?? null
+            ? Club::where('slug', $validated['club'])->first()
+            : null;
+
         $request->user()->discussions()->create([
             'book_id' => $book?->id,
+            'club_id' => $club?->id,
             'body' => $validated['body'],
         ]);
+
+        $request->user()->increment('points', 5);
 
         return back()->with('status', 'تم نشر مشاركتك بنجاح');
     }

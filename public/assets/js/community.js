@@ -9,12 +9,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ---- Join club buttons ----
-  document.querySelectorAll('.join-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const joined = btn.classList.toggle('joined');
-      btn.textContent = joined ? 'منضم' : 'انضمام';
-    });
-  });
-
 });

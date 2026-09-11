@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Club;
 use App\Models\Discussion;
 use App\Models\Quote;
 use App\Models\User;
@@ -241,9 +242,12 @@ class PageController extends Controller
             ? Book::published()->where('slug', $request->string('book'))->first()
             : null;
 
+        $tag = $request->filled('tag') ? trim((string) $request->string('tag')) : null;
+
         $discussions = Discussion::with(['user', 'book'])
-            ->withCount('likedBy')
+            ->withCount(['likedBy', 'comments'])
             ->when($chatBook, fn ($q) => $q->where('book_id', $chatBook->id))
+            ->when($tag, fn ($q) => $q->where('body', 'like', "%#{$tag}%"))
             ->latest()
             ->paginate(10)
             ->withQueryString();
@@ -255,27 +259,151 @@ class PageController extends Controller
         return view('community', [
             'activeNav' => 'community',
             'chatBook' => $chatBook,
+            'tag' => $tag,
             'discussions' => $discussions,
             'likedDiscussionIds' => $likedDiscussionIds,
             'discussionsCount' => Discussion::count(),
             'membersCount' => User::count(),
             'postsTodayCount' => Discussion::whereDate('created_at', today())->count(),
+            'topClubs' => Club::withCount('members')->orderByDesc('members_count')->take(3)->get(),
+            'topContributors' => User::where('points', '>', 0)->orderByDesc('points')->take(4)->get(),
+            'trendingTags' => $this->trendingTags(),
+            'clubsCount' => Club::count(),
         ]);
     }
 
-    public function readingClubs(): View
+    /**
+     * Ranks #hashtags found in recent discussion posts by frequency —
+     * computed on the fly rather than via a dedicated tags table, since the
+     * discussion volume at this app's scale doesn't warrant one.
+     */
+    private function trendingTags(int $limit = 6): array
     {
-        return view('reading-clubs', ['activeNav' => 'community']);
+        $counts = [];
+
+        foreach (Discussion::latest()->take(200)->pluck('body') as $body) {
+            preg_match_all('/#([\p{Arabic}\p{L}0-9_]+)/u', $body, $matches);
+            foreach ($matches[1] as $tag) {
+                $counts[$tag] = ($counts[$tag] ?? 0) + 1;
+            }
+        }
+
+        arsort($counts);
+
+        return array_slice(array_keys($counts), 0, $limit);
     }
 
-    public function clubDetails(?string $club = null): View
+    public function readingClubs(Request $request): View
     {
-        return view('club-details', ['activeNav' => 'community', 'clubSlug' => $club]);
+        $search = trim((string) $request->input('q', ''));
+        $sort = $request->string('sort', 'popular')->toString();
+
+        $clubs = Club::withCount('members')
+            ->when($search !== '', fn ($q) => $q->where('name', 'like', "%{$search}%"))
+            ->when($sort === 'newest', fn ($q) => $q->orderByDesc('created_at'))
+            ->when($sort !== 'newest', fn ($q) => $q->orderByDesc('members_count'))
+            ->paginate(12)
+            ->withQueryString();
+
+        return view('reading-clubs', [
+            'activeNav' => 'community',
+            'clubs' => $clubs,
+            'search' => $search,
+            'sort' => $sort,
+            'books' => Book::published()->orderBy('title')->get(['id', 'title', 'slug']),
+        ]);
     }
 
-    public function discussionDetails(?string $discussion = null): View
+    public function clubDetails(Request $request, ?string $club = null): View
     {
-        return view('discussion-details', ['activeNav' => 'community', 'discussionSlug' => $discussion]);
+        $currentClub = Club::withCount(['members', 'discussions'])
+            ->when($club, fn ($q) => $q->where('slug', $club))
+            ->when(! $club, fn ($q) => $q->orderBy('id'))
+            ->with('creator')
+            ->firstOrFail();
+
+        $currentBook = $currentClub->currentBook();
+        $pastBooks = $currentClub->pastBooks()->get();
+
+        $discussions = $currentClub->discussions()
+            ->with(['user', 'book'])
+            ->withCount(['likedBy', 'comments'])
+            ->latest()
+            ->take(10)
+            ->get();
+
+        $members = $currentClub->members()->orderByPivot('created_at')->take(12)->get();
+
+        $user = $request->user();
+        $isMember = $user ? $currentClub->members()->where('user_id', $user->id)->exists() : false;
+        $isOwner = $user && $currentClub->created_by === $user->id;
+
+        $likedDiscussionIds = $user ? $user->likedDiscussions()->pluck('discussions.id')->all() : [];
+
+        return view('club-details', [
+            'activeNav' => 'community',
+            'club' => $currentClub,
+            'currentBook' => $currentBook,
+            'pastBooks' => $pastBooks,
+            'discussions' => $discussions,
+            'members' => $members,
+            'isMember' => $isMember,
+            'isOwner' => $isOwner,
+            'likedDiscussionIds' => $likedDiscussionIds,
+        ]);
+    }
+
+    public function discussionDetails(Request $request, ?string $discussion = null): View|RedirectResponse
+    {
+        $currentDiscussion = is_numeric($discussion)
+            ? Discussion::with(['user', 'book', 'club'])->withCount('likedBy')->find((int) $discussion)
+            : null;
+
+        if (! $currentDiscussion) {
+            return redirect()->route('community');
+        }
+
+        $comments = $currentDiscussion->topLevelComments()
+            ->with('user')
+            ->withCount('likedBy')
+            ->with(['replies' => fn ($q) => $q->with('user')->withCount('likedBy')->oldest()])
+            ->oldest()
+            ->get();
+
+        $user = $request->user();
+        $likedDiscussionIds = $user ? $user->likedDiscussions()->pluck('discussions.id')->all() : [];
+        $likedCommentIds = $user ? $user->likedComments()->pluck('discussion_comments.id')->all() : [];
+
+        $relatedDiscussions = Discussion::with('book')
+            ->where('id', '!=', $currentDiscussion->id)
+            ->when(
+                $currentDiscussion->book_id,
+                fn ($q) => $q->where('book_id', $currentDiscussion->book_id),
+                fn ($q) => $currentDiscussion->club_id
+                    ? $q->where('club_id', $currentDiscussion->club_id)
+                    : $q
+            )
+            ->withCount('comments')
+            ->latest()
+            ->take(3)
+            ->get();
+
+        if ($relatedDiscussions->isEmpty()) {
+            $relatedDiscussions = Discussion::where('id', '!=', $currentDiscussion->id)
+                ->withCount('comments')
+                ->latest()
+                ->take(3)
+                ->get();
+        }
+
+        return view('discussion-details', [
+            'activeNav' => 'community',
+            'discussion' => $currentDiscussion,
+            'comments' => $comments,
+            'likedDiscussionIds' => $likedDiscussionIds,
+            'likedCommentIds' => $likedCommentIds,
+            'relatedDiscussions' => $relatedDiscussions,
+        ]);
     }
 
     public function profile(): View

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'أدب عربي معاصر - نوته بوك')
+@section('title', $club->name.' - نوته بوك')
 @section('robots', 'noindex, follow')
 
 @push('styles')
@@ -22,7 +22,7 @@
     <i class="fa-solid fa-chevron-left"></i>
     <a href="{{ route('reading-clubs') }}">نوادي القراءة</a>
     <i class="fa-solid fa-chevron-left"></i>
-    <span>أدب عربي معاصر</span>
+    <span>{{ $club->name }}</span>
   </nav>
 </div>
 
@@ -30,19 +30,38 @@
 <section class="section club-hero">
   <div class="club-hero-icon"><i class="fa-solid fa-people-group"></i></div>
   <div class="club-hero-info">
-    <span class="genre-chip">أدب عربي</span>
-    <h1 class="club-hero-name">أدب عربي معاصر</h1>
-    <p class="club-hero-desc">نناقش أبرز الروايات العربية الحديثة أسبوعيًا، ونستضيف أحيانًا مؤلفين للحديث عن أعمالهم مباشرة مع الأعضاء. النادي مفتوح لكل محبي الأدب العربي المعاصر من كافة المستويات.</p>
+    @if ($club->category)
+      <span class="genre-chip">{{ $club->category }}</span>
+    @endif
+    <h1 class="club-hero-name">{{ $club->name }}</h1>
+    <p class="club-hero-desc">{{ $club->description }}</p>
 
     <div class="club-hero-meta">
-      <div class="meta-item"><i class="fa-solid fa-users"></i><span>الأعضاء</span><strong>1,240</strong></div>
-      <div class="meta-item"><i class="fa-solid fa-comments"></i><span>المناقشات</span><strong>86</strong></div>
-      <div class="meta-item"><i class="fa-solid fa-book"></i><span>كتب أُنجزت</span><strong>24</strong></div>
-      <div class="meta-item"><i class="fa-solid fa-calendar-days"></i><span>تأسس في</span><strong>2023</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-users"></i><span>الأعضاء</span><strong>{{ number_format($club->members_count) }}</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-comments"></i><span>المناقشات</span><strong>{{ number_format($club->discussions_count) }}</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-book"></i><span>كتب أُنجزت</span><strong>{{ number_format($pastBooks->count()) }}</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-calendar-days"></i><span>تأسس في</span><strong>{{ $club->created_at->format('Y') }}</strong></div>
     </div>
 
     <div class="club-hero-actions">
-      <button class="btn btn-teal join-club-btn"><i class="fa-solid fa-user-plus"></i> انضمام للنادي</button>
+      @auth
+        @if ($isOwner)
+          <span class="btn btn-outline"><i class="fa-solid fa-crown"></i> أنت منشئ هذا النادي</span>
+        @else
+          <form method="POST" action="{{ route('clubs.join', $club) }}">
+            @csrf
+            <button type="submit" class="btn btn-teal join-club-btn @if ($isMember) joined @endif">
+              @if ($isMember)
+                <i class="fa-solid fa-check"></i> منضم للنادي
+              @else
+                <i class="fa-solid fa-user-plus"></i> انضمام للنادي
+              @endif
+            </button>
+          </form>
+        @endif
+      @else
+        <a href="{{ route('login') }}" class="btn btn-teal"><i class="fa-solid fa-user-plus"></i> سجل الدخول للانضمام</a>
+      @endauth
       <button class="icon-btn-outline" aria-label="share"><i class="fa-solid fa-share-nodes"></i></button>
     </div>
   </div>
@@ -59,125 +78,124 @@
 
   <!-- ---- Currently Reading ---- -->
   <div class="tab-panel active" id="tab-reading">
-    <div class="current-book-card">
-      <a href="{{ route('writer-details', 'ahmed-mourad') }}" class="book-cover wcover-4">
-        <span class="cover-badge">B</span>
-        <span class="cover-title">تراب الماس</span>
-      </a>
-      <div class="current-book-info">
-        <span class="genre-chip">كتاب الشهر</span>
-        <h3>تراب الماس</h3>
-        <p class="author">أحمد مراد</p>
-        <div class="progress-row">
-          <div class="progress-bar"><div class="progress-fill" style="width:58%"></div></div>
-          <span class="progress-pct">58% من الأعضاء أنهوا القراءة</span>
+    @if ($currentBook)
+      <div class="current-book-card">
+        <a href="{{ route('book-details', $currentBook->slug) }}" class="book-cover @if ($currentBook->cover_image) cover-photo @else cover-{{ ($currentBook->id % 5) + 1 }} @endif" @if ($currentBook->cover_image) style="padding:0;" @endif>
+          @if ($currentBook->cover_image)
+            <img src="{{ $currentBook->cover_image_sm_url }}" alt="{{ $currentBook->title }}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
+          @else
+            <span class="cover-badge">B</span>
+            <span class="cover-title">{{ $currentBook->title }}</span>
+          @endif
+        </a>
+        <div class="current-book-info">
+          <span class="genre-chip">كتاب النادي الحالي</span>
+          <h3>{{ $currentBook->title }}</h3>
+          <p class="author">{{ $currentBook->writer?->name }}</p>
+          <p class="schedule-text"><i class="fa-solid fa-calendar-check"></i> بدأ النادي قراءته {{ \Carbon\Carbon::parse($currentBook->pivot->started_at)->diffForHumans() }}</p>
+          <a href="{{ route('book-details', $currentBook->slug) }}" class="btn btn-outline">عرض الكتاب</a>
         </div>
-        <p class="schedule-text"><i class="fa-solid fa-calendar-check"></i> موعد المناقشة القادمة: الخميس القادم الساعة 8 مساءً</p>
-        <a href="{{ route('writer-details', 'ahmed-mourad') }}" class="btn btn-outline">عرض الكتاب</a>
       </div>
-    </div>
+    @else
+      <p class="no-results">لا يقرأ النادي أي كتاب حاليًا.</p>
+    @endif
 
-    <h3 class="mini-heading">الكتب السابقة</h3>
-    <div class="past-books-row">
-      <div class="mini-book"><span class="book-cover cover-1 mini"><span class="cover-title">الفيل الأزرق</span></span><p>الفيل الأزرق</p></div>
-      <div class="mini-book"><span class="book-cover cover-3 mini"><span class="cover-title">الخيميائي</span></span><p>الخيميائي</p></div>
-      <div class="mini-book"><span class="book-cover dcover-10 mini"><span class="cover-title">عزازيل</span></span><p>عزازيل</p></div>
-      <div class="mini-book"><span class="book-cover dcover-9 mini"><span class="cover-title">1984</span></span><p>1984</p></div>
-    </div>
+    @if ($pastBooks->isNotEmpty())
+      <h3 class="mini-heading">الكتب السابقة</h3>
+      <div class="past-books-row">
+        @foreach ($pastBooks as $pastBook)
+          <div class="mini-book">
+            <a href="{{ route('book-details', $pastBook->slug) }}" class="book-cover mini @if ($pastBook->cover_image) cover-photo @else cover-{{ ($pastBook->id % 5) + 1 }} @endif" @if ($pastBook->cover_image) style="padding:0;" @endif>
+              @if ($pastBook->cover_image)
+                <img src="{{ $pastBook->cover_image_sm_url }}" alt="{{ $pastBook->title }}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
+              @else
+                <span class="cover-title">{{ $pastBook->title }}</span>
+              @endif
+            </a>
+            <p>{{ $pastBook->title }}</p>
+          </div>
+        @endforeach
+      </div>
+    @endif
   </div>
 
   <!-- ---- Discussions ---- -->
   <div class="tab-panel" id="tab-discussions">
-    <div class="discussion-feed">
-      <article class="discussion-card">
-        <div class="discussion-head">
-          <img src="https://i.pravatar.cc/64?img=21" alt="ليلى حسن">
-          <div>
-            <strong>ليلى حسن</strong>
-            <span class="discussion-time">أمس</span>
-          </div>
-          <a href="{{ route('writer-details', 'ahmed-mourad') }}" class="book-tag"><i class="fa-solid fa-book"></i> تراب الماس</a>
-        </div>
-        <p class="discussion-text">
-          وصلت لمنتصف الرواية، والتحول اللي حصل للشخصية الرئيسية غير متوقع خالص! حد وصل لنفس النقطة؟
-        </p>
-        <div class="discussion-footer">
-          <a href="{{ route('discussion-details') }}" class="engage-btn"><i class="fa-regular fa-thumbs-up"></i> <span class="count">42</span></a>
-          <a href="{{ route('discussion-details') }}" class="engage-btn"><i class="fa-regular fa-comment"></i> <span class="count">15</span></a>
-          <button class="engage-btn"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
-        </div>
-      </article>
+    @auth
+      <form method="POST" action="{{ route('discussions.store') }}" class="new-post-box" style="margin-bottom:20px;">
+        @csrf
+        <input type="hidden" name="club" value="{{ $club->slug }}">
+        <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" alt="{{ auth()->user()->name }}">
+        <input type="text" name="body" maxlength="2000" required placeholder="شارك في نقاش النادي ...">
+        <button type="submit" class="btn btn-gold small">نشر</button>
+      </form>
+    @endauth
 
-      <article class="discussion-card">
-        <div class="discussion-head">
-          <img src="https://i.pravatar.cc/64?img=45" alt="محمد العتيبي">
-          <div>
-            <strong>محمد العتيبي</strong>
-            <span class="discussion-time">منذ 3 أيام</span>
+    <div class="discussion-feed">
+      @forelse ($discussions as $discussion)
+        <article class="discussion-card">
+          <div class="discussion-head">
+            <img src="{{ $discussion->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($discussion->user_id % 70) + 1) }}" alt="{{ $discussion->user->name }}">
+            <div>
+              <strong>{{ $discussion->user->name }}</strong>
+              <span class="discussion-time">{{ $discussion->created_at->diffForHumans() }}</span>
+            </div>
+            @if ($discussion->book)
+              <a href="{{ route('book-details', $discussion->book->slug) }}" class="book-tag"><i class="fa-solid fa-book"></i> {{ $discussion->book->title }}</a>
+            @endif
           </div>
-        </div>
-        <p class="discussion-text">
-          تذكير بموعد المناقشة الأسبوعية يوم الخميس الساعة 8 مساءً، هنتكلم عن الفصول من 1 إلى 10. جهزوا أسئلتكم!
-        </p>
-        <div class="discussion-footer">
-          <a href="{{ route('discussion-details') }}" class="engage-btn"><i class="fa-regular fa-thumbs-up"></i> <span class="count">67</span></a>
-          <a href="{{ route('discussion-details') }}" class="engage-btn"><i class="fa-regular fa-comment"></i> <span class="count">9</span></a>
-          <button class="engage-btn"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
-        </div>
-      </article>
+          <p class="discussion-text">{{ $discussion->body }}</p>
+          <div class="discussion-footer">
+            @auth
+              <form method="POST" action="{{ route('discussions.like', $discussion) }}">
+                @csrf
+                <button type="submit" class="engage-btn like-btn @if (in_array($discussion->id, $likedDiscussionIds)) liked @endif">
+                  <i class="fa-{{ in_array($discussion->id, $likedDiscussionIds) ? 'solid' : 'regular' }} fa-thumbs-up"></i>
+                  <span class="count">{{ $discussion->liked_by_count }}</span>
+                </button>
+              </form>
+            @else
+              <span class="engage-btn"><i class="fa-regular fa-thumbs-up"></i> <span class="count">{{ $discussion->liked_by_count }}</span></span>
+            @endauth
+            <a href="{{ route('discussion-details', $discussion->id) }}" class="engage-btn"><i class="fa-regular fa-comment"></i> <span class="count">{{ $discussion->comments_count }}</span></a>
+          </div>
+        </article>
+      @empty
+        <p class="no-results">لا توجد مناقشات في هذا النادي بعد.</p>
+      @endforelse
     </div>
   </div>
 
   <!-- ---- Members ---- -->
   <div class="tab-panel" id="tab-members">
     <div class="members-grid">
-      <div class="member-card">
-        <img src="https://i.pravatar.cc/100?img=21" alt="ليلى حسن">
-        <strong>ليلى حسن</strong>
-        <span class="member-role admin">مشرفة النادي</span>
-      </div>
-      <div class="member-card">
-        <img src="https://i.pravatar.cc/100?img=45" alt="محمد العتيبي">
-        <strong>محمد العتيبي</strong>
-        <span class="member-role admin">مشرف</span>
-      </div>
-      <div class="member-card">
-        <img src="https://i.pravatar.cc/100?img=32" alt="سارة محمود">
-        <strong>سارة محمود</strong>
-        <span class="member-role">عضو</span>
-      </div>
-      <div class="member-card">
-        <img src="https://i.pravatar.cc/100?img=68" alt="عمر خالد">
-        <strong>عمر خالد</strong>
-        <span class="member-role">عضو</span>
-      </div>
-      <div class="member-card">
-        <img src="https://i.pravatar.cc/100?img=13" alt="أحمد محمد">
-        <strong>أحمد محمد</strong>
-        <span class="member-role">عضو</span>
-      </div>
-      <div class="member-card">
-        <img src="https://i.pravatar.cc/100?img=52" alt="نور الدين">
-        <strong>نور الدين</strong>
-        <span class="member-role">عضو</span>
-      </div>
+      @foreach ($members as $member)
+        <div class="member-card">
+          <img src="{{ $member->avatar ?? 'https://i.pravatar.cc/100?img=' . (($member->id % 70) + 1) }}" alt="{{ $member->name }}">
+          <strong>{{ $member->name }}</strong>
+          <span class="member-role @if ($member->pivot->role === 'owner') admin @endif">{{ $member->pivot->role === 'owner' ? 'مشرف النادي' : 'عضو' }}</span>
+        </div>
+      @endforeach
     </div>
-    <p class="members-more">و 1,234 عضوًا آخر</p>
+    @if ($club->members_count > $members->count())
+      <p class="members-more">و {{ number_format($club->members_count - $members->count()) }} عضوًا آخر</p>
+    @endif
   </div>
 
   <!-- ---- About ---- -->
   <div class="tab-panel" id="tab-about">
     <h2>عن النادي</h2>
-    <p>
-      نادي "أدب عربي معاصر" هو مساحة لعشاق الرواية العربية الحديثة، نقرأ كتابًا واحدًا شهريًا ونجتمع أسبوعيًا لمناقشة تقدمنا فيه. هدفنا خلق حوار عميق حول القضايا التي تطرحها الأعمال الأدبية العربية المعاصرة.
-    </p>
-    <h3 class="mini-heading">قوانين النادي</h3>
-    <ul class="club-rules">
-      <li><i class="fa-solid fa-check"></i> يُرجى تجنب حرق الأحداث (Spoilers) خارج الفصول المحددة للمناقشة</li>
-      <li><i class="fa-solid fa-check"></i> الاحترام المتبادل في كل النقاشات والتعليقات</li>
-      <li><i class="fa-solid fa-check"></i> المشاركة الأسبوعية مُستحسنة لكن غير إلزامية</li>
-      <li><i class="fa-solid fa-check"></i> يمكن اقتراح الكتاب القادم في نهاية كل شهر عبر التصويت</li>
-    </ul>
+    <p>{{ $club->description }}</p>
+    @if ($club->rules)
+      <h3 class="mini-heading">قوانين النادي</h3>
+      <ul class="club-rules">
+        @foreach (explode("\n", $club->rules) as $rule)
+          @if (trim($rule) !== '')
+            <li><i class="fa-solid fa-check"></i> {{ trim($rule) }}</li>
+          @endif
+        @endforeach
+      </ul>
+    @endif
   </div>
 </section>
 

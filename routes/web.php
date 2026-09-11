@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthPageController;
 use App\Http\Controllers\BookDownloadController;
+use App\Http\Controllers\ClubController;
+use App\Http\Controllers\DiscussionCommentController;
 use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReviewController;
@@ -39,8 +41,20 @@ Route::post('/discussions/{discussion}/like', [DiscussionController::class, 'tog
     ->middleware('auth')
     ->name('discussions.like');
 Route::get('/clubs', [PageController::class, 'readingClubs'])->name('reading-clubs');
+Route::post('/clubs', [ClubController::class, 'store'])
+    ->middleware('auth')
+    ->name('clubs.store');
 Route::get('/clubs/{club?}', [PageController::class, 'clubDetails'])->name('club-details');
+Route::post('/clubs/{club}/join', [ClubController::class, 'toggleJoin'])
+    ->middleware('auth')
+    ->name('clubs.join');
 Route::get('/discussions/{discussion?}', [PageController::class, 'discussionDetails'])->name('discussion-details');
+Route::post('/discussions/{discussion}/comments', [DiscussionCommentController::class, 'store'])
+    ->middleware('auth')
+    ->name('discussions.comments.store');
+Route::post('/comments/{comment}/like', [DiscussionCommentController::class, 'toggleLike'])
+    ->middleware('auth')
+    ->name('comments.like');
 
 Route::get('/profile', [PageController::class, 'profile'])->name('profile');
 Route::get('/settings', [PageController::class, 'settings'])->name('settings');
