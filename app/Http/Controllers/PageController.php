@@ -35,7 +35,11 @@ class PageController extends Controller
                 'recentBooks' => $booksCount > 10
                     ? Book::published()->with('writer')->orderByDesc('created_at')->take(10)->get()
                     : collect(),
-                'categories' => Category::orderBy('id')->take(8)->get(),
+                'categories' => Category::withCount(['books' => fn ($q) => $q->published()])
+                    ->orderByDesc('books_count')
+                    ->orderBy('id')
+                    ->take(8)
+                    ->get(),
                 'popularWriters' => Writer::orderByDesc('followers_count')->take(4)->get(),
                 'heroQuotes' => Quote::orderByDesc('id')->take(3)->get(),
                 'booksCount' => $booksCount,
@@ -108,15 +112,23 @@ class PageController extends Controller
         ]);
     }
 
-    public function categoryDetails(?string $category = null): View
+    public function categoryDetails(Request $request, ?string $category = null): View
     {
         $currentCategory = Category::withCount(['books' => fn ($q) => $q->published()])
             ->where('slug', $category ?? 'novels')
             ->firstOrFail();
 
+        $search = trim((string) $request->input('q', ''));
+
         $categoryBooks = $currentCategory->books()
             ->published()
             ->with('writer')
+            ->when($search !== '', function ($q) use ($search) {
+                $q->where(function ($sq) use ($search) {
+                    $sq->where('title', 'like', "%{$search}%")
+                        ->orWhereHas('writer', fn ($wq) => $wq->where('name', 'like', "%{$search}%"));
+                });
+            })
             ->orderByDesc('rating_average')
             ->paginate(9)
             ->withQueryString();
@@ -132,6 +144,7 @@ class PageController extends Controller
             'currentCategory' => $currentCategory,
             'categoryBooks' => $categoryBooks,
             'similarCategories' => $similarCategories,
+            'search' => $search,
         ]);
     }
 

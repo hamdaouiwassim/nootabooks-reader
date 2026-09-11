@@ -31,6 +31,8 @@
 }
 .writers-search i { color: var(--text-gray); }
 .writers-search input { flex: 1; border: none; outline: none; font-size: 14px; background: none; }
+.writers-search button { background: none; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; }
+.writers-search button i { color: var(--text-gray); }
 
 .filter-tabs { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
 .filter-tab {

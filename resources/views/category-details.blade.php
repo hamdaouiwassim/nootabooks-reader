@@ -64,6 +64,11 @@
     <span class="results-count"><span id="booksCount">{{ $categoryBooks->total() }}</span> كتاب</span>
   </div>
 
+  <form method="GET" action="{{ route('category-details', $currentCategory->slug) }}" class="writers-search">
+    <button type="submit" aria-label="بحث"><i class="fa-solid fa-magnifying-glass"></i></button>
+    <input type="text" name="q" value="{{ $search }}" placeholder="ابحث بعنوان الكتاب أو اسم المؤلف في {{ $currentCategory->name }} ...">
+  </form>
+
   @if ($categoryBooks->isNotEmpty())
     <div class="writer-books-grid" id="categoryBooksGrid">
       @foreach ($categoryBooks as $book)
@@ -96,7 +101,13 @@
 
     {{ $categoryBooks->links() }}
   @else
-    <p class="no-results">لا توجد كتب في هذا التصنيف بعد.</p>
+    <p class="no-results">
+      @if ($search !== '')
+        لا توجد كتب مطابقة لبحثك في هذا التصنيف.
+      @else
+        لا توجد كتب في هذا التصنيف بعد.
+      @endif
+    </p>
   @endif
 </section>
 
