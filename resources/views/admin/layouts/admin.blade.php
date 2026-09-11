@@ -7,7 +7,7 @@
 <title>@yield('title', 'لوحة التحكم - مكتبتي')</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="{{ asset_min('assets/css/fonts.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/vendor/fontawesome/all.min.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/vendor/fontawesome/fontawesome.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/admin.css') }}">
 @stack('styles')

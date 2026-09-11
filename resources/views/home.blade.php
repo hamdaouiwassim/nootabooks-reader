@@ -61,7 +61,7 @@
 <section class="section trending-section home-books-section">
   <div class="section-head">
     <div class="section-title-wrap">
-      <h2 class="section-title">الأكثر قراءة هذا الأسبوع <i class="fa-solid fa-fire fire-icon"></i></h2>
+      <h2 class="section-title">الأكثر قراءة هذا الأسبوع </h2>
       <p class="section-sub">اكتشف اكثر الكتب قراءة من قبل مجتمعنا</p>
     </div>
     <a href="{{ route('discover') }}" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
@@ -111,7 +111,7 @@
 <section class="section trending-section home-books-section">
   <div class="section-head">
     <div class="section-title-wrap">
-      <h2 class="section-title">أحدث الكتب <i class="fa-solid fa-clock-rotate-left fire-icon"></i></h2>
+      <h2 class="section-title">أحدث الكتب </h2>
       <p class="section-sub">آخر الكتب المضافة إلى المنصة</p>
     </div>
     <a href="{{ route('discover', ['sort' => 'newest']) }}" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>

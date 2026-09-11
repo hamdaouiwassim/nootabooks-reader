@@ -6,7 +6,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>التحقق من الرمز - لوحة تحكم مكتبتي</title>
 <link rel="stylesheet" href="{{ asset_min('assets/css/fonts.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/vendor/fontawesome/all.min.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/vendor/fontawesome/fontawesome.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/admin.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/auth.css') }}">

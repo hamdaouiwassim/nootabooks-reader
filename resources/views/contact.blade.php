@@ -8,6 +8,12 @@
 <link rel="stylesheet" href="{{ asset_min('assets/css/contact.css') }}">
 @endpush
 
+@php
+  // Contact info sidebar (email/phone/address/social) is placeholder data
+  // for now — flip this back to true once real contact details are ready.
+  $showContactInfo = false;
+@endphp
+
 @section('content')
 <main>
 
@@ -28,7 +34,7 @@
     <p>لديك سؤال أو اقتراح أو ملاحظة؟ يسعدنا سماعك، فريقنا يرد خلال 24 ساعة عمل</p>
   </div>
 
-  <div class="contact-layout">
+  <div class="contact-layout @unless ($showContactInfo) contact-layout-solo @endunless">
 
     <form class="contact-form" id="contactForm" method="POST" action="{{ route('contact.submit') }}" novalidate>
       @csrf
@@ -81,46 +87,48 @@
       @endif
     </form>
 
-    <aside class="contact-info">
-      <div class="contact-info-card">
-        <span class="contact-info-icon"><i class="fa-regular fa-envelope"></i></span>
-        <div>
-          <strong>البريد الإلكتروني</strong>
-          <p>support@maktabati.com</p>
+    @if ($showContactInfo)
+      <aside class="contact-info">
+        <div class="contact-info-card">
+          <span class="contact-info-icon"><i class="fa-regular fa-envelope"></i></span>
+          <div>
+            <strong>البريد الإلكتروني</strong>
+            <p>support@maktabati.com</p>
+          </div>
         </div>
-      </div>
-      <div class="contact-info-card">
-        <span class="contact-info-icon"><i class="fa-solid fa-phone"></i></span>
-        <div>
-          <strong>الهاتف</strong>
-          <p dir="ltr">+966 11 234 5678</p>
+        <div class="contact-info-card">
+          <span class="contact-info-icon"><i class="fa-solid fa-phone"></i></span>
+          <div>
+            <strong>الهاتف</strong>
+            <p dir="ltr">+966 11 234 5678</p>
+          </div>
         </div>
-      </div>
-      <div class="contact-info-card">
-        <span class="contact-info-icon"><i class="fa-solid fa-location-dot"></i></span>
-        <div>
-          <strong>العنوان</strong>
-          <p>الرياض، المملكة العربية السعودية</p>
+        <div class="contact-info-card">
+          <span class="contact-info-icon"><i class="fa-solid fa-location-dot"></i></span>
+          <div>
+            <strong>العنوان</strong>
+            <p>الرياض، المملكة العربية السعودية</p>
+          </div>
         </div>
-      </div>
-      <div class="contact-info-card">
-        <span class="contact-info-icon"><i class="fa-regular fa-clock"></i></span>
-        <div>
-          <strong>أوقات العمل</strong>
-          <p>الأحد - الخميس، 9ص - 5م</p>
+        <div class="contact-info-card">
+          <span class="contact-info-icon"><i class="fa-regular fa-clock"></i></span>
+          <div>
+            <strong>أوقات العمل</strong>
+            <p>الأحد - الخميس، 9ص - 5م</p>
+          </div>
         </div>
-      </div>
 
-      <div class="contact-social">
-        <span>تابعنا</span>
-        <div class="social-icons">
-          <a href="#"><i class="fa-brands fa-youtube"></i></a>
-          <a href="#"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#"><i class="fa-brands fa-twitter"></i></a>
-          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+        <div class="contact-social">
+          <span>تابعنا</span>
+          <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    @endif
 
   </div>
 

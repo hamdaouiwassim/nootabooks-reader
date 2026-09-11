@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>غير مصرح بالوصول - نوته بوك</title>
 <link rel="stylesheet" href="{{ asset_min('assets/css/fonts.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/vendor/fontawesome/all.min.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/vendor/fontawesome/fontawesome.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/errors.css') }}">
 </head>

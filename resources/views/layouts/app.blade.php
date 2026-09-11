@@ -25,7 +25,7 @@
 </script>
 @stack('schema')
 <link rel="stylesheet" href="{{ asset_min('assets/css/fonts.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/vendor/fontawesome/all.min.css') }}">
+<link rel="stylesheet" href="{{ asset_min('assets/css/vendor/fontawesome/fontawesome.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/style.css') }}">
 @stack('styles')
 </head>
