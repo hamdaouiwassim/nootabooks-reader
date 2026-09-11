@@ -3,7 +3,10 @@
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ClubController;
+use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DiscussionController;
 use App\Http\Controllers\Admin\QuoteController;
 use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\UserController;
@@ -59,6 +62,21 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/quotes/{quote}/edit', [QuoteController::class, 'edit'])->name('quotes.edit');
     Route::put('/quotes/{quote}', [QuoteController::class, 'update'])->name('quotes.update');
     Route::delete('/quotes/{quote}', [QuoteController::class, 'destroy'])->name('quotes.destroy');
+
+    Route::get('/clubs', [ClubController::class, 'index'])->name('clubs.index');
+    Route::get('/clubs/create', [ClubController::class, 'create'])->name('clubs.create');
+    Route::post('/clubs', [ClubController::class, 'store'])->name('clubs.store');
+    Route::get('/clubs/{club}/edit', [ClubController::class, 'edit'])->name('clubs.edit');
+    Route::put('/clubs/{club}', [ClubController::class, 'update'])->name('clubs.update');
+    Route::post('/clubs/{club}/current-book', [ClubController::class, 'setCurrentBook'])->name('clubs.set-current-book');
+    Route::delete('/clubs/{club}', [ClubController::class, 'destroy'])->name('clubs.destroy');
+
+    Route::get('/discussions', [DiscussionController::class, 'index'])->name('discussions.index');
+    Route::get('/discussions/{discussion}', [DiscussionController::class, 'show'])->name('discussions.show');
+    Route::delete('/discussions/{discussion}', [DiscussionController::class, 'destroy'])->name('discussions.destroy');
+
+    Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
     Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics');
 });

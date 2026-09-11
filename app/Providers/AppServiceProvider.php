@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Club;
+use App\Models\Discussion;
+use App\Models\DiscussionComment;
 use App\Models\Quote;
 use App\Models\Writer;
 use Illuminate\Pagination\Paginator;
@@ -45,6 +48,9 @@ class AppServiceProvider extends ServiceProvider
                 'sidebarWritersCount' => Writer::count(),
                 'sidebarCategoriesCount' => Category::count(),
                 'sidebarQuotesCount' => Quote::count(),
+                'sidebarClubsCount' => Club::count(),
+                'sidebarDiscussionsCount' => Discussion::count(),
+                'sidebarCommentsCount' => DiscussionComment::count(),
             ]);
         });
     }

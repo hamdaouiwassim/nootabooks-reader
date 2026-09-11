@@ -89,4 +89,48 @@
   </div>
 </div>
 
+<div class="admin-panel">
+  <div class="admin-panel-head">
+    <h3>أحدث المناقشات</h3>
+    <a href="{{ route('admin.discussions.index') }}" class="admin-breadcrumb">عرض كل المناقشات <i class="fa-solid fa-arrow-left"></i></a>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>المنشور</th>
+          <th>الكاتب</th>
+          <th>مرتبط بـ</th>
+          <th>التعليقات</th>
+          <th>تاريخ النشر</th>
+        </tr>
+      </thead>
+      <tbody>
+        @forelse ($latestDiscussions as $discussion)
+          <tr>
+            <td style="max-width:280px;">{{ \Illuminate\Support\Str::limit($discussion->body, 70) }}</td>
+            <td>{{ $discussion->user->name }}</td>
+            <td>
+              @if ($discussion->book)
+                {{ $discussion->book->title }}
+              @elseif ($discussion->club)
+                {{ $discussion->club->name }}
+              @else
+                —
+              @endif
+            </td>
+            <td>{{ number_format($discussion->comments_count) }}</td>
+            <td>{{ $discussion->created_at->diffForHumans() }}</td>
+          </tr>
+        @empty
+          <tr class="admin-empty-row">
+            <td colspan="5">لا توجد مناقشات بعد</td>
+          </tr>
+        @endforelse
+      </tbody>
+    </table>
+  </div>
+</div>
+
 @endsection

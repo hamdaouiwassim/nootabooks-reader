@@ -7,6 +7,7 @@ This document describes the custom Artisan commands added to this project, defin
 | [`images:optimize`](#images-optimize) | Compress already-uploaded book covers & writer photos to WebP, with a small card-thumbnail variant |
 | [`images:optimize-assets`](#images-optimize-assets) | Compress the static hero/banner images in `public/assets/images`, with a small mobile variant of each |
 | [`assets:minify`](#assets-minify) | Generate `.min.css` / `.min.js` files for production |
+| [`urls:fix-domain`](#urlsfix-domain) | Rewrite the domain baked into already-stored cover/photo/file URLs after a domain change |
 
 ---
 
@@ -77,8 +78,27 @@ php artisan assets:minify
 
 ---
 
+## `urls:fix-domain`
+
+```bash
+php artisan urls:fix-domain nootabooks.nootapedia.com nootabooks.com
+```
+
+**Purpose:** `Book.cover_image`, `Book.file_path`, and `Writer.photo` are stored as **full absolute URLs baked in at upload time** (see `BookController::prepareData()` / `WriterController::prepareData()`, both using `force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$path`) — not relative paths resolved dynamically. Changing `APP_URL` in `.env` only affects *new* uploads going forward; anything uploaded before the domain change keeps the old domain baked into its DB row forever, which is why covers/photos can keep loading from an old domain even after `APP_URL` is updated and the app is otherwise fully served on the new one.
+
+**What it does:**
+- For every `cover_image` / `file_path` / `photo` value containing the old domain, does a plain string replace with the new one and saves the row.
+- Saving each row fires the model's normal `save()` event, which busts the home-page/sitemap cache — no separate cache-clear needed afterward.
+- Doesn't touch any files on disk — this is a pure database URL rewrite.
+
+**When to run it:** once, right after updating `APP_URL` in production to point at a new domain — run it immediately after so existing content's URLs match.
+
+**Requires:** nothing extra — no new Composer packages.
+
+---
+
 ## General notes
 
 - None of these commands are registered on the scheduler (`routes/console.php`) — there's no automatic recurring optimization. Run them manually when relevant, or wire them into a deploy script.
 - None of them need a queue worker — they run synchronously and print progress as they go.
-- All three are safe to run against production data; none of them are destructive beyond deleting the specific old file they just replaced.
+- All four are safe to run against production data; the three image/asset commands are destructive only in that they delete the specific old file they just replaced, and `urls:fix-domain` never touches files at all, only DB values.
