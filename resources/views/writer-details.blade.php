@@ -42,7 +42,11 @@
 
 <!-- ===================== AUTHOR HERO ===================== -->
 <section class="section writer-hero">
-  <img src="{{ $currentWriter->photo_sm_url ?? 'https://i.pravatar.cc/240?img=' . (($currentWriter->id % 70) + 1) }}" width="300" height="300" fetchpriority="high" decoding="async" alt="{{ $currentWriter->name }}" class="writer-hero-photo">
+  @if ($currentWriter->photo)
+    <img src="{{ $currentWriter->photo_sm_url }}" width="300" height="300" fetchpriority="high" decoding="async" alt="{{ $currentWriter->name }}" class="writer-hero-photo">
+  @else
+    <span class="writer-hero-photo avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+  @endif
 
   <div class="writer-hero-info">
     @if ($currentWriter->genre_tag)
@@ -147,7 +151,11 @@
   <div class="authors-row wide">
     @foreach ($similarWriters as $similarWriter)
       <a href="{{ route('writer-details', $similarWriter->slug) }}" class="author-card">
-        <img src="{{ $similarWriter->photo_sm_url ?? 'https://i.pravatar.cc/120?img=' . (($similarWriter->id % 70) + 1) }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $similarWriter->name }}">
+        @if ($similarWriter->photo)
+          <img src="{{ $similarWriter->photo_sm_url }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $similarWriter->name }}">
+        @else
+          <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+        @endif
         <p>{{ $similarWriter->name }}</p>
       </a>
     @endforeach

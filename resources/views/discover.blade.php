@@ -37,12 +37,12 @@
   <!-- ---- Filters Sidebar ---- -->
   <form class="filters-sidebar" id="discoverFilters" method="GET" action="{{ route('discover') }}">
     <div class="filters-head">
-      <h3>الفلاتر</h3>
+      <h2>الفلاتر</h2>
       <button type="button" class="clear-filters-btn" id="clearFilters" data-clear-url="{{ route('discover') }}">مسح الكل</button>
     </div>
 
     <div class="filter-group">
-      <h4>التصنيف</h4>
+      <h3>التصنيف</h3>
       @foreach ($categories as $category)
         <label class="checkbox-row">
           <input type="checkbox" name="category[]" value="{{ $category->slug }}" onchange="this.form.submit()" @checked(in_array($category->slug, $selectedCategorySlugs))>
@@ -52,21 +52,21 @@
     </div>
 
     <div class="filter-group">
-      <h4>اللغة</h4>
+      <h3>اللغة</h3>
       <label class="checkbox-row"><input type="radio" name="lang" value="all" onchange="this.form.submit()" @checked($selectedLanguage === 'all')> <span>الكل</span></label>
       <label class="checkbox-row"><input type="radio" name="lang" value="عربي" onchange="this.form.submit()" @checked($selectedLanguage === 'عربي')> <span>العربية</span></label>
       <label class="checkbox-row"><input type="radio" name="lang" value="أجنبي" onchange="this.form.submit()" @checked($selectedLanguage === 'أجنبي')> <span>مترجم</span></label>
     </div>
 
     <div class="filter-group">
-      <h4>التقييم</h4>
+      <h3>التقييم</h3>
       <label class="checkbox-row rating-filter" data-min="4.5"><input type="checkbox" name="rating[]" value="4.5" onchange="this.form.submit()" @checked(in_array(4.5, $selectedRatings))> <span class="stars sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></span> فأعلى</label>
       <label class="checkbox-row rating-filter" data-min="4"><input type="checkbox" name="rating[]" value="4" onchange="this.form.submit()" @checked(in_array(4.0, $selectedRatings))> <span class="stars sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></span> فأعلى</label>
       <label class="checkbox-row rating-filter" data-min="3"><input type="checkbox" name="rating[]" value="3" onchange="this.form.submit()" @checked(in_array(3.0, $selectedRatings))> <span class="stars sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></span> فأعلى</label>
     </div>
 
     <div class="filter-group">
-      <h4>الصيغة</h4>
+      <h3>الصيغة</h3>
       <label class="checkbox-row"><input type="checkbox" name="format[]" value="PDF" onchange="this.form.submit()" @checked(in_array('PDF', $selectedFormats))> <span>PDF</span></label>
       <label class="checkbox-row"><input type="checkbox" name="format[]" value="EPUB" onchange="this.form.submit()" @checked(in_array('EPUB', $selectedFormats))> <span>EPUB</span></label>
       <label class="checkbox-row"><input type="checkbox" name="format[]" value="MOBI" onchange="this.form.submit()" @checked(in_array('MOBI', $selectedFormats))> <span>MOBI</span></label>

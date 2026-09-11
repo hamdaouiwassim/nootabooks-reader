@@ -64,6 +64,7 @@
   border: 4px solid rgba(255,255,255,.15);
   flex: none;
 }
+.featured-photo.avatar-placeholder { font-size: 48px; }
 .featured-info { flex: 1; min-width: 260px; }
 .featured-chip {
   display: inline-flex;
@@ -105,13 +106,14 @@
   transition: transform .15s ease, box-shadow .15s ease;
 }
 .writer-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,.06); background: #fff; }
-.writer-card img {
+.writer-card img, .writer-card .avatar-placeholder {
   width: 84px; height: 84px;
   border-radius: 50%;
   object-fit: cover;
   margin: 0 auto 14px;
   border: 1px solid var(--border-light);
 }
+.writer-card .avatar-placeholder { font-size: 26px; }
 .writer-card h3 { font-size: 15px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
 .writer-tag {
   display: inline-block;

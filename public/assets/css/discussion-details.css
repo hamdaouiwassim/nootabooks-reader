@@ -57,7 +57,7 @@
 .comments-head h2 { font-size: 18px; font-weight: 800; color: var(--navy); }
 
 .comment-form { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-.comment-form img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex: none; }
+.comment-form img, .comment-form .avatar-placeholder { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex: none; }
 .comment-form input {
   flex: 1;
   border: 1px solid var(--border-light);
@@ -70,7 +70,7 @@
 
 .comment-list { display: flex; flex-direction: column; gap: 18px; }
 .comment-item { display: flex; gap: 12px; }
-.comment-item img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex: none; }
+.comment-item img, .comment-item .avatar-placeholder { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex: none; }
 .comment-body { flex: 1; min-width: 0; }
 .comment-bubble {
   background: var(--cream-alt);

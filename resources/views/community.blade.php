@@ -79,14 +79,18 @@
         @if ($chatBook)
           <input type="hidden" name="book" value="{{ $chatBook->slug }}">
         @endif
-        <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" width="64" height="64" decoding="async" alt="{{ auth()->user()->name }}">
+        @if (auth()->user()->avatar)
+          <img src="{{ auth()->user()->avatar }}" width="64" height="64" decoding="async" alt="{{ auth()->user()->name }}">
+        @else
+          <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+        @endif
         <input type="text" name="body" maxlength="2000" required
           placeholder="{{ $chatBook ? 'شارك رأيك حول "'.$chatBook->title.'" ...' : 'شارك رأيك أو ابدأ نقاشًا جديدًا ...' }}">
         <button type="submit" class="btn btn-gold small">نشر</button>
       </form>
     @else
       <div class="new-post-box">
-        <img src="https://i.pravatar.cc/64?img=13" width="64" height="64" decoding="async" alt="زائر">
+        <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
         <span>سجل الدخول للمشاركة في النقاش</span>
         <a href="{{ route('login') }}" class="btn btn-gold small">تسجيل الدخول</a>
       </div>
@@ -97,7 +101,11 @@
       @forelse ($discussions as $discussion)
         <article class="discussion-card">
           <div class="discussion-head">
-            <img src="{{ $discussion->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($discussion->user_id % 70) + 1) }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ $discussion->user->name }}">
+            @if ($discussion->user->avatar)
+              <img src="{{ $discussion->user->avatar }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ $discussion->user->name }}">
+            @else
+              <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+            @endif
             <div>
               <strong>{{ $discussion->user->name }}</strong>
               <span class="discussion-time">{{ $discussion->created_at->diffForHumans() }}</span>
@@ -141,7 +149,7 @@
   <aside class="community-sidebar">
 
     <div class="sidebar-card">
-      <h3>نوادي القراءة النشطة</h3>
+      <h2>نوادي القراءة النشطة</h2>
 
       @forelse ($topClubs as $topClub)
         @php $topClubBook = $topClub->currentBook(); @endphp
@@ -165,12 +173,16 @@
     </div>
 
     <div class="sidebar-card">
-      <h3>أفضل المساهمين</h3>
+      <h2>أفضل المساهمين</h2>
 
       @forelse ($topContributors as $index => $contributor)
         <div class="contributor-item">
           <span class="rank @if ($index === 0) gold @elseif ($index === 1) silver @elseif ($index === 2) bronze @endif">{{ $index + 1 }}</span>
-          <img src="{{ $contributor->avatar ?? 'https://i.pravatar.cc/64?img=' . (($contributor->id % 70) + 1) }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ $contributor->name }}">
+          @if ($contributor->avatar)
+            <img src="{{ $contributor->avatar }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ $contributor->name }}">
+          @else
+            <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+          @endif
           <div class="contributor-info"><strong>{{ $contributor->name }}</strong><span>{{ number_format($contributor->points) }} نقطة</span></div>
         </div>
       @empty
@@ -180,7 +192,7 @@
 
     @if ($trendingTags)
       <div class="sidebar-card">
-        <h3>مواضيع رائجة</h3>
+        <h2>مواضيع رائجة</h2>
         <div class="trend-tags">
           @foreach ($trendingTags as $trendingTag)
             <a href="{{ route('community', ['tag' => $trendingTag]) }}">#{{ $trendingTag }}</a>

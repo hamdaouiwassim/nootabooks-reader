@@ -46,7 +46,11 @@
 <!-- ===================== FEATURED AUTHOR ===================== -->
 <section class="section">
   <div class="featured-author">
-    <img src="{{ $featuredWriter->photo_sm_url ?? 'https://i.pravatar.cc/240?img=' . (($featuredWriter->id % 70) + 1) }}" width="300" height="300" decoding="async" alt="{{ $featuredWriter->name }}" class="featured-photo">
+    @if ($featuredWriter->photo)
+      <img src="{{ $featuredWriter->photo_sm_url }}" width="300" height="300" decoding="async" alt="{{ $featuredWriter->name }}" class="featured-photo">
+    @else
+      <span class="featured-photo avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+    @endif
     <div class="featured-info">
       <span class="featured-chip"><i class="fa-solid fa-star"></i> مؤلف الأسبوع</span>
       <h2>{{ $featuredWriter->name }}</h2>
@@ -90,7 +94,11 @@
         if ($writer->followers_count >= 150000) $writerTags[] = 'popular';
       @endphp
       <article class="writer-card" data-tags="{{ implode(' ', $writerTags) }}" data-href="{{ route('writer-details', $writer->slug) }}">
-        <img src="{{ $writer->photo_sm_url ?? 'https://i.pravatar.cc/140?img=' . (($writer->id % 70) + 1) }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $writer->name }}">
+        @if ($writer->photo)
+          <img src="{{ $writer->photo_sm_url }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $writer->name }}">
+        @else
+          <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+        @endif
         <h3>{{ $writer->name }}</h3>
         @if ($writer->genre_tag)
           <span class="writer-tag">{{ $writer->genre_tag }}</span>

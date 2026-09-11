@@ -50,6 +50,7 @@
 
 <!-- ===================== LIBRARY GRID ===================== -->
 <section class="section">
+  <h2 class="sr-only">قائمة الكتب</h2>
   <div class="filter-tabs">
     <button class="filter-tab active" data-filter="all">الكل</button>
     <button class="filter-tab" data-filter="reading">قيد القراءة</button>

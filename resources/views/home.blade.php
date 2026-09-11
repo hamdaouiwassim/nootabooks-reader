@@ -203,7 +203,7 @@
           @else
             <div class="mini-cover mc-{{ ($book->id % 4) + 1 }}"><span class="cover-badge sm">B</span></div>
           @endif
-          <h4>{{ $book->title }}</h4>
+          <h3>{{ $book->title }}</h3>
           <p>{{ $book->writer?->name }}</p>
         </a>
       @endforeach
@@ -218,7 +218,11 @@
     <div class="authors-row">
       @forelse ($popularWriters as $writer)
         <a href="{{ route('writer-details', $writer->slug) }}" class="author-card">
-          <img src="{{ $writer->photo_sm_url ?? 'https://i.pravatar.cc/120?img=' . (($writer->id % 70) + 1) }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $writer->name }}">
+          @if ($writer->photo)
+            <img src="{{ $writer->photo_sm_url }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $writer->name }}">
+          @else
+            <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+          @endif
           <p>{{ $writer->name }}</p>
         </a>
       @empty

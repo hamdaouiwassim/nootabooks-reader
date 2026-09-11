@@ -97,7 +97,8 @@
   border-radius: 14px;
   padding: 18px 10px;
 }
-.member-card img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; }
+.member-card img, .member-card .avatar-placeholder { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin: 0 auto 10px; }
+.member-card .avatar-placeholder { font-size: 20px; }
 .member-card strong { display: block; font-size: 13px; margin-bottom: 6px; }
 .member-role {
   font-size: 11px;

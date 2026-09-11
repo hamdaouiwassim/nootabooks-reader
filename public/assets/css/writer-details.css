@@ -13,6 +13,7 @@
   border: 4px solid #fff;
   box-shadow: 0 12px 28px rgba(0,0,0,.12);
 }
+.writer-hero-photo.avatar-placeholder { font-size: 56px; }
 
 .writer-hero-name { font-size: 30px; font-weight: 800; color: var(--navy); margin-bottom: 12px; }
 .writer-hero-desc { color: #4a4a4a; font-size: 15px; line-height: 1.9; margin-bottom: 22px; max-width: 720px; }

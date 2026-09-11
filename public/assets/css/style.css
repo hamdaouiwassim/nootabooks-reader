@@ -69,6 +69,20 @@ body {
 
 body.nav-open { overflow: hidden; }
 
+/* Visually hides content while keeping it in the accessibility tree — used
+   for headings that must exist for a correct h1→h2→h3 document outline but
+   have no natural visible placement (e.g. a tabbed section with no heading
+   of its own). Never use this to hide something sighted users need. */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
@@ -256,6 +270,20 @@ img { display: block; }
 
 .header-auth-actions { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
 
+/* Shared "no avatar/photo" placeholder — reused for both user avatars and
+   writer photos wherever none is set. Sizing/shape comes from whichever
+   context class or selector already sizes the real <img> it replaces; this
+   just supplies the icon look. */
+.avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream-alt);
+  color: var(--text-gray);
+  border-radius: 50%;
+  font-size: 16px;
+}
+
 .user-profile { display: flex; align-items: center; gap: 8px; white-space: nowrap; cursor: pointer; }
 .avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
 .user-name { font-weight: 700; font-size: 14px; }
@@ -328,7 +356,7 @@ img { display: block; }
   padding: 6px 16px 14px; margin-bottom: 6px;
   border-bottom: 1px solid var(--border-light);
 }
-.user-panel-head img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+.user-panel-head img, .user-panel-head .avatar-placeholder { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
 .user-panel-head strong { display: block; font-size: 14px; }
 .user-panel-head span { font-size: 11px; color: var(--text-gray); }
 
@@ -649,7 +677,7 @@ img { display: block; }
 
 .authors-row { display: flex; gap: 24px; flex-wrap: wrap; }
 .author-card { display: block; text-align: center; }
-.author-card img {
+.author-card img, .author-card .avatar-placeholder {
   width: 82px; height: 82px;
   border-radius: 50%;
   object-fit: cover;
@@ -657,6 +685,7 @@ img { display: block; }
   margin: 0 auto 10px;
   border: 1px solid var(--border-light);
 }
+.author-card .avatar-placeholder { font-size: 26px; }
 .author-card p { font-size: 13px; font-weight: 700; }
 
 .similar-row { display: flex; gap: 18px; flex-wrap: wrap; }
@@ -677,7 +706,7 @@ img { display: block; }
 .mc-2 { background: linear-gradient(160deg,#c7d3da,#5b6c76); }
 .mc-3 { background: linear-gradient(160deg,#b23a2e,#5c1c16); }
 .mc-4 { background: linear-gradient(160deg,#7a1f1f,#2a1414); }
-.mini-book h4 { font-size: 13px; font-weight: 800; margin-bottom: 2px; }
+.mini-book h3 { font-size: 13px; font-weight: 800; margin-bottom: 2px; }
 .mini-book p { font-size: 12px; color: var(--text-gray); }
 
 /* ============ CATEGORIES ============ */

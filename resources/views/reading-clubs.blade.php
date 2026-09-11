@@ -42,7 +42,7 @@
 <section class="section">
   <div class="create-club-banner">
     <div>
-      <h3>لم تجد ناديًا يناسبك؟</h3>
+      <h2>لم تجد ناديًا يناسبك؟</h2>
       <p>أنشئ ناديك الخاص وادعُ أصدقاءك لمناقشة كتبكم المفضلة</p>
     </div>
     @auth

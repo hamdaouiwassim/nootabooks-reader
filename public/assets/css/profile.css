@@ -32,12 +32,13 @@
   flex-wrap: wrap;
 }
 .profile-avatar-wrap { position: relative; flex: none; margin-top: -60px; }
-.profile-avatar-wrap img {
+.profile-avatar-wrap img, .profile-avatar-wrap .avatar-placeholder {
   width: 120px; height: 120px;
   border-radius: 50%;
   border: 5px solid #fff;
   object-fit: cover;
 }
+.profile-avatar-wrap .avatar-placeholder { font-size: 36px; }
 .avatar-edit-btn {
   position: absolute;
   bottom: 4px; left: 4px;

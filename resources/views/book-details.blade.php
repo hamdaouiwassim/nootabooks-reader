@@ -227,7 +227,11 @@
     <div class="review-list">
       @forelse ($reviews as $review)
         <article class="review-card">
-          <img src="{{ $review->user->avatar ?? 'https://i.pravatar.cc/72?img=' . (($review->user_id % 70) + 1) }}" width="72" height="72" loading="lazy" decoding="async" alt="{{ $review->user->name }}">
+          @if ($review->user->avatar)
+            <img src="{{ $review->user->avatar }}" width="72" height="72" loading="lazy" decoding="async" alt="{{ $review->user->name }}">
+          @else
+            <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+          @endif
           <div class="review-body">
             <div class="review-head">
               <strong>{{ $review->user->name }}</strong>
@@ -254,7 +258,11 @@
   <div class="tab-panel" id="tab-author">
     @if ($currentBook->writer)
       <div class="author-mini-card">
-        <img src="{{ $currentBook->writer->photo_sm_url ?? 'https://i.pravatar.cc/120?img=' . (($currentBook->writer->id % 70) + 1) }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $currentBook->writer->name }}">
+        @if ($currentBook->writer->photo)
+          <img src="{{ $currentBook->writer->photo_sm_url }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $currentBook->writer->name }}">
+        @else
+          <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+        @endif
         <div class="author-mini-info">
           <h3><a href="{{ route('writer-details', $currentBook->writer->slug) }}">{{ $currentBook->writer->name }}</a></h3>
           @if ($currentBook->writer->bio)

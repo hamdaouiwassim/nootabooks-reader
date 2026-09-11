@@ -32,7 +32,11 @@
       <div class="mobile-nav-account">
         @auth
           <div class="user-panel-head">
-            <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ auth()->user()->name }}">
+            @if (auth()->user()->avatar)
+              <img src="{{ auth()->user()->avatar }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ auth()->user()->name }}">
+            @else
+              <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+            @endif
             <div>
               <strong>{{ auth()->user()->name }}</strong>
               <span>عرض الملف الشخصي</span>
@@ -114,11 +118,19 @@
         <div class="user-profile" id="userMenuBtn" tabindex="0" role="button">
           <i class="fa-solid fa-chevron-down"></i>
           <span class="user-name">{{ auth()->user()->name }}</span>
-          <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" width="64" height="64" decoding="async" alt="{{ auth()->user()->name }}" class="avatar">
+          @if (auth()->user()->avatar)
+            <img src="{{ auth()->user()->avatar }}" width="64" height="64" decoding="async" alt="{{ auth()->user()->name }}" class="avatar">
+          @else
+            <span class="avatar avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+          @endif
         </div>
         <div class="dropdown-panel user-panel" id="userPanel">
           <div class="user-panel-head">
-            <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ auth()->user()->name }}">
+            @if (auth()->user()->avatar)
+              <img src="{{ auth()->user()->avatar }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ auth()->user()->name }}">
+            @else
+              <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+            @endif
             <div>
               <strong>{{ auth()->user()->name }}</strong>
               <span>عرض الملف الشخصي</span>

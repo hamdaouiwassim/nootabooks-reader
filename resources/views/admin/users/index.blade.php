@@ -44,7 +44,7 @@
               @if ($user->avatar)
                 <img class="admin-book-cover" style="border-radius:50%; width:44px; height:44px;" src="{{ asset($user->avatar) }}" width="44" height="44" loading="lazy" alt="{{ $user->name }}">
               @else
-                <span class="admin-book-cover placeholder" style="border-radius:50%; width:44px; height:44px;"><i class="fa-solid fa-user"></i></span>
+                <span class="admin-book-cover placeholder" style="border-radius:50%; width:44px; height:44px;"><i class="fa-solid fa-feather"></i></span>
               @endif
               <div><strong>{{ $user->name }}</strong></div>
             </div>

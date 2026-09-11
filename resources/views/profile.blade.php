@@ -28,7 +28,7 @@
     <div class="profile-cover"></div>
     <div class="profile-header">
       <div class="profile-avatar-wrap">
-        <img src="https://i.pravatar.cc/240?img=13" width="240" height="240" decoding="async" alt="أحمد محمد">
+        <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
         <button class="avatar-edit-btn" aria-label="edit avatar"><i class="fa-solid fa-camera"></i></button>
       </div>
       <div class="profile-info">
@@ -56,6 +56,7 @@
 
 <!-- ===================== TABS ===================== -->
 <section class="section tabs-section">
+  <h2 class="sr-only">نشاط الملف الشخصي</h2>
   <div class="tabs-nav">
     <button class="tab-btn active" data-tab="activity">النشاط</button>
     <button class="tab-btn" data-tab="favorites">المفضلة</button>

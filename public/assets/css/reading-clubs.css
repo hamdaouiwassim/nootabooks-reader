@@ -23,7 +23,7 @@
   padding: 26px 32px;
   flex-wrap: wrap;
 }
-.create-club-banner h3 { color: #fff; font-size: 19px; font-weight: 800; margin-bottom: 6px; }
+.create-club-banner h2 { color: #fff; font-size: 19px; font-weight: 800; margin-bottom: 6px; }
 .create-club-banner p { color: #dfe6e4; font-size: 14px; }
 
 /* ============ CREATE CLUB FORM ============ */

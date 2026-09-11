@@ -70,7 +70,8 @@
 .settings-panel form { max-width: 460px; }
 
 .avatar-upload-row { display: flex; align-items: center; gap: 18px; margin-bottom: 28px; }
-.avatar-upload-row img { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; flex: none; }
+.avatar-upload-row img, .avatar-upload-row .avatar-placeholder { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; flex: none; }
+.avatar-upload-row .avatar-placeholder { font-size: 22px; }
 .avatar-upload-row .btn { width: auto; }
 .field-hint { font-size: 12px; color: var(--text-gray); margin-top: 6px; }
 
