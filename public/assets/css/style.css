@@ -666,6 +666,12 @@ img { display: block; }
   height: 140px;
   border-radius: 10px;
   margin-bottom: 8px;
+  overflow: hidden;
+}
+.mini-cover.cover-photo {
+  display: block;
+  width: 100%;
+  object-fit: cover;
 }
 .mc-1 { background: linear-gradient(160deg,#1c1c24,#3a2f4a); }
 .mc-2 { background: linear-gradient(160deg,#c7d3da,#5b6c76); }

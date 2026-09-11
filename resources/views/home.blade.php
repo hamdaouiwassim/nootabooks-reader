@@ -192,7 +192,11 @@
     <div class="similar-row">
       @foreach ($similarBooks as $book)
         <a href="{{ route('book-details', $book->slug) }}" class="mini-book">
-          <div class="mini-cover mc-{{ ($book->id % 4) + 1 }}"><span class="cover-badge sm">B</span></div>
+          @if ($book->cover_image)
+            <img class="mini-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
+          @else
+            <div class="mini-cover mc-{{ ($book->id % 4) + 1 }}"><span class="cover-badge sm">B</span></div>
+          @endif
           <h4>{{ $book->title }}</h4>
           <p>{{ $book->writer?->name }}</p>
         </a>

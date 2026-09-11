@@ -84,7 +84,7 @@ class PageController extends Controller
             default => $query->orderByDesc('downloads_count'),
         };
 
-        $books = $query->paginate(9)->withQueryString();
+        $books = $query->paginate(16)->withQueryString();
 
         return view('discover', [
             'activeNav' => 'discover',
