@@ -84,6 +84,11 @@ class Book extends Model
         return $this->hasMany(Review::class);
     }
 
+    public function discussions(): HasMany
+    {
+        return $this->hasMany(Discussion::class);
+    }
+
     public function recalculateRating(): void
     {
         $this->rating_average = round($this->reviews()->avg('rating') ?? 0, 1);

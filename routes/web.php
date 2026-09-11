@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthPageController;
 use App\Http\Controllers\BookDownloadController;
+use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SitemapController;
@@ -31,6 +32,12 @@ Route::get('/books/{book}/stream', [BookDownloadController::class, 'stream'])->n
 Route::get('/books/{book}/download', [BookDownloadController::class, 'download'])->name('books.download')->middleware('signed');
 
 Route::get('/community', [PageController::class, 'community'])->name('community');
+Route::post('/community/discussions', [DiscussionController::class, 'store'])
+    ->middleware('auth')
+    ->name('discussions.store');
+Route::post('/discussions/{discussion}/like', [DiscussionController::class, 'toggleLike'])
+    ->middleware('auth')
+    ->name('discussions.like');
 Route::get('/clubs', [PageController::class, 'readingClubs'])->name('reading-clubs');
 Route::get('/clubs/{club?}', [PageController::class, 'clubDetails'])->name('club-details');
 Route::get('/discussions/{discussion?}', [PageController::class, 'discussionDetails'])->name('discussion-details');

@@ -35,7 +35,7 @@
 
       <div class="auth-divider"><span>أو عبر البريد الإلكتروني</span></div>
 
-      <form id="registerForm" method="POST" action="{{ route('register.submit') }}" novalidate>
+      <form id="registerForm" method="POST" action="{{ route('register.submit') }}" data-recaptcha-action="register" novalidate>
         @csrf
         <div class="form-field">
           <label for="registerName">الاسم الكامل</label>

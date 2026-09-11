@@ -7,6 +7,16 @@ use Illuminate\Support\Facades\Http;
 
 class Recaptcha implements ValidationRule
 {
+    /**
+     * Minimum acceptable v3 score (0.0 = likely a bot, 1.0 = likely human).
+     * Google's own recommended starting point.
+     */
+    private const MIN_SCORE = 0.5;
+
+    public function __construct(private ?string $expectedAction = null)
+    {
+    }
+
     public function validate(string $attribute, mixed $value, \Closure $fail): void
     {
         if (! config('services.recaptcha.secret_key')) {
@@ -28,6 +38,18 @@ class Recaptcha implements ValidationRule
         ]);
 
         if (! $response->successful() || ! $response->json('success')) {
+            $fail('تعذر التحقق من أنك لست روبوتًا، يرجى المحاولة مرة أخرى.');
+
+            return;
+        }
+
+        if ((float) $response->json('score', 0) < self::MIN_SCORE) {
+            $fail('تعذر التحقق من أنك لست روبوتًا، يرجى المحاولة مرة أخرى.');
+
+            return;
+        }
+
+        if ($this->expectedAction && $response->json('action') !== $this->expectedAction) {
             $fail('تعذر التحقق من أنك لست روبوتًا، يرجى المحاولة مرة أخرى.');
         }
     }

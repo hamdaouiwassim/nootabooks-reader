@@ -32,11 +32,11 @@
   <div class="library-stats">
     <div class="lib-stat-card">
       <i class="fa-solid fa-users"></i>
-      <div><strong>24,500</strong><span>عضو</span></div>
+      <div><strong>{{ number_format($membersCount) }}</strong><span>عضو</span></div>
     </div>
     <div class="lib-stat-card">
       <i class="fa-solid fa-comments"></i>
-      <div><strong>3,200</strong><span>مناقشة</span></div>
+      <div><strong>{{ number_format($discussionsCount) }}</strong><span>مناقشة</span></div>
     </div>
     <div class="lib-stat-card">
       <i class="fa-solid fa-people-group"></i>
@@ -44,7 +44,7 @@
     </div>
     <div class="lib-stat-card">
       <i class="fa-solid fa-fire"></i>
-      <div><strong>142</strong><span>منشور اليوم</span></div>
+      <div><strong>{{ number_format($postsTodayCount) }}</strong><span>منشور اليوم</span></div>
     </div>
   </div>
 </section>
@@ -61,93 +61,75 @@
       <button class="filter-tab" data-filter="following">متابعينك</button>
     </div>
 
-    <form class="new-post-box" id="newPostForm">
-      <img src="https://i.pravatar.cc/64?img=13" alt="أحمد محمد">
-      <input type="text" id="newPostInput" placeholder="شارك رأيك أو ابدأ نقاشًا جديدًا ...">
-      <button type="submit" class="btn btn-gold small">نشر</button>
-    </form>
+    @if ($chatBook)
+      <div class="new-post-box" style="margin-bottom:12px;">
+        <span><i class="fa-solid fa-book"></i> تعرض الآن المناقشات المتعلقة بكتاب <strong>{{ $chatBook->title }}</strong></span>
+        <a href="{{ route('community') }}" class="btn btn-outline small">إلغاء الفلتر</a>
+      </div>
+    @endif
+
+    @auth
+      <form method="POST" action="{{ route('discussions.store') }}" class="new-post-box">
+        @csrf
+        @if ($chatBook)
+          <input type="hidden" name="book" value="{{ $chatBook->slug }}">
+        @endif
+        <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" alt="{{ auth()->user()->name }}">
+        <input type="text" name="body" maxlength="2000" required
+          placeholder="{{ $chatBook ? 'شارك رأيك حول "'.$chatBook->title.'" ...' : 'شارك رأيك أو ابدأ نقاشًا جديدًا ...' }}">
+        <button type="submit" class="btn btn-gold small">نشر</button>
+      </form>
+    @else
+      <div class="new-post-box">
+        <img src="https://i.pravatar.cc/64?img=13" alt="زائر">
+        <span>سجل الدخول للمشاركة في النقاش</span>
+        <a href="{{ route('login') }}" class="btn btn-gold small">تسجيل الدخول</a>
+      </div>
+    @endauth
 
     <div class="discussion-feed" id="discussionFeed">
 
-      <article class="discussion-card">
-        <div class="discussion-head">
-          <img src="https://i.pravatar.cc/64?img=32" alt="سارة محمود">
-          <div>
-            <strong>سارة محمود</strong>
-            <span class="discussion-time">منذ ساعتين</span>
+      @forelse ($discussions as $discussion)
+        <article class="discussion-card">
+          <div class="discussion-head">
+            <img src="{{ $discussion->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($discussion->user_id % 70) + 1) }}" alt="{{ $discussion->user->name }}">
+            <div>
+              <strong>{{ $discussion->user->name }}</strong>
+              <span class="discussion-time">{{ $discussion->created_at->diffForHumans() }}</span>
+            </div>
+            @if ($discussion->book)
+              <a href="{{ route('book-details', $discussion->book->slug) }}" class="book-tag"><i class="fa-solid fa-book"></i> {{ $discussion->book->title }}</a>
+            @endif
           </div>
-          <a href="{{ route('book-details', 'blue-elephant') }}" class="book-tag"><i class="fa-solid fa-book"></i> الفيل الأزرق</a>
-        </div>
-        <p class="discussion-text">
-          انتهيت للتو من قراءة "الفيل الأزرق" لأحمد مراد، والله الحبكة كانت مشوقة جدًا لدرجة إني ما قدرت أسيب الكتاب! رأيكم إيه في النهاية؟ حسيت إنها مفاجئة أكتر من اللازم 😅
-        </p>
-        <div class="discussion-footer">
-          <button class="engage-btn like-btn"><i class="fa-regular fa-thumbs-up"></i> <span class="count">128</span></button>
-          <a href="{{ route('discussion-details', 'blue-elephant-ending') }}" class="engage-btn"><i class="fa-regular fa-comment"></i> <span class="count">34</span></a>
-          <button class="engage-btn"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
-        </div>
-      </article>
-
-      <article class="discussion-card">
-        <div class="discussion-head">
-          <img src="https://i.pravatar.cc/64?img=45" alt="محمد العتيبي">
-          <div>
-            <strong>محمد العتيبي</strong>
-            <span class="discussion-time">منذ 5 ساعات</span>
+          <p class="discussion-text">{{ $discussion->body }}</p>
+          <div class="discussion-footer">
+            @auth
+              <form method="POST" action="{{ route('discussions.like', $discussion) }}">
+                @csrf
+                <button type="submit" class="engage-btn like-btn @if (in_array($discussion->id, $likedDiscussionIds)) liked @endif">
+                  <i class="fa-{{ in_array($discussion->id, $likedDiscussionIds) ? 'solid' : 'regular' }} fa-thumbs-up"></i>
+                  <span class="count">{{ $discussion->liked_by_count }}</span>
+                </button>
+              </form>
+            @else
+              <span class="engage-btn"><i class="fa-regular fa-thumbs-up"></i> <span class="count">{{ $discussion->liked_by_count }}</span></span>
+            @endauth
+            <button class="engage-btn"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
           </div>
-          <a href="#" class="book-tag"><i class="fa-solid fa-book"></i> 1984</a>
-        </div>
-        <p class="discussion-text">
-          هل تعتقدون أن رواية "1984" لجورج أورويل أصبحت أكثر واقعية في عصرنا الحالي؟ أشعر أن كثيرًا مما تنبأ به الكاتب عن المراقبة أصبح جزءًا من حياتنا اليومية دون أن ننتبه.
+        </article>
+      @empty
+        <p class="no-results">
+          @if ($chatBook)
+            لا توجد مناقشات حول "{{ $chatBook->title }}" بعد، كن أول من يبدأ النقاش!
+          @else
+            لا توجد مناقشات بعد، كن أول من يشارك رأيه!
+          @endif
         </p>
-        <div class="discussion-footer">
-          <button class="engage-btn like-btn"><i class="fa-regular fa-thumbs-up"></i> <span class="count">256</span></button>
-          <a href="{{ route('discussion-details') }}" class="engage-btn"><i class="fa-regular fa-comment"></i> <span class="count">67</span></a>
-          <button class="engage-btn"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
-        </div>
-      </article>
-
-      <article class="discussion-card">
-        <div class="discussion-head">
-          <img src="https://i.pravatar.cc/64?img=21" alt="ليلى حسن">
-          <div>
-            <strong>ليلى حسن</strong>
-            <span class="discussion-time">أمس</span>
-          </div>
-          <a href="{{ route('writer-details', 'ahmed-mourad') }}" class="book-tag"><i class="fa-solid fa-user-pen"></i> أحمد مراد</a>
-        </div>
-        <p class="discussion-text">
-          نادي "أدب عربي معاصر" هيبدأ مناقشة رواية جديدة الأسبوع الجاي، مين حابب ينضم لينا؟ هنختار بين "تراب الماس" و"فيرتيجو" لنفس الكاتب. صوتوا في التعليقات 👇
-        </p>
-        <div class="discussion-footer">
-          <button class="engage-btn like-btn"><i class="fa-regular fa-thumbs-up"></i> <span class="count">89</span></button>
-          <a href="{{ route('discussion-details') }}" class="engage-btn"><i class="fa-regular fa-comment"></i> <span class="count">52</span></a>
-          <button class="engage-btn"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
-        </div>
-      </article>
-
-      <article class="discussion-card">
-        <div class="discussion-head">
-          <img src="https://i.pravatar.cc/64?img=68" alt="عمر خالد">
-          <div>
-            <strong>عمر خالد</strong>
-            <span class="discussion-time">منذ يومين</span>
-          </div>
-          <a href="#" class="book-tag"><i class="fa-solid fa-book"></i> عزازيل</a>
-        </div>
-        <p class="discussion-text">
-          "عزازيل" ليوسف زيدان من أعمق الروايات العربية التي قرأتها، الأسلوب التاريخي ممزوج بصراع داخلي مؤثر جدًا. من قرأها ويحب يناقشها بعمق أكتر يا ريت يتواصل معايا.
-        </p>
-        <div class="discussion-footer">
-          <button class="engage-btn like-btn"><i class="fa-regular fa-thumbs-up"></i> <span class="count">143</span></button>
-          <a href="{{ route('discussion-details') }}" class="engage-btn"><i class="fa-regular fa-comment"></i> <span class="count">28</span></a>
-          <button class="engage-btn"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
-        </div>
-      </article>
+      @endforelse
 
     </div>
 
-    <button class="btn btn-outline center">تحميل المزيد</button>
+    {{ $discussions->links() }}
   </div>
 
   <!-- ---- Sidebar ---- -->

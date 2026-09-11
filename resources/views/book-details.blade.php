@@ -135,6 +135,7 @@
         @endif
       @endif
       <button class="btn btn-navy" aria-label="مشاركة"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
+      <a href="{{ route('community', ['book' => $currentBook->slug]) }}" class="btn btn-outline"><i class="fa-solid fa-comments"></i> دردش حول الكتاب</a>
     </div>
   </div>
 </section>
@@ -201,7 +202,7 @@
     </div>
 
     @auth
-      <form method="POST" action="{{ route('reviews.store', $currentBook->slug) }}" class="add-review-form" id="addReviewForm" hidden>
+      <form method="POST" action="{{ route('reviews.store', $currentBook->slug) }}" class="add-review-form" id="addReviewForm" data-recaptcha-action="review" hidden>
         @csrf
         <div class="form-field">
           <label for="reviewRating">تقييمك</label>

@@ -14,7 +14,7 @@ class ReviewController extends Controller
         $validated = $request->validate([
             'rating' => ['required', 'integer', 'min:1', 'max:5'],
             'comment' => ['nullable', 'string', 'max:2000'],
-            'g-recaptcha-response' => [new Recaptcha()],
+            'g-recaptcha-response' => [new Recaptcha('review')],
         ]);
 
         unset($validated['g-recaptcha-response']);

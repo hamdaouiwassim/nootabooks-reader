@@ -56,4 +56,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Review::class);
     }
+
+    public function discussions(): HasMany
+    {
+        return $this->hasMany(Discussion::class);
+    }
+
+    public function likedDiscussions(): BelongsToMany
+    {
+        return $this->belongsToMany(Discussion::class, 'discussion_likes')->withTimestamps();
+    }
 }

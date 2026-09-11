@@ -22,7 +22,7 @@ class AuthPageController extends Controller
         $validated = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'string', 'min:8'],
-            'g-recaptcha-response' => [new Recaptcha()],
+            'g-recaptcha-response' => [new Recaptcha('login')],
         ]);
 
         $credentials = collect($validated)->only(['email', 'password'])->all();
@@ -50,7 +50,7 @@ class AuthPageController extends Controller
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'terms' => ['accepted'],
-            'g-recaptcha-response' => [new Recaptcha()],
+            'g-recaptcha-response' => [new Recaptcha('register')],
         ]);
 
         $user = User::create([

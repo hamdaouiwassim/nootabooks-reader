@@ -56,7 +56,7 @@
 <main>
 
 <!-- ===================== TRENDING BOOKS ===================== -->
-<section class="section trending-section">
+<section class="section trending-section home-books-section">
   <div class="section-head">
     <div class="section-title-wrap">
       <h2 class="section-title">الأكثر قراءة هذا الأسبوع <i class="fa-solid fa-fire fire-icon"></i></h2>
@@ -72,11 +72,21 @@
       <?php $__currentLoopData = $trendingBooks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $book): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <article class="book-card">
           <?php if($book->cover_image): ?>
-            <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>" alt="<?php echo e($book->title); ?>">
+            <div class="cover-wrap">
+              <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>" alt="<?php echo e($book->title); ?>">
+              <span class="brand-ribbon">nootabooks.com</span>
+              <?php if($book->is_coming_soon): ?>
+                <span class="coming-soon-badge">قريبًا</span>
+              <?php endif; ?>
+            </div>
           <?php else: ?>
             <div class="book-cover cover-<?php echo e(($book->id % 5) + 1); ?>">
               <span class="cover-badge">B</span>
               <span class="cover-title"><?php echo e($book->title); ?></span>
+              <span class="brand-ribbon">nootabooks.com</span>
+              <?php if($book->is_coming_soon): ?>
+                <span class="coming-soon-badge">قريبًا</span>
+              <?php endif; ?>
             </div>
           <?php endif; ?>
           <h3><a href="<?php echo e(route('book-details', $book->slug)); ?>"><?php echo e($book->title); ?></a></h3>
@@ -93,7 +103,7 @@
 
 <?php if($booksCount > 10): ?>
 <!-- ===================== RECENT BOOKS ===================== -->
-<section class="section trending-section">
+<section class="section trending-section home-books-section">
   <div class="section-head">
     <div class="section-title-wrap">
       <h2 class="section-title">أحدث الكتب <i class="fa-solid fa-clock-rotate-left fire-icon"></i></h2>
@@ -109,11 +119,21 @@
       <?php $__currentLoopData = $recentBooks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $book): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <article class="book-card">
           <?php if($book->cover_image): ?>
-            <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>" alt="<?php echo e($book->title); ?>">
+            <div class="cover-wrap">
+              <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>" alt="<?php echo e($book->title); ?>">
+              <span class="brand-ribbon">nootabooks.com</span>
+              <?php if($book->is_coming_soon): ?>
+                <span class="coming-soon-badge">قريبًا</span>
+              <?php endif; ?>
+            </div>
           <?php else: ?>
             <div class="book-cover cover-<?php echo e(($book->id % 5) + 1); ?>">
               <span class="cover-badge">B</span>
               <span class="cover-title"><?php echo e($book->title); ?></span>
+              <span class="brand-ribbon">nootabooks.com</span>
+              <?php if($book->is_coming_soon): ?>
+                <span class="coming-soon-badge">قريبًا</span>
+              <?php endif; ?>
             </div>
           <?php endif; ?>
           <h3><a href="<?php echo e(route('book-details', $book->slug)); ?>"><?php echo e($book->title); ?></a></h3>
@@ -170,7 +190,11 @@
     <div class="similar-row">
       <?php $__currentLoopData = $similarBooks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $book): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <a href="<?php echo e(route('book-details', $book->slug)); ?>" class="mini-book">
-          <div class="mini-cover mc-<?php echo e(($book->id % 4) + 1); ?>"><span class="cover-badge sm">B</span></div>
+          <?php if($book->cover_image): ?>
+            <img class="mini-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>" alt="<?php echo e($book->title); ?>">
+          <?php else: ?>
+            <div class="mini-cover mc-<?php echo e(($book->id % 4) + 1); ?>"><span class="cover-badge sm">B</span></div>
+          <?php endif; ?>
           <h4><?php echo e($book->title); ?></h4>
           <p><?php echo e($book->writer?->name); ?></p>
         </a>

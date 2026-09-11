@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Discussion;
 use App\Models\Quote;
+use App\Models\User;
 use App\Models\Writer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -233,9 +235,32 @@ class PageController extends Controller
         return view('read', ['currentBook' => $currentBook]);
     }
 
-    public function community(): View
+    public function community(Request $request): View
     {
-        return view('community', ['activeNav' => 'community']);
+        $chatBook = $request->filled('book')
+            ? Book::published()->where('slug', $request->string('book'))->first()
+            : null;
+
+        $discussions = Discussion::with(['user', 'book'])
+            ->withCount('likedBy')
+            ->when($chatBook, fn ($q) => $q->where('book_id', $chatBook->id))
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        $likedDiscussionIds = $request->user()
+            ? $request->user()->likedDiscussions()->pluck('discussions.id')->all()
+            : [];
+
+        return view('community', [
+            'activeNav' => 'community',
+            'chatBook' => $chatBook,
+            'discussions' => $discussions,
+            'likedDiscussionIds' => $likedDiscussionIds,
+            'discussionsCount' => Discussion::count(),
+            'membersCount' => User::count(),
+            'postsTodayCount' => Discussion::whereDate('created_at', today())->count(),
+        ]);
     }
 
     public function readingClubs(): View

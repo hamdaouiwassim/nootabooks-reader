@@ -83,6 +83,10 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
         <span class="cover-title"><?php echo e($currentBook->title); ?></span>
       </div>
     <?php endif; ?>
+    <span class="brand-ribbon">nootabooks.com</span>
+    <?php if($currentBook->is_coming_soon): ?>
+      <span class="coming-soon-badge">قريبًا</span>
+    <?php endif; ?>
     <button class="wishlist-btn" aria-label="add to wishlist"><i class="fa-regular fa-heart"></i></button>
   </div>
 
@@ -125,13 +129,19 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
     </div>
 
     <div class="book-actions">
-      <a href="<?php echo e(route('read', $currentBook->slug)); ?>" class="btn btn-teal"><i class="fa-solid fa-headphones"></i> قراءة الآن</a>
-      <?php if($currentBook->file_path): ?>
-        <a href="<?php echo e(route('books.download', $currentBook)); ?>" class="btn btn-gold"><i class="fa-solid fa-download"></i> تحميل الكتاب</a>
+      <?php if($currentBook->is_coming_soon): ?>
+        <button class="btn btn-teal" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-clock"></i> قريبًا</button>
+        <button class="btn btn-gold" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
       <?php else: ?>
-        <button class="btn btn-gold" disabled title="الملف غير متوفر حاليًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
+        <a href="<?php echo e(route('read', $currentBook->slug)); ?>" class="btn btn-teal"><i class="fa-solid fa-headphones"></i> قراءة الآن</a>
+        <?php if($currentBook->downloadUrl()): ?>
+          <a href="<?php echo e($currentBook->downloadUrl()); ?>" class="btn btn-gold"><i class="fa-solid fa-download"></i> تحميل الكتاب</a>
+        <?php else: ?>
+          <button class="btn btn-gold" disabled title="الملف غير متوفر حاليًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
+        <?php endif; ?>
       <?php endif; ?>
       <button class="btn btn-navy" aria-label="مشاركة"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
+      <a href="<?php echo e(route('community', ['book' => $currentBook->slug])); ?>" class="btn btn-outline"><i class="fa-solid fa-comments"></i> دردش حول الكتاب</a>
     </div>
   </div>
 </section>
@@ -294,11 +304,21 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
       <?php $__empty_1 = true; $__currentLoopData = $similarBooks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $similarBook): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <article class="book-card">
           <?php if($similarBook->cover_image): ?>
-            <img class="book-cover cover-photo" src="<?php echo e($similarBook->cover_image_sm_url); ?>" alt="<?php echo e($similarBook->title); ?>">
+            <div class="cover-wrap">
+              <img class="book-cover cover-photo" src="<?php echo e($similarBook->cover_image_sm_url); ?>" alt="<?php echo e($similarBook->title); ?>">
+              <span class="brand-ribbon">nootabooks.com</span>
+              <?php if($similarBook->is_coming_soon): ?>
+                <span class="coming-soon-badge">قريبًا</span>
+              <?php endif; ?>
+            </div>
           <?php else: ?>
             <div class="book-cover cover-<?php echo e(($similarBook->id % 5) + 1); ?>">
               <span class="cover-badge">B</span>
               <span class="cover-title"><?php echo e($similarBook->title); ?></span>
+              <span class="brand-ribbon">nootabooks.com</span>
+              <?php if($similarBook->is_coming_soon): ?>
+                <span class="coming-soon-badge">قريبًا</span>
+              <?php endif; ?>
             </div>
           <?php endif; ?>
           <h3><?php echo e($similarBook->title); ?></h3>
