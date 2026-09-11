@@ -42,7 +42,7 @@
 
 <!-- ===================== AUTHOR HERO ===================== -->
 <section class="section writer-hero">
-  <img src="{{ $currentWriter->photo_sm_url ?? 'https://i.pravatar.cc/240?img=' . (($currentWriter->id % 70) + 1) }}" alt="{{ $currentWriter->name }}" class="writer-hero-photo">
+  <img src="{{ $currentWriter->photo_sm_url ?? 'https://i.pravatar.cc/240?img=' . (($currentWriter->id % 70) + 1) }}" width="300" height="300" fetchpriority="high" decoding="async" alt="{{ $currentWriter->name }}" class="writer-hero-photo">
 
   <div class="writer-hero-info">
     @if ($currentWriter->genre_tag)
@@ -104,7 +104,10 @@
         <article class="book-card" data-year="{{ $book->published_year }}" data-downloads="{{ $book->downloads_count }}">
           @if ($book->cover_image)
             <div class="cover-wrap">
-              <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
+              <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
+                srcset="{{ $book->cover_image_sm_url }} 300w, {{ $book->cover_image_md_url }} 600w"
+                sizes="(max-width: 640px) 45vw, 200px" width="300" height="450"
+                loading="lazy" decoding="async" alt="{{ $book->title }}">
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($book->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
@@ -144,7 +147,7 @@
   <div class="authors-row wide">
     @foreach ($similarWriters as $similarWriter)
       <a href="{{ route('writer-details', $similarWriter->slug) }}" class="author-card">
-        <img src="{{ $similarWriter->photo_sm_url ?? 'https://i.pravatar.cc/120?img=' . (($similarWriter->id % 70) + 1) }}" alt="{{ $similarWriter->name }}">
+        <img src="{{ $similarWriter->photo_sm_url ?? 'https://i.pravatar.cc/120?img=' . (($similarWriter->id % 70) + 1) }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $similarWriter->name }}">
         <p>{{ $similarWriter->name }}</p>
       </a>
     @endforeach

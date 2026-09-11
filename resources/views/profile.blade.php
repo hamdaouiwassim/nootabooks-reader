@@ -28,7 +28,7 @@
     <div class="profile-cover"></div>
     <div class="profile-header">
       <div class="profile-avatar-wrap">
-        <img src="https://i.pravatar.cc/240?img=13" alt="أحمد محمد">
+        <img src="https://i.pravatar.cc/240?img=13" width="240" height="240" decoding="async" alt="أحمد محمد">
         <button class="avatar-edit-btn" aria-label="edit avatar"><i class="fa-solid fa-camera"></i></button>
       </div>
       <div class="profile-info">

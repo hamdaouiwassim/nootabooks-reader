@@ -44,7 +44,7 @@
       <h2>المعلومات الشخصية</h2>
 
       <div class="avatar-upload-row">
-        <img src="https://i.pravatar.cc/120?img=13" alt="أحمد محمد">
+        <img src="https://i.pravatar.cc/120?img=13" width="120" height="120" decoding="async" alt="أحمد محمد">
         <div>
           <button type="button" class="btn btn-outline small">تغيير الصورة</button>
           <p class="field-hint">JPG أو PNG، بحد أقصى 2 ميجابايت</p>

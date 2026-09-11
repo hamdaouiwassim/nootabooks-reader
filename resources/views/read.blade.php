@@ -20,7 +20,7 @@
 
     <div class="reader-book-info">
       @if ($currentBook->cover_image)
-        <img src="{{ $currentBook->cover_image_sm_url }}" alt="{{ $currentBook->title }}" class="reader-mini-cover">
+        <img src="{{ $currentBook->cover_image_sm_url }}" width="300" height="450" decoding="async" alt="{{ $currentBook->title }}" class="reader-mini-cover">
       @endif
       <div class="reader-book-info-text">
         <strong>{{ $currentBook->title }}</strong>

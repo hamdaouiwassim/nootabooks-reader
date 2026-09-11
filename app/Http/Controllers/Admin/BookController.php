@@ -85,6 +85,7 @@ class BookController extends Controller
         if ($relativePath = $this->relativeStoragePath($book->cover_image)) {
             Storage::disk('public')->delete($relativePath);
             Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-sm$1', $relativePath));
+            Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-md$1', $relativePath));
         }
 
         if ($relativePath = $this->relativeStoragePath($book->file_path)) {
@@ -110,12 +111,13 @@ class BookController extends Controller
             if ($relativePath = $this->relativeStoragePath($book?->cover_image)) {
                 Storage::disk('public')->delete($relativePath);
                 Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-sm$1', $relativePath));
+                Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-md$1', $relativePath));
             }
 
             $paths = app(ImageOptimizer::class)->optimizeResponsive(
                 $request->file('cover_image'),
                 'covers',
-                ['' => [800, 1200], '-sm' => [300, 450]],
+                ['' => [800, 1200], '-md' => [600, 900], '-sm' => [300, 450]],
                 85,
             );
             $data['cover_image'] = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$paths[''];

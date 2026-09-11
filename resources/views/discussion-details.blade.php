@@ -32,7 +32,7 @@
 
     <article class="subject-post">
       <div class="discussion-head">
-        <img src="{{ $discussion->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($discussion->user_id % 70) + 1) }}" alt="{{ $discussion->user->name }}">
+        <img src="{{ $discussion->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($discussion->user_id % 70) + 1) }}" width="64" height="64" decoding="async" alt="{{ $discussion->user->name }}">
         <div>
           <strong>{{ $discussion->user->name }}</strong>
           <span class="discussion-time">{{ $discussion->created_at->diffForHumans() }} · في <a href="{{ route('community') }}">مجتمع القراء</a></span>
@@ -70,7 +70,7 @@
       @auth
         <form method="POST" action="{{ route('discussions.comments.store', $discussion) }}" class="comment-form">
           @csrf
-          <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" alt="{{ auth()->user()->name }}">
+          <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" width="64" height="64" decoding="async" alt="{{ auth()->user()->name }}">
           <input type="text" name="body" maxlength="2000" required placeholder="أضف تعليقك ...">
           <button type="submit" class="btn btn-gold small">إرسال</button>
         </form>
@@ -81,7 +81,7 @@
       <div class="comment-list" id="commentList">
         @forelse ($comments as $comment)
           <article class="comment-item">
-            <img src="{{ $comment->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($comment->user_id % 70) + 1) }}" alt="{{ $comment->user->name }}">
+            <img src="{{ $comment->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($comment->user_id % 70) + 1) }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ $comment->user->name }}">
             <div class="comment-body">
               <div class="comment-bubble">
                 <strong>{{ $comment->user->name }}</strong>
@@ -107,7 +107,7 @@
                 <form method="POST" action="{{ route('discussions.comments.store', $discussion) }}" class="inline-reply-form comment-form" id="reply-form-{{ $comment->id }}" hidden>
                   @csrf
                   <input type="hidden" name="parent_id" value="{{ $comment->id }}">
-                  <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" alt="{{ auth()->user()->name }}">
+                  <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ auth()->user()->name }}">
                   <input type="text" name="body" maxlength="2000" required placeholder="اكتب ردًا ...">
                   <button type="submit" class="btn btn-gold small">رد</button>
                 </form>
@@ -115,7 +115,7 @@
 
               @foreach ($comment->replies as $reply)
                 <div class="comment-item reply">
-                  <img src="{{ $reply->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($reply->user_id % 70) + 1) }}" alt="{{ $reply->user->name }}">
+                  <img src="{{ $reply->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($reply->user_id % 70) + 1) }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ $reply->user->name }}">
                   <div class="comment-body">
                     <div class="comment-bubble">
                       <strong>{{ $reply->user->name }}</strong>
@@ -155,7 +155,7 @@
         <h3>الكتاب المُناقَش</h3>
         <a href="{{ route('book-details', $discussion->book->slug) }}" class="book-mini-link">
           @if ($discussion->book->cover_image)
-            <img src="{{ $discussion->book->cover_image_sm_url }}" alt="{{ $discussion->book->title }}" class="book-cover mini" style="padding:0;width:70px;height:90px;object-fit:cover;">
+            <img src="{{ $discussion->book->cover_image_sm_url }}" width="300" height="450" loading="lazy" decoding="async" alt="{{ $discussion->book->title }}" class="book-cover mini" style="padding:0;width:70px;height:90px;object-fit:cover;">
           @else
             <span class="book-cover cover-{{ ($discussion->book->id % 5) + 1 }} mini"><span class="cover-title">{{ $discussion->book->title }}</span></span>
           @endif
@@ -172,7 +172,7 @@
     <div class="sidebar-card">
       <h3>كاتب المناقشة</h3>
       <div class="contributor-item">
-        <img src="{{ $discussion->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($discussion->user_id % 70) + 1) }}" alt="{{ $discussion->user->name }}">
+        <img src="{{ $discussion->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($discussion->user_id % 70) + 1) }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ $discussion->user->name }}">
         <div class="contributor-info"><strong>{{ $discussion->user->name }}</strong><span>{{ number_format($discussion->user->discussions()->count()) }} منشور · {{ number_format($discussion->user->points) }} نقطة</span></div>
       </div>
     </div>

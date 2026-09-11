@@ -82,7 +82,7 @@
       <div class="current-book-card">
         <a href="{{ route('book-details', $currentBook->slug) }}" class="book-cover @if ($currentBook->cover_image) cover-photo @else cover-{{ ($currentBook->id % 5) + 1 }} @endif" @if ($currentBook->cover_image) style="padding:0;" @endif>
           @if ($currentBook->cover_image)
-            <img src="{{ $currentBook->cover_image_sm_url }}" alt="{{ $currentBook->title }}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
+            <img src="{{ $currentBook->cover_image_sm_url }}" width="300" height="450" decoding="async" alt="{{ $currentBook->title }}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
           @else
             <span class="cover-badge">B</span>
             <span class="cover-title">{{ $currentBook->title }}</span>
@@ -107,7 +107,7 @@
           <div class="mini-book">
             <a href="{{ route('book-details', $pastBook->slug) }}" class="book-cover mini @if ($pastBook->cover_image) cover-photo @else cover-{{ ($pastBook->id % 5) + 1 }} @endif" @if ($pastBook->cover_image) style="padding:0;" @endif>
               @if ($pastBook->cover_image)
-                <img src="{{ $pastBook->cover_image_sm_url }}" alt="{{ $pastBook->title }}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
+                <img src="{{ $pastBook->cover_image_sm_url }}" width="300" height="450" loading="lazy" decoding="async" alt="{{ $pastBook->title }}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
               @else
                 <span class="cover-title">{{ $pastBook->title }}</span>
               @endif
@@ -125,7 +125,7 @@
       <form method="POST" action="{{ route('discussions.store') }}" class="new-post-box" style="margin-bottom:20px;">
         @csrf
         <input type="hidden" name="club" value="{{ $club->slug }}">
-        <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" alt="{{ auth()->user()->name }}">
+        <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ auth()->user()->name }}">
         <input type="text" name="body" maxlength="2000" required placeholder="شارك في نقاش النادي ...">
         <button type="submit" class="btn btn-gold small">نشر</button>
       </form>
@@ -135,7 +135,7 @@
       @forelse ($discussions as $discussion)
         <article class="discussion-card">
           <div class="discussion-head">
-            <img src="{{ $discussion->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($discussion->user_id % 70) + 1) }}" alt="{{ $discussion->user->name }}">
+            <img src="{{ $discussion->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($discussion->user_id % 70) + 1) }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ $discussion->user->name }}">
             <div>
               <strong>{{ $discussion->user->name }}</strong>
               <span class="discussion-time">{{ $discussion->created_at->diffForHumans() }}</span>
@@ -171,7 +171,7 @@
     <div class="members-grid">
       @foreach ($members as $member)
         <div class="member-card">
-          <img src="{{ $member->avatar ?? 'https://i.pravatar.cc/100?img=' . (($member->id % 70) + 1) }}" alt="{{ $member->name }}">
+          <img src="{{ $member->avatar ?? 'https://i.pravatar.cc/100?img=' . (($member->id % 70) + 1) }}" width="100" height="100" loading="lazy" decoding="async" alt="{{ $member->name }}">
           <strong>{{ $member->name }}</strong>
           <span class="member-role @if ($member->pivot->role === 'owner') admin @endif">{{ $member->pivot->role === 'owner' ? 'مشرف النادي' : 'عضو' }}</span>
         </div>

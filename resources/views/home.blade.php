@@ -75,7 +75,10 @@
         <article class="book-card">
           @if ($book->cover_image)
             <div class="cover-wrap">
-              <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
+              <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
+                srcset="{{ $book->cover_image_sm_url }} 300w, {{ $book->cover_image_md_url }} 600w"
+                sizes="(max-width: 640px) 45vw, 200px" width="300" height="450"
+                loading="lazy" decoding="async" alt="{{ $book->title }}">
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($book->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
@@ -122,7 +125,10 @@
         <article class="book-card">
           @if ($book->cover_image)
             <div class="cover-wrap">
-              <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
+              <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
+                srcset="{{ $book->cover_image_sm_url }} 300w, {{ $book->cover_image_md_url }} 600w"
+                sizes="(max-width: 640px) 45vw, 200px" width="300" height="450"
+                loading="lazy" decoding="async" alt="{{ $book->title }}">
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($book->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
@@ -193,7 +199,7 @@
       @foreach ($similarBooks as $book)
         <a href="{{ route('book-details', $book->slug) }}" class="mini-book">
           @if ($book->cover_image)
-            <img class="mini-cover cover-photo" src="{{ $book->cover_image_sm_url }}" alt="{{ $book->title }}">
+            <img class="mini-cover cover-photo" src="{{ $book->cover_image_sm_url }}" width="300" height="450" loading="lazy" decoding="async" alt="{{ $book->title }}">
           @else
             <div class="mini-cover mc-{{ ($book->id % 4) + 1 }}"><span class="cover-badge sm">B</span></div>
           @endif
@@ -212,7 +218,7 @@
     <div class="authors-row">
       @forelse ($popularWriters as $writer)
         <a href="{{ route('writer-details', $writer->slug) }}" class="author-card">
-          <img src="{{ $writer->photo_sm_url ?? 'https://i.pravatar.cc/120?img=' . (($writer->id % 70) + 1) }}" alt="{{ $writer->name }}">
+          <img src="{{ $writer->photo_sm_url ?? 'https://i.pravatar.cc/120?img=' . (($writer->id % 70) + 1) }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $writer->name }}">
           <p>{{ $writer->name }}</p>
         </a>
       @empty

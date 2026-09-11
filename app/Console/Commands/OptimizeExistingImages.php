@@ -14,11 +14,11 @@ class OptimizeExistingImages extends Command
 {
     protected $signature = 'images:optimize';
 
-    protected $description = 'Re-encode already-uploaded book covers and writer photos as compressed WebP, generating a small card-thumbnail variant alongside each';
+    protected $description = 'Re-encode already-uploaded book covers and writer photos as compressed WebP, generating each declared size variant (small/medium) alongside the full-size original';
 
     public function handle(ImageOptimizer $optimizer): int
     {
-        $this->optimizeColumn(Book::query(), 'cover_image', 'covers', ['' => [800, 1200], '-sm' => [300, 450]], $optimizer);
+        $this->optimizeColumn(Book::query(), 'cover_image', 'covers', ['' => [800, 1200], '-md' => [600, 900], '-sm' => [300, 450]], $optimizer);
         $this->optimizeColumn(Writer::query(), 'photo', 'writers', ['' => [600, 600], '-sm' => [300, 300]], $optimizer);
 
         return self::SUCCESS;
@@ -27,6 +27,7 @@ class OptimizeExistingImages extends Command
     private function optimizeColumn(Builder $query, string $column, string $directory, array $variants, ImageOptimizer $optimizer): void
     {
         $rows = $query->whereNotNull($column)->get();
+        $suffixes = array_filter(array_keys($variants), fn ($suffix) => $suffix !== '');
 
         $this->info("Checking {$rows->count()} {$column} value(s)...");
 
@@ -37,10 +38,13 @@ class OptimizeExistingImages extends Command
                 continue; // external URL we can't reach locally
             }
 
-            $smallPath = preg_replace('/(\.\w+)$/', '-sm$1', $relativePath);
+            $variantPaths = collect($suffixes)
+                ->mapWithKeys(fn ($suffix) => [$suffix => preg_replace('/(\.\w+)$/', "{$suffix}\$1", $relativePath)]);
 
-            if (str_ends_with($relativePath, '.webp') && Storage::disk('public')->exists($smallPath)) {
-                continue; // already WebP with a small variant generated
+            $allVariantsExist = $variantPaths->every(fn ($path) => Storage::disk('public')->exists($path));
+
+            if (str_ends_with($relativePath, '.webp') && $allVariantsExist) {
+                continue; // already WebP with every declared variant generated
             }
 
             if (! Storage::disk('public')->exists($relativePath)) {
@@ -57,13 +61,15 @@ class OptimizeExistingImages extends Command
             );
 
             Storage::disk('public')->delete($relativePath);
-            Storage::disk('public')->delete($smallPath); // harmless if it never existed
+            foreach ($variantPaths as $path) {
+                Storage::disk('public')->delete($path); // harmless if it never existed
+            }
 
             /** @var Model $row */
             $row->{$column} = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$paths[''];
             $row->save();
 
-            $this->line("  #{$row->id}: {$relativePath} -> {$paths['']} (+ small variant)");
+            $this->line("  #{$row->id}: {$relativePath} -> {$paths['']} (+ ".count($suffixes)." variant(s))");
         }
     }
 

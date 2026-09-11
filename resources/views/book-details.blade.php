@@ -70,7 +70,10 @@
 <section class="section book-hero">
   <div class="book-hero-cover">
     @if ($currentBook->cover_image)
-      <img class="hero-cover-img cover-photo" src="{{ $currentBook->cover_image_url }}" alt="{{ $currentBook->title }}">
+      <img class="hero-cover-img cover-photo" src="{{ $currentBook->cover_image_md_url }}"
+        srcset="{{ $currentBook->cover_image_sm_url }} 300w, {{ $currentBook->cover_image_md_url }} 600w, {{ $currentBook->cover_image_url }} 800w"
+        sizes="(max-width: 900px) 90vw, 300px" width="600" height="900"
+        fetchpriority="high" decoding="async" alt="{{ $currentBook->title }}">
     @else
       <div class="hero-cover-img cover-{{ ($currentBook->id % 5) + 1 }}">
         <span class="cover-badge">B</span>
@@ -224,7 +227,7 @@
     <div class="review-list">
       @forelse ($reviews as $review)
         <article class="review-card">
-          <img src="{{ $review->user->avatar ?? 'https://i.pravatar.cc/72?img=' . (($review->user_id % 70) + 1) }}" alt="{{ $review->user->name }}">
+          <img src="{{ $review->user->avatar ?? 'https://i.pravatar.cc/72?img=' . (($review->user_id % 70) + 1) }}" width="72" height="72" loading="lazy" decoding="async" alt="{{ $review->user->name }}">
           <div class="review-body">
             <div class="review-head">
               <strong>{{ $review->user->name }}</strong>
@@ -251,7 +254,7 @@
   <div class="tab-panel" id="tab-author">
     @if ($currentBook->writer)
       <div class="author-mini-card">
-        <img src="{{ $currentBook->writer->photo ?? 'https://i.pravatar.cc/120?img=' . (($currentBook->writer->id % 70) + 1) }}" alt="{{ $currentBook->writer->name }}">
+        <img src="{{ $currentBook->writer->photo_sm_url ?? 'https://i.pravatar.cc/120?img=' . (($currentBook->writer->id % 70) + 1) }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $currentBook->writer->name }}">
         <div class="author-mini-info">
           <h3><a href="{{ route('writer-details', $currentBook->writer->slug) }}">{{ $currentBook->writer->name }}</a></h3>
           @if ($currentBook->writer->bio)
@@ -297,7 +300,10 @@
         <article class="book-card">
           @if ($similarBook->cover_image)
             <div class="cover-wrap">
-              <img class="book-cover cover-photo" src="{{ $similarBook->cover_image_sm_url }}" alt="{{ $similarBook->title }}">
+              <img class="book-cover cover-photo" src="{{ $similarBook->cover_image_sm_url }}"
+                srcset="{{ $similarBook->cover_image_sm_url }} 300w, {{ $similarBook->cover_image_md_url }} 600w"
+                sizes="(max-width: 640px) 45vw, 200px" width="300" height="450"
+                loading="lazy" decoding="async" alt="{{ $similarBook->title }}">
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($similarBook->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>

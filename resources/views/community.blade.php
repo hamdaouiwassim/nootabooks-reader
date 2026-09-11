@@ -79,14 +79,14 @@
         @if ($chatBook)
           <input type="hidden" name="book" value="{{ $chatBook->slug }}">
         @endif
-        <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" alt="{{ auth()->user()->name }}">
+        <img src="{{ auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13' }}" width="64" height="64" decoding="async" alt="{{ auth()->user()->name }}">
         <input type="text" name="body" maxlength="2000" required
           placeholder="{{ $chatBook ? 'شارك رأيك حول "'.$chatBook->title.'" ...' : 'شارك رأيك أو ابدأ نقاشًا جديدًا ...' }}">
         <button type="submit" class="btn btn-gold small">نشر</button>
       </form>
     @else
       <div class="new-post-box">
-        <img src="https://i.pravatar.cc/64?img=13" alt="زائر">
+        <img src="https://i.pravatar.cc/64?img=13" width="64" height="64" decoding="async" alt="زائر">
         <span>سجل الدخول للمشاركة في النقاش</span>
         <a href="{{ route('login') }}" class="btn btn-gold small">تسجيل الدخول</a>
       </div>
@@ -97,7 +97,7 @@
       @forelse ($discussions as $discussion)
         <article class="discussion-card">
           <div class="discussion-head">
-            <img src="{{ $discussion->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($discussion->user_id % 70) + 1) }}" alt="{{ $discussion->user->name }}">
+            <img src="{{ $discussion->user->avatar ?? 'https://i.pravatar.cc/64?img=' . (($discussion->user_id % 70) + 1) }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ $discussion->user->name }}">
             <div>
               <strong>{{ $discussion->user->name }}</strong>
               <span class="discussion-time">{{ $discussion->created_at->diffForHumans() }}</span>
@@ -170,7 +170,7 @@
       @forelse ($topContributors as $index => $contributor)
         <div class="contributor-item">
           <span class="rank @if ($index === 0) gold @elseif ($index === 1) silver @elseif ($index === 2) bronze @endif">{{ $index + 1 }}</span>
-          <img src="{{ $contributor->avatar ?? 'https://i.pravatar.cc/64?img=' . (($contributor->id % 70) + 1) }}" alt="{{ $contributor->name }}">
+          <img src="{{ $contributor->avatar ?? 'https://i.pravatar.cc/64?img=' . (($contributor->id % 70) + 1) }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ $contributor->name }}">
           <div class="contributor-info"><strong>{{ $contributor->name }}</strong><span>{{ number_format($contributor->points) }} نقطة</span></div>
         </div>
       @empty

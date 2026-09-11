@@ -35,27 +35,43 @@ trait ResolvesUploadedFileUrl
      */
     protected function resolveSmallVariantUrl(?string $value): ?string
     {
+        return $this->resolveVariantUrl($value, '-sm');
+    }
+
+    /**
+     * Resolves the medium "-md" variant — sized for a real srcset step
+     * between the card thumbnail and the full-size upload (see
+     * ImageOptimizer::optimizeResponsive()). Same existence-checked
+     * fallback-to-full behavior as resolveSmallVariantUrl().
+     */
+    protected function resolveMediumVariantUrl(?string $value): ?string
+    {
+        return $this->resolveVariantUrl($value, '-md');
+    }
+
+    private function resolveVariantUrl(?string $value, string $suffix): ?string
+    {
         if (! $value) {
             return null;
         }
 
-        $small = preg_replace('/(\.\w+)$/', '-sm$1', $value);
+        $variant = preg_replace('/(\.\w+)$/', $suffix.'$1', $value);
 
-        return $this->smallVariantExists($small) ? $this->resolveFileUrl($small) : $this->resolveFileUrl($value);
+        return $this->variantExists($variant) ? $this->resolveFileUrl($variant) : $this->resolveFileUrl($value);
     }
 
-    private function smallVariantExists(string $small): bool
+    private function variantExists(string $variant): bool
     {
         $marker = '/storage/';
 
-        if (($position = strpos($small, $marker)) !== false) {
-            return Storage::disk('public')->exists(substr($small, $position + strlen($marker)));
+        if (($position = strpos($variant, $marker)) !== false) {
+            return Storage::disk('public')->exists(substr($variant, $position + strlen($marker)));
         }
 
-        if (str_starts_with($small, 'storage/')) {
-            return Storage::disk('public')->exists(substr($small, strlen('storage/')));
+        if (str_starts_with($variant, 'storage/')) {
+            return Storage::disk('public')->exists(substr($variant, strlen('storage/')));
         }
 
-        return file_exists(public_path($small));
+        return file_exists(public_path($variant));
     }
 }

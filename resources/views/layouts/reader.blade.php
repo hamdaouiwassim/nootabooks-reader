@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>@yield('title', 'نوته بوك - عالم من الكتب بين يديك')</title>
+@include('partials.google-analytics')
 @include('partials.seo-meta', ['defaultRobots' => 'noindex, nofollow'])
 <link rel="stylesheet" href="{{ asset_min('assets/css/fonts.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/vendor/fontawesome/all.min.css') }}">
