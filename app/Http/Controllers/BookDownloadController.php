@@ -14,8 +14,6 @@ class BookDownloadController extends Controller
         abort_unless($book->status === 'published', 404);
         abort_unless($book->file_path, 404);
 
-        $book->increment('downloads_count');
-
         $relativePath = $this->relativeStoragePath($book->file_path);
 
         if ($relativePath && Storage::disk('public')->exists($relativePath)) {
@@ -23,11 +21,23 @@ class BookDownloadController extends Controller
             $title = trim(preg_replace('/[\\\\\/:*?"<>|]+/', '', $book->title));
             $filename = "{$title}-(nootabooks.com).{$extension}";
 
+            $book->increment('downloads_count');
+
             return Storage::disk('public')->download($relativePath, $filename);
         }
 
-        // Not on local storage (e.g. a legacy external URL) — best effort.
-        return redirect()->away($book->file_url);
+        if (! $relativePath) {
+            // A genuine legacy external URL (never lived on our disk) — best
+            // effort, so still count it: we're handing the visitor a real
+            // place to get the file, even though we can't confirm it loads.
+            $book->increment('downloads_count');
+
+            return redirect()->away($book->file_url);
+        }
+
+        // $relativePath resolved (this was supposed to be a local file) but
+        // it's missing from disk — don't count a download that can't happen.
+        abort(404);
     }
 
     /**

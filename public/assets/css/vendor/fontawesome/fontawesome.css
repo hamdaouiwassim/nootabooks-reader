@@ -78,6 +78,7 @@
 .fa-circle-check:before { content: "\f058"; }
 .fa-clock:before { content: "\f017"; }
 .fa-cloud-arrow-down:before { content: "\f0ed"; }
+.fa-cloud-arrow-up:before { content: "\f0ee"; }
 .fa-comment:before { content: "\f075"; }
 .fa-comment-dots:before { content: "\f4ad"; }
 .fa-comments:before { content: "\f086"; }
@@ -104,6 +105,7 @@
 .fa-hourglass-half:before { content: "\f252"; }
 .fa-house:before { content: "\f015"; }
 .fa-image:before { content: "\f03e"; }
+.fa-images:before { content: "\f302"; }
 .fa-key:before { content: "\f084"; }
 .fa-landmark:before { content: "\f66f"; }
 .fa-landmark-dome:before { content: "\f752"; }
