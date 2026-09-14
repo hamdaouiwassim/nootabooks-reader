@@ -1,22 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ---- Cover image upload + preview ----
-  const coverUpload = document.getElementById('coverUpload');
-  const coverInput = document.getElementById('coverInput');
-  const coverPreview = document.getElementById('coverPreview');
+  // ---- Cover image uploads + previews (large/medium/small, independent) ----
+  function setupCoverUpload(uploadId, inputId, previewId) {
+    const upload = document.getElementById(uploadId);
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
 
-  coverUpload?.addEventListener('click', () => coverInput?.click());
-  coverInput?.addEventListener('change', () => {
-    const file = coverInput.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      coverPreview.src = reader.result;
-      coverPreview.hidden = false;
-      coverUpload.classList.add('has-image');
-    };
-    reader.readAsDataURL(file);
-  });
+    upload?.addEventListener('click', () => input?.click());
+    input?.addEventListener('change', () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        preview.src = reader.result;
+        preview.hidden = false;
+        upload.classList.add('has-image');
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  setupCoverUpload('coverUploadLg', 'coverInputLg', 'coverPreviewLg');
+  setupCoverUpload('coverUploadMd', 'coverInputMd', 'coverPreviewMd');
+  setupCoverUpload('coverUploadSm', 'coverInputSm', 'coverPreviewSm');
 
   // ---- Book file upload: echo the chosen filename ----
   const bookFileInput = document.getElementById('bookFile');
@@ -28,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ---- Form submit feedback (real submission — just disable the button) ----
-  const form = document.getElementById('bookForm') || coverUpload?.closest('form');
+  const form = document.getElementById('bookForm');
   form?.addEventListener('submit', () => {
     const submitBtn = form.querySelector('button[type="submit"]');
     if (!submitBtn) return;

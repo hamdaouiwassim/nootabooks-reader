@@ -1,6 +1,6 @@
 # Custom Artisan Commands
 
-This document describes the custom Artisan commands added to this project, defined in [`app/Console/Commands`](app/Console/Commands), plus one Node-based build script. They're all one-off/maintenance commands you run manually — none of them are scheduled.
+This document describes the custom Artisan commands added to this project, defined in [`app/Console/Commands`](app/Console/Commands), plus two standalone scripts (one Node, one PHP). They're all one-off/maintenance commands you run manually — none of them are scheduled.
 
 | Command | Purpose |
 |---|---|
@@ -9,6 +9,8 @@ This document describes the custom Artisan commands added to this project, defin
 | [`assets:minify`](#assets-minify) | Generate `.min.css` / `.min.js` files for production |
 | [`urls:fix-domain`](#urlsfix-domain) | Rewrite the domain baked into already-stored cover/photo/file URLs after a domain change |
 | [`build:fontawesome`](#build-fontawesome) | Regenerate the self-hosted, subsetted Font Awesome build (only the icons this app actually uses) |
+| [`scripts/optimize-cover.php`](#scriptsoptimize-coverphp) | Generate the 3 book-cover sizes (large/medium/small) locally from one source image, ready to upload into the admin's 3 cover fields |
+| [`scripts/optimize-cover-server.php`](#scriptsoptimize-cover-serverphp) | Same as above, but with a browser file-picker/drag-and-drop UI instead of typing a CLI path |
 
 ---
 
@@ -20,14 +22,15 @@ php artisan images:optimize
 
 **Purpose:** retroactively optimizes every already-uploaded `Book.cover_image` and `Writer.photo` — for anything uploaded before the [`ImageOptimizer`](app/Services/Image/ImageOptimizer.php) pipeline existed, or before it started generating responsive variants.
 
-**What it does**, for every non-null `cover_image` / `photo` row:
-1. Skips rows that aren't real uploaded files (external URLs it can't reach locally, or seeded demo assets like `assets/books/*.jpg`).
-2. Skips rows that are already `.webp` **and** already have a small `-sm` variant generated — so re-running this command is always safe and won't re-compress the same file twice.
-3. For everything else: re-encodes the image as WebP and generates two sized variants sharing one filename —
-   - Book covers: full `800×1200` + small `300×450`
-   - Writer photos: full `600×600` + small `300×300`
-4. Deletes the old file(s) and updates the DB row with the new (full-size) URL.
-5. Saving the row fires the model's normal `save()` event — which busts the home-page/sitemap cache (see [`FlushesAppCache`](app/Models/Concerns/FlushesAppCache.php)) — so you don't need to clear the cache separately afterward.
+**Book covers and writer photos now work differently** (books moved to independently-uploadable size columns — see `Admin\BookController::storeCoverVariant()` — while writer photos still use the older shared-basename `-sm` suffix convention), so this command handles them separately:
+
+- **Book covers** — for every non-null `cover_image` missing its WebP conversion and/or its `cover_image_md` / `cover_image_sm` column:
+  1. Skips rows that aren't real local uploads (external URLs, or seeded demo assets) or whose file is missing on disk.
+  2. Converts a non-WebP `cover_image` to WebP (resized to `800×1200`) if needed.
+  3. Backfills `cover_image_md` (`600×900`) and/or `cover_image_sm` (`300×450`) by resizing from the current `cover_image` — only for whichever of the two columns is still empty, so it never overwrites a size the admin already uploaded manually.
+- **Writer photos** — unchanged: skips rows already `.webp` with a `-sm` sibling generated, otherwise re-encodes to WebP and generates `600×600` full + `300×300` small sharing one filename.
+- Saving a row fires the model's normal `save()` event — which busts the home-page/sitemap cache (see [`FlushesAppCache`](app/Models/Concerns/FlushesAppCache.php)) — so you don't need to clear the cache separately afterward.
+- Safe to re-run anytime: every check above is "only touch what's actually missing/outdated."
 
 **When to run it:**
 - Once, right after deploying the responsive-image feature, to bring existing content up to date.
@@ -85,10 +88,10 @@ php artisan assets:minify
 php artisan urls:fix-domain nootabooks.nootapedia.com nootabooks.com
 ```
 
-**Purpose:** `Book.cover_image`, `Book.file_path`, and `Writer.photo` are stored as **full absolute URLs baked in at upload time** (see `BookController::prepareData()` / `WriterController::prepareData()`, both using `force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$path`) — not relative paths resolved dynamically. Changing `APP_URL` in `.env` only affects *new* uploads going forward; anything uploaded before the domain change keeps the old domain baked into its DB row forever, which is why covers/photos can keep loading from an old domain even after `APP_URL` is updated and the app is otherwise fully served on the new one.
+**Purpose:** `Book.cover_image` (+ `cover_image_md` / `cover_image_sm`), `Book.file_path`, and `Writer.photo` are stored as **full absolute URLs baked in at upload time** (see `BookController::prepareData()` / `WriterController::prepareData()`, both using `force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$path`) — not relative paths resolved dynamically. Changing `APP_URL` in `.env` only affects *new* uploads going forward; anything uploaded before the domain change keeps the old domain baked into its DB row forever, which is why covers/photos can keep loading from an old domain even after `APP_URL` is updated and the app is otherwise fully served on the new one.
 
 **What it does:**
-- For every `cover_image` / `file_path` / `photo` value containing the old domain, does a plain string replace with the new one and saves the row.
+- For every `cover_image` / `cover_image_md` / `cover_image_sm` / `file_path` / `photo` value containing the old domain, does a plain string replace with the new one and saves the row.
 - Saving each row fires the model's normal `save()` event, which busts the home-page/sitemap cache — no separate cache-clear needed afterward.
 - Doesn't touch any files on disk — this is a pure database URL rewrite.
 
@@ -120,8 +123,50 @@ node scripts/build-fontawesome-subset.js
 
 ---
 
+## `scripts/optimize-cover.php`
+
+```bash
+php scripts/optimize-cover.php ~/covers/blue-elephant.jpg
+# or, batch mode over every image directly inside a folder:
+php scripts/optimize-cover.php ~/covers ~/covers/ready
+```
+
+**Purpose:** the admin book create/edit form has 3 independent cover upload fields — "الغلاف الكبير/المتوسط/الصغير" (large/medium/small) — each stored as-is (see `Admin\BookController::storeCoverVariant()`), on the assumption you'll sometimes pre-size covers yourself locally before uploading. This script generates those exact 3 sizes from one original source image, so you can prepare all 3 files locally and then upload each into its matching field. It's a plain CLI script, not an Artisan command — it reuses this project's own `vendor/autoload.php` (same `intervention/image` library the app itself uses) but never touches the database or runs inside the app.
+
+**What it does:**
+- Reads one source image (or, in batch mode, every `.jpg`/`.jpeg`/`.png`/`.webp` file directly inside a source folder).
+- For each, generates 3 WebP files at the same bounds/quality the app's own pipeline used to auto-generate: `{name}-lg.webp` (max `800×1200`), `{name}-md.webp` (max `600×900`), `{name}-sm.webp` (max `300×450`), all quality `85`.
+- Writes output into an `optimized/` subfolder next to the source by default, or a folder you pass as the 2nd argument.
+
+**When to run it:** anytime before adding/editing a book in the admin, whenever you want to pre-size a cover locally rather than letting the admin's safety-cap resize (`optimize()`, 2000×3000) do it for you.
+
+**Requires:** PHP + this project's `vendor/` already installed (`composer install`) — no separate setup, no Node.
+
+---
+
+## `scripts/optimize-cover-server.php`
+
+```bash
+php -S localhost:8000 scripts/optimize-cover-server.php
+# then open http://localhost:8000 in your browser
+```
+
+**Purpose:** the same tool as [`scripts/optimize-cover.php`](#scriptsoptimize-coverphp), just with a browser UI (file picker + drag-and-drop) instead of typing a source path on the command line. Shares the exact same resize logic — both scripts require [`scripts/lib/cover-variants.php`](scripts/lib/cover-variants.php), so they can never drift out of sync on sizes/quality.
+
+**What it does:**
+- `php -S` starts PHP's built-in dev server using this file as the router — it's the whole "app", no separate web server or config needed.
+- The page lets you choose (or drop) one image; on submit it generates the same 3 WebP sizes (`800×1200` / `600×900` / `300×450`, quality `85`) into a temp folder and shows a download link for each, labeled بالعربية (الغلاف الكبير/المتوسط/الصغير) with their actual pixel dimensions.
+- Uploads/outputs live under your OS temp directory (`nootabook-cover-optimizer/`), never inside the project or `storage/` — closing the server and deleting that temp folder leaves no trace.
+
+**When to run it:** same situations as `optimize-cover.php`, whenever a file picker is more convenient than typing a path — e.g. picking straight from Downloads/Desktop.
+
+**Requires:** same as `optimize-cover.php` (PHP + `vendor/`) — nothing extra. Stop it with Ctrl+C when done; it only serves on `localhost`, not your network.
+
+---
+
 ## General notes
 
 - None of these commands are registered on the scheduler (`routes/console.php`) — there's no automatic recurring optimization. Run them manually when relevant, or wire them into a deploy script.
 - None of them need a queue worker — they run synchronously and print progress as they go.
-- All five are safe to run against production data; the image/asset commands are destructive only in that they delete the specific old file they just replaced, `urls:fix-domain` never touches files at all (only DB values), and `build:fontawesome` only ever overwrites its own generated webfont/CSS output.
+- All five Artisan commands are safe to run against production data; the image/asset commands are destructive only in that they delete the specific old file they just replaced, `urls:fix-domain` never touches files at all (only DB values), and `build:fontawesome` only ever overwrites its own generated webfont/CSS output.
+- `scripts/optimize-cover.php` and `scripts/optimize-cover-server.php` don't touch the app or database at all — they only read a source image and write new files into an output folder (or your OS temp directory, for the server UI), entirely outside `storage/`/`public/`. Nothing to run against production; run them on your own machine before uploading.

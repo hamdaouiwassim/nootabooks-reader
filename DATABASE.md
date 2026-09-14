@@ -43,6 +43,8 @@ erDiagram
         text description_short "nullable"
         longtext description "nullable"
         string cover_image "nullable"
+        string cover_image_md "nullable"
+        string cover_image_sm "nullable"
         int pages_count "nullable"
         string language "default: العربية"
         smallint published_year "nullable"
@@ -129,7 +131,9 @@ Authors shown on the Writers / Writer Details pages.
 | `slug`                | string                     | Unique                                     |
 | `description_short`   | text, nullable             |                                             |
 | `description`         | longtext, nullable         |                                             |
-| `cover_image`         | string, nullable           | Path/URL                                   |
+| `cover_image`         | string, nullable           | Path/URL — large cover, uploaded independently per size (see `Admin\BookController::storeCoverVariant()`) |
+| `cover_image_md`      | string, nullable           | Path/URL — medium cover; falls back to `cover_image` when not set |
+| `cover_image_sm`      | string, nullable           | Path/URL — small cover; falls back to `cover_image` when not set |
 | `pages_count`         | int, unsigned, nullable    |                                             |
 | `language`            | string                     | Default `'العربية'`                        |
 | `published_year`      | smallint, unsigned, nullable |                                          |

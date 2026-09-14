@@ -11,7 +11,7 @@ class FixStoredDomain extends Command
 {
     protected $signature = 'urls:fix-domain {old : The domain to replace, e.g. nootabooks.nootapedia.com} {new : The domain to replace it with, e.g. nootabooks.com}';
 
-    protected $description = 'Rewrites the domain baked into already-stored cover/photo/file URLs (books.cover_image, books.file_path, writers.photo) after a domain change — changing APP_URL alone only affects new uploads';
+    protected $description = 'Rewrites the domain baked into already-stored cover/photo/file URLs (books.cover_image/_md/_sm, books.file_path, writers.photo) after a domain change — changing APP_URL alone only affects new uploads';
 
     public function handle(): int
     {
@@ -25,6 +25,8 @@ class FixStoredDomain extends Command
         }
 
         $this->rewriteColumn(Book::query(), 'cover_image', $old, $new);
+        $this->rewriteColumn(Book::query(), 'cover_image_md', $old, $new);
+        $this->rewriteColumn(Book::query(), 'cover_image_sm', $old, $new);
         $this->rewriteColumn(Book::query(), 'file_path', $old, $new);
         $this->rewriteColumn(Writer::query(), 'photo', $old, $new);
 

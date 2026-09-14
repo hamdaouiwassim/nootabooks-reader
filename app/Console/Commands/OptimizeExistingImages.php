@@ -14,14 +14,79 @@ class OptimizeExistingImages extends Command
 {
     protected $signature = 'images:optimize';
 
-    protected $description = 'Re-encode already-uploaded book covers and writer photos as compressed WebP, generating each declared size variant (small/medium) alongside the full-size original';
+    protected $description = 'Re-encode already-uploaded book covers and writer photos as compressed WebP, backfilling any missing size variant';
 
     public function handle(ImageOptimizer $optimizer): int
     {
-        $this->optimizeColumn(Book::query(), 'cover_image', 'covers', ['' => [800, 1200], '-md' => [600, 900], '-sm' => [300, 450]], $optimizer);
+        $this->optimizeBookCovers($optimizer);
         $this->optimizeColumn(Writer::query(), 'photo', 'writers', ['' => [600, 600], '-sm' => [300, 300]], $optimizer);
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Books store each cover size independently (cover_image / _md / _sm —
+     * see Admin\BookController::storeCoverVariant()), rather than deriving
+     * "-md"/"-sm" siblings from one filename. Retroactively: converts a
+     * legacy non-WebP cover_image to WebP, and backfills cover_image_md /
+     * cover_image_sm (resized from the current cover_image) for any book
+     * that doesn't have them yet — e.g. because the admin never uploaded
+     * those sizes manually.
+     */
+    private function optimizeBookCovers(ImageOptimizer $optimizer): void
+    {
+        $books = Book::whereNotNull('cover_image')->get();
+
+        $this->info("Checking {$books->count()} book cover_image value(s)...");
+
+        foreach ($books as $book) {
+            $relativePath = $this->relativeStoragePath($book->cover_image);
+
+            if (! $relativePath) {
+                continue; // external URL we can't reach locally
+            }
+
+            if (! Storage::disk('public')->exists($relativePath)) {
+                $this->warn("  Book #{$book->id}: cover file missing on disk, skipped");
+
+                continue;
+            }
+
+            $needsWebp = ! str_ends_with($relativePath, '.webp');
+            $needsMd = ! $book->cover_image_md;
+            $needsSm = ! $book->cover_image_sm;
+
+            if (! $needsWebp && ! $needsMd && ! $needsSm) {
+                continue; // already fully set up
+            }
+
+            $sourcePath = Storage::disk('public')->path($relativePath);
+
+            if ($needsWebp) {
+                $newRelativePath = $optimizer->optimizePath($sourcePath, 'covers', 800, 1200, 85);
+                Storage::disk('public')->delete($relativePath);
+                $book->cover_image = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$newRelativePath;
+                $sourcePath = Storage::disk('public')->path($newRelativePath);
+            }
+
+            if ($needsMd) {
+                $mdPath = $optimizer->optimizePath($sourcePath, 'covers', 600, 900, 85);
+                $book->cover_image_md = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$mdPath;
+            }
+
+            if ($needsSm) {
+                $smPath = $optimizer->optimizePath($sourcePath, 'covers', 300, 450, 85);
+                $book->cover_image_sm = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$smPath;
+            }
+
+            $book->save();
+
+            $this->line("  Book #{$book->id}: cover updated (".implode(', ', array_filter([
+                $needsWebp ? 'converted to webp' : null,
+                $needsMd ? '+medium' : null,
+                $needsSm ? '+small' : null,
+            ])).')');
+        }
     }
 
     private function optimizeColumn(Builder $query, string $column, string $directory, array $variants, ImageOptimizer $optimizer): void

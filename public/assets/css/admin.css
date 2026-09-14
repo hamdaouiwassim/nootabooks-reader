@@ -395,6 +395,7 @@
 .admin-switch input:checked + .admin-switch-slider::before { transform: translateX(-20px); }
 
 /* ---- cover upload ---- */
+.admin-cover-caption { display: block; font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
 .admin-cover-upload {
   position: relative;
   width: 100%;
@@ -430,7 +431,7 @@
 .admin-file-upload .file-info { flex: 1; min-width: 0; }
 .admin-file-upload strong { display: block; font-size: 13px; color: var(--navy); }
 .admin-file-upload span { display: block; font-size: 11px; color: var(--text-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-#coverInput, #pdfInput { display: none; }
+#coverInputLg, #coverInputMd, #coverInputSm, #pdfInput { display: none; }
 
 .admin-form-actions {
   display: flex;

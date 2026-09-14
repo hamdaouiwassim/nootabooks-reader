@@ -156,13 +156,47 @@
     <!-- ---- Cover sidebar ---- -->
     <div>
       <div class="admin-form-section">
-        <h3>صورة الغلاف</h3>
-        <label class="admin-cover-upload @if($book->cover_image) has-image @endif" id="coverUpload">
-          <i class="fa-solid fa-image"></i>
-          <span>اضغط لرفع صورة الغلاف<br>(JPG أو PNG، نسبة 2:3)</span>
-          <img id="coverPreview" @if($book->cover_image) src="{{ $book->cover_image_url }}" @else hidden @endif alt="معاينة الغلاف">
-        </label>
-        <input type="file" id="coverInput" name="cover_image" accept="image/*">
+        <h3>صور الغلاف</h3>
+        <p style="font-size:11px; color:var(--text-gray); margin-bottom:14px; line-height:1.7;">يمكنك رفع الأحجام الثلاثة إن كنت قد جهّزتها مسبقًا محليًا، أو الاكتفاء بالغلاف الكبير فقط — سيُستخدم تلقائيًا كبديل عند عدم توفر الحجم المتوسط أو الصغير. رفع حجم جديد يستبدل الحالي لهذا الحجم فقط، ولا يؤثر على باقي الأحجام.</p>
+
+        <div style="margin-bottom:18px;">
+          <label for="coverInputLg" class="admin-cover-caption">الغلاف الكبير</label>
+          <label class="admin-cover-upload @if($book->cover_image) has-image @endif" id="coverUploadLg">
+            <i class="fa-solid fa-image"></i>
+            <span>اضغط لرفع الغلاف الكبير<br>(JPG أو PNG، نسبة 2:3)</span>
+            <img id="coverPreviewLg" @if($book->cover_image) src="{{ $book->cover_image_url }}" @else hidden @endif alt="معاينة الغلاف الكبير">
+          </label>
+          <input type="file" id="coverInputLg" name="cover_image" accept="image/*">
+          @error('cover_image')
+            <span class="admin-field-error">{{ $message }}</span>
+          @enderror
+        </div>
+
+        <div style="margin-bottom:18px;">
+          <label for="coverInputMd" class="admin-cover-caption">الغلاف المتوسط (اختياري)</label>
+          <label class="admin-cover-upload @if($book->cover_image_md) has-image @endif" id="coverUploadMd">
+            <i class="fa-solid fa-image"></i>
+            <span>اضغط لرفع الغلاف المتوسط</span>
+            <img id="coverPreviewMd" @if($book->cover_image_md) src="{{ $book->cover_image_md_url }}" @else hidden @endif alt="معاينة الغلاف المتوسط">
+          </label>
+          <input type="file" id="coverInputMd" name="cover_image_md" accept="image/*">
+          @error('cover_image_md')
+            <span class="admin-field-error">{{ $message }}</span>
+          @enderror
+        </div>
+
+        <div>
+          <label for="coverInputSm" class="admin-cover-caption">الغلاف الصغير (اختياري)</label>
+          <label class="admin-cover-upload @if($book->cover_image_sm) has-image @endif" id="coverUploadSm">
+            <i class="fa-solid fa-image"></i>
+            <span>اضغط لرفع الغلاف الصغير</span>
+            <img id="coverPreviewSm" @if($book->cover_image_sm) src="{{ $book->cover_image_sm_url }}" @else hidden @endif alt="معاينة الغلاف الصغير">
+          </label>
+          <input type="file" id="coverInputSm" name="cover_image_sm" accept="image/*">
+          @error('cover_image_sm')
+            <span class="admin-field-error">{{ $message }}</span>
+          @enderror
+        </div>
       </div>
     </div>
 

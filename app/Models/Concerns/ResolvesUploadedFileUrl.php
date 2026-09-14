@@ -35,27 +35,11 @@ trait ResolvesUploadedFileUrl
      */
     protected function resolveSmallVariantUrl(?string $value): ?string
     {
-        return $this->resolveVariantUrl($value, '-sm');
-    }
-
-    /**
-     * Resolves the medium "-md" variant — sized for a real srcset step
-     * between the card thumbnail and the full-size upload (see
-     * ImageOptimizer::optimizeResponsive()). Same existence-checked
-     * fallback-to-full behavior as resolveSmallVariantUrl().
-     */
-    protected function resolveMediumVariantUrl(?string $value): ?string
-    {
-        return $this->resolveVariantUrl($value, '-md');
-    }
-
-    private function resolveVariantUrl(?string $value, string $suffix): ?string
-    {
         if (! $value) {
             return null;
         }
 
-        $variant = preg_replace('/(\.\w+)$/', $suffix.'$1', $value);
+        $variant = preg_replace('/(\.\w+)$/', '-sm$1', $value);
 
         return $this->variantExists($variant) ? $this->resolveFileUrl($variant) : $this->resolveFileUrl($value);
     }

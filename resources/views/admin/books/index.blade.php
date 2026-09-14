@@ -14,10 +14,7 @@
     <h1>إدارة الكتب</h1>
     <p>عرض وتعديل وإضافة الكتب المتوفرة على المنصة ({{ $totalBooks }} كتاب)</p>
   </div>
-  <div style="display:flex; gap:10px;">
-    <a href="{{ route('admin.books.bulk-covers') }}" class="btn btn-outline"><i class="fa-solid fa-images"></i> رفع أغلفة بالجملة</a>
-    <a href="{{ route('admin.books.create') }}" class="btn btn-gold"><i class="fa-solid fa-plus"></i> إضافة كتاب جديد</a>
-  </div>
+  <a href="{{ route('admin.books.create') }}" class="btn btn-gold"><i class="fa-solid fa-plus"></i> إضافة كتاب جديد</a>
 </div>
 
 <form class="admin-toolbar" method="GET" action="{{ route('admin.books.index') }}">

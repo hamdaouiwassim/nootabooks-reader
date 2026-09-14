@@ -82,10 +82,10 @@ class BookController extends Controller
 
     public function destroy(Book $book): RedirectResponse
     {
-        if ($relativePath = $this->relativeStoragePath($book->cover_image)) {
-            Storage::disk('public')->delete($relativePath);
-            Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-sm$1', $relativePath));
-            Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-md$1', $relativePath));
+        foreach ([$book->cover_image, $book->cover_image_md, $book->cover_image_sm] as $coverValue) {
+            if ($relativePath = $this->relativeStoragePath($coverValue)) {
+                Storage::disk('public')->delete($relativePath);
+            }
         }
 
         if ($relativePath = $this->relativeStoragePath($book->file_path)) {
@@ -107,10 +107,12 @@ class BookController extends Controller
             ? array_values(array_filter(array_map('trim', preg_split('/[,،]/u', (string) $request->string('tags')))))
             : [];
 
-        if ($request->hasFile('cover_image')) {
-            $data['cover_image'] = $this->optimizeCoverImage($request->file('cover_image'), $book?->cover_image);
-        } else {
-            unset($data['cover_image']);
+        foreach (['cover_image', 'cover_image_md', 'cover_image_sm'] as $coverField) {
+            if ($request->hasFile($coverField)) {
+                $data[$coverField] = $this->storeCoverVariant($request->file($coverField), $book?->{$coverField});
+            } else {
+                unset($data[$coverField]);
+            }
         }
 
         if ($request->hasFile('book_file')) {
@@ -131,74 +133,20 @@ class BookController extends Controller
     }
 
     /**
-     * Deletes the old cover's variants (if any), generates fresh WebP
-     * responsive variants for the new upload, and returns the full URL to
-     * store in Book.cover_image. Shared by the single-book form and the
-     * bulk cover upload, so both stay on the exact same variant spec.
+     * Deletes the old file for this specific cover slot (if any), converts
+     * the new upload to WebP — capped at a generous size only as a safety
+     * net, since the admin has typically already sized/optimized each of
+     * the three cover slots themselves — and returns the full URL to store.
      */
-    private function optimizeCoverImage(UploadedFile $file, ?string $oldCoverImage): string
+    private function storeCoverVariant(UploadedFile $file, ?string $oldValue): string
     {
-        if ($relativePath = $this->relativeStoragePath($oldCoverImage)) {
+        if ($relativePath = $this->relativeStoragePath($oldValue)) {
             Storage::disk('public')->delete($relativePath);
-            Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-sm$1', $relativePath));
-            Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-md$1', $relativePath));
         }
 
-        $paths = app(ImageOptimizer::class)->optimizeResponsive(
-            $file,
-            'covers',
-            ['' => [800, 1200], '-md' => [600, 900], '-sm' => [300, 450]],
-            85,
-        );
+        $path = app(ImageOptimizer::class)->optimize($file, 'covers', 2000, 3000, 90);
 
-        return force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$paths[''];
-    }
-
-    public function bulkCovers(): View
-    {
-        return view('admin.books.bulk-covers', [
-            'activeNav' => 'books',
-            'books' => Book::orderBy('title')->get(['id', 'title', 'slug', 'cover_image']),
-        ]);
-    }
-
-    public function storeBulkCovers(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'covers' => ['required', 'array', 'min:1'],
-            'covers.*' => ['image', 'max:4096'],
-        ], [
-            'covers.required' => 'اختر ملفًا واحدًا على الأقل.',
-            'covers.*.image' => 'يجب أن تكون جميع الملفات صورًا (JPG أو PNG أو WebP).',
-            'covers.*.max' => 'حجم كل صورة يجب ألا يتجاوز 4 ميجابايت.',
-        ]);
-
-        $updated = [];
-        $unmatched = [];
-
-        foreach ($request->file('covers') as $file) {
-            // Match by filename: "blue-elephant.jpg" -> book with that slug,
-            // falling back to a bare numeric filename as the book id.
-            $key = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $book = Book::where('slug', $key)->first()
-                ?? (is_numeric($key) ? Book::find((int) $key) : null);
-
-            if (! $book) {
-                $unmatched[] = $file->getClientOriginalName();
-
-                continue;
-            }
-
-            $book->cover_image = $this->optimizeCoverImage($file, $book->cover_image);
-            $book->save();
-
-            $updated[] = $book->title;
-        }
-
-        return redirect()->route('admin.books.bulk-covers')->with([
-            'bulkUpdated' => $updated,
-            'bulkUnmatched' => $unmatched,
-        ]);
+        return force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$path;
     }
 
     /**

@@ -35,6 +35,8 @@ class Book extends Model
         'description_short',
         'description',
         'cover_image',
+        'cover_image_md',
+        'cover_image_sm',
         'is_coming_soon',
         'status',
         'file_path',
@@ -101,14 +103,18 @@ class Book extends Model
         return Attribute::make(get: fn () => $this->resolveFileUrl($this->cover_image));
     }
 
+    /**
+     * Independently-uploadable size — falls back to the main cover when the
+     * admin hasn't provided one for this specific size.
+     */
     protected function coverImageSmUrl(): Attribute
     {
-        return Attribute::make(get: fn () => $this->resolveSmallVariantUrl($this->cover_image));
+        return Attribute::make(get: fn () => $this->resolveFileUrl($this->cover_image_sm) ?? $this->resolveFileUrl($this->cover_image));
     }
 
     protected function coverImageMdUrl(): Attribute
     {
-        return Attribute::make(get: fn () => $this->resolveMediumVariantUrl($this->cover_image));
+        return Attribute::make(get: fn () => $this->resolveFileUrl($this->cover_image_md) ?? $this->resolveFileUrl($this->cover_image));
     }
 
     protected function fileUrl(): Attribute
