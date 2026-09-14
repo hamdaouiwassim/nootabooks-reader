@@ -55,7 +55,7 @@
 
     <div class="book-carousel">
       @foreach ($trendingBooks as $book)
-        <article class="book-card">
+        <a href="{{ route('book-details', $book->slug) }}" class="book-card">
           @if ($book->cover_image)
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
@@ -77,11 +77,10 @@
               @endif
             </div>
           @endif
-          <h3><a href="{{ route('book-details', $book->slug) }}">{{ $book->title }}</a></h3>
+          <h3>{{ $book->title }}</h3>
           <p class="author">{{ $book->writer?->name }}</p>
           <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
-          <a href="{{ route('book-details', $book->slug) }}" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
-        </article>
+        </a>
       @endforeach
     </div>
 
@@ -105,7 +104,7 @@
 
     <div class="book-carousel">
       @foreach ($recentBooks as $book)
-        <article class="book-card">
+        <a href="{{ route('book-details', $book->slug) }}" class="book-card">
           @if ($book->cover_image)
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
@@ -127,11 +126,10 @@
               @endif
             </div>
           @endif
-          <h3><a href="{{ route('book-details', $book->slug) }}">{{ $book->title }}</a></h3>
+          <h3>{{ $book->title }}</h3>
           <p class="author">{{ $book->writer?->name }}</p>
           <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
-          <a href="{{ route('book-details', $book->slug) }}" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
-        </article>
+        </a>
       @endforeach
     </div>
 

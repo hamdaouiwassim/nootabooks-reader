@@ -72,7 +72,7 @@
   @if ($categoryBooks->isNotEmpty())
     <div class="writer-books-grid" id="categoryBooksGrid">
       @foreach ($categoryBooks as $book)
-        <article class="book-card" data-year="{{ $book->published_year }}" data-downloads="{{ $book->downloads_count }}">
+        <a href="{{ route('book-details', $book->slug) }}" class="book-card" data-year="{{ $book->published_year }}" data-downloads="{{ $book->downloads_count }}">
           @if ($book->cover_image)
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
@@ -85,20 +85,19 @@
               @endif
             </div>
           @else
-            <a href="{{ route('book-details', $book->slug) }}" class="book-cover cover-{{ ($book->id % 5) + 1 }}">
+            <div class="book-cover cover-{{ ($book->id % 5) + 1 }}">
               <span class="cover-badge">B</span>
               <span class="cover-title">{{ $book->title }}</span>
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($book->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
               @endif
-            </a>
+            </div>
           @endif
-          <h3><a href="{{ route('book-details', $book->slug) }}">{{ $book->title }}</a></h3>
+          <h3>{{ $book->title }}</h3>
           <p class="author">{{ $book->writer?->name }}</p>
           <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
-          <a href="{{ route('book-details', $book->slug) }}" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
-        </article>
+        </a>
       @endforeach
     </div>
 

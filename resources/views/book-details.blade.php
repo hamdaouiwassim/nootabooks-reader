@@ -325,7 +325,7 @@
 
     <div class="book-carousel">
       @forelse ($similarBooks as $similarBook)
-        <article class="book-card">
+        <a href="{{ route('book-details', $similarBook->slug) }}" class="book-card">
           @if ($similarBook->cover_image)
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $similarBook->cover_image_sm_url }}"
@@ -350,8 +350,7 @@
           <h3>{{ $similarBook->title }}</h3>
           <p class="author">{{ $similarBook->writer?->name }}</p>
           <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($similarBook->rating_average, 1) }}</p>
-          <a href="{{ route('book-details', $similarBook->slug) }}" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
-        </article>
+        </a>
       @empty
         <p class="no-results">لا توجد كتب مشابهة في نفس التصنيف حاليًا.</p>
       @endforelse

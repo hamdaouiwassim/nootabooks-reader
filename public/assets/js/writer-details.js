@@ -26,13 +26,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ---- Download buttons feedback ----
-  document.querySelectorAll('.writer-books-grid .btn-outline').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const original = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-check"></i> تم التحميل';
-      setTimeout(() => { btn.innerHTML = original; }, 1800);
-    });
-  });
-
 });
