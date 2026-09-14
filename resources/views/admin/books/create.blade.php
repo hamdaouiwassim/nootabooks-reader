@@ -8,7 +8,6 @@
     ['label' => 'إدارة الكتب', 'url' => route('admin.books.index')],
     ['label' => 'إضافة كتاب', 'url' => null],
   ];
-  $selectedFormats = old('formats', []);
 @endphp
 
 @section('content')
@@ -92,7 +91,7 @@
       </div>
 
       <div class="admin-form-section">
-        <h3>الملف والصيغ</h3>
+        <h3>ملف الكتاب</h3>
         <div class="admin-form-grid">
           <div class="admin-form-field">
             <label for="bookFileSize">حجم الملف (ميجابايت)</label>
@@ -104,18 +103,8 @@
             <input type="text" id="bookTags" name="tags" class="admin-input" value="{{ old('tags') }}" placeholder="إثارة، غموض">
           </div>
           <div class="admin-form-field full">
-            <label>الصيغ المتوفرة</label>
-            <div class="admin-toggle-row" style="gap:20px;">
-              @foreach (['PDF', 'EPUB', 'MOBI'] as $format)
-                <label style="display:flex; align-items:center; gap:6px; font-weight:600; font-size:13px;">
-                  <input type="checkbox" name="formats[]" value="{{ $format }}" @checked(in_array($format, $selectedFormats))> {{ $format }}
-                </label>
-              @endforeach
-            </div>
-          </div>
-          <div class="admin-form-field full">
-            <label for="bookFile">ملف الكتاب (PDF، EPUB أو MOBI)</label>
-            <input type="file" id="bookFile" name="book_file" class="admin-input" accept=".pdf,.epub,.mobi">
+            <label for="bookFile">ملف الكتاب (PDF)</label>
+            <input type="file" id="bookFile" name="book_file" class="admin-input" accept=".pdf">
             <span class="admin-file-name" id="bookFileName"></span>
             @error('book_file')
               <span class="admin-field-error">{{ $message }}</span>

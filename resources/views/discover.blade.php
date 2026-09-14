@@ -65,12 +65,6 @@
       <label class="checkbox-row rating-filter" data-min="3"><input type="checkbox" name="rating[]" value="3" onchange="this.form.submit()" @checked(in_array(3.0, $selectedRatings))> <span class="stars sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i></span> فأعلى</label>
     </div>
 
-    <div class="filter-group">
-      <h3>الصيغة</h3>
-      <label class="checkbox-row"><input type="checkbox" name="format[]" value="PDF" onchange="this.form.submit()" @checked(in_array('PDF', $selectedFormats))> <span>PDF</span></label>
-      <label class="checkbox-row"><input type="checkbox" name="format[]" value="EPUB" onchange="this.form.submit()" @checked(in_array('EPUB', $selectedFormats))> <span>EPUB</span></label>
-      <label class="checkbox-row"><input type="checkbox" name="format[]" value="MOBI" onchange="this.form.submit()" @checked(in_array('MOBI', $selectedFormats))> <span>MOBI</span></label>
-    </div>
   </form>
 
   <!-- ---- Results ---- -->

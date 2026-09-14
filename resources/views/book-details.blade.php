@@ -121,7 +121,6 @@
       <div class="meta-item"><i class="fa-solid fa-language"></i><span>اللغة</span><strong>{{ $currentBook->language }}</strong></div>
       <div class="meta-item"><i class="fa-solid fa-calendar-days"></i><span>تاريخ النشر</span><strong>{{ $currentBook->published_year ?? '—' }}</strong></div>
       <div class="meta-item"><i class="fa-solid fa-file-arrow-down"></i><span>حجم الملف</span><strong>{{ $currentBook->file_size_mb ? $currentBook->file_size_mb.' MB' : '—' }}</strong></div>
-      <div class="meta-item"><i class="fa-solid fa-book-open-reader"></i><span>الصيغة</span><strong>{{ $currentBook->formats ? implode(', ', $currentBook->formats) : '—' }}</strong></div>
       <div class="meta-item"><i class="fa-solid fa-cloud-arrow-down"></i><span>مرات التحميل</span><strong>{{ number_format($currentBook->downloads_count) }}</strong></div>
     </div>
 

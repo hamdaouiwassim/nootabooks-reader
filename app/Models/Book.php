@@ -45,7 +45,6 @@ class Book extends Model
         'language',
         'published_year',
         'file_size_mb',
-        'formats',
         'tags',
         'downloads_count',
         'rating_average',
@@ -55,7 +54,6 @@ class Book extends Model
     protected function casts(): array
     {
         return [
-            'formats' => 'array',
             'tags' => 'array',
             'is_coming_soon' => 'boolean',
             'pages_count' => 'integer',

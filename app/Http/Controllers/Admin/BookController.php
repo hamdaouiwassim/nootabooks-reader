@@ -102,7 +102,6 @@ class BookController extends Controller
         $data = $request->validated();
 
         $data['is_coming_soon'] = $request->boolean('is_coming_soon');
-        $data['formats'] = $request->input('formats', []);
         $data['tags'] = $request->filled('tags')
             ? array_values(array_filter(array_map('trim', preg_split('/[,،]/u', (string) $request->string('tags')))))
             : [];
@@ -150,17 +149,13 @@ class BookController extends Controller
     }
 
     /**
-     * Auto-fill file_size_mb (any format) and, for PDFs, pages_count — read
-     * straight from the uploaded file rather than trusting manual admin
-     * input, which overrides whatever was typed in those two form fields.
+     * Auto-fill file_size_mb and pages_count — read straight from the
+     * uploaded PDF rather than trusting manual admin input, which overrides
+     * whatever was typed in those two form fields.
      */
     private function detectFileMetadata(UploadedFile $file, array &$data): void
     {
         $data['file_size_mb'] = round($file->getSize() / 1024 / 1024, 2);
-
-        if (strtolower($file->getClientOriginalExtension()) !== 'pdf') {
-            return;
-        }
 
         try {
             $pdf = (new PdfParser())->parseFile($file->getRealPath());

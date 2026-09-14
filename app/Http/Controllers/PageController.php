@@ -57,7 +57,6 @@ class PageController extends Controller
         $selectedCategorySlugs = array_filter((array) $request->input('category', []));
         $language = $request->string('lang', 'all')->toString();
         $selectedRatings = array_filter(array_map('floatval', (array) $request->input('rating', [])));
-        $selectedFormats = array_values(array_intersect((array) $request->input('format', []), ['PDF', 'EPUB', 'MOBI']));
         $search = trim((string) $request->input('q', ''));
         $sort = $request->string('sort', 'popular')->toString();
 
@@ -68,13 +67,6 @@ class PageController extends Controller
             ->when($language === 'عربي', fn ($q) => $q->where('language', 'العربية'))
             ->when($language === 'أجنبي', fn ($q) => $q->where('language', '!=', 'العربية'))
             ->when($selectedRatings, fn ($q) => $q->where('rating_average', '>=', min($selectedRatings)))
-            ->when($selectedFormats, function ($q) use ($selectedFormats) {
-                $q->where(function ($fq) use ($selectedFormats) {
-                    foreach ($selectedFormats as $format) {
-                        $fq->orWhereJsonContains('formats', $format);
-                    }
-                });
-            })
             ->when($search !== '', function ($q) use ($search) {
                 $q->where(function ($sq) use ($search) {
                     $sq->where('title', 'like', "%{$search}%")
@@ -98,7 +90,6 @@ class PageController extends Controller
             'selectedCategorySlugs' => $selectedCategorySlugs,
             'selectedLanguage' => $language,
             'selectedRatings' => $selectedRatings,
-            'selectedFormats' => $selectedFormats,
             'search' => $search,
             'sort' => $sort,
         ]);

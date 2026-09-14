@@ -54,7 +54,6 @@ erDiagram
         string language "default: العربية"
         smallint published_year "nullable"
         decimal file_size_mb "8,2, nullable"
-        json formats "nullable"
         json tags "nullable"
         int downloads_count "default: 0"
         decimal rating_average "2,1, default: 0"
@@ -151,7 +150,6 @@ Authors shown on the Writers / Writer Details pages.
 | `language`            | string                     | Default `'العربية'`                        |
 | `published_year`      | smallint, unsigned, nullable |                                          |
 | `file_size_mb`        | decimal(8,2), nullable     |                                             |
-| `formats`             | json, nullable              | e.g. `["PDF", "EPUB"]`                     |
 | `tags`                | json, nullable               | e.g. `["إثارة", "غموض"]`                    |
 | `downloads_count`     | int, unsigned              | Default `0`                                |
 | `rating_average`      | decimal(2,1)                | Default `0`                                |
@@ -162,7 +160,8 @@ Authors shown on the Writers / Writer Details pages.
 **Migrations:**
 [`2026_09_08_000002_create_books_table.php`](database/migrations/2026_09_08_000002_create_books_table.php),
 [`2026_09_08_000005_add_writer_id_to_books_table.php`](database/migrations/2026_09_08_000005_add_writer_id_to_books_table.php) (adds `writer_id`, drops the old `author_name` string column),
-[`2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php`](database/migrations/2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php) (adds `title_en`)
+[`2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php`](database/migrations/2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php) (adds `title_en`),
+[`2026_09_14_000003_drop_formats_from_books_table.php`](database/migrations/2026_09_14_000003_drop_formats_from_books_table.php) (drops `formats` — every book is a PDF, the format multi-select added no value)
 
 ### `users`
 
@@ -232,4 +231,4 @@ Standard Laravel infrastructure tables — not part of the app's domain model:
 | [`App\Models\Book`](app/Models/Book.php)         | `books`      | `category()` → `belongsTo(Category::class)`, `writer()` → `belongsTo(Writer::class)` |
 | [`App\Models\User`](app/Models/User.php)         | `users`      | *(none yet — no favorites/library/review pivot exists)* |
 
-`Book.formats`, `Book.tags`, and `User.notification_preferences` are cast to PHP arrays (`array` cast); `Book.file_size_mb`, `Book.rating_average`, and `Writer.rating_average` are cast to `decimal`; the boolean profile-preference columns on `User` and `Writer.is_featured` are cast to `boolean`.
+`Book.tags` and `User.notification_preferences` are cast to PHP arrays (`array` cast); `Book.file_size_mb`, `Book.rating_average`, and `Writer.rating_average` are cast to `decimal`; the boolean profile-preference columns on `User` and `Writer.is_featured` are cast to `boolean`.

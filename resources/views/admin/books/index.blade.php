@@ -42,7 +42,6 @@
       <tr>
         <th>الكتاب</th>
         <th>التصنيف</th>
-        <th>الصيغ</th>
         <th>التقييم</th>
         <th>التحميلات</th>
         <th>تاريخ الإضافة</th>
@@ -72,7 +71,6 @@
             </div>
           </td>
           <td>{{ $book->category->name }}</td>
-          <td>{{ $book->formats ? implode('، ', $book->formats) : '—' }}</td>
           <td><i class="fa-solid fa-star" style="color:var(--star)"></i> {{ number_format($book->rating_average, 1) }}</td>
           <td>{{ number_format($book->downloads_count) }}</td>
           <td>{{ $book->created_at->diffForHumans() }}</td>
@@ -90,7 +88,7 @@
         </tr>
       @empty
         <tr class="admin-empty-row">
-          <td colspan="7">لا توجد كتب مطابقة لبحثك</td>
+          <td colspan="6">لا توجد كتب مطابقة لبحثك</td>
         </tr>
       @endforelse
     </tbody>
