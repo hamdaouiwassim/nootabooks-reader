@@ -75,7 +75,7 @@ class OptimizeExistingImages extends Command
             }
 
             if ($needsSm) {
-                $smPath = $optimizer->optimizePath($sourcePath, 'covers', 300, 450, 80);
+                $smPath = $optimizer->optimizePath($sourcePath, 'covers', 174, 285, 80);
                 $book->cover_image_sm = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$smPath;
             }
 
