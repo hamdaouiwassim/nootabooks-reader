@@ -159,6 +159,8 @@
 
 .tab-panel h2 { font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 16px; }
 .tab-panel p { color: #4a4a4a; font-size: 15px; line-height: 1.9; margin-bottom: 16px; max-width: 800px; }
+.tab-panel section[aria-labelledby] a { color: var(--teal); font-weight: 700; text-decoration: underline; }
+.tab-panel section[aria-labelledby] a:hover { color: var(--gold-dark); }
 
 .genre-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
 .genre-tags span {

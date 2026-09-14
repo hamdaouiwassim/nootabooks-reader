@@ -91,6 +91,21 @@
       </div>
 
       <div class="admin-form-section">
+        <h3>إعدادات السيو (اختياري)</h3>
+        <p style="font-size:11px; color:var(--text-gray); margin-bottom:14px; line-height:1.7;">اتركها فارغة ليتم توليد عنوان ووصف مناسبين لمحركات البحث تلقائيًا من عنوان الكتاب ونبذته.</p>
+        <div class="admin-form-grid">
+          <div class="admin-form-field full">
+            <label for="bookSeoTitle">عنوان السيو</label>
+            <input type="text" id="bookSeoTitle" name="seo_title" class="admin-input" value="{{ old('seo_title') }}" placeholder="مثال: تحميل رواية {{ old('title') ?: 'العنوان' }} PDF وقراءتها أونلاين | نوته بوك">
+          </div>
+          <div class="admin-form-field full">
+            <label for="bookSeoDescription">وصف السيو</label>
+            <textarea id="bookSeoDescription" name="seo_description" class="admin-textarea" rows="3" maxlength="500" placeholder="وصف قصير يظهر في نتائج البحث (بحد أقصى 500 حرف)">{{ old('seo_description') }}</textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-form-section">
         <h3>ملف الكتاب</h3>
         <div class="admin-form-grid">
           <div class="admin-form-field">

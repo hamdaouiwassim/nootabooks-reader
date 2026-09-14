@@ -47,6 +47,8 @@ erDiagram
         string slug UK
         text description_short "nullable"
         longtext description "nullable"
+        string seo_title "nullable"
+        string seo_description "nullable"
         string cover_image "nullable"
         string cover_image_md "nullable"
         string cover_image_sm "nullable"
@@ -143,6 +145,8 @@ Authors shown on the Writers / Writer Details pages.
 | `slug`                | string                     | Unique                                     |
 | `description_short`   | text, nullable             |                                             |
 | `description`         | longtext, nullable         |                                             |
+| `seo_title`           | string, nullable           | Manual `<title>` override; falls back to `Book::resolved_seo_title` when empty |
+| `seo_description`     | string(500), nullable      | Manual meta description override; falls back to `Book::resolved_seo_description` when empty |
 | `cover_image`         | string, nullable           | Path/URL — large cover, uploaded independently per size (see `Admin\BookController::storeCoverVariant()`) |
 | `cover_image_md`      | string, nullable           | Path/URL — medium cover; falls back to `cover_image` when not set |
 | `cover_image_sm`      | string, nullable           | Path/URL — small cover; falls back to `cover_image` when not set |
@@ -161,7 +165,8 @@ Authors shown on the Writers / Writer Details pages.
 [`2026_09_08_000002_create_books_table.php`](database/migrations/2026_09_08_000002_create_books_table.php),
 [`2026_09_08_000005_add_writer_id_to_books_table.php`](database/migrations/2026_09_08_000005_add_writer_id_to_books_table.php) (adds `writer_id`, drops the old `author_name` string column),
 [`2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php`](database/migrations/2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php) (adds `title_en`),
-[`2026_09_14_000003_drop_formats_from_books_table.php`](database/migrations/2026_09_14_000003_drop_formats_from_books_table.php) (drops `formats` — every book is a PDF, the format multi-select added no value)
+[`2026_09_14_000003_drop_formats_from_books_table.php`](database/migrations/2026_09_14_000003_drop_formats_from_books_table.php) (drops `formats` — every book is a PDF, the format multi-select added no value),
+[`2026_09_14_000004_add_seo_fields_to_books_table.php`](database/migrations/2026_09_14_000004_add_seo_fields_to_books_table.php) (adds `seo_title`, `seo_description`)
 
 ### `users`
 

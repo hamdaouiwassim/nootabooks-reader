@@ -35,6 +35,8 @@ class Book extends Model
         'slug',
         'description_short',
         'description',
+        'seo_title',
+        'seo_description',
         'cover_image',
         'cover_image_md',
         'cover_image_sm',
@@ -95,6 +97,63 @@ class Book extends Model
         $this->rating_average = round($this->reviews()->avg('rating') ?? 0, 1);
         $this->rating_count = $this->reviews()->count();
         $this->saveQuietly();
+    }
+
+    /**
+     * "رواية" for books in the novels category, "كتاب" otherwise — used to
+     * generate SEO copy that matches how people actually search, without
+     * calling every book a "رواية".
+     */
+    protected function typeLabel(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->category?->slug === 'novels' ? 'رواية' : 'كتاب');
+    }
+
+    /**
+     * Falls back to a generated, search-intent title (download + read) when
+     * the admin hasn't set a manual seo_title override.
+     */
+    protected function resolvedSeoTitle(): Attribute
+    {
+        return Attribute::make(get: function () {
+            if ($this->seo_title) {
+                return $this->seo_title;
+            }
+
+            $readingSuffix = $this->type_label === 'رواية' ? 'وقراءتها أونلاين' : 'وقراءته أونلاين';
+
+            return "تحميل {$this->type_label} {$this->title} PDF {$readingSuffix} | نوته بوك";
+        });
+    }
+
+    /**
+     * Falls back to a generated meta description when the admin hasn't set
+     * a manual seo_description override — leads with the actual
+     * download/read search intent, then folds in the book's own
+     * description when one exists so the result stays unique per book
+     * rather than a purely templated sentence.
+     */
+    protected function resolvedSeoDescription(): Attribute
+    {
+        return Attribute::make(get: function () {
+            if ($this->seo_description) {
+                return $this->seo_description;
+            }
+
+            $readingSuffix = $this->type_label === 'رواية' ? 'وقراءتها أونلاين' : 'وقراءته أونلاين';
+            $intro = "تحميل {$this->type_label} {$this->title} PDF {$readingSuffix}.";
+
+            $summary = $this->description_short
+                ?: ($this->description ? \Illuminate\Support\Str::limit(strip_tags($this->description), 120) : null);
+
+            if ($summary) {
+                return \Illuminate\Support\Str::limit("{$intro} {$summary}", 160);
+            }
+
+            $ofSuffix = $this->type_label === 'رواية' ? 'الرواية ومؤلفها وتصنيفها' : 'الكتاب ومؤلفه وتصنيفه';
+
+            return \Illuminate\Support\Str::limit("{$intro} تعرّف على {$ofSuffix} واقرأه مباشرة على نوته بوك.", 160);
+        });
     }
 
     protected function coverImageUrl(): Attribute

@@ -23,7 +23,7 @@ class SitemapController extends Controller
                 ['url' => route('terms'), 'priority' => '0.2'],
             ];
 
-            $books = Book::select('slug', 'updated_at')->orderByDesc('updated_at')->get();
+            $books = Book::published()->select('slug', 'updated_at')->orderByDesc('updated_at')->get();
             $writers = Writer::select('slug', 'updated_at')->orderByDesc('updated_at')->get();
             $categories = Category::select('slug', 'updated_at')->orderByDesc('updated_at')->get();
 

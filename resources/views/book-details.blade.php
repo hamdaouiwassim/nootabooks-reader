@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', $currentBook->title.' - نوته بوك')
-@section('meta_description', $currentBook->description_short ?: \Illuminate\Support\Str::limit(strip_tags((string) $currentBook->description), 160) ?: 'اقرأ وحمّل كتاب '.$currentBook->title.' على نوته بوك.')
+@section('title', $currentBook->resolved_seo_title)
+@section('meta_description', $currentBook->resolved_seo_description)
 @section('og_type', 'book')
 @section('og_image', $currentBook->cover_image_url ?? asset('assets/images/hero-section.jpg'))
 
@@ -18,10 +18,13 @@
     'description' => $currentBook->description_short ?: strip_tags((string) $currentBook->description),
     'inLanguage' => $currentBook->language,
     'numberOfPages' => $currentBook->pages_count,
+    'datePublished' => $currentBook->published_year ? (string) $currentBook->published_year : null,
+    'genre' => $currentBook->category?->name,
     'image' => $currentBook->cover_image_url,
     'author' => $currentBook->writer ? [
         '@type' => 'Person',
         'name' => $currentBook->writer->name,
+        'url' => route('writer-details', $currentBook->writer->slug),
     ] : null,
     'aggregateRating' => $currentBook->rating_count > 0 ? [
         '@type' => 'AggregateRating',
@@ -73,7 +76,7 @@
       <img class="hero-cover-img cover-photo" src="{{ $currentBook->cover_image_md_url }}"
         srcset="{{ $currentBook->cover_image_sm_url }} 300w, {{ $currentBook->cover_image_md_url }} 600w, {{ $currentBook->cover_image_url }} 800w"
         sizes="(max-width: 900px) 90vw, 300px" width="600" height="900"
-        fetchpriority="high" decoding="async" alt="{{ $currentBook->title }}">
+        fetchpriority="high" decoding="async" alt="غلاف {{ $currentBook->title }}">
     @else
       <div class="hero-cover-img cover-{{ ($currentBook->id % 5) + 1 }}">
         <span class="cover-badge">B</span>
@@ -151,7 +154,7 @@
   </div>
 
   <div class="tab-panel active" id="tab-about">
-    <h2>نبذة عن الكتاب</h2>
+    <h2 id="book-description">نبذة عن {{ $currentBook->title }}</h2>
     @if ($currentBook->description)
       @foreach (explode("\n", $currentBook->description) as $paragraph)
         @continue(trim($paragraph) === '')
@@ -167,6 +170,24 @@
           <span>#{{ $tag }}</span>
         @endforeach
       </div>
+    @endif
+
+    <section aria-labelledby="online-reading" style="margin-top:22px;">
+      <h2 id="online-reading">قراءة {{ $currentBook->title }} أونلاين</h2>
+      @if ($currentBook->is_coming_soon)
+        <p>سيتوفر {{ $currentBook->type_label }} {{ $currentBook->title }} للقراءة أونلاين على نوته بوك قريبًا.</p>
+      @else
+        <p>يمكنك قراءة {{ $currentBook->title }} أونلاين مباشرة من خلال قارئ الكتب في نوته بوك، دون الحاجة لتحميل أي برنامج إضافي.</p>
+        <a href="{{ route('read', $currentBook->slug) }}">قراءة {{ $currentBook->type_label }} أونلاين</a>
+      @endif
+    </section>
+
+    @if (! $currentBook->is_coming_soon && $currentBook->downloadUrl())
+      <section aria-labelledby="download-book" style="margin-top:22px;">
+        <h2 id="download-book">تحميل {{ $currentBook->title }} PDF</h2>
+        <p>يمكنك تحميل {{ $currentBook->title }} بصيغة PDF وقراءته على الهاتف أو الكمبيوتر في أي وقت، دون الحاجة للاتصال بالإنترنت.</p>
+        <a href="{{ $currentBook->downloadUrl() }}">تحميل {{ $currentBook->type_label }} PDF</a>
+      </section>
     @endif
   </div>
 
