@@ -9,12 +9,15 @@
 
 <!-- ===================== HERO ===================== -->
 <section class="hero" aria-labelledby="hero-heading">
+  <img class="hero-background" src="{{ asset('assets/images/hero-section.jpg') }}"
+    srcset="{{ asset('assets/images/hero-section-sm.webp') }} 746w, {{ asset('assets/images/hero-section.jpg') }} 1342w"
+    sizes="100vw" width="1342" height="900" fetchpriority="high" decoding="async" alt="">
   <div class="hero-content">
     @if ($heroQuotes->isNotEmpty())
       <div class="hero-quote-stack @if ($heroQuotes->count() < 2) static @endif">
         @foreach ($heroQuotes as $quote)
           <blockquote class="hero-quote-card" style="animation-delay: {{ ($loop->index / $heroQuotes->count()) * 15 }}s">
-            <i class="fa-solid fa-quote-right"></i>
+            <i class="fa-solid fa-quote-right" aria-hidden="true"></i>
             <p>"{{ $quote->text }}"</p>
             @if ($quote->author)
               <cite>— {{ $quote->author }}</cite>
@@ -26,7 +29,7 @@
     <h1 class="hero-title" id="hero-heading">اكتشف الكتب والروايات واقرأها أونلاين</h1>
     <p class="hero-subtitle">عالم من الكتب بين يديك</p>
     <form class="hero-search" method="GET" action="{{ route('discover') }}">
-      <i class="fa-solid fa-magnifying-glass"></i>
+      <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
       <label for="homepage-search" class="sr-only">ابحث عن كتاب أو مؤلف أو موضوع</label>
       <input id="homepage-search" type="search" name="q" value="{{ request('q') }}" placeholder="ابحث عن كتاب، مؤلف، أو موضوع...">
       <button type="submit" class="btn btn-gold">ابحث</button>
