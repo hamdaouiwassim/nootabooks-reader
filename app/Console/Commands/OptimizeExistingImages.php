@@ -19,7 +19,7 @@ class OptimizeExistingImages extends Command
     public function handle(ImageOptimizer $optimizer): int
     {
         $this->optimizeBookCovers($optimizer);
-        $this->optimizeColumn(Writer::query(), 'photo', 'writers', ['' => [600, 600], '-sm' => [300, 300]], $optimizer);
+        $this->optimizeColumn(Writer::query(), 'photo', 'writers', ['' => [600, 600], '-sm' => [300, 300], '-xs' => [200, 200]], $optimizer);
 
         return self::SUCCESS;
     }
@@ -63,19 +63,19 @@ class OptimizeExistingImages extends Command
             $sourcePath = Storage::disk('public')->path($relativePath);
 
             if ($needsWebp) {
-                $newRelativePath = $optimizer->optimizePath($sourcePath, 'covers', 800, 1200, 85);
+                $newRelativePath = $optimizer->optimizePath($sourcePath, 'covers', 800, 1200, 80);
                 Storage::disk('public')->delete($relativePath);
                 $book->cover_image = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$newRelativePath;
                 $sourcePath = Storage::disk('public')->path($newRelativePath);
             }
 
             if ($needsMd) {
-                $mdPath = $optimizer->optimizePath($sourcePath, 'covers', 600, 900, 85);
+                $mdPath = $optimizer->optimizePath($sourcePath, 'covers', 600, 900, 80);
                 $book->cover_image_md = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$mdPath;
             }
 
             if ($needsSm) {
-                $smPath = $optimizer->optimizePath($sourcePath, 'covers', 300, 450, 85);
+                $smPath = $optimizer->optimizePath($sourcePath, 'covers', 300, 450, 80);
                 $book->cover_image_sm = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$smPath;
             }
 
@@ -122,7 +122,7 @@ class OptimizeExistingImages extends Command
                 Storage::disk('public')->path($relativePath),
                 $directory,
                 $variants,
-                85,
+                80,
             );
 
             Storage::disk('public')->delete($relativePath);

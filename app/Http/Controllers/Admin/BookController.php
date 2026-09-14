@@ -143,7 +143,7 @@ class BookController extends Controller
             Storage::disk('public')->delete($relativePath);
         }
 
-        $path = app(ImageOptimizer::class)->optimize($file, 'covers', 2000, 3000, 90);
+        $path = app(ImageOptimizer::class)->optimize($file, 'covers', 2000, 3000, 80);
 
         return force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$path;
     }

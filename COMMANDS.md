@@ -28,7 +28,7 @@ php artisan images:optimize
   1. Skips rows that aren't real local uploads (external URLs, or seeded demo assets) or whose file is missing on disk.
   2. Converts a non-WebP `cover_image` to WebP (resized to `800×1200`) if needed.
   3. Backfills `cover_image_md` (`600×900`) and/or `cover_image_sm` (`300×450`) by resizing from the current `cover_image` — only for whichever of the two columns is still empty, so it never overwrites a size the admin already uploaded manually.
-- **Writer photos** — unchanged: skips rows already `.webp` with a `-sm` sibling generated, otherwise re-encodes to WebP and generates `600×600` full + `300×300` small sharing one filename.
+- **Writer photos** — skips rows already `.webp` with both a `-sm` and `-xs` sibling generated, otherwise re-encodes to WebP and generates `600×600` full + `300×300` small (`-sm`, for the ~160-200px featured/hero photo) + `200×200` extra-small (`-xs`, for the ~40-90px avatar cards/grids) sharing one filename.
 - Saving a row fires the model's normal `save()` event — which busts the home-page/sitemap cache (see [`FlushesAppCache`](app/Models/Concerns/FlushesAppCache.php)) — so you don't need to clear the cache separately afterward.
 - Safe to re-run anytime: every check above is "only touch what's actually missing/outdated."
 
@@ -135,7 +135,7 @@ php scripts/optimize-cover.php ~/covers ~/covers/ready
 
 **What it does:**
 - Reads one source image (or, in batch mode, every `.jpg`/`.jpeg`/`.png`/`.webp` file directly inside a source folder).
-- For each, generates 3 WebP files at the same bounds/quality the app's own pipeline used to auto-generate: `{name}-lg.webp` (max `800×1200`), `{name}-md.webp` (max `600×900`), `{name}-sm.webp` (max `300×450`), all quality `85`.
+- For each, generates 3 WebP files at the same bounds/quality the app's own pipeline used to auto-generate: `{name}-lg.webp` (max `800×1200`), `{name}-md.webp` (max `600×900`), `{name}-sm.webp` (max `300×450`), all quality `80`.
 - Writes output into an `optimized/` subfolder next to the source by default, or a folder you pass as the 2nd argument.
 
 **When to run it:** anytime before adding/editing a book in the admin, whenever you want to pre-size a cover locally rather than letting the admin's safety-cap resize (`optimize()`, 2000×3000) do it for you.
@@ -155,7 +155,7 @@ php -S localhost:8000 scripts/optimize-cover-server.php
 
 **What it does:**
 - `php -S` starts PHP's built-in dev server using this file as the router — it's the whole "app", no separate web server or config needed.
-- The page lets you choose (or drop) one image; on submit it generates the same 3 WebP sizes (`800×1200` / `600×900` / `300×450`, quality `85`) into a temp folder and shows a download link for each, labeled بالعربية (الغلاف الكبير/المتوسط/الصغير) with their actual pixel dimensions.
+- The page lets you choose (or drop) one image; on submit it generates the same 3 WebP sizes (`800×1200` / `600×900` / `300×450`, quality `80`) into a temp folder and shows a download link for each, labeled بالعربية (الغلاف الكبير/المتوسط/الصغير) with their actual pixel dimensions.
 - Uploads/outputs live under your OS temp directory (`nootabook-cover-optimizer/`), never inside the project or `storage/` — closing the server and deleting that temp folder leaves no trace.
 
 **When to run it:** same situations as `optimize-cover.php`, whenever a file picker is more convenient than typing a path — e.g. picking straight from Downloads/Desktop.

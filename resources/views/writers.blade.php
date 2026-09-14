@@ -130,7 +130,7 @@
       <article class="writer-card" data-tags="{{ implode(' ', $writerTags) }}">
         <a href="{{ route('writer-details', $writer->slug) }}" class="writer-card-link">
           @if ($writer->photo)
-            <img src="{{ $writer->photo_sm_url }}" width="300" height="300" loading="lazy" decoding="async" alt="صورة المؤلف {{ $writer->name }}">
+            <img src="{{ $writer->photo_xs_url }}" width="200" height="200" loading="lazy" decoding="async" alt="صورة المؤلف {{ $writer->name }}">
           @else
             <span class="avatar-placeholder" aria-hidden="true"><i class="fa-solid fa-feather"></i></span>
           @endif

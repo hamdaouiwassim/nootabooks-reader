@@ -26,22 +26,27 @@ trait ResolvesUploadedFileUrl
     }
 
     /**
-     * Resolves the small "-sm" card-thumbnail variant generated alongside
-     * the full-size upload (see ImageOptimizer::optimizeResponsive()), so
-     * grid/card contexts don't download a full-size image just to shrink it
-     * in the browser. Falls back to the full-size URL when no small variant
-     * exists — true for seeded demo assets and any upload made before this
-     * feature existed.
+     * Resolves a "-{suffix}" thumbnail variant generated alongside the
+     * full-size upload (see ImageOptimizer::optimizeResponsive()), so
+     * grid/card/avatar contexts don't download a full-size image just to
+     * shrink it in the browser. Falls back to the full-size URL when no such
+     * variant exists — true for seeded demo assets and any upload made
+     * before that variant was introduced.
      */
-    protected function resolveSmallVariantUrl(?string $value): ?string
+    protected function resolveVariantUrl(?string $value, string $suffix): ?string
     {
         if (! $value) {
             return null;
         }
 
-        $variant = preg_replace('/(\.\w+)$/', '-sm$1', $value);
+        $variant = preg_replace('/(\.\w+)$/', "-{$suffix}\$1", $value);
 
         return $this->variantExists($variant) ? $this->resolveFileUrl($variant) : $this->resolveFileUrl($value);
+    }
+
+    protected function resolveSmallVariantUrl(?string $value): ?string
+    {
+        return $this->resolveVariantUrl($value, 'sm');
     }
 
     private function variantExists(string $variant): bool

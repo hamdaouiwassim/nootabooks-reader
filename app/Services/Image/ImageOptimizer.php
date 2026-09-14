@@ -16,7 +16,7 @@ class ImageOptimizer
      * disk. Returns the disk-relative path. Intervention Image applies
      * EXIF orientation automatically when reading the source file.
      */
-    public function optimize(UploadedFile $file, string $directory, int $maxWidth, int $maxHeight, int $quality = 82): string
+    public function optimize(UploadedFile $file, string $directory, int $maxWidth, int $maxHeight, int $quality = 80): string
     {
         return $this->optimizePath($file->getRealPath(), $directory, $maxWidth, $maxHeight, $quality);
     }
@@ -26,7 +26,7 @@ class ImageOptimizer
      * (e.g. an already-uploaded cover/photo being retroactively optimized)
      * rather than a fresh HTTP upload.
      */
-    public function optimizePath(string $sourcePath, string $directory, int $maxWidth, int $maxHeight, int $quality = 82): string
+    public function optimizePath(string $sourcePath, string $directory, int $maxWidth, int $maxHeight, int $quality = 80): string
     {
         $image = (new ImageManager(new Driver()))->read($sourcePath);
 
@@ -49,12 +49,12 @@ class ImageOptimizer
      * filename suffix, value is [maxWidth, maxHeight]. Returns the same keys
      * mapped to each variant's disk-relative path.
      */
-    public function optimizeResponsive(UploadedFile $file, string $directory, array $variants, int $quality = 82): array
+    public function optimizeResponsive(UploadedFile $file, string $directory, array $variants, int $quality = 80): array
     {
         return $this->optimizeResponsivePath($file->getRealPath(), $directory, $variants, $quality);
     }
 
-    public function optimizeResponsivePath(string $sourcePath, string $directory, array $variants, int $quality = 82): array
+    public function optimizeResponsivePath(string $sourcePath, string $directory, array $variants, int $quality = 80): array
     {
         $baseName = (string) Str::uuid();
         $paths = [];

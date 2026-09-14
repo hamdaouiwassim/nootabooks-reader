@@ -63,6 +63,7 @@ class WriterController extends Controller
         if ($relativePath = $this->relativeStoragePath($writer->photo)) {
             Storage::disk('public')->delete($relativePath);
             Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-sm$1', $relativePath));
+            Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-xs$1', $relativePath));
         }
 
         $writer->delete();
@@ -79,13 +80,17 @@ class WriterController extends Controller
             if ($relativePath = $this->relativeStoragePath($writer?->photo)) {
                 Storage::disk('public')->delete($relativePath);
                 Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-sm$1', $relativePath));
+                Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-xs$1', $relativePath));
             }
 
+            // '' (600x600) for the hero/featured photo, '-sm' (300x300) for
+            // the ~160-200px featured/hero contexts, '-xs' (200x200) for the
+            // ~40-90px avatar cards/grids — see Writer::photoXsUrl().
             $paths = app(ImageOptimizer::class)->optimizeResponsive(
                 $request->file('photo'),
                 'writers',
-                ['' => [600, 600], '-sm' => [300, 300]],
-                85,
+                ['' => [600, 600], '-sm' => [300, 300], '-xs' => [200, 200]],
+                80,
             );
             $data['photo'] = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$paths[''];
         } else {

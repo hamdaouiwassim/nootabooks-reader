@@ -21,7 +21,7 @@ const COVER_VARIANT_LABELS = [
     'sm' => 'الغلاف الصغير',
 ];
 
-const COVER_QUALITY = 85;
+const COVER_QUALITY = 80;
 const COVER_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
 
 /**

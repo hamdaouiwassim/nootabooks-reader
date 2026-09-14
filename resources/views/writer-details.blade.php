@@ -195,7 +195,7 @@
     @foreach ($similarWriters as $similarWriter)
       <a href="{{ route('writer-details', $similarWriter->slug) }}" class="author-card">
         @if ($similarWriter->photo)
-          <img src="{{ $similarWriter->photo_sm_url }}" width="300" height="300" loading="lazy" decoding="async" alt="صورة المؤلف {{ $similarWriter->name }}">
+          <img src="{{ $similarWriter->photo_xs_url }}" width="200" height="200" loading="lazy" decoding="async" alt="صورة المؤلف {{ $similarWriter->name }}">
         @else
           <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
         @endif

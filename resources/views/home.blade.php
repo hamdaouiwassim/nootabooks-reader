@@ -180,7 +180,9 @@
       @foreach ($similarBooks as $book)
         <a href="{{ route('book-details', $book->slug) }}" class="mini-book">
           @if ($book->cover_image)
-            <img class="mini-cover cover-photo" src="{{ $book->cover_image_sm_url }}" width="300" height="450" loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
+            <img class="mini-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
+              srcset="{{ $book->cover_image_sm_url }} 300w, {{ $book->cover_image_md_url }} 600w"
+              sizes="140px" width="300" height="450" loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
           @else
             <div class="mini-cover mc-{{ ($book->id % 4) + 1 }}"><span class="cover-badge sm">B</span></div>
           @endif
@@ -200,7 +202,7 @@
       @forelse ($popularWriters as $writer)
         <a href="{{ route('writer-details', $writer->slug) }}" class="author-card">
           @if ($writer->photo)
-            <img src="{{ $writer->photo_sm_url }}" width="300" height="300" loading="lazy" decoding="async" alt="صورة المؤلف {{ $writer->name }}">
+            <img src="{{ $writer->photo_xs_url }}" width="200" height="200" loading="lazy" decoding="async" alt="صورة المؤلف {{ $writer->name }}">
           @else
             <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
           @endif

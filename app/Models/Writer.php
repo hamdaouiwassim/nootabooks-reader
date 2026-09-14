@@ -70,4 +70,15 @@ class Writer extends Model
     {
         return Attribute::make(get: fn () => $this->resolveSmallVariantUrl($this->photo));
     }
+
+    /**
+     * The small circular avatar used in cards/grids (~80-90px) — noticeably
+     * smaller than "sm" (300x300, sized for the ~160-200px featured/hero
+     * photo contexts), so those tiny avatars aren't downloading 12x more
+     * pixels than they display.
+     */
+    protected function photoXsUrl(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->resolveVariantUrl($this->photo, 'xs'));
+    }
 }
