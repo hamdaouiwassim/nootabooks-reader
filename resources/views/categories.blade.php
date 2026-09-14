@@ -74,7 +74,7 @@
 <!-- ===================== TOP CATEGORIES STRIP ===================== -->
 <section class="section">
   <div class="top-categories-strip">
-    <span class="strip-label"><i class="fa-solid fa-fire"></i> الأكثر رواجًا</span>
+    <span class="strip-label">الأكثر رواجًا</span>
     @foreach ($topCategories as $category)
       <a href="{{ route('category-details', $category->slug) }}" class="strip-chip">{{ $category->name }}</a>
     @endforeach

@@ -27,4 +27,18 @@
         <priority>0.6</priority>
     </url>
 @endforeach
+@foreach ($clubs as $club)
+    <url>
+        <loc>{{ route('club-details', $club->slug) }}</loc>
+        <lastmod>{{ $club->updated_at->toAtomString() }}</lastmod>
+        <priority>0.5</priority>
+    </url>
+@endforeach
+@foreach ($discussions as $discussion)
+    <url>
+        <loc>{{ route('discussion-details', $discussion->id) }}</loc>
+        <lastmod>{{ $discussion->updated_at->toAtomString() }}</lastmod>
+        <priority>0.4</priority>
+    </url>
+@endforeach
 </urlset>

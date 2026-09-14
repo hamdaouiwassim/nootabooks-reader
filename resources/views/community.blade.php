@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'المجتمع - نوته بوك')
-@section('robots', 'noindex, follow')
+@section('title', 'مجتمع القراء والكتب والروايات | نوته بوك')
+@section('meta_description', 'انضم إلى مجتمع القراء على نوته بوك، ناقش الكتب والروايات، شارك آراءك وتوصياتك وتواصل مع قراء يشاركونك شغف القراءة.')
+@section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
@@ -9,22 +10,52 @@
 <link rel="stylesheet" href="{{ asset_min('assets/css/community.css') }}">
 @endpush
 
+@push('schema')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'المجتمع', 'item' => route('community')],
+    ],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
+@if ($isIndexable && $discussions->isNotEmpty())
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'ItemList',
+    'name' => 'مناقشات مجتمع القراء',
+    'itemListElement' => $discussions->getCollection()->values()
+        ->filter(fn ($discussion) => $discussion->isIndexable())
+        ->map(fn ($discussion, $index) => [
+            '@type' => 'ListItem',
+            'position' => $index + 1,
+            'url' => route('discussion-details', $discussion->id),
+            'name' => \Illuminate\Support\Str::limit($discussion->body, 80),
+        ])->values()->all(),
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
+@endif
+@endpush
+
 @section('content')
 <main>
 
 <!-- ===================== BREADCRUMB ===================== -->
 <div class="section breadcrumb-wrap">
-  <nav class="breadcrumb">
+  <nav class="breadcrumb" aria-label="مسار التنقل">
     <a href="{{ route('home') }}">الرئيسية</a>
     <i class="fa-solid fa-chevron-left"></i>
-    <span>المجتمع</span>
+    <span aria-current="page">المجتمع</span>
   </nav>
 </div>
 
 <!-- ===================== PAGE HEADING ===================== -->
 <section class="section writers-hero">
   <h1>مجتمع القراء</h1>
-  <p>شارك آراءك، ناقش كتبك المفضلة، وتواصل مع قراء يشاركونك الشغف</p>
+  <p>انضم إلى مجتمع القراء، ناقش الكتب التي تحبها، شارك آراءك وتوصياتك، وتواصل مع قراء يشاركونك شغف القراءة.</p>
 </section>
 
 <!-- ===================== COMMUNITY STATS ===================== -->
@@ -84,7 +115,8 @@
         @else
           <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
         @endif
-        <input type="text" name="body" maxlength="2000" required
+        <label for="newDiscussionBody" class="sr-only">شارك رأيك أو ابدأ نقاشًا جديدًا</label>
+        <input type="text" id="newDiscussionBody" name="body" maxlength="2000" required
           placeholder="{{ $chatBook ? 'شارك رأيك حول "'.$chatBook->title.'" ...' : 'شارك رأيك أو ابدأ نقاشًا جديدًا ...' }}">
         <button type="submit" class="btn btn-gold small">نشر</button>
       </form>
@@ -131,13 +163,14 @@
           </div>
         </article>
       @empty
-        <p class="no-results">
+        <div class="no-results">
           @if ($chatBook)
-            لا توجد مناقشات حول "{{ $chatBook->title }}" بعد، كن أول من يبدأ النقاش!
+            <p>لا توجد مناقشات حول "{{ $chatBook->title }}" بعد.</p>
           @else
-            لا توجد مناقشات بعد، كن أول من يشارك رأيه!
+            <p>لا توجد مناقشات بعد.</p>
           @endif
-        </p>
+          <p>كن أول من يبدأ النقاش — شارك رأيك حول كتاب قرأته وابدأ أول حوار في مجتمع نوته بوك.</p>
+        </div>
       @endforelse
 
     </div>
@@ -166,7 +199,10 @@
           </a>
         </div>
       @empty
-        <p class="no-results">لا توجد نوادي بعد</p>
+        <div class="no-results">
+          <p>لا توجد نوادي قراءة بعد.</p>
+          <p>كن أول من ينشئ نادي قراءة وشارك الآخرين رحلة قراءة كتابك المفضل.</p>
+        </div>
       @endforelse
 
       <a href="{{ route('reading-clubs') }}" class="view-all-link">عرض جميع النوادي <i class="fa-solid fa-arrow-left"></i></a>
@@ -186,7 +222,10 @@
           <div class="contributor-info"><strong>{{ $contributor->name }}</strong><span>{{ number_format($contributor->points) }} نقطة</span></div>
         </div>
       @empty
-        <p class="no-results">لا يوجد مساهمون بعد</p>
+        <div class="no-results">
+          <p>لا يوجد مساهمون بعد.</p>
+          <p>شارك في أول نقاش أو أنشئ نادي قراءة لتصبح من أوائل المساهمين في مجتمع نوته بوك.</p>
+        </div>
       @endforelse
     </div>
 

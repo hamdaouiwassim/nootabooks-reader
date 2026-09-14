@@ -93,6 +93,7 @@
 .club-card-footer .btn.joined { background: var(--teal); color: #fff; border-color: var(--teal); }
 
 .no-results { text-align: center; color: var(--text-gray); padding: 40px 0; }
+.no-results p:first-child { font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 1100px) {

@@ -480,7 +480,10 @@ img { display: block; }
   font-size: 14px;
   padding: 10px 0;
   font-family: inherit;
+  -webkit-appearance: none;
+  appearance: none;
 }
+.hero-search input::-webkit-search-cancel-button { -webkit-appearance: none; }
 .hero-search .btn { padding: 12px 24px; border-radius: 50px; white-space: nowrap; flex: none; }
 
 /* ============ STATS BAR ============ */

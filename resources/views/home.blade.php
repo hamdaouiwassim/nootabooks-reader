@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'نوته بوك - عالم من الكتب بين يديك')
-@section('meta_description', 'اكتشف أفضل الروايات والكتب العربية على نوته بوك، اقرأ وحمّل مجانًا، وتابع مؤلفيك المفضلين واطّلع على مراجعات القراء.')
+@section('title', 'اكتشف الكتب والروايات واقرأها أونلاين | نوته بوك')
+@section('meta_description', 'اكتشف الكتب والروايات العربية والمترجمة على نوته بوك، وابحث عن الكتب حسب المؤلف والتصنيف واستكشف ما يناسب اهتماماتك واقرأه أونلاين.')
 
 @section('content')
 
+<main>
+
 <!-- ===================== HERO ===================== -->
-<section class="hero">
+<section class="hero" aria-labelledby="hero-heading">
   <div class="hero-content">
     @if ($heroQuotes->isNotEmpty())
       <div class="hero-quote-stack @if ($heroQuotes->count() < 2) static @endif">
@@ -21,11 +23,12 @@
         @endforeach
       </div>
     @endif
-    <h1 class="hero-title">إقرأ . اكتشف . حمّل</h1>
+    <h1 class="hero-title" id="hero-heading">اكتشف الكتب والروايات واقرأها أونلاين</h1>
     <p class="hero-subtitle">عالم من الكتب بين يديك</p>
     <form class="hero-search" method="GET" action="{{ route('discover') }}">
       <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" name="q" value="{{ request('q') }}" placeholder="ابحث عن كتاب، مؤلف، او موضوع ...">
+      <label for="homepage-search" class="sr-only">ابحث عن كتاب أو مؤلف أو موضوع</label>
+      <input id="homepage-search" type="search" name="q" value="{{ request('q') }}" placeholder="ابحث عن كتاب، مؤلف، أو موضوع...">
       <button type="submit" class="btn btn-gold">ابحث</button>
     </form>
   </div>
@@ -38,14 +41,12 @@
   </div>
 </section>
 
-<main>
-
 <!-- ===================== TRENDING BOOKS ===================== -->
-<section class="section trending-section home-books-section">
+<section class="section trending-section home-books-section" aria-labelledby="trending-heading">
   <div class="section-head">
     <div class="section-title-wrap">
-      <h2 class="section-title">الأكثر قراءة هذا الأسبوع </h2>
-      <p class="section-sub">اكتشف اكثر الكتب قراءة من قبل مجتمعنا</p>
+      <h2 class="section-title" id="trending-heading">الأكثر تحميلاً</h2>
+      <p class="section-sub">اكتشف أكثر الكتب تحميلًا من قبل مجتمعنا</p>
     </div>
     <a href="{{ route('discover') }}" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
   </div>
@@ -61,7 +62,7 @@
               <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
                 srcset="{{ $book->cover_image_sm_url }} 300w, {{ $book->cover_image_md_url }} 600w"
                 sizes="(max-width: 640px) 45vw, 200px" width="300" height="450"
-                loading="lazy" decoding="async" alt="{{ $book->title }}">
+                loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($book->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
@@ -94,10 +95,10 @@
 
 @if ($booksCount > 10)
 <!-- ===================== RECENT BOOKS ===================== -->
-<section class="section trending-section home-books-section">
+<section class="section trending-section home-books-section" aria-labelledby="recent-heading">
   <div class="section-head">
     <div class="section-title-wrap">
-      <h2 class="section-title">أحدث الكتب </h2>
+      <h2 class="section-title" id="recent-heading">أحدث الكتب</h2>
       <p class="section-sub">آخر الكتب المضافة إلى المنصة</p>
     </div>
     <a href="{{ route('discover', ['sort' => 'newest']) }}" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
@@ -114,7 +115,7 @@
               <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
                 srcset="{{ $book->cover_image_sm_url }} 300w, {{ $book->cover_image_md_url }} 600w"
                 sizes="(max-width: 640px) 45vw, 200px" width="300" height="450"
-                loading="lazy" decoding="async" alt="{{ $book->title }}">
+                loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($book->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
@@ -161,7 +162,7 @@
     <div class="discover-left">
       <div class="discover-text">
         <h3>اكتشف عوالم جديدة</h3>
-        <p>ألاف الكتب في انتظارك ...</p>
+        <p>{{ number_format($booksCount) }} كتاب في انتظارك ...</p>
         <a href="{{ route('discover') }}" class="btn btn-gold small"><i class="fa-solid fa-arrow-left"></i> <span class="btn-label">استكشف</span></a>
       </div>
     </div>
@@ -170,16 +171,16 @@
 
 <!-- ===================== AUTHORS + SIMILAR BOOKS ===================== -->
 <section class="section two-col">
-  <div class="col">
+  <section class="col" aria-labelledby="suggestions-heading">
     <div class="section-head">
-      <h2 class="section-title">كتب مشابهة لك</h2>
+      <h2 class="section-title" id="suggestions-heading">اقتراحات للقراءة</h2>
       <a href="{{ route('discover') }}" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
     </div>
     <div class="similar-row">
       @foreach ($similarBooks as $book)
         <a href="{{ route('book-details', $book->slug) }}" class="mini-book">
           @if ($book->cover_image)
-            <img class="mini-cover cover-photo" src="{{ $book->cover_image_sm_url }}" width="300" height="450" loading="lazy" decoding="async" alt="{{ $book->title }}">
+            <img class="mini-cover cover-photo" src="{{ $book->cover_image_sm_url }}" width="300" height="450" loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
           @else
             <div class="mini-cover mc-{{ ($book->id % 4) + 1 }}"><span class="cover-badge sm">B</span></div>
           @endif
@@ -188,18 +189,18 @@
         </a>
       @endforeach
     </div>
-  </div>
+  </section>
 
-  <div class="col">
+  <section class="col" aria-labelledby="writers-heading">
     <div class="section-head">
-      <h2 class="section-title">مؤلفون مميزون</h2>
+      <h2 class="section-title" id="writers-heading">مؤلفون مميزون</h2>
       <a href="{{ route('writers') }}" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
     </div>
     <div class="authors-row">
       @forelse ($popularWriters as $writer)
         <a href="{{ route('writer-details', $writer->slug) }}" class="author-card">
           @if ($writer->photo)
-            <img src="{{ $writer->photo_sm_url }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $writer->name }}">
+            <img src="{{ $writer->photo_sm_url }}" width="300" height="300" loading="lazy" decoding="async" alt="صورة المؤلف {{ $writer->name }}">
           @else
             <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
           @endif
@@ -209,13 +210,13 @@
         <p class="no-results">لا يوجد مؤلفون بعد</p>
       @endforelse
     </div>
-  </div>
+  </section>
 </section>
 
 <!-- ===================== CATEGORIES ===================== -->
-<section class="section">
+<section class="section" aria-labelledby="categories-heading">
   <div class="section-head">
-    <h2 class="section-title">تصفح حسب التصنيف</h2>
+    <h2 class="section-title" id="categories-heading">تصفح حسب التصنيف</h2>
     <a href="{{ route('categories') }}" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
   </div>
 
@@ -234,7 +235,8 @@
       <p>اشترك في نشرتنا البريدية للحصول على أحدث الكتب والمقالات</p>
     </div>
     <form class="newsletter-form" id="newsletterForm">
-      <input type="email" placeholder="أدخل بريدك الاكتروني" required>
+      <label for="newsletterEmail" class="sr-only">بريدك الإلكتروني</label>
+      <input type="email" id="newsletterEmail" name="email" placeholder="أدخل بريدك الإلكتروني" required>
       <button type="submit" class="btn btn-teal"><i class="fa-solid fa-paper-plane"></i> <span class="btn-label">اشترك الآن</span></button>
     </form>
   </div>

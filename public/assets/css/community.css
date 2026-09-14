@@ -12,6 +12,8 @@
 .breadcrumb i { font-size: 10px; }
 .breadcrumb span { color: var(--navy); font-weight: 700; }
 
+.no-results p:first-child { font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
+
 /* ============ LAYOUT ============ */
 .community-layout {
   display: grid;

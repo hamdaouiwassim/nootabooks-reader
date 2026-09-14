@@ -1,7 +1,10 @@
 @extends('layouts.app')
 
-@section('title', $club->name.' - نوته بوك')
-@section('robots', 'noindex, follow')
+@section('title', $club->name.' | نادي قراءة | نوته بوك')
+@section('meta_description', $club->description
+    ? \Illuminate\Support\Str::limit($club->description, 155)
+    : 'انضم إلى نادي '.$club->name.' على نوته بوك وشارك القراء نقاشاتهم حول الكتب.')
+@section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
@@ -10,19 +13,34 @@
 <link rel="stylesheet" href="{{ asset_min('assets/css/club-details.css') }}">
 @endpush
 
+@push('schema')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'المجتمع', 'item' => route('community')],
+        ['@type' => 'ListItem', 'position' => 3, 'name' => 'نوادي القراءة', 'item' => route('reading-clubs')],
+        ['@type' => 'ListItem', 'position' => 4, 'name' => $club->name, 'item' => route('club-details', $club->slug)],
+    ],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
+@endpush
+
 @section('content')
 <main>
 
 <!-- ===================== BREADCRUMB ===================== -->
 <div class="section breadcrumb-wrap">
-  <nav class="breadcrumb">
+  <nav class="breadcrumb" aria-label="مسار التنقل">
     <a href="{{ route('home') }}">الرئيسية</a>
     <i class="fa-solid fa-chevron-left"></i>
     <a href="{{ route('community') }}">المجتمع</a>
     <i class="fa-solid fa-chevron-left"></i>
     <a href="{{ route('reading-clubs') }}">نوادي القراءة</a>
     <i class="fa-solid fa-chevron-left"></i>
-    <span>{{ $club->name }}</span>
+    <span aria-current="page">{{ $club->name }}</span>
   </nav>
 </div>
 

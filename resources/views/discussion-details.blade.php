@@ -1,7 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'مناقشة - نوته بوك')
-@section('robots', 'noindex, follow')
+@php
+  $discussionExcerpt = \Illuminate\Support\Str::limit(trim($discussion->body), 60);
+@endphp
+
+@section('title', $discussionExcerpt.' | مجتمع نوته بوك')
+@section('meta_description', \Illuminate\Support\Str::limit(trim($discussion->body), 155))
+@section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
@@ -10,17 +15,31 @@
 <link rel="stylesheet" href="{{ asset_min('assets/css/discussion-details.css') }}">
 @endpush
 
+@push('schema')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'المجتمع', 'item' => route('community')],
+        ['@type' => 'ListItem', 'position' => 3, 'name' => $discussionExcerpt, 'item' => route('discussion-details', $discussion->id)],
+    ],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
+@endpush
+
 @section('content')
 <main>
 
 <!-- ===================== BREADCRUMB ===================== -->
 <div class="section breadcrumb-wrap">
-  <nav class="breadcrumb">
+  <nav class="breadcrumb" aria-label="مسار التنقل">
     <a href="{{ route('home') }}">الرئيسية</a>
     <i class="fa-solid fa-chevron-left"></i>
     <a href="{{ route('community') }}">المجتمع</a>
     <i class="fa-solid fa-chevron-left"></i>
-    <span>مناقشة</span>
+    <span aria-current="page">{{ $discussionExcerpt }}</span>
   </nav>
 </div>
 
@@ -31,6 +50,7 @@
   <div class="subject-main">
 
     <article class="subject-post">
+      <h1 class="sr-only">{{ $discussionExcerpt }}</h1>
       <div class="discussion-head">
         @if ($discussion->user->avatar)
           <img src="{{ $discussion->user->avatar }}" width="64" height="64" decoding="async" alt="{{ $discussion->user->name }}">
@@ -79,7 +99,8 @@
           @else
             <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
           @endif
-          <input type="text" name="body" maxlength="2000" required placeholder="أضف تعليقك ...">
+          <label for="newCommentBody" class="sr-only">أضف تعليقك</label>
+          <input type="text" id="newCommentBody" name="body" maxlength="2000" required placeholder="أضف تعليقك ...">
           <button type="submit" class="btn btn-gold small">إرسال</button>
         </form>
       @else

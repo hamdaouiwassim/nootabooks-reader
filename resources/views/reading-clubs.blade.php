@@ -1,11 +1,42 @@
 @extends('layouts.app')
 
 @section('title', 'نوادي القراءة - نوته بوك')
-@section('robots', 'noindex, follow')
+@section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/reading-clubs.css') }}">
+@endpush
+
+@push('schema')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'المجتمع', 'item' => route('community')],
+        ['@type' => 'ListItem', 'position' => 3, 'name' => 'نوادي القراءة', 'item' => route('reading-clubs')],
+    ],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
+@if ($isIndexable)
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'ItemList',
+    'name' => 'نوادي القراءة',
+    'itemListElement' => $clubs->getCollection()->values()
+        ->filter(fn ($club) => filled($club->description) || $club->members_count >= 2)
+        ->map(fn ($club, $index) => [
+            '@type' => 'ListItem',
+            'position' => $index + 1,
+            'name' => $club->name,
+            'url' => route('club-details', $club->slug),
+        ])->values()->all(),
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
+@endif
 @endpush
 
 @section('content')
@@ -13,12 +44,12 @@
 
 <!-- ===================== BREADCRUMB ===================== -->
 <div class="section breadcrumb-wrap">
-  <nav class="breadcrumb">
+  <nav class="breadcrumb" aria-label="مسار التنقل">
     <a href="{{ route('home') }}">الرئيسية</a>
     <i class="fa-solid fa-chevron-left"></i>
     <a href="{{ route('community') }}">المجتمع</a>
     <i class="fa-solid fa-chevron-left"></i>
-    <span>نوادي القراءة</span>
+    <span aria-current="page">نوادي القراءة</span>
   </nav>
 </div>
 
@@ -29,7 +60,8 @@
 
   <form method="GET" action="{{ route('reading-clubs') }}" class="writers-search">
     <button type="submit" aria-label="بحث"><i class="fa-solid fa-magnifying-glass"></i></button>
-    <input type="text" name="q" value="{{ $search }}" placeholder="ابحث عن نادي قراءة ...">
+    <label for="clubSearch" class="sr-only">ابحث عن نادي قراءة</label>
+    <input type="text" id="clubSearch" name="q" value="{{ $search }}" placeholder="ابحث عن نادي قراءة ...">
   </form>
 
   <div class="filter-tabs">
@@ -116,7 +148,14 @@
 
     {{ $clubs->links() }}
   @else
-    <p class="no-results">لا توجد نوادي مطابقة لبحثك.</p>
+    <div class="no-results">
+      @if ($search !== '')
+        <p>لا توجد نوادي مطابقة لبحثك.</p>
+      @else
+        <p>لا توجد نوادي قراءة بعد.</p>
+        <p>كن أول من ينشئ نادي قراءة وشارك الآخرين رحلة قراءة كتابك المفضل.</p>
+      @endif
+    </div>
   @endif
 </section>
 

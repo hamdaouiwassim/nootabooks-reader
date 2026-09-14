@@ -273,6 +273,12 @@ class PageController extends Controller
             ? $request->user()->likedDiscussions()->pluck('discussions.id')->all()
             : [];
 
+        // The community hub only earns a place in search results once real,
+        // substantial public activity exists — never for its own sake, and
+        // never for a filtered view of it (see Discussion::scopeIndexable(),
+        // Club::scopeIndexable()).
+        $hasMeaningfulActivity = Discussion::indexable()->exists() || Club::indexable()->exists();
+
         return view('community', [
             'activeNav' => 'community',
             'chatBook' => $chatBook,
@@ -286,6 +292,7 @@ class PageController extends Controller
             'topContributors' => User::where('points', '>', 0)->orderByDesc('points')->take(4)->get(),
             'trendingTags' => $this->trendingTags(),
             'clubsCount' => Club::count(),
+            'isIndexable' => $hasMeaningfulActivity && ! $chatBook && ! $tag,
         ]);
     }
 
@@ -328,6 +335,7 @@ class PageController extends Controller
             'search' => $search,
             'sort' => $sort,
             'books' => Book::published()->orderBy('title')->get(['id', 'title', 'slug']),
+            'isIndexable' => $search === '' && $sort === 'popular' && Club::indexable()->exists(),
         ]);
     }
 
@@ -367,18 +375,19 @@ class PageController extends Controller
             'isMember' => $isMember,
             'isOwner' => $isOwner,
             'likedDiscussionIds' => $likedDiscussionIds,
+            // Mirrors Club::scopeIndexable() for this single already-loaded
+            // record, avoiding a second query.
+            'isIndexable' => filled($currentClub->description) || $currentClub->members_count >= 2 || $currentBook !== null,
         ]);
     }
 
-    public function discussionDetails(Request $request, ?string $discussion = null): View|RedirectResponse
+    public function discussionDetails(Request $request, ?string $discussion = null): View
     {
         $currentDiscussion = is_numeric($discussion)
             ? Discussion::with(['user', 'book', 'club'])->withCount('likedBy')->find((int) $discussion)
             : null;
 
-        if (! $currentDiscussion) {
-            return redirect()->route('community');
-        }
+        abort_if(! $currentDiscussion, 404);
 
         $comments = $currentDiscussion->topLevelComments()
             ->with('user')
@@ -420,6 +429,7 @@ class PageController extends Controller
             'likedDiscussionIds' => $likedDiscussionIds,
             'likedCommentIds' => $likedCommentIds,
             'relatedDiscussions' => $relatedDiscussions,
+            'isIndexable' => $currentDiscussion->isIndexable(),
         ]);
     }
 

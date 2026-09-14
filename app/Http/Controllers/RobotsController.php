@@ -19,9 +19,12 @@ class RobotsController extends Controller
             'Disallow: /settings',
             'Disallow: /notifications',
             'Disallow: /my-library',
-            'Disallow: /community',
-            'Disallow: /clubs',
-            'Disallow: /discussions',
+            // /community, /clubs, and /discussions/{id} are intentionally
+            // crawlable — each sets its own index/noindex meta tag depending
+            // on whether it currently has meaningful public content (see
+            // PageController::community()/readingClubs()/clubDetails()/
+            // discussionDetails()), which only works if Google can actually
+            // fetch the page to read that tag.
             '',
             'Sitemap: '.route('sitemap'),
         ];

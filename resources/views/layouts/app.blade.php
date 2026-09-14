@@ -12,7 +12,16 @@
     '@type' => 'WebSite',
     'name' => 'نوته بوك',
     'url' => url('/'),
+    'description' => 'منصة عربية لاكتشاف الكتب والروايات وقراءتها أونلاين.',
     'inLanguage' => 'ar',
+    'potentialAction' => [
+        '@type' => 'SearchAction',
+        'target' => [
+            '@type' => 'EntryPoint',
+            'urlTemplate' => route('discover').'?q={search_term_string}',
+        ],
+        'query-input' => 'required name=search_term_string',
+    ],
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 <script type="application/ld+json">
