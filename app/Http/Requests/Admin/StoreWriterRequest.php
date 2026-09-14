@@ -15,6 +15,7 @@ class StoreWriterRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'name_en' => ['nullable', 'string', 'max:255'],
             'genre_tag' => ['nullable', 'string', 'max:255'],
             'bio' => ['nullable', 'string'],
             'followers_count' => ['nullable', 'integer', 'min:0'],

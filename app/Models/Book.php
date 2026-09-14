@@ -31,6 +31,7 @@ class Book extends Model
         'category_id',
         'writer_id',
         'title',
+        'title_en',
         'slug',
         'description_short',
         'description',

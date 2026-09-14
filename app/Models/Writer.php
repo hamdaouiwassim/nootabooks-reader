@@ -27,6 +27,7 @@ class Writer extends Model
 
     protected $fillable = [
         'name',
+        'name_en',
         'slug',
         'photo',
         'genre_tag',

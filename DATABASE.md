@@ -22,6 +22,7 @@ erDiagram
     WRITERS {
         bigint id PK
         string name
+        string name_en "nullable"
         string slug UK
         string photo "nullable"
         string genre_tag "nullable"
@@ -39,6 +40,7 @@ erDiagram
         bigint category_id FK
         bigint writer_id FK "nullable"
         string title
+        string title_en "nullable"
         string slug UK
         text description_short "nullable"
         longtext description "nullable"
@@ -107,6 +109,7 @@ Authors shown on the Writers / Writer Details pages.
 |--------------------|------------------------------|----------------------------------|
 | `id`               | bigint, unsigned            | Primary key                      |
 | `name`             | string                       |                                   |
+| `name_en`          | string, nullable             | English name                     |
 | `slug`             | string                       | Unique                           |
 | `photo`            | string, nullable             | Path/URL                         |
 | `genre_tag`        | string, nullable             | Short genre label (e.g. `إثارة وغموض`) |
@@ -118,7 +121,9 @@ Authors shown on the Writers / Writer Details pages.
 | `created_at`       | timestamp                     |                                   |
 | `updated_at`       | timestamp                     |                                   |
 
-**Migration:** [`2026_09_08_000004_create_writers_table.php`](database/migrations/2026_09_08_000004_create_writers_table.php)
+**Migrations:**
+[`2026_09_08_000004_create_writers_table.php`](database/migrations/2026_09_08_000004_create_writers_table.php),
+[`2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php`](database/migrations/2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php) (adds `name_en`)
 
 ### `books`
 
@@ -128,6 +133,7 @@ Authors shown on the Writers / Writer Details pages.
 | `category_id`        | bigint, unsigned, FK       | References `categories.id`, cascade on delete |
 | `writer_id`          | bigint, unsigned, FK, nullable | References `writers.id`, null on delete |
 | `title`               | string                     |                                             |
+| `title_en`            | string, nullable           | English title                              |
 | `slug`                | string                     | Unique                                     |
 | `description_short`   | text, nullable             |                                             |
 | `description`         | longtext, nullable         |                                             |
@@ -148,7 +154,8 @@ Authors shown on the Writers / Writer Details pages.
 
 **Migrations:**
 [`2026_09_08_000002_create_books_table.php`](database/migrations/2026_09_08_000002_create_books_table.php),
-[`2026_09_08_000005_add_writer_id_to_books_table.php`](database/migrations/2026_09_08_000005_add_writer_id_to_books_table.php) (adds `writer_id`, drops the old `author_name` string column)
+[`2026_09_08_000005_add_writer_id_to_books_table.php`](database/migrations/2026_09_08_000005_add_writer_id_to_books_table.php) (adds `writer_id`, drops the old `author_name` string column),
+[`2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php`](database/migrations/2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php) (adds `title_en`)
 
 ### `users`
 

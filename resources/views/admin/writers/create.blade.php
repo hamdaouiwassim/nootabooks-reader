@@ -33,6 +33,10 @@
             <label for="writerName">الاسم الكامل</label>
             <input type="text" id="writerName" name="name" class="admin-input" value="{{ old('name') }}" placeholder="مثال: أحمد مراد" required>
           </div>
+          <div class="admin-form-field full">
+            <label for="writerNameEn">الاسم بالإنجليزية (اختياري)</label>
+            <input type="text" id="writerNameEn" name="name_en" class="admin-input" value="{{ old('name_en') }}" placeholder="Example: Ahmed Mourad" dir="ltr">
+          </div>
           <div class="admin-form-field">
             <label for="writerGenre">التصنيف الأدبي</label>
             <input type="text" id="writerGenre" name="genre_tag" class="admin-input" value="{{ old('genre_tag') }}" placeholder="مثال: روايات بوليسية">

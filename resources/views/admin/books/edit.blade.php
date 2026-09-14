@@ -35,6 +35,10 @@
             <label for="bookTitle">عنوان الكتاب</label>
             <input type="text" id="bookTitle" name="title" class="admin-input" value="{{ old('title', $book->title) }}" required>
           </div>
+          <div class="admin-form-field full">
+            <label for="bookTitleEn">العنوان بالإنجليزية (اختياري)</label>
+            <input type="text" id="bookTitleEn" name="title_en" class="admin-input" value="{{ old('title_en', $book->title_en) }}" dir="ltr">
+          </div>
           <div class="admin-form-field">
             <label for="bookWriter">المؤلف</label>
             <select id="bookWriter" name="writer_id" class="admin-select">

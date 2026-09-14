@@ -70,10 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['cover'])) {
             $sourcePath = $outputDir.DIRECTORY_SEPARATOR.'source.'.$ext;
             move_uploaded_file($file['tmp_name'], $sourcePath);
 
-            $results = [
-                'token' => $token,
-                'files' => generateCoverVariants($sourcePath, $baseName, $outputDir),
-            ];
+            try {
+                $results = [
+                    'token' => $token,
+                    'files' => generateCoverVariants($sourcePath, $baseName, $outputDir),
+                ];
+            } catch (\Throwable $e) {
+                $error = 'تعذّرت معالجة هذه الصورة — تأكد أن الملف صورة صالحة غير تالفة. ('.$e->getMessage().')';
+            }
         }
     }
 }
@@ -98,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['cover'])) {
   button { margin-top: 20px; width: 100%; padding: 12px; border: none; border-radius: 8px; background: #3d5afe; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; }
   button:hover { background: #2f45cc; }
   .error { background: #fdeaea; color: #c0392b; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
+  .success { background: #eafaf0; color: #1f8a4c; padding: 12px; border-radius: 8px; margin-top: 20px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
   .results { margin-top: 8px; }
   .results h2 { font-size: 15px; margin: 24px 0 4px; }
   .result-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-top: 1px solid #eee; }
@@ -125,6 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['cover'])) {
   </form>
 
   <?php if ($results): ?>
+    <div class="success">✓ تم توليد الأحجام الثلاثة بنجاح</div>
     <div class="results">
       <h2>الملفات جاهزة:</h2>
       <?php foreach ($results['files'] as $size => $info): ?>

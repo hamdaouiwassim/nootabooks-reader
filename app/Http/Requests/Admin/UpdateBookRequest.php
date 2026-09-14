@@ -15,6 +15,7 @@ class UpdateBookRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
+            'title_en' => ['nullable', 'string', 'max:255'],
             'writer_id' => ['nullable', 'integer', 'exists:writers,id'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'language' => ['required', 'string', 'max:100'],
@@ -40,6 +41,7 @@ class UpdateBookRequest extends FormRequest
         return [
             'title.required' => 'عنوان الكتاب مطلوب.',
             'title.max' => 'عنوان الكتاب طويل جدًا (الحد الأقصى 255 حرفًا).',
+            'title_en.max' => 'العنوان بالإنجليزية طويل جدًا (الحد الأقصى 255 حرفًا).',
             'writer_id.exists' => 'المؤلف المحدد غير موجود.',
             'category_id.required' => 'يجب اختيار تصنيف للكتاب.',
             'category_id.exists' => 'التصنيف المحدد غير موجود.',
