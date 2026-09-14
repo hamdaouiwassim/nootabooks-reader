@@ -104,7 +104,7 @@
           <span class="writer-tag">{{ $writer->genre_tag }}</span>
         @endif
         @if ($writer->bio)
-          <p>{{ $writer->bio }}</p>
+          <p>{{ \Illuminate\Support\Str::limit($writer->bio, 100) }}</p>
         @endif
         <div class="writer-stats">
           <span><i class="fa-solid fa-book"></i> {{ number_format($writer->books_count) }} كتاب</span>
