@@ -64,6 +64,7 @@
     <i class="fa-solid fa-magnifying-glass"></i>
     <label for="writerSearch" class="sr-only">ابحث عن مؤلف بالاسم</label>
     <input type="text" id="writerSearch" placeholder="ابحث عن مؤلف بالاسم ...">
+    <button type="button" id="writerSearchBtn" class="btn btn-gold small">بحث</button>
   </div>
 
   <div class="filter-tabs" role="group" aria-label="فرز المؤلفين">

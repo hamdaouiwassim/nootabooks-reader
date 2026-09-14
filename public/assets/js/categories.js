@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('categoriesGrid');
   const cards = Array.from(document.querySelectorAll('.category-full-card'));
   const searchInput = document.getElementById('categorySearch');
+  const searchBtn = document.getElementById('categorySearchBtn');
   const sortTabs = document.querySelectorAll('.filter-tab');
   const resultsCount = document.getElementById('resultsCount');
   const noResults = document.getElementById('noResults');
@@ -23,6 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   searchInput?.addEventListener('input', applySearch);
+  searchBtn?.addEventListener('click', applySearch);
+  searchInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      applySearch();
+    }
+  });
 
   sortTabs.forEach(tab => {
     tab.addEventListener('click', () => {

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('writersGrid');
   const cards = Array.from(document.querySelectorAll('.writer-card'));
   const searchInput = document.getElementById('writerSearch');
+  const searchBtn = document.getElementById('writerSearchBtn');
   const filterTabs = document.querySelectorAll('.filter-tab');
   const resultsCount = document.getElementById('resultsCount');
   const noResults = document.getElementById('noResults');
@@ -29,6 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   searchInput?.addEventListener('input', applyFilters);
+  searchBtn?.addEventListener('click', applyFilters);
+  searchInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      applyFilters();
+    }
+  });
 
   filterTabs.forEach(tab => {
     tab.addEventListener('click', () => {

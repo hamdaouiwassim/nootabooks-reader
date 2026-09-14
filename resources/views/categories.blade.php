@@ -62,6 +62,7 @@
     <i class="fa-solid fa-magnifying-glass"></i>
     <label for="categorySearch" class="sr-only">ابحث عن تصنيف</label>
     <input type="text" id="categorySearch" placeholder="ابحث عن تصنيف ...">
+    <button type="button" id="categorySearchBtn" class="btn btn-gold small">بحث</button>
   </div>
 
   <div class="filter-tabs" role="group" aria-label="ترتيب التصنيفات">

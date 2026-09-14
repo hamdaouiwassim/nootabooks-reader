@@ -58,6 +58,12 @@
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.12); opacity: .75; }
 }
+.loader-percent {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-gray);
+  font-variant-numeric: tabular-nums;
+}
 
 body {
   font-family: 'Tajawal', sans-serif;
