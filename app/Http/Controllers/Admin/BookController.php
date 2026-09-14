@@ -114,6 +114,10 @@ class BookController extends Controller
             }
         }
 
+        if ($request->hasFile('cover_image')) {
+            $this->deriveMissingCoverSizes($data, $request, $book);
+        }
+
         if ($request->hasFile('book_file')) {
             if ($relativePath = $this->relativeStoragePath($book?->file_path)) {
                 Storage::disk('public')->delete($relativePath);
@@ -146,6 +150,44 @@ class BookController extends Controller
         $path = app(ImageOptimizer::class)->optimize($file, 'covers', 2000, 3000, 80);
 
         return force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$path;
+    }
+
+    /**
+     * When the admin uploads only the large cover, derive the medium/small
+     * variants from it directly instead of leaving cover_image_md/cover_image_sm
+     * null (which makes Book::cover_image_{md,sm}_url fall back to serving the
+     * full-size image everywhere). The source here is always the WebP file
+     * storeCoverVariant() just wrote — the original jpg/png upload is never
+     * kept around — so this reads straight from that WebP, no raster source needed.
+     */
+    private function deriveMissingCoverSizes(array &$data, Request $request, ?Book $book): void
+    {
+        $relativePath = $this->relativeStoragePath($data['cover_image']);
+
+        if (! $relativePath) {
+            return;
+        }
+
+        $sourcePath = Storage::disk('public')->path($relativePath);
+        $optimizer = app(ImageOptimizer::class);
+
+        if (! $request->hasFile('cover_image_md')) {
+            if ($oldRelative = $this->relativeStoragePath($book?->cover_image_md)) {
+                Storage::disk('public')->delete($oldRelative);
+            }
+
+            $mdPath = $optimizer->optimizePath($sourcePath, 'covers', 600, 900, 80);
+            $data['cover_image_md'] = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$mdPath;
+        }
+
+        if (! $request->hasFile('cover_image_sm')) {
+            if ($oldRelative = $this->relativeStoragePath($book?->cover_image_sm)) {
+                Storage::disk('public')->delete($oldRelative);
+            }
+
+            $smPath = $optimizer->optimizePath($sourcePath, 'covers', 174, 285, 80);
+            $data['cover_image_sm'] = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$smPath;
+        }
     }
 
     /**

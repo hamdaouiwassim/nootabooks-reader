@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(rm -f \"C:\\\\Users\\\\USER\\\\Desktop\\\\nootabooksui-reader/storage/framework/views/\"*.php)"
+      "Bash(rm -f \"C:\\\\Users\\\\USER\\\\Desktop\\\\nootabooksui-reader/storage/framework/views/\"*.php)",
+      "Bash(php -l app/Http/Controllers/Admin/BookController.php)"
     ],
     "additionalDirectories": [
       "C:\\Users\\USER\\Desktop\\nootabooksui-reader\\storage\\framework\\views"
