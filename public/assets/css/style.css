@@ -693,7 +693,13 @@ img { display: block; }
 .author-card p { font-size: 13px; font-weight: 700; }
 
 .similar-row { display: flex; gap: 18px; flex-wrap: wrap; }
-.mini-book { flex: 1 1 100px; min-width: 100px; }
+.mini-book {
+  flex: 1 1 100px;
+  min-width: 100px;
+  padding: 8px;
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+}
 .mini-cover {
   position: relative;
   height: 140px;
