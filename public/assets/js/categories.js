@@ -26,8 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   sortTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      sortTabs.forEach(t => t.classList.remove('active'));
+      sortTabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-pressed', 'false');
+      });
       tab.classList.add('active');
+      tab.setAttribute('aria-pressed', 'true');
       const sort = tab.dataset.sort;
 
       let sorted = cards;

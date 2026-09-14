@@ -1,11 +1,39 @@
 @extends('layouts.app')
 
-@section('title', 'استكشاف - نوته بوك')
-@section('meta_description', 'تصفح واستكشف مجموعة واسعة من الكتب والروايات العربية حسب التصنيف والتقييم وعدد التحميلات على نوته بوك.')
+@section('title', 'اكتشف الكتب والروايات العربية والمترجمة | نوته بوك')
+@section('meta_description', 'اكتشف الكتب والروايات العربية والمترجمة في مختلف المجالات. ابحث حسب العنوان أو المؤلف والتصنيف واللغة واستكشف الكتب المتاحة على نوته بوك.')
+@section('robots', $isFiltered ? 'noindex, follow' : 'index, follow')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/discover.css') }}">
+@endpush
+
+@push('schema')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'استكشاف', 'item' => route('discover')],
+    ],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
+@if ($books->isNotEmpty())
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'ItemList',
+    'itemListElement' => $books->getCollection()->values()->map(fn ($book, $index) => [
+        '@type' => 'ListItem',
+        'position' => ($books->currentPage() - 1) * $books->perPage() + $index + 1,
+        'url' => route('book-details', $book->slug),
+        'name' => $book->title,
+    ])->all(),
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
+@endif
 @endpush
 
 @section('content')
@@ -22,11 +50,12 @@
 
 <!-- ===================== PAGE HEADING ===================== -->
 <section class="section writers-hero">
-  <h1>استكشف عالم الكتب</h1>
-  <p>ابحث عن كتابك القادم من بين آلاف العناوين في مختلف المجالات</p>
+  <h1>اكتشف الكتب والروايات</h1>
+  <p>اكتشف مجموعة متنوعة من الكتب والروايات العربية والمترجمة في مختلف المجالات. ابحث عن كتابك المفضل أو استكشف الكتب حسب التصنيف واللغة.</p>
 
   <div class="writers-search">
     <i class="fa-solid fa-magnifying-glass"></i>
+    <label for="discoverSearch" class="sr-only">ابحث بعنوان الكتاب أو اسم المؤلف</label>
     <input type="text" id="discoverSearch" name="q" form="discoverFilters" value="{{ $search }}" placeholder="ابحث بعنوان الكتاب أو اسم المؤلف ...">
   </div>
 </section>
@@ -35,6 +64,11 @@
 <section class="section discover-layout">
 
   <!-- ---- Filters Sidebar ---- -->
+  <button type="button" class="filters-toggle-btn" id="filtersToggleBtn" aria-expanded="false" aria-controls="discoverFilters">
+    <span><i class="fa-solid fa-sliders"></i> الفلاتر</span>
+    <i class="fa-solid fa-chevron-down toggle-chevron"></i>
+  </button>
+
   <form class="filters-sidebar" id="discoverFilters" method="GET" action="{{ route('discover') }}">
     <div class="filters-head">
       <h2>الفلاتر</h2>
@@ -71,7 +105,7 @@
   <!-- ---- Results ---- -->
   <div class="discover-results">
     <div class="results-toolbar">
-      <span class="results-count"><strong id="resultsCount">{{ $books->total() }}</strong> كتاب متاح</span>
+      <h2 class="results-count">الكتب المتاحة (<strong id="resultsCount">{{ $books->total() }}</strong>)</h2>
       <div class="sort-wrap">
         <label for="sortSelect">ترتيب حسب</label>
         <select id="sortSelect" name="sort" form="discoverFilters" onchange="this.form.submit()">
@@ -86,13 +120,13 @@
     <div class="discover-grid" id="discoverGrid" @if ($books->isEmpty()) hidden @endif>
 
       @foreach ($books as $book)
-        <a href="{{ route('book-details', $book->slug) }}" class="book-card" data-title="{{ $book->title }}" data-author="{{ $book->writer?->name }}" data-rating="{{ $book->rating_average }}" data-year="{{ $book->published_year }}">
+        <article class="book-card" data-title="{{ $book->title }}" data-author="{{ $book->writer?->name }}" data-rating="{{ $book->rating_average }}" data-year="{{ $book->published_year }}">
           @if ($book->cover_image)
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
                 srcset="{{ $book->cover_image_sm_url }} 300w, {{ $book->cover_image_md_url }} 600w"
                 sizes="(max-width: 640px) 45vw, 200px" width="300" height="450"
-                loading="lazy" decoding="async" alt="{{ $book->title }}">
+                loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($book->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
@@ -108,10 +142,16 @@
               @endif
             </div>
           @endif
-          <h3>{{ $book->title }}</h3>
-          <p class="author">{{ $book->writer?->name }}</p>
-          <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
-        </a>
+          <h3><a href="{{ route('book-details', $book->slug) }}" class="stretched-link">{{ $book->title }}</a></h3>
+          @if ($book->writer)
+            <p class="author"><a href="{{ route('writer-details', $book->writer->slug) }}">{{ $book->writer->name }}</a></p>
+          @endif
+          @if ($book->rating_count > 0)
+            <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
+          @else
+            <p class="rating no-rating">لا توجد تقييمات بعد</p>
+          @endif
+        </article>
       @endforeach
 
     </div>
@@ -121,6 +161,32 @@
     {{ $books->links() }}
   </div>
 
+</section>
+
+@if ($categories->isNotEmpty())
+<!-- ===================== CATEGORY DISCOVERY ===================== -->
+<section class="section discover-categories">
+  <h2>استكشف الكتب حسب التصنيف</h2>
+  <div class="category-links-row">
+    @foreach ($categories as $category)
+      <a href="{{ route('category-details', $category->slug) }}">{{ $category->name }}</a>
+    @endforeach
+  </div>
+</section>
+@endif
+
+<!-- ===================== SEO NOTE ===================== -->
+<section class="section discover-seo-note">
+  <h2>اكتشف الكتب في مختلف المجالات</h2>
+  <p>
+    يتيح لك نوته بوك استكشاف مجموعة متنوعة من الكتب والروايات العربية والمترجمة
+    @if ($categories->isNotEmpty())
+      في مجالات متعددة مثل {{ $categories->take(6)->pluck('name')->implode('، ') }}.
+    @else
+      في مختلف المجالات.
+    @endif
+    استخدم البحث والتصنيفات للوصول إلى الكتب التي تناسب اهتماماتك.
+  </p>
 </section>
 
 </main>

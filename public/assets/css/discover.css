@@ -21,6 +21,24 @@
 }
 
 /* ============ FILTERS SIDEBAR ============ */
+.filters-toggle-btn {
+  display: none;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 14px;
+}
+.filters-toggle-btn span { display: flex; align-items: center; gap: 8px; }
+.filters-toggle-btn .toggle-chevron { transition: transform .2s ease; }
+.filters-toggle-btn[aria-expanded="true"] .toggle-chevron { transform: rotate(180deg); }
+
 .filters-sidebar {
   background: var(--cream-alt);
   border: 1px solid var(--border-light);
@@ -60,7 +78,7 @@
   flex-wrap: wrap;
   gap: 12px;
 }
-.results-count { font-size: 14px; color: var(--text-gray); }
+.results-count { font-size: 14px; font-weight: 400; color: var(--text-gray); }
 .results-count strong { color: var(--navy); }
 
 .sort-wrap { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-gray); }
@@ -81,8 +99,21 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
-.discover-grid .book-card { flex: none; }
+.discover-grid .book-card { flex: none; position: relative; }
 .discover-grid .book-cover { display: flex; }
+
+/* "Stretched link" pattern: the whole card stays clickable to the book page
+   via the title link's invisible ::after overlay, while the author name
+   keeps its own real, separately-crawlable link on top of that overlay. */
+.discover-grid .book-card h3 a.stretched-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.discover-grid .book-card .author a { position: relative; z-index: 2; }
+.discover-grid .book-card .author a:hover { text-decoration: underline; }
+.discover-grid .book-card .rating.no-rating { color: var(--text-gray); font-size: 12px; }
 
 /* extra cover gradients for discover results */
 .dcover-3 { background: linear-gradient(160deg,#6a1f2f,#2a0c14); }
@@ -96,13 +127,35 @@
 
 .no-results { text-align: center; color: var(--text-gray); padding: 40px 0; }
 
+/* ============ CATEGORY DISCOVERY LINKS ============ */
+.discover-categories { margin-top: 36px; }
+.discover-categories h2 { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 14px; }
+.category-links-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.category-links-row a {
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+.category-links-row a:hover { background: #fff; border-color: var(--teal); }
+
+/* ============ SEO INTRO TEXT ============ */
+.discover-seo-note { margin-top: 28px; max-width: 800px; }
+.discover-seo-note h2 { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+.discover-seo-note p { font-size: 14px; color: var(--text-gray); line-height: 1.9; }
+
 /* ============ RESPONSIVE ============ */
 @media (max-width: 1100px) {
   .discover-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 900px) {
   .discover-layout { grid-template-columns: 1fr; }
-  .filters-sidebar { position: static; }
+  .filters-toggle-btn { display: flex; }
+  .filters-sidebar { position: static; display: none; }
+  .filters-sidebar.open { display: block; }
 }
 @media (max-width: 640px) {
   .discover-grid { grid-template-columns: repeat(2, 1fr); }

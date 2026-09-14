@@ -25,7 +25,13 @@ class SitemapController extends Controller
 
             $books = Book::published()->select('slug', 'updated_at')->orderByDesc('updated_at')->get();
             $writers = Writer::select('slug', 'updated_at')->orderByDesc('updated_at')->get();
-            $categories = Category::select('slug', 'updated_at')->orderByDesc('updated_at')->get();
+            // Only categories with at least one published book resolve to an
+            // indexable page (see PageController::categoryDetails()) — an
+            // empty category is noindexed, so it has no place in the sitemap.
+            $categories = Category::whereHas('books', fn ($q) => $q->published())
+                ->select('slug', 'updated_at')
+                ->orderByDesc('updated_at')
+                ->get();
 
             return view('sitemap', [
                 'staticPages' => $staticPages,

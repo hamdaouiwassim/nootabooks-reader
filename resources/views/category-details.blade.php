@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
-@section('title', $currentCategory->name.' - نوته بوك')
-@section('meta_description', 'تصفح أفضل كتب وروايات '.$currentCategory->name.' على نوته بوك، مع تقييمات القراء وإمكانية القراءة والتحميل.')
+@section('title', 'كتب وروايات '.$currentCategory->name.' للقراءة أونلاين | نوته بوك')
+@section('meta_description', 'اكتشف مجموعة من كتب وروايات '.$currentCategory->name.' على نوته بوك، وتصفح الكتب حسب العنوان والمؤلف واقرأها أونلاين.')
+@section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset_min('assets/css/book-details.css') }}">
@@ -46,7 +47,7 @@
 
   <div class="writer-hero-info">
     <h1 class="writer-hero-name">{{ $currentCategory->name }}</h1>
-    <p class="writer-hero-desc">اكتشف أفضل الكتب والروايات في تصنيف {{ $currentCategory->name }}</p>
+    <p class="writer-hero-desc">اكتشف مجموعة من الكتب في تصنيف {{ $currentCategory->name }} على نوته بوك، وتصفح الأعمال حسب العنوان والمؤلف.</p>
 
     <div class="writer-hero-meta" style="grid-template-columns: max-content;">
       <div class="meta-item"><i class="fa-solid fa-book"></i><span>عدد الكتب</span><strong>{{ number_format($currentCategory->books_count) }}</strong></div>
@@ -66,7 +67,8 @@
 
   <form method="GET" action="{{ route('category-details', $currentCategory->slug) }}" class="writers-search">
     <button type="submit" aria-label="بحث"><i class="fa-solid fa-magnifying-glass"></i></button>
-    <input type="text" name="q" value="{{ $search }}" placeholder="ابحث بعنوان الكتاب أو اسم المؤلف في {{ $currentCategory->name }} ...">
+    <label for="categoryBookSearch" class="sr-only">ابحث بعنوان الكتاب أو اسم المؤلف في {{ $currentCategory->name }}</label>
+    <input type="text" id="categoryBookSearch" name="q" value="{{ $search }}" placeholder="ابحث بعنوان الكتاب أو اسم المؤلف في {{ $currentCategory->name }} ...">
   </form>
 
   @if ($categoryBooks->isNotEmpty())

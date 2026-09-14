@@ -17,4 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (clearBtn.dataset.clearUrl) window.location.href = clearBtn.dataset.clearUrl;
   });
 
+  // ---- Mobile filters accordion ----
+  // Each filter change submits the form (full page reload), so the
+  // sidebar naturally starts closed again once results are shown — no
+  // state needs to be persisted across the reload.
+  const filtersToggleBtn = document.getElementById('filtersToggleBtn');
+  const filtersSidebar = document.getElementById('discoverFilters');
+
+  filtersToggleBtn?.addEventListener('click', () => {
+    const willOpen = !filtersSidebar.classList.contains('open');
+    filtersSidebar.classList.toggle('open', willOpen);
+    filtersToggleBtn.setAttribute('aria-expanded', String(willOpen));
+  });
+
 });

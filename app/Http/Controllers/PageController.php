@@ -84,6 +84,12 @@ class PageController extends Controller
 
         $books = $query->paginate(16)->withQueryString();
 
+        // Only the plain, unfiltered catalog (optionally paginated) is a
+        // deliberate SEO landing page — any active search/category/language/
+        // rating filter produces a near-duplicate slice of the same catalog
+        // that shouldn't compete with it in search results.
+        $isFiltered = (bool) ($selectedCategorySlugs || $language !== 'all' || $selectedRatings || $search !== '');
+
         return view('discover', [
             'activeNav' => 'discover',
             'books' => $books,
@@ -93,6 +99,7 @@ class PageController extends Controller
             'selectedRatings' => $selectedRatings,
             'search' => $search,
             'sort' => $sort,
+            'isFiltered' => $isFiltered,
         ]);
     }
 
@@ -100,7 +107,13 @@ class PageController extends Controller
     {
         return view('categories', [
             'activeNav' => 'categories',
-            'categories' => Category::withCount(['books' => fn ($q) => $q->published()])->orderBy('id')->paginate(12)->withQueryString(),
+            // Small, slow-growing taxonomy (~16 categories) — a single page
+            // beats paginating it, and populated categories are worth
+            // surfacing before empty ones rather than plain insertion order.
+            'categories' => Category::withCount(['books' => fn ($q) => $q->published()])
+                ->orderByDesc('books_count')
+                ->orderBy('name')
+                ->get(),
             'topCategories' => Category::withCount(['books' => fn ($q) => $q->published()])->orderByDesc('books_count')->take(5)->get(),
         ]);
     }
@@ -138,6 +151,10 @@ class PageController extends Controller
             'categoryBooks' => $categoryBooks,
             'similarCategories' => $similarCategories,
             'search' => $search,
+            // A category with no published books yet is a thin page, and a
+            // search within a category is a dynamic slice of it — neither
+            // is a deliberate SEO landing page.
+            'isIndexable' => $currentCategory->books_count > 0 && $search === '',
         ]);
     }
 

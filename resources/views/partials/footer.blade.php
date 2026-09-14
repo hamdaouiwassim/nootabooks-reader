@@ -35,7 +35,7 @@
 
     <div class="footer-col">
       <h4>عن نوته بوك</h4>
-      <p class="footer-about">منصة عربية تجمع عشاق الفراءة. نوفر لك الاف الكتب للقراءة أونلاين والتحميل في مختلف المجالات.</p>
+      <p class="footer-about">منصة عربية تجمع عشاق القراءة، وتساعدك على اكتشاف الكتب وقراءتها أونلاين في مختلف المجالات.</p>
     </div>
 
     {{-- Store badges hidden for now — no mobile app yet, re-enable once one exists.
