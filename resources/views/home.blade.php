@@ -34,8 +34,7 @@
 <!-- ===================== STATS BAR ===================== -->
 <section class="stats-bar">
   <div class="stat-item">
-    <div class="stat-text"><strong class="stat-count" data-count="{{ $booksCount }}">0</strong><span>كتاب متوفر</span></div>
-    <i class="fa-solid fa-book stat-icon"></i>
+    <div class="stat-text stat-text-lg"><strong class="stat-count" data-count="{{ $booksCount }}">0</strong><span>كتاب متوفر</span></div>
   </div>
 </section>
 
