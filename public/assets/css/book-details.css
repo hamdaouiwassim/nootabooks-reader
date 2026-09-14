@@ -234,7 +234,7 @@
 /* ============ AUTHOR MINI CARD ============ */
 .author-mini-card {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 22px;
   background: var(--cream-alt);
   border: 1px solid var(--border-light);
