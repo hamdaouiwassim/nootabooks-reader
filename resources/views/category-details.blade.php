@@ -130,8 +130,10 @@
     @foreach ($similarCategories as $category)
       <a href="{{ route('category-details', $category->slug) }}" class="category-full-card">
         <span class="cat-icon-circle {{ $category->color ?? 'cat-navy' }}"><i class="fa-solid {{ $category->icon ?? 'fa-book' }}"></i></span>
-        <h3>{{ $category->name }}</h3>
-        <p>{{ number_format($category->books_count) }} كتاب</p>
+        <div class="cat-info">
+          <h3>{{ $category->name }}</h3>
+          <p>{{ number_format($category->books_count) }} كتاب</p>
+        </div>
       </a>
     @endforeach
   </div>
