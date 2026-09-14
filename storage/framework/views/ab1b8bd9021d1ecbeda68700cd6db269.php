@@ -1,10 +1,12 @@
-<?php $__env->startSection('title', 'نوته بوك - عالم من الكتب بين يديك'); ?>
-<?php $__env->startSection('meta_description', 'اكتشف أفضل الروايات والكتب العربية على نوته بوك، اقرأ وحمّل مجانًا، وتابع مؤلفيك المفضلين واطّلع على مراجعات القراء.'); ?>
+<?php $__env->startSection('title', 'اكتشف الكتب والروايات واقرأها وحمّلها أونلاين | نوته بوك'); ?>
+<?php $__env->startSection('meta_description', 'اكتشف الكتب والروايات العربية والمترجمة على نوته بوك، وابحث عن الكتب حسب المؤلف والتصنيف واستكشف ما يناسب اهتماماتك واقرأه أونلاين.'); ?>
 
 <?php $__env->startSection('content'); ?>
 
+<main>
+
 <!-- ===================== HERO ===================== -->
-<section class="hero">
+<section class="hero" aria-labelledby="hero-heading">
   <div class="hero-content">
     <?php if($heroQuotes->isNotEmpty()): ?>
       <div class="hero-quote-stack <?php if($heroQuotes->count() < 2): ?> static <?php endif; ?>">
@@ -19,11 +21,12 @@
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
       </div>
     <?php endif; ?>
-    <h1 class="hero-title">إقرأ . اكتشف . حمّل</h1>
+    <h1 class="hero-title" id="hero-heading">اكتشف الكتب والروايات واقرأها أونلاين</h1>
     <p class="hero-subtitle">عالم من الكتب بين يديك</p>
     <form class="hero-search" method="GET" action="<?php echo e(route('discover')); ?>">
       <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" name="q" value="<?php echo e(request('q')); ?>" placeholder="ابحث عن كتاب، مؤلف، او موضوع ...">
+      <label for="homepage-search" class="sr-only">ابحث عن كتاب أو مؤلف أو موضوع</label>
+      <input id="homepage-search" type="search" name="q" value="<?php echo e(request('q')); ?>" placeholder="ابحث عن كتاب، مؤلف، أو موضوع...">
       <button type="submit" class="btn btn-gold">ابحث</button>
     </form>
   </div>
@@ -32,35 +35,16 @@
 <!-- ===================== STATS BAR ===================== -->
 <section class="stats-bar">
   <div class="stat-item">
-    <div class="stat-text"><strong>تحميل مجاني</strong><span>بسهولة وأمان</span></div>
-    <i class="fa-solid fa-cloud-arrow-down stat-icon"></i>
-  </div>
-  <div class="stat-item">
-    <div class="stat-text"><strong>قراءة أونلاين</strong><span>في اي وقت</span></div>
-    <i class="fa-solid fa-book stat-icon"></i>
-  </div>
-  <div class="stat-item">
-    <div class="stat-text"><strong><?php echo e(number_format($categoriesCount)); ?></strong><span>تصنيف متنوع</span></div>
-    <i class="fa-solid fa-layer-group stat-icon"></i>
-  </div>
-  <div class="stat-item">
-    <div class="stat-text"><strong><?php echo e(number_format($writersCount)); ?></strong><span>مؤلف</span></div>
-    <i class="fa-solid fa-book-open stat-icon"></i>
-  </div>
-  <div class="stat-item">
-    <div class="stat-text"><strong><?php echo e(number_format($booksCount)); ?></strong><span>كتاب متوفر</span></div>
-    <i class="fa-solid fa-gift stat-icon"></i>
+    <div class="stat-text stat-text-lg"><strong class="stat-count" data-count="<?php echo e($booksCount); ?>">0</strong><span>كتاب متوفر</span></div>
   </div>
 </section>
 
-<main>
-
 <!-- ===================== TRENDING BOOKS ===================== -->
-<section class="section trending-section home-books-section">
+<section class="section trending-section home-books-section" aria-labelledby="trending-heading">
   <div class="section-head">
     <div class="section-title-wrap">
-      <h2 class="section-title">الأكثر قراءة هذا الأسبوع <i class="fa-solid fa-fire fire-icon"></i></h2>
-      <p class="section-sub">اكتشف اكثر الكتب قراءة من قبل مجتمعنا</p>
+      <h2 class="section-title" id="trending-heading">الأكثر تحميلاً</h2>
+      <p class="section-sub">اكتشف أكثر الكتب تحميلًا من قبل مجتمعنا</p>
     </div>
     <a href="<?php echo e(route('discover')); ?>" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
   </div>
@@ -70,10 +54,13 @@
 
     <div class="book-carousel">
       <?php $__currentLoopData = $trendingBooks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $book): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <article class="book-card">
+        <a href="<?php echo e(route('book-details', $book->slug)); ?>" class="book-card">
           <?php if($book->cover_image): ?>
             <div class="cover-wrap">
-              <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>" alt="<?php echo e($book->title); ?>">
+              <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>"
+                srcset="<?php echo e($book->cover_image_sm_url); ?> 300w, <?php echo e($book->cover_image_md_url); ?> 600w"
+                sizes="(max-width: 640px) 45vw, 200px" width="300" height="450"
+                loading="lazy" decoding="async" alt="غلاف <?php echo e($book->title); ?>">
               <span class="brand-ribbon">nootabooks.com</span>
               <?php if($book->is_coming_soon): ?>
                 <span class="coming-soon-badge">قريبًا</span>
@@ -89,11 +76,14 @@
               <?php endif; ?>
             </div>
           <?php endif; ?>
-          <h3><a href="<?php echo e(route('book-details', $book->slug)); ?>"><?php echo e($book->title); ?></a></h3>
+          <h3><?php echo e($book->title); ?></h3>
           <p class="author"><?php echo e($book->writer?->name); ?></p>
-          <p class="rating"><i class="fa-solid fa-star"></i> <?php echo e(number_format($book->rating_average, 1)); ?></p>
-          <a href="<?php echo e(route('book-details', $book->slug)); ?>" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
-        </article>
+          <?php if($book->rating_count > 0): ?>
+            <p class="rating"><i class="fa-solid fa-star"></i> <?php echo e(number_format($book->rating_average, 1)); ?></p>
+          <?php else: ?>
+            <p class="rating no-rating">لا توجد تقييمات بعد</p>
+          <?php endif; ?>
+        </a>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
 
@@ -103,10 +93,10 @@
 
 <?php if($booksCount > 10): ?>
 <!-- ===================== RECENT BOOKS ===================== -->
-<section class="section trending-section home-books-section">
+<section class="section trending-section home-books-section" aria-labelledby="recent-heading">
   <div class="section-head">
     <div class="section-title-wrap">
-      <h2 class="section-title">أحدث الكتب <i class="fa-solid fa-clock-rotate-left fire-icon"></i></h2>
+      <h2 class="section-title" id="recent-heading">أحدث الكتب</h2>
       <p class="section-sub">آخر الكتب المضافة إلى المنصة</p>
     </div>
     <a href="<?php echo e(route('discover', ['sort' => 'newest'])); ?>" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
@@ -117,10 +107,13 @@
 
     <div class="book-carousel">
       <?php $__currentLoopData = $recentBooks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $book): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <article class="book-card">
+        <a href="<?php echo e(route('book-details', $book->slug)); ?>" class="book-card">
           <?php if($book->cover_image): ?>
             <div class="cover-wrap">
-              <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>" alt="<?php echo e($book->title); ?>">
+              <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>"
+                srcset="<?php echo e($book->cover_image_sm_url); ?> 300w, <?php echo e($book->cover_image_md_url); ?> 600w"
+                sizes="(max-width: 640px) 45vw, 200px" width="300" height="450"
+                loading="lazy" decoding="async" alt="غلاف <?php echo e($book->title); ?>">
               <span class="brand-ribbon">nootabooks.com</span>
               <?php if($book->is_coming_soon): ?>
                 <span class="coming-soon-badge">قريبًا</span>
@@ -136,11 +129,14 @@
               <?php endif; ?>
             </div>
           <?php endif; ?>
-          <h3><a href="<?php echo e(route('book-details', $book->slug)); ?>"><?php echo e($book->title); ?></a></h3>
+          <h3><?php echo e($book->title); ?></h3>
           <p class="author"><?php echo e($book->writer?->name); ?></p>
-          <p class="rating"><i class="fa-solid fa-star"></i> <?php echo e(number_format($book->rating_average, 1)); ?></p>
-          <a href="<?php echo e(route('book-details', $book->slug)); ?>" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
-        </article>
+          <?php if($book->rating_count > 0): ?>
+            <p class="rating"><i class="fa-solid fa-star"></i> <?php echo e(number_format($book->rating_average, 1)); ?></p>
+          <?php else: ?>
+            <p class="rating no-rating">لا توجد تقييمات بعد</p>
+          <?php endif; ?>
+        </a>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
 
@@ -153,28 +149,19 @@
 <section class="section">
   <div class="discover-banner">
     <div class="discover-tags">
-      <div class="tag-item">
-        <span class="tag-icon tag-purple"><i class="fa-solid fa-bookmark"></i></span>
-        <span>روايات</span>
-      </div>
-      <div class="tag-item">
-        <span class="tag-icon tag-green"><i class="fa-solid fa-mosque"></i></span>
-        <span>تنمية ذهنية</span>
-      </div>
-      <div class="tag-item">
-        <span class="tag-icon tag-brown"><i class="fa-solid fa-bell"></i></span>
-        <span>تنمية ذاتية</span>
-      </div>
-      <div class="tag-item">
-        <span class="tag-icon tag-blue"><i class="fa-solid fa-table-cells"></i></span>
-        <span>غير ذلك</span>
-      </div>
+      <?php $tagColors = ['tag-purple', 'tag-green', 'tag-brown', 'tag-blue']; ?>
+      <?php $__currentLoopData = $categories->take(4); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <a href="<?php echo e(route('category-details', $category->slug)); ?>" class="tag-item">
+          <span class="tag-icon <?php echo e($tagColors[$loop->index % count($tagColors)]); ?>"><i class="fa-solid <?php echo e($category->icon ?? 'fa-book'); ?>"></i></span>
+          <span><?php echo e($category->name); ?></span>
+        </a>
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
     <div class="discover-left">
       <div class="discover-text">
         <h3>اكتشف عوالم جديدة</h3>
-        <p>ألاف الكتب في انتظارك ...</p>
-        <button class="btn btn-gold small"><i class="fa-solid fa-arrow-left"></i> <span class="btn-label">استكشف</span></button>
+        <p><?php echo e(number_format($booksCount)); ?> كتاب في انتظارك ...</p>
+        <a href="<?php echo e(route('discover')); ?>" class="btn btn-gold small"><i class="fa-solid fa-arrow-left"></i> <span class="btn-label">استكشف</span></a>
       </div>
     </div>
   </div>
@@ -182,48 +169,54 @@
 
 <!-- ===================== AUTHORS + SIMILAR BOOKS ===================== -->
 <section class="section two-col">
-  <div class="col">
+  <section class="col" aria-labelledby="suggestions-heading">
     <div class="section-head">
-      <h2 class="section-title">كتب مشابهة لك</h2>
+      <h2 class="section-title" id="suggestions-heading">اقتراحات للقراءة</h2>
       <a href="<?php echo e(route('discover')); ?>" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
     </div>
     <div class="similar-row">
       <?php $__currentLoopData = $similarBooks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $book): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <a href="<?php echo e(route('book-details', $book->slug)); ?>" class="mini-book">
           <?php if($book->cover_image): ?>
-            <img class="mini-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>" alt="<?php echo e($book->title); ?>">
+            <img class="mini-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>"
+              srcset="<?php echo e($book->cover_image_sm_url); ?> 300w, <?php echo e($book->cover_image_md_url); ?> 600w"
+              sizes="140px" width="300" height="450" loading="lazy" decoding="async" alt="غلاف <?php echo e($book->title); ?>">
           <?php else: ?>
             <div class="mini-cover mc-<?php echo e(($book->id % 4) + 1); ?>"><span class="cover-badge sm">B</span></div>
           <?php endif; ?>
-          <h4><?php echo e($book->title); ?></h4>
+          <h3><?php echo e($book->title); ?></h3>
           <p><?php echo e($book->writer?->name); ?></p>
         </a>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
-  </div>
+  </section>
 
-  <div class="col">
+  <section class="col" aria-labelledby="writers-heading">
     <div class="section-head">
-      <h2 class="section-title">مؤلفون مميزون</h2>
+      <h2 class="section-title" id="writers-heading">مؤلفون مميزون</h2>
       <a href="<?php echo e(route('writers')); ?>" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
     </div>
     <div class="authors-row">
       <?php $__empty_1 = true; $__currentLoopData = $popularWriters; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $writer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <a href="<?php echo e(route('writer-details', $writer->slug)); ?>" class="author-card">
-          <img src="<?php echo e($writer->photo_sm_url ?? 'https://i.pravatar.cc/120?img=' . (($writer->id % 70) + 1)); ?>" alt="<?php echo e($writer->name); ?>">
+          <?php if($writer->photo): ?>
+            <img src="<?php echo e($writer->photo_xs_url); ?>" width="200" height="200" loading="lazy" decoding="async" alt="صورة المؤلف <?php echo e($writer->name); ?>">
+          <?php else: ?>
+            <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+          <?php endif; ?>
           <p><?php echo e($writer->name); ?></p>
         </a>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <p class="no-results">لا يوجد مؤلفون بعد</p>
       <?php endif; ?>
     </div>
-  </div>
+  </section>
 </section>
 
 <!-- ===================== CATEGORIES ===================== -->
-<section class="section">
+<section class="section" aria-labelledby="categories-heading">
   <div class="section-head">
-    <h2 class="section-title">تصفح حسب التصنيف</h2>
+    <h2 class="section-title" id="categories-heading">تصفح حسب التصنيف</h2>
     <a href="<?php echo e(route('categories')); ?>" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
   </div>
 
@@ -242,7 +235,8 @@
       <p>اشترك في نشرتنا البريدية للحصول على أحدث الكتب والمقالات</p>
     </div>
     <form class="newsletter-form" id="newsletterForm">
-      <input type="email" placeholder="أدخل بريدك الاكتروني" required>
+      <label for="newsletterEmail" class="sr-only">بريدك الإلكتروني</label>
+      <input type="email" id="newsletterEmail" name="email" placeholder="أدخل بريدك الإلكتروني" required>
       <button type="submit" class="btn btn-teal"><i class="fa-solid fa-paper-plane"></i> <span class="btn-label">اشترك الآن</span></button>
     </form>
   </div>

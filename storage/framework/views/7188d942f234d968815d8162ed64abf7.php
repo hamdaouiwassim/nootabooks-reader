@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php echo $__env->yieldContent('title', 'نوته بوك - عالم من الكتب بين يديك'); ?></title>
+<?php echo $__env->make('partials.google-analytics', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <?php echo $__env->make('partials.seo-meta', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <script type="application/ld+json">
 <?php echo json_encode([
@@ -14,7 +15,16 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
     '@type' => 'WebSite',
     'name' => 'نوته بوك',
     'url' => url('/'),
+    'description' => 'منصة عربية لاكتشاف الكتب والروايات وقراءتها أونلاين.',
     'inLanguage' => 'ar',
+    'potentialAction' => [
+        '@type' => 'SearchAction',
+        'target' => [
+            '@type' => 'EntryPoint',
+            'urlTemplate' => route('discover').'?q={search_term_string}',
+        ],
+        'query-input' => 'required name=search_term_string',
+    ],
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>
 
 </script>
@@ -31,8 +41,11 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
 
 </script>
 <?php echo $__env->yieldPushContent('schema'); ?>
+<link rel="preload" href="<?php echo e(asset('assets/fonts/tajawal/Iura6YBj_oCad4k1nzSBC45I.woff2')); ?>" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="<?php echo e(asset('assets/fonts/tajawal/Iurf6YBj_oCad4k1l5anHrRpiYlJ.woff2')); ?>" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/fonts.css')); ?>">
-<link rel="stylesheet" href="<?php echo e(asset('assets/css/vendor/fontawesome/all.min.css')); ?>">
+<link rel="preload" href="<?php echo e(asset_min('assets/css/vendor/fontawesome/fontawesome.css')); ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="<?php echo e(asset_min('assets/css/vendor/fontawesome/fontawesome.css')); ?>"></noscript>
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/style.css')); ?>">
 <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
@@ -48,7 +61,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
 
 <?php echo $__env->make('partials.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
-<script src="<?php echo e(asset_min('assets/js/script.js')); ?>"></script>
+<script src="<?php echo e(asset_min('assets/js/script.js')); ?>" defer></script>
 <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
