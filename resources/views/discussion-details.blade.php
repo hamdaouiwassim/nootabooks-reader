@@ -242,5 +242,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset_min('assets/js/discussion-details.js') }}"></script>
+<script src="{{ asset_min('assets/js/discussion-details.js') }}" defer></script>
 @endpush

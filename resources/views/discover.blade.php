@@ -194,5 +194,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset_min('assets/js/discover.js') }}"></script>
+<script src="{{ asset_min('assets/js/discover.js') }}" defer></script>
 @endpush

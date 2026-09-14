@@ -33,8 +33,11 @@
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 @stack('schema')
+<link rel="preload" href="{{ asset('assets/fonts/tajawal/Iura6YBj_oCad4k1nzSBC45I.woff2') }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ asset('assets/fonts/tajawal/Iurf6YBj_oCad4k1l5anHrRpiYlJ.woff2') }}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ asset_min('assets/css/fonts.css') }}">
-<link rel="stylesheet" href="{{ asset_min('assets/css/vendor/fontawesome/fontawesome.css') }}">
+<link rel="preload" href="{{ asset_min('assets/css/vendor/fontawesome/fontawesome.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/vendor/fontawesome/fontawesome.css') }}"></noscript>
 <link rel="stylesheet" href="{{ asset_min('assets/css/style.css') }}">
 @stack('styles')
 </head>
@@ -50,7 +53,7 @@
 
 @include('partials.footer')
 
-<script src="{{ asset_min('assets/js/script.js') }}"></script>
+<script src="{{ asset_min('assets/js/script.js') }}" defer></script>
 @stack('scripts')
 </body>
 </html>

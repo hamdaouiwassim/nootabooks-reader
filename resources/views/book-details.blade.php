@@ -378,5 +378,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset_min('assets/js/book-details.js') }}"></script>
+<script src="{{ asset_min('assets/js/book-details.js') }}" defer></script>
 @endpush

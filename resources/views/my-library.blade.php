@@ -234,5 +234,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset_min('assets/js/my-library.js') }}"></script>
+<script src="{{ asset_min('assets/js/my-library.js') }}" defer></script>
 @endpush

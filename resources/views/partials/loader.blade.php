@@ -5,4 +5,4 @@
   </div>
   <span class="loader-percent" id="loaderPercent">0%</span>
 </div>
-<script src="{{ asset_min('assets/js/loader.js') }}"></script>
+<script src="{{ asset_min('assets/js/loader.js') }}" defer></script>

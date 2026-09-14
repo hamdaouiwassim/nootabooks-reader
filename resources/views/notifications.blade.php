@@ -143,5 +143,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset_min('assets/js/notifications.js') }}"></script>
+<script src="{{ asset_min('assets/js/notifications.js') }}" defer></script>
 @endpush

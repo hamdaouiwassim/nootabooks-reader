@@ -199,5 +199,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset_min('assets/js/profile.js') }}"></script>
+<script src="{{ asset_min('assets/js/profile.js') }}" defer></script>
 @endpush

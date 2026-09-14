@@ -31,7 +31,7 @@
   <p class="error-footer-note">تكرر الأمر معك؟ <a href="{{ route('contact') }}">تواصل مع الدعم</a></p>
 </div>
 
-<script src="{{ asset_min('assets/js/script.js') }}"></script>
-<script src="{{ asset_min('assets/js/errors.js') }}"></script>
+<script src="{{ asset_min('assets/js/script.js') }}" defer></script>
+<script src="{{ asset_min('assets/js/errors.js') }}" defer></script>
 </body>
 </html>

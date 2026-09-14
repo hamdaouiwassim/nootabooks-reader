@@ -99,5 +99,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset_min('assets/js/register.js') }}"></script>
+<script src="{{ asset_min('assets/js/register.js') }}" defer></script>
 @endpush

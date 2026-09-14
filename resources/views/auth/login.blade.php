@@ -75,5 +75,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset_min('assets/js/login.js') }}"></script>
+<script src="{{ asset_min('assets/js/login.js') }}" defer></script>
 @endpush

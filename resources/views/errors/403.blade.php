@@ -29,6 +29,6 @@
   <p class="error-footer-note">تعتقد أن هذا خطأ؟ <a href="{{ route('contact') }}">تواصل مع الدعم</a></p>
 </div>
 
-<script src="{{ asset_min('assets/js/script.js') }}"></script>
+<script src="{{ asset_min('assets/js/script.js') }}" defer></script>
 </body>
 </html>

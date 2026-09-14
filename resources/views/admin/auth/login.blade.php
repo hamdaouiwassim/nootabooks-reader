@@ -75,6 +75,6 @@
   </div>
 </div>
 
-<script src="{{ asset_min('assets/js/admin-login.js') }}"></script>
+<script src="{{ asset_min('assets/js/admin-login.js') }}" defer></script>
 </body>
 </html>

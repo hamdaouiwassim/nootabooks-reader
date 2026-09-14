@@ -170,5 +170,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset_min('assets/js/writers.js') }}"></script>
+<script src="{{ asset_min('assets/js/writers.js') }}" defer></script>
 @endpush

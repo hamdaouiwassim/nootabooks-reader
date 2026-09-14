@@ -201,6 +201,6 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset_min('assets/js/auth.js') }}"></script>
-<script src="{{ asset_min('assets/js/settings.js') }}"></script>
+<script src="{{ asset_min('assets/js/auth.js') }}" defer></script>
+<script src="{{ asset_min('assets/js/settings.js') }}" defer></script>
 @endpush

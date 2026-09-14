@@ -46,7 +46,7 @@
 
 @stack('modals')
 
-<script src="{{ asset_min('assets/js/admin.js') }}"></script>
+<script src="{{ asset_min('assets/js/admin.js') }}" defer></script>
 @stack('scripts')
 </body>
 </html>

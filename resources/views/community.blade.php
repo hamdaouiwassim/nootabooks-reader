@@ -248,5 +248,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset_min('assets/js/community.js') }}"></script>
+<script src="{{ asset_min('assets/js/community.js') }}" defer></script>
 @endpush

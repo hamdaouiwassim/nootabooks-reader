@@ -138,5 +138,5 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset_min('assets/js/contact.js') }}"></script>
+<script src="{{ asset_min('assets/js/contact.js') }}" defer></script>
 @endpush
