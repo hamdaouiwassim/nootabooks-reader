@@ -489,7 +489,7 @@ img { display: block; }
   max-width: 1280px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
   padding: 26px 32px;
   gap: 20px;

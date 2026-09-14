@@ -34,24 +34,8 @@
 <!-- ===================== STATS BAR ===================== -->
 <section class="stats-bar">
   <div class="stat-item">
-    <div class="stat-text"><strong>تحميل مجاني</strong><span>بسهولة وأمان</span></div>
-    <i class="fa-solid fa-cloud-arrow-down stat-icon"></i>
-  </div>
-  <div class="stat-item">
-    <div class="stat-text"><strong>قراءة أونلاين</strong><span>في اي وقت</span></div>
+    <div class="stat-text"><strong class="stat-count" data-count="{{ $booksCount }}">0</strong><span>كتاب متوفر</span></div>
     <i class="fa-solid fa-book stat-icon"></i>
-  </div>
-  <div class="stat-item">
-    <div class="stat-text"><strong>{{ number_format($categoriesCount) }}</strong><span>تصنيف متنوع</span></div>
-    <i class="fa-solid fa-layer-group stat-icon"></i>
-  </div>
-  <div class="stat-item">
-    <div class="stat-text"><strong>{{ number_format($writersCount) }}</strong><span>مؤلف</span></div>
-    <i class="fa-solid fa-book-open stat-icon"></i>
-  </div>
-  <div class="stat-item">
-    <div class="stat-text"><strong>{{ number_format($booksCount) }}</strong><span>كتاب متوفر</span></div>
-    <i class="fa-solid fa-gift stat-icon"></i>
   </div>
 </section>
 
@@ -173,7 +157,7 @@
       <div class="discover-text">
         <h3>اكتشف عوالم جديدة</h3>
         <p>ألاف الكتب في انتظارك ...</p>
-        <button class="btn btn-gold small"><i class="fa-solid fa-arrow-left"></i> <span class="btn-label">استكشف</span></button>
+        <a href="{{ route('discover') }}" class="btn btn-gold small"><i class="fa-solid fa-arrow-left"></i> <span class="btn-label">استكشف</span></a>
       </div>
     </div>
   </div>

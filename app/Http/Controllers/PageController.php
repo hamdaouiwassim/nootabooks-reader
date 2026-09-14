@@ -46,8 +46,6 @@ class PageController extends Controller
                 'popularWriters' => Writer::orderByDesc('followers_count')->take(4)->get(),
                 'heroQuotes' => Quote::orderByDesc('id')->take(3)->get(),
                 'booksCount' => $booksCount,
-                'writersCount' => Writer::count(),
-                'categoriesCount' => Category::count(),
             ];
         });
 

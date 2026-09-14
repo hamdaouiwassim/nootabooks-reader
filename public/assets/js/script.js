@@ -149,4 +149,32 @@ document.addEventListener('DOMContentLoaded', () => {
     if (notifBadge) notifBadge.style.display = 'none';
   });
 
+  // ===================== STAT COUNTER =====================
+  const statCounters = document.querySelectorAll('.stat-count[data-count]');
+  if (statCounters.length) {
+    const animateCount = (el) => {
+      const target = parseInt(el.dataset.count, 10) || 0;
+      const duration = 1200;
+      const start = performance.now();
+      const step = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(target * eased).toLocaleString('en-US');
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    statCounters.forEach((el) => counterObserver.observe(el));
+  }
+
 });
