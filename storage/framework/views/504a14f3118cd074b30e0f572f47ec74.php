@@ -1,5 +1,5 @@
-<?php $__env->startSection('title', $currentBook->title.' - نوته بوك'); ?>
-<?php $__env->startSection('meta_description', $currentBook->description_short ?: \Illuminate\Support\Str::limit(strip_tags((string) $currentBook->description), 160) ?: 'اقرأ وحمّل كتاب '.$currentBook->title.' على نوته بوك.'); ?>
+<?php $__env->startSection('title', $currentBook->resolved_seo_title); ?>
+<?php $__env->startSection('meta_description', $currentBook->resolved_seo_description); ?>
 <?php $__env->startSection('og_type', 'book'); ?>
 <?php $__env->startSection('og_image', $currentBook->cover_image_url ?? asset('assets/images/hero-section.jpg')); ?>
 
@@ -19,10 +19,13 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
     'description' => $currentBook->description_short ?: strip_tags((string) $currentBook->description),
     'inLanguage' => $currentBook->language,
     'numberOfPages' => $currentBook->pages_count,
+    'datePublished' => $currentBook->published_year ? (string) $currentBook->published_year : null,
+    'genre' => $currentBook->category?->name,
     'image' => $currentBook->cover_image_url,
     'author' => $currentBook->writer ? [
         '@type' => 'Person',
         'name' => $currentBook->writer->name,
+        'url' => route('writer-details', $currentBook->writer->slug),
     ] : null,
     'aggregateRating' => $currentBook->rating_count > 0 ? [
         '@type' => 'AggregateRating',
@@ -76,7 +79,10 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
 <section class="section book-hero">
   <div class="book-hero-cover">
     <?php if($currentBook->cover_image): ?>
-      <img class="hero-cover-img cover-photo" src="<?php echo e($currentBook->cover_image_url); ?>" alt="<?php echo e($currentBook->title); ?>">
+      <img class="hero-cover-img cover-photo" src="<?php echo e($currentBook->cover_image_md_url); ?>"
+        srcset="<?php echo e($currentBook->cover_image_sm_url); ?> 300w, <?php echo e($currentBook->cover_image_md_url); ?> 600w, <?php echo e($currentBook->cover_image_url); ?> 800w"
+        sizes="(max-width: 900px) 90vw, 300px" width="600" height="900"
+        fetchpriority="high" decoding="async" alt="غلاف <?php echo e($currentBook->title); ?>">
     <?php else: ?>
       <div class="hero-cover-img cover-<?php echo e(($currentBook->id % 5) + 1); ?>">
         <span class="cover-badge">B</span>
@@ -100,19 +106,23 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
     <?php endif; ?>
 
     <div class="rating-row">
-      <span class="stars">
-        <?php for($i = 1; $i <= 5; $i++): ?>
-          <?php if($currentBook->rating_average >= $i): ?>
-            <i class="fa-solid fa-star"></i>
-          <?php elseif($currentBook->rating_average >= $i - 0.5): ?>
-            <i class="fa-solid fa-star-half-stroke"></i>
-          <?php else: ?>
-            <i class="fa-regular fa-star"></i>
-          <?php endif; ?>
-        <?php endfor; ?>
-      </span>
-      <strong><?php echo e(number_format($currentBook->rating_average, 1)); ?></strong>
-      <span class="review-count">(<?php echo e(number_format($currentBook->rating_count)); ?> تقييم)</span>
+      <?php if($currentBook->rating_count > 0): ?>
+        <span class="stars">
+          <?php for($i = 1; $i <= 5; $i++): ?>
+            <?php if($currentBook->rating_average >= $i): ?>
+              <i class="fa-solid fa-star"></i>
+            <?php elseif($currentBook->rating_average >= $i - 0.5): ?>
+              <i class="fa-solid fa-star-half-stroke"></i>
+            <?php else: ?>
+              <i class="fa-regular fa-star"></i>
+            <?php endif; ?>
+          <?php endfor; ?>
+        </span>
+        <strong><?php echo e(number_format($currentBook->rating_average, 1)); ?></strong>
+        <span class="review-count">(<?php echo e(number_format($currentBook->rating_count)); ?> تقييم)</span>
+      <?php else: ?>
+        <span class="no-reviews">لا توجد تقييمات بعد</span>
+      <?php endif; ?>
     </div>
 
     <?php if($currentBook->description_short): ?>
@@ -124,7 +134,6 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
       <div class="meta-item"><i class="fa-solid fa-language"></i><span>اللغة</span><strong><?php echo e($currentBook->language); ?></strong></div>
       <div class="meta-item"><i class="fa-solid fa-calendar-days"></i><span>تاريخ النشر</span><strong><?php echo e($currentBook->published_year ?? '—'); ?></strong></div>
       <div class="meta-item"><i class="fa-solid fa-file-arrow-down"></i><span>حجم الملف</span><strong><?php echo e($currentBook->file_size_mb ? $currentBook->file_size_mb.' MB' : '—'); ?></strong></div>
-      <div class="meta-item"><i class="fa-solid fa-book-open-reader"></i><span>الصيغة</span><strong><?php echo e($currentBook->formats ? implode(', ', $currentBook->formats) : '—'); ?></strong></div>
       <div class="meta-item"><i class="fa-solid fa-cloud-arrow-down"></i><span>مرات التحميل</span><strong><?php echo e(number_format($currentBook->downloads_count)); ?></strong></div>
     </div>
 
@@ -155,7 +164,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
   </div>
 
   <div class="tab-panel active" id="tab-about">
-    <h2>نبذة عن الكتاب</h2>
+    <h2 id="book-description">نبذة عن <?php echo e($currentBook->title); ?></h2>
     <?php if($currentBook->description): ?>
       <?php $__currentLoopData = explode("\n", $currentBook->description); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $paragraph): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <?php if(trim($paragraph) === '') continue; ?>
@@ -172,6 +181,24 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
       </div>
     <?php endif; ?>
+
+    <section aria-labelledby="online-reading" style="margin-top:22px;">
+      <h2 id="online-reading">قراءة <?php echo e($currentBook->title); ?> أونلاين</h2>
+      <?php if($currentBook->is_coming_soon): ?>
+        <p>سيتوفر <?php echo e($currentBook->type_label); ?> <?php echo e($currentBook->title); ?> للقراءة أونلاين على نوته بوك قريبًا.</p>
+      <?php else: ?>
+        <p>يمكنك قراءة <?php echo e($currentBook->title); ?> أونلاين مباشرة من خلال قارئ الكتب في نوته بوك، دون الحاجة لتحميل أي برنامج إضافي.</p>
+        <a href="<?php echo e(route('read', $currentBook->slug)); ?>">قراءة <?php echo e($currentBook->type_label); ?> أونلاين</a>
+      <?php endif; ?>
+    </section>
+
+    <?php if(! $currentBook->is_coming_soon && $currentBook->downloadUrl()): ?>
+      <section aria-labelledby="download-book" style="margin-top:22px;">
+        <h2 id="download-book">تحميل <?php echo e($currentBook->title); ?> PDF</h2>
+        <p>يمكنك تحميل <?php echo e($currentBook->title); ?> بصيغة PDF وقراءته على الهاتف أو الكمبيوتر في أي وقت، دون الحاجة للاتصال بالإنترنت.</p>
+        <a href="<?php echo e($currentBook->downloadUrl()); ?>">تحميل <?php echo e($currentBook->type_label); ?> PDF</a>
+      </section>
+    <?php endif; ?>
   </div>
 
   <div class="tab-panel" id="tab-reviews">
@@ -181,25 +208,31 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
     ?>
     <div class="reviews-overview">
       <div class="rating-big">
-        <span class="big-number"><?php echo e(number_format($bookRatingAverage, 1)); ?></span>
-        <span class="stars">
-          <?php for($i = 1; $i <= 5; $i++): ?>
-            <?php if($bookRatingAverage >= $i): ?>
-              <i class="fa-solid fa-star"></i>
-            <?php elseif($bookRatingAverage >= $i - 0.5): ?>
-              <i class="fa-solid fa-star-half-stroke"></i>
-            <?php else: ?>
-              <i class="fa-regular fa-star"></i>
-            <?php endif; ?>
-          <?php endfor; ?>
-        </span>
-        <span class="review-count">من <?php echo e(number_format($bookRatingCount)); ?> تقييم</span>
+        <?php if($bookRatingCount > 0): ?>
+          <span class="big-number"><?php echo e(number_format($bookRatingAverage, 1)); ?></span>
+          <span class="stars">
+            <?php for($i = 1; $i <= 5; $i++): ?>
+              <?php if($bookRatingAverage >= $i): ?>
+                <i class="fa-solid fa-star"></i>
+              <?php elseif($bookRatingAverage >= $i - 0.5): ?>
+                <i class="fa-solid fa-star-half-stroke"></i>
+              <?php else: ?>
+                <i class="fa-regular fa-star"></i>
+              <?php endif; ?>
+            <?php endfor; ?>
+          </span>
+          <span class="review-count">من <?php echo e(number_format($bookRatingCount)); ?> تقييم</span>
+        <?php else: ?>
+          <span class="no-reviews">لا توجد تقييمات بعد</span>
+        <?php endif; ?>
       </div>
+      <?php if($bookRatingCount > 0): ?>
       <div class="rating-bars">
         <?php $__currentLoopData = ($ratingBreakdown ?? []); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $stars => $pct): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
           <div class="bar-row"><span><?php echo e($stars); ?></span><div class="bar"><div class="fill" style="width:<?php echo e($pct); ?>%"></div></div><span class="pct"><?php echo e($pct); ?>%</span></div>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
       </div>
+      <?php endif; ?>
       <?php if(auth()->guard()->check()): ?>
         <button type="button" class="btn btn-outline add-review-btn" id="toggleReviewForm"><i class="fa-solid fa-pen"></i> أضف تقييمك</button>
       <?php else: ?>
@@ -208,7 +241,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
     </div>
 
     <?php if(auth()->guard()->check()): ?>
-      <form method="POST" action="<?php echo e(route('reviews.store', $currentBook->slug)); ?>" class="add-review-form" id="addReviewForm" hidden>
+      <form method="POST" action="<?php echo e(route('reviews.store', $currentBook->slug)); ?>" class="add-review-form" id="addReviewForm" data-recaptcha-action="review" hidden>
         <?php echo csrf_field(); ?>
         <div class="form-field">
           <label for="reviewRating">تقييمك</label>
@@ -230,7 +263,11 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
     <div class="review-list">
       <?php $__empty_1 = true; $__currentLoopData = $reviews; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $review): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
         <article class="review-card">
-          <img src="<?php echo e($review->user->avatar ?? 'https://i.pravatar.cc/72?img=' . (($review->user_id % 70) + 1)); ?>" alt="<?php echo e($review->user->name); ?>">
+          <?php if($review->user->avatar): ?>
+            <img src="<?php echo e($review->user->avatar); ?>" width="72" height="72" loading="lazy" decoding="async" alt="<?php echo e($review->user->name); ?>">
+          <?php else: ?>
+            <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+          <?php endif; ?>
           <div class="review-body">
             <div class="review-head">
               <strong><?php echo e($review->user->name); ?></strong>
@@ -258,7 +295,11 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
   <div class="tab-panel" id="tab-author">
     <?php if($currentBook->writer): ?>
       <div class="author-mini-card">
-        <img src="<?php echo e($currentBook->writer->photo ?? 'https://i.pravatar.cc/120?img=' . (($currentBook->writer->id % 70) + 1)); ?>" alt="<?php echo e($currentBook->writer->name); ?>">
+        <?php if($currentBook->writer->photo): ?>
+          <img src="<?php echo e($currentBook->writer->photo_xs_url); ?>" width="200" height="200" loading="lazy" decoding="async" alt="صورة المؤلف <?php echo e($currentBook->writer->name); ?>">
+        <?php else: ?>
+          <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+        <?php endif; ?>
         <div class="author-mini-info">
           <h3><a href="<?php echo e(route('writer-details', $currentBook->writer->slug)); ?>"><?php echo e($currentBook->writer->name); ?></a></h3>
           <?php if($currentBook->writer->bio): ?>
@@ -302,10 +343,13 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
 
     <div class="book-carousel">
       <?php $__empty_1 = true; $__currentLoopData = $similarBooks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $similarBook): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-        <article class="book-card">
+        <a href="<?php echo e(route('book-details', $similarBook->slug)); ?>" class="book-card">
           <?php if($similarBook->cover_image): ?>
             <div class="cover-wrap">
-              <img class="book-cover cover-photo" src="<?php echo e($similarBook->cover_image_sm_url); ?>" alt="<?php echo e($similarBook->title); ?>">
+              <img class="book-cover cover-photo" src="<?php echo e($similarBook->cover_image_sm_url); ?>"
+                srcset="<?php echo e($similarBook->cover_image_sm_url); ?> 300w, <?php echo e($similarBook->cover_image_md_url); ?> 600w"
+                sizes="(max-width: 640px) 45vw, 200px" width="300" height="450"
+                loading="lazy" decoding="async" alt="<?php echo e($similarBook->title); ?>">
               <span class="brand-ribbon">nootabooks.com</span>
               <?php if($similarBook->is_coming_soon): ?>
                 <span class="coming-soon-badge">قريبًا</span>
@@ -323,9 +367,12 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
           <?php endif; ?>
           <h3><?php echo e($similarBook->title); ?></h3>
           <p class="author"><?php echo e($similarBook->writer?->name); ?></p>
-          <p class="rating"><i class="fa-solid fa-star"></i> <?php echo e(number_format($similarBook->rating_average, 1)); ?></p>
-          <a href="<?php echo e(route('book-details', $similarBook->slug)); ?>" class="btn btn-outline w-full"><i class="fa-solid fa-eye"></i> شاهد</a>
-        </article>
+          <?php if($similarBook->rating_count > 0): ?>
+            <p class="rating"><i class="fa-solid fa-star"></i> <?php echo e(number_format($similarBook->rating_average, 1)); ?></p>
+          <?php else: ?>
+            <p class="rating no-rating">لا توجد تقييمات بعد</p>
+          <?php endif; ?>
+        </a>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <p class="no-results">لا توجد كتب مشابهة في نفس التصنيف حاليًا.</p>
       <?php endif; ?>
@@ -339,7 +386,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
-<script src="<?php echo e(asset_min('assets/js/book-details.js')); ?>"></script>
+<script src="<?php echo e(asset_min('assets/js/book-details.js')); ?>" defer></script>
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\USER\Desktop\nootabooksui-reader\resources\views/book-details.blade.php ENDPATH**/ ?>

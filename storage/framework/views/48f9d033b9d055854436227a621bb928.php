@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>الصفحة غير موجودة - نوته بوك</title>
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/fonts.css')); ?>">
-<link rel="stylesheet" href="<?php echo e(asset('assets/css/vendor/fontawesome/all.min.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset_min('assets/css/vendor/fontawesome/fontawesome.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/style.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/errors.css')); ?>">
 </head>
@@ -34,7 +34,7 @@
   <p class="error-footer-note">ما زلت بحاجة لمساعدة؟ <a href="<?php echo e(route('contact')); ?>">تواصل مع الدعم</a></p>
 </div>
 
-<script src="<?php echo e(asset_min('assets/js/script.js')); ?>"></script>
+<script src="<?php echo e(asset_min('assets/js/script.js')); ?>" defer></script>
 </body>
 </html>
 <?php /**PATH C:\Users\USER\Desktop\nootabooksui-reader\resources\views/errors/404.blade.php ENDPATH**/ ?>

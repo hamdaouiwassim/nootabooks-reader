@@ -32,7 +32,11 @@
       <div class="mobile-nav-account">
         <?php if(auth()->guard()->check()): ?>
           <div class="user-panel-head">
-            <img src="<?php echo e(auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13'); ?>" alt="<?php echo e(auth()->user()->name); ?>">
+            <?php if(auth()->user()->avatar): ?>
+              <img src="<?php echo e(auth()->user()->avatar); ?>" width="64" height="64" loading="lazy" decoding="async" alt="<?php echo e(auth()->user()->name); ?>">
+            <?php else: ?>
+              <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+            <?php endif; ?>
             <div>
               <strong><?php echo e(auth()->user()->name); ?></strong>
               <span>عرض الملف الشخصي</span>
@@ -114,11 +118,19 @@
         <div class="user-profile" id="userMenuBtn" tabindex="0" role="button">
           <i class="fa-solid fa-chevron-down"></i>
           <span class="user-name"><?php echo e(auth()->user()->name); ?></span>
-          <img src="<?php echo e(auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13'); ?>" alt="<?php echo e(auth()->user()->name); ?>" class="avatar">
+          <?php if(auth()->user()->avatar): ?>
+            <img src="<?php echo e(auth()->user()->avatar); ?>" width="64" height="64" decoding="async" alt="<?php echo e(auth()->user()->name); ?>" class="avatar">
+          <?php else: ?>
+            <span class="avatar avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+          <?php endif; ?>
         </div>
         <div class="dropdown-panel user-panel" id="userPanel">
           <div class="user-panel-head">
-            <img src="<?php echo e(auth()->user()->avatar ?? 'https://i.pravatar.cc/64?img=13'); ?>" alt="<?php echo e(auth()->user()->name); ?>">
+            <?php if(auth()->user()->avatar): ?>
+              <img src="<?php echo e(auth()->user()->avatar); ?>" width="64" height="64" loading="lazy" decoding="async" alt="<?php echo e(auth()->user()->name); ?>">
+            <?php else: ?>
+              <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+            <?php endif; ?>
             <div>
               <strong><?php echo e(auth()->user()->name); ?></strong>
               <span>عرض الملف الشخصي</span>
