@@ -65,7 +65,8 @@ class PageController extends Controller
                 $q->whereHas('category', fn ($cq) => $cq->whereIn('slug', $selectedCategorySlugs));
             })
             ->when($language === 'عربي', fn ($q) => $q->where('language', 'العربية'))
-            ->when($language === 'أجنبي', fn ($q) => $q->where('language', '!=', 'العربية'))
+            ->when($language === 'إنجليزي', fn ($q) => $q->where('language', 'الإنجليزية'))
+            ->when($language === 'مترجم', fn ($q) => $q->where('language', 'مترجم إلى العربية'))
             ->when($selectedRatings, fn ($q) => $q->where('rating_average', '>=', min($selectedRatings)))
             ->when($search !== '', function ($q) use ($search) {
                 $q->where(function ($sq) use ($search) {

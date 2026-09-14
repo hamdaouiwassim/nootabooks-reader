@@ -55,7 +55,8 @@
       <h3>اللغة</h3>
       <label class="checkbox-row"><input type="radio" name="lang" value="all" onchange="this.form.submit()" @checked($selectedLanguage === 'all')> <span>الكل</span></label>
       <label class="checkbox-row"><input type="radio" name="lang" value="عربي" onchange="this.form.submit()" @checked($selectedLanguage === 'عربي')> <span>العربية</span></label>
-      <label class="checkbox-row"><input type="radio" name="lang" value="أجنبي" onchange="this.form.submit()" @checked($selectedLanguage === 'أجنبي')> <span>مترجم</span></label>
+      <label class="checkbox-row"><input type="radio" name="lang" value="إنجليزي" onchange="this.form.submit()" @checked($selectedLanguage === 'إنجليزي')> <span>الإنجليزية</span></label>
+      <label class="checkbox-row"><input type="radio" name="lang" value="مترجم" onchange="this.form.submit()" @checked($selectedLanguage === 'مترجم')> <span>مترجم</span></label>
     </div>
 
     <div class="filter-group">

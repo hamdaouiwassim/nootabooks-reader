@@ -84,6 +84,7 @@ body.nav-open { overflow: hidden; }
 }
 
 a { text-decoration: none; color: inherit; }
+p { font-weight: 500; }
 ul { list-style: none; }
 button { font-family: inherit; cursor: pointer; border: none; background: none; }
 input { font-family: inherit; }
