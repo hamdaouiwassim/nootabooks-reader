@@ -60,6 +60,19 @@
 .wcover-7 { background: linear-gradient(160deg,#8a6a2a,#2c1c0c); }
 .wcover-8 { background: linear-gradient(160deg,#2a4a5a,#0c1c24); }
 
+/* ============ AUTHOR CATEGORIES ============ */
+.category-links-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.category-links-row a {
+  background: var(--cream-alt);
+  border: 1px solid var(--border-light);
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+.category-links-row a:hover { background: #fff; border-color: var(--teal); }
+
 /* ============ SIMILAR AUTHORS ROW ============ */
 .authors-row.wide { justify-content: space-between; }
 .authors-row.wide .author-card { flex: 1; }

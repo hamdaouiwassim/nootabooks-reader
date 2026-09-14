@@ -98,7 +98,11 @@
           @endif
           <h3>{{ $book->title }}</h3>
           <p class="author">{{ $book->writer?->name }}</p>
-          <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
+          @if ($book->rating_count > 0)
+            <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
+          @else
+            <p class="rating no-rating">لا توجد تقييمات بعد</p>
+          @endif
         </a>
       @endforeach
     </div>

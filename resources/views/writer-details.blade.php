@@ -1,7 +1,10 @@
 @extends('layouts.app')
 
-@section('title', $currentWriter->name.' - نوته بوك')
-@section('meta_description', $currentWriter->bio ? \Illuminate\Support\Str::limit($currentWriter->bio, 160) : 'تعرّف على '.$currentWriter->name.' وتصفح جميع أعماله على نوته بوك.')
+@section('title', 'كتب ومؤلفات '.$currentWriter->name.' | نوته بوك')
+@section('meta_description', $currentWriter->bio
+    ? 'اكتشف كتب ومؤلفات '.$currentWriter->name.' على نوته بوك. '.\Illuminate\Support\Str::limit($currentWriter->bio, 100)
+    : 'اكتشف كتب ومؤلفات '.$currentWriter->name.' على نوته بوك، وتعرف على أعماله وتصفح كتبه المتاحة للقراءة أونلاين.')
+@section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset_min('assets/css/book-details.css') }}">
@@ -21,6 +24,17 @@
     'sameAs' => array_values(array_filter([$currentWriter->facebook_url, $currentWriter->twitter_url, $currentWriter->instagram_url])),
 ]), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
+        ['@type' => 'ListItem', 'position' => 2, 'name' => 'المؤلفون', 'item' => route('writers')],
+        ['@type' => 'ListItem', 'position' => 3, 'name' => $currentWriter->name, 'item' => route('writer-details', $currentWriter->slug)],
+    ],
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
 @endpush
 
 @section('content')
@@ -32,19 +46,19 @@
 
 <!-- ===================== BREADCRUMB ===================== -->
 <div class="section breadcrumb-wrap">
-  <nav class="breadcrumb">
+  <nav class="breadcrumb" aria-label="مسار التنقل">
     <a href="{{ route('home') }}">الرئيسية</a>
     <i class="fa-solid fa-chevron-left"></i>
     <a href="{{ route('writers') }}">المؤلفون</a>
     <i class="fa-solid fa-chevron-left"></i>
-    <span>{{ $currentWriter->name }}</span>
+    <span aria-current="page">{{ $currentWriter->name }}</span>
   </nav>
 </div>
 
 <!-- ===================== AUTHOR HERO ===================== -->
 <section class="section writer-hero">
   @if ($currentWriter->photo)
-    <img src="{{ $currentWriter->photo_sm_url }}" width="300" height="300" fetchpriority="high" decoding="async" alt="{{ $currentWriter->name }}" class="writer-hero-photo">
+    <img src="{{ $currentWriter->photo_sm_url }}" width="300" height="300" fetchpriority="high" decoding="async" alt="صورة المؤلف {{ $currentWriter->name }}" class="writer-hero-photo">
   @else
     <span class="writer-hero-photo avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
   @endif
@@ -55,7 +69,10 @@
     @endif
     <h1 class="writer-hero-name">{{ $currentWriter->name }}</h1>
     @if ($currentWriter->bio)
-      <p class="writer-hero-desc">{{ $currentWriter->bio }}</p>
+      <section aria-labelledby="author-bio-heading">
+        <h2 id="author-bio-heading" class="sr-only">نبذة عن المؤلف</h2>
+        <p class="writer-hero-desc">{{ $currentWriter->bio }}</p>
+      </section>
     @endif
 
     <div class="writer-hero-meta">
@@ -99,7 +116,7 @@
 <section class="section">
   <div class="section-head">
     <div class="section-title-wrap">
-      <h2 class="section-title">كتب {{ $currentWriter->name }}</h2>
+      <h2 class="section-title">كتب ومؤلفات {{ $currentWriter->name }}</h2>
       <p class="section-sub">جميع الأعمال المنشورة للمؤلف</p>
     </div>
     <span class="results-count"><span id="booksCount">{{ $writerBooks->total() }}</span> كتاب</span>
@@ -120,7 +137,7 @@
               <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
                 srcset="{{ $book->cover_image_sm_url }} 300w, {{ $book->cover_image_md_url }} 600w"
                 sizes="(max-width: 640px) 45vw, 200px" width="300" height="450"
-                loading="lazy" decoding="async" alt="{{ $book->title }}">
+                loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($book->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
@@ -138,7 +155,11 @@
           @endif
           <h3>{{ $book->title }}</h3>
           <p class="author">{{ $book->published_year }}</p>
-          <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
+          @if ($book->rating_count > 0)
+            <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
+          @else
+            <p class="rating no-rating">لا توجد تقييمات بعد</p>
+          @endif
         </a>
       @endforeach
     </div>
@@ -148,6 +169,20 @@
     <p class="no-results">لا توجد كتب منشورة لهذا المؤلف بعد.</p>
   @endif
 </section>
+
+@if ($writerCategories->isNotEmpty())
+<!-- ===================== AUTHOR CATEGORIES ===================== -->
+<section class="section">
+  <div class="section-head">
+    <h2 class="section-title">تصنيفات الكتب</h2>
+  </div>
+  <div class="category-links-row">
+    @foreach ($writerCategories as $writerCategory)
+      <a href="{{ route('category-details', $writerCategory->slug) }}">{{ $writerCategory->name }}</a>
+    @endforeach
+  </div>
+</section>
+@endif
 
 <!-- ===================== SIMILAR AUTHORS ===================== -->
 <section class="section">
@@ -160,7 +195,7 @@
     @foreach ($similarWriters as $similarWriter)
       <a href="{{ route('writer-details', $similarWriter->slug) }}" class="author-card">
         @if ($similarWriter->photo)
-          <img src="{{ $similarWriter->photo_sm_url }}" width="300" height="300" loading="lazy" decoding="async" alt="{{ $similarWriter->name }}">
+          <img src="{{ $similarWriter->photo_sm_url }}" width="300" height="300" loading="lazy" decoding="async" alt="صورة المؤلف {{ $similarWriter->name }}">
         @else
           <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
         @endif

@@ -32,26 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   filterTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      filterTabs.forEach(t => t.classList.remove('active'));
+      filterTabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-pressed', 'false');
+      });
       tab.classList.add('active');
+      tab.setAttribute('aria-pressed', 'true');
       activeFilter = tab.dataset.filter;
       applyFilters();
     });
-  });
-
-  // ---- Follow / unfollow buttons (grid + featured) ----
-  // Follow state is now handled server-side (see WriterFollowController); this
-  // just stops the click from bubbling up to the card's navigate-on-click handler.
-  document.querySelectorAll('.follow-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => e.stopPropagation());
-  });
-
-  // ---- Card click navigates to writer profile ----
-  cards.forEach(card => {
-    const href = card.dataset.href;
-    if (!href) return;
-    card.style.cursor = 'pointer';
-    card.addEventListener('click', () => { window.location.href = href; });
   });
 
 });

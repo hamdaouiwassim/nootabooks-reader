@@ -100,19 +100,23 @@
     @endif
 
     <div class="rating-row">
-      <span class="stars">
-        @for ($i = 1; $i <= 5; $i++)
-          @if ($currentBook->rating_average >= $i)
-            <i class="fa-solid fa-star"></i>
-          @elseif ($currentBook->rating_average >= $i - 0.5)
-            <i class="fa-solid fa-star-half-stroke"></i>
-          @else
-            <i class="fa-regular fa-star"></i>
-          @endif
-        @endfor
-      </span>
-      <strong>{{ number_format($currentBook->rating_average, 1) }}</strong>
-      <span class="review-count">({{ number_format($currentBook->rating_count) }} تقييم)</span>
+      @if ($currentBook->rating_count > 0)
+        <span class="stars">
+          @for ($i = 1; $i <= 5; $i++)
+            @if ($currentBook->rating_average >= $i)
+              <i class="fa-solid fa-star"></i>
+            @elseif ($currentBook->rating_average >= $i - 0.5)
+              <i class="fa-solid fa-star-half-stroke"></i>
+            @else
+              <i class="fa-regular fa-star"></i>
+            @endif
+          @endfor
+        </span>
+        <strong>{{ number_format($currentBook->rating_average, 1) }}</strong>
+        <span class="review-count">({{ number_format($currentBook->rating_count) }} تقييم)</span>
+      @else
+        <span class="no-reviews">لا توجد تقييمات بعد</span>
+      @endif
     </div>
 
     @if ($currentBook->description_short)
@@ -198,25 +202,31 @@
     @endphp
     <div class="reviews-overview">
       <div class="rating-big">
-        <span class="big-number">{{ number_format($bookRatingAverage, 1) }}</span>
-        <span class="stars">
-          @for ($i = 1; $i <= 5; $i++)
-            @if ($bookRatingAverage >= $i)
-              <i class="fa-solid fa-star"></i>
-            @elseif ($bookRatingAverage >= $i - 0.5)
-              <i class="fa-solid fa-star-half-stroke"></i>
-            @else
-              <i class="fa-regular fa-star"></i>
-            @endif
-          @endfor
-        </span>
-        <span class="review-count">من {{ number_format($bookRatingCount) }} تقييم</span>
+        @if ($bookRatingCount > 0)
+          <span class="big-number">{{ number_format($bookRatingAverage, 1) }}</span>
+          <span class="stars">
+            @for ($i = 1; $i <= 5; $i++)
+              @if ($bookRatingAverage >= $i)
+                <i class="fa-solid fa-star"></i>
+              @elseif ($bookRatingAverage >= $i - 0.5)
+                <i class="fa-solid fa-star-half-stroke"></i>
+              @else
+                <i class="fa-regular fa-star"></i>
+              @endif
+            @endfor
+          </span>
+          <span class="review-count">من {{ number_format($bookRatingCount) }} تقييم</span>
+        @else
+          <span class="no-reviews">لا توجد تقييمات بعد</span>
+        @endif
       </div>
+      @if ($bookRatingCount > 0)
       <div class="rating-bars">
         @foreach (($ratingBreakdown ?? []) as $stars => $pct)
           <div class="bar-row"><span>{{ $stars }}</span><div class="bar"><div class="fill" style="width:{{ $pct }}%"></div></div><span class="pct">{{ $pct }}%</span></div>
         @endforeach
       </div>
+      @endif
       @auth
         <button type="button" class="btn btn-outline add-review-btn" id="toggleReviewForm"><i class="fa-solid fa-pen"></i> أضف تقييمك</button>
       @else
@@ -349,7 +359,11 @@
           @endif
           <h3>{{ $similarBook->title }}</h3>
           <p class="author">{{ $similarBook->writer?->name }}</p>
-          <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($similarBook->rating_average, 1) }}</p>
+          @if ($similarBook->rating_count > 0)
+            <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($similarBook->rating_average, 1) }}</p>
+          @else
+            <p class="rating no-rating">لا توجد تقييمات بعد</p>
+          @endif
         </a>
       @empty
         <p class="no-results">لا توجد كتب مشابهة في نفس التصنيف حاليًا.</p>

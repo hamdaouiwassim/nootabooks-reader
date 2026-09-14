@@ -189,11 +189,21 @@ class PageController extends Controller
             ->take(4)
             ->get();
 
+        // Real categories the author's own published books actually belong
+        // to — not a random/generic category list.
+        $writerCategories = Category::whereHas('books', function ($q) use ($currentWriter) {
+            $q->published()->where('writer_id', $currentWriter->id);
+        })->get();
+
         return view('writer-details', [
             'activeNav' => 'writers',
             'currentWriter' => $currentWriter,
             'writerBooks' => $writerBooks,
             'similarWriters' => $similarWriters,
+            'writerCategories' => $writerCategories,
+            // A profile with no published books yet is a thin page unless it
+            // at least has a real biography to offer.
+            'isIndexable' => $currentWriter->books_count > 0 || filled($currentWriter->bio),
         ]);
     }
 

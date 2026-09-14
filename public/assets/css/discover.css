@@ -113,7 +113,6 @@
 }
 .discover-grid .book-card .author a { position: relative; z-index: 2; }
 .discover-grid .book-card .author a:hover { text-decoration: underline; }
-.discover-grid .book-card .rating.no-rating { color: var(--text-gray); font-size: 12px; }
 
 /* extra cover gradients for discover results */
 .dcover-3 { background: linear-gradient(160deg,#6a1f2f,#2a0c14); }

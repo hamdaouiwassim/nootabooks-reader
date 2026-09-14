@@ -57,6 +57,7 @@
     <i class="fa-solid fa-magnifying-glass"></i>
     <label for="discoverSearch" class="sr-only">ابحث بعنوان الكتاب أو اسم المؤلف</label>
     <input type="text" id="discoverSearch" name="q" form="discoverFilters" value="{{ $search }}" placeholder="ابحث بعنوان الكتاب أو اسم المؤلف ...">
+    <button type="submit" form="discoverFilters" class="btn btn-gold small">بحث</button>
   </div>
 </section>
 

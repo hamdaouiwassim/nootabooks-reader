@@ -24,7 +24,15 @@ class SitemapController extends Controller
             ];
 
             $books = Book::published()->select('slug', 'updated_at')->orderByDesc('updated_at')->get();
-            $writers = Writer::select('slug', 'updated_at')->orderByDesc('updated_at')->get();
+            // Mirrors writerDetails()'s indexability rule: a profile with no
+            // published books and no bio is a thin, noindexed page.
+            $writers = Writer::where(function ($q) {
+                $q->whereHas('books', fn ($bq) => $bq->published())
+                    ->orWhere(fn ($bq) => $bq->whereNotNull('bio')->where('bio', '!=', ''));
+            })
+                ->select('slug', 'updated_at')
+                ->orderByDesc('updated_at')
+                ->get();
             // Only categories with at least one published book resolve to an
             // indexable page (see PageController::categoryDetails()) — an
             // empty category is noindexed, so it has no place in the sitemap.
