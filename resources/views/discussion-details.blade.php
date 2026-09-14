@@ -57,7 +57,7 @@
       <h1 class="sr-only">{{ $discussionExcerpt }}</h1>
       <div class="discussion-head">
         @if ($discussion->user->avatar)
-          <img src="{{ $discussion->user->avatar }}" width="64" height="64" decoding="async" alt="{{ $discussion->user->name }}">
+          <img src="{{ $discussion->user->avatar }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ $discussion->user->name }}">
         @else
           <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
         @endif
@@ -99,7 +99,7 @@
         <form method="POST" action="{{ route('discussions.comments.store', $discussion) }}" class="comment-form">
           @csrf
           @if (auth()->user()->avatar)
-            <img src="{{ auth()->user()->avatar }}" width="64" height="64" decoding="async" alt="{{ auth()->user()->name }}">
+            <img src="{{ auth()->user()->avatar }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ auth()->user()->name }}">
           @else
             <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
           @endif

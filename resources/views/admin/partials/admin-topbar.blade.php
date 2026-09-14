@@ -22,6 +22,6 @@
       <strong>{{ auth('admin')->user()->name }}</strong>
       <span>مدير النظام</span>
     </div>
-    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth('admin')->user()->name) }}&background=1c4a45&color=fff" alt="{{ auth('admin')->user()->name }}">
+    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth('admin')->user()->name) }}&background=1c4a45&color=fff&size=72" width="36" height="36" loading="lazy" decoding="async" alt="{{ auth('admin')->user()->name }}">
   </div>
 </header>

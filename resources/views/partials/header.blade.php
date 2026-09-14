@@ -119,7 +119,7 @@
           <i class="fa-solid fa-chevron-down"></i>
           <span class="user-name">{{ auth()->user()->name }}</span>
           @if (auth()->user()->avatar)
-            <img src="{{ auth()->user()->avatar }}" width="64" height="64" decoding="async" alt="{{ auth()->user()->name }}" class="avatar">
+            <img src="{{ auth()->user()->avatar }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ auth()->user()->name }}" class="avatar">
           @else
             <span class="avatar avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
           @endif

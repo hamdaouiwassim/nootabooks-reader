@@ -4,7 +4,8 @@
 <?php $__env->startSection('og_image', $currentBook->cover_image_url ?? asset('assets/images/hero-section.jpg')); ?>
 
 <?php $__env->startPush('styles'); ?>
-<link rel="stylesheet" href="<?php echo e(asset_min('assets/css/book-details.css')); ?>">
+<link rel="preload" href="<?php echo e(asset_min('assets/css/book-details.css')); ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="<?php echo e(asset_min('assets/css/book-details.css')); ?>"></noscript>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startPush('schema'); ?>
@@ -80,7 +81,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
   <div class="book-hero-cover">
     <?php if($currentBook->cover_image): ?>
       <img class="hero-cover-img cover-photo" src="<?php echo e($currentBook->cover_image_md_url); ?>"
-        srcset="<?php echo e($currentBook->cover_image_sm_url); ?> 300w, <?php echo e($currentBook->cover_image_md_url); ?> 600w, <?php echo e($currentBook->cover_image_url); ?> 800w"
+        srcset="<?php echo e($currentBook->cover_image_sm_url); ?> 174w, <?php echo e($currentBook->cover_image_md_url); ?> 600w, <?php echo e($currentBook->cover_image_url); ?> 800w"
         sizes="(max-width: 900px) 90vw, 300px" width="600" height="900"
         fetchpriority="high" decoding="async" alt="غلاف <?php echo e($currentBook->title); ?>">
     <?php else: ?>
@@ -347,8 +348,8 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
           <?php if($similarBook->cover_image): ?>
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="<?php echo e($similarBook->cover_image_sm_url); ?>"
-                srcset="<?php echo e($similarBook->cover_image_sm_url); ?> 300w, <?php echo e($similarBook->cover_image_md_url); ?> 600w"
-                sizes="(max-width: 640px) 45vw, 200px" width="300" height="450"
+                srcset="<?php echo e($similarBook->cover_image_sm_url); ?> 174w, <?php echo e($similarBook->cover_image_md_url); ?> 600w"
+                sizes="(max-width: 640px) 45vw, 200px" width="174" height="285"
                 loading="lazy" decoding="async" alt="<?php echo e($similarBook->title); ?>">
               <span class="brand-ribbon">nootabooks.com</span>
               <?php if($similarBook->is_coming_soon): ?>

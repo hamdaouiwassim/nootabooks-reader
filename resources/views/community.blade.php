@@ -114,7 +114,7 @@
           <input type="hidden" name="book" value="{{ $chatBook->slug }}">
         @endif
         @if (auth()->user()->avatar)
-          <img src="{{ auth()->user()->avatar }}" width="64" height="64" decoding="async" alt="{{ auth()->user()->name }}">
+          <img src="{{ auth()->user()->avatar }}" width="64" height="64" loading="lazy" decoding="async" alt="{{ auth()->user()->name }}">
         @else
           <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
         @endif

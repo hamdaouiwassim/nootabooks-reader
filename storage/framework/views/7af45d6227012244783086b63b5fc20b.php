@@ -119,7 +119,7 @@
           <i class="fa-solid fa-chevron-down"></i>
           <span class="user-name"><?php echo e(auth()->user()->name); ?></span>
           <?php if(auth()->user()->avatar): ?>
-            <img src="<?php echo e(auth()->user()->avatar); ?>" width="64" height="64" decoding="async" alt="<?php echo e(auth()->user()->name); ?>" class="avatar">
+            <img src="<?php echo e(auth()->user()->avatar); ?>" width="64" height="64" loading="lazy" decoding="async" alt="<?php echo e(auth()->user()->name); ?>" class="avatar">
           <?php else: ?>
             <span class="avatar avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
           <?php endif; ?>

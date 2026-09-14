@@ -170,3 +170,28 @@ php -S localhost:8000 scripts/optimize-cover-server.php
 - None of them need a queue worker — they run synchronously and print progress as they go.
 - All five Artisan commands are safe to run against production data; the image/asset commands are destructive only in that they delete the specific old file they just replaced, `urls:fix-domain` never touches files at all (only DB values), and `build:fontawesome` only ever overwrites its own generated webfont/CSS output.
 - `scripts/optimize-cover.php` and `scripts/optimize-cover-server.php` don't touch the app or database at all — they only read a source image and write new files into an output folder (or your OS temp directory, for the server UI), entirely outside `storage/`/`public/`. Nothing to run against production; run them on your own machine before uploading.
+
+---
+
+## Server caching (Nginx)
+
+The app itself sets no `Cache-Control`/`Expires` headers on static assets (images, fonts, CSS, JS) — there's no `.htaccess` (this isn't Apache) and no middleware for it. Since production runs on **Nginx**, add a `location` block like this to the site's server config (outside this repo — ask your host, or add it to whatever `nginx.conf`/site conf manages this domain) to get long-lived caching on the assets that don't change once written:
+
+```nginx
+location ~* \.(?:jpg|jpeg|png|webp|gif|svg|ico|woff2?|ttf)$ {
+    expires 1y;
+    add_header Cache-Control "public, immutable";
+    access_log off;
+}
+
+location ~* \.(?:css|js)$ {
+    expires 1y;
+    add_header Cache-Control "public, immutable";
+    access_log off;
+}
+```
+
+This is safe because:
+- Book covers / writer photos are stored under UUID filenames (see `ImageOptimizer`) — a new upload always gets a new filename, so caching the old one forever is harmless.
+- CSS/JS already carry a `?v=<filemtime>` cache-busting query string via the `asset_min()` helper (see [`app/helpers.php`](app/helpers.php)), so `immutable` caching is safe there too — a deploy that changes the file changes the URL.
+- Static hero/banner images in `public/assets/images` (`images:optimize-assets`) are only ever replaced by re-running that command, which is a deliberate manual step — bump the filename (or purge the CDN/browser cache) if you ever need to force a refresh after re-running it.

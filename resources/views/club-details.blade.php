@@ -105,7 +105,7 @@
       <div class="current-book-card">
         <a href="{{ route('book-details', $currentBook->slug) }}" class="book-cover @if ($currentBook->cover_image) cover-photo @else cover-{{ ($currentBook->id % 5) + 1 }} @endif" @if ($currentBook->cover_image) style="padding:0;" @endif>
           @if ($currentBook->cover_image)
-            <img src="{{ $currentBook->cover_image_sm_url }}" width="174" height="285" decoding="async" alt="{{ $currentBook->title }}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
+            <img src="{{ $currentBook->cover_image_sm_url }}" width="174" height="285" loading="lazy" decoding="async" alt="{{ $currentBook->title }}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">
           @else
             <span class="cover-badge">B</span>
             <span class="cover-title">{{ $currentBook->title }}</span>
