@@ -161,22 +161,13 @@
 <section class="section">
   <div class="discover-banner">
     <div class="discover-tags">
-      <div class="tag-item">
-        <span class="tag-icon tag-purple"><i class="fa-solid fa-bookmark"></i></span>
-        <span>روايات</span>
-      </div>
-      <div class="tag-item">
-        <span class="tag-icon tag-green"><i class="fa-solid fa-mosque"></i></span>
-        <span>تنمية ذهنية</span>
-      </div>
-      <div class="tag-item">
-        <span class="tag-icon tag-brown"><i class="fa-solid fa-bell"></i></span>
-        <span>تنمية ذاتية</span>
-      </div>
-      <div class="tag-item">
-        <span class="tag-icon tag-blue"><i class="fa-solid fa-table-cells"></i></span>
-        <span>غير ذلك</span>
-      </div>
+      @php $tagColors = ['tag-purple', 'tag-green', 'tag-brown', 'tag-blue']; @endphp
+      @foreach ($categories->take(4) as $category)
+        <a href="{{ route('category-details', $category->slug) }}" class="tag-item">
+          <span class="tag-icon {{ $tagColors[$loop->index % count($tagColors)] }}"><i class="fa-solid {{ $category->icon ?? 'fa-book' }}"></i></span>
+          <span>{{ $category->name }}</span>
+        </a>
+      @endforeach
     </div>
     <div class="discover-left">
       <div class="discover-text">
