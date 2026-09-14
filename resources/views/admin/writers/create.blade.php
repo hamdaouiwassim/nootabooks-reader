@@ -53,6 +53,24 @@
       </div>
 
       <div class="admin-form-section">
+        <h3>روابط التواصل الاجتماعي (اختياري)</h3>
+        <div class="admin-form-grid">
+          <div class="admin-form-field">
+            <label for="writerFacebook"><i class="fa-brands fa-facebook-f"></i> فيسبوك</label>
+            <input type="url" id="writerFacebook" name="facebook_url" class="admin-input" value="{{ old('facebook_url') }}" placeholder="https://facebook.com/..." dir="ltr">
+          </div>
+          <div class="admin-form-field">
+            <label for="writerTwitter"><i class="fa-brands fa-twitter"></i> تويتر (X)</label>
+            <input type="url" id="writerTwitter" name="twitter_url" class="admin-input" value="{{ old('twitter_url') }}" placeholder="https://x.com/..." dir="ltr">
+          </div>
+          <div class="admin-form-field">
+            <label for="writerInstagram"><i class="fa-brands fa-instagram"></i> انستغرام</label>
+            <input type="url" id="writerInstagram" name="instagram_url" class="admin-input" value="{{ old('instagram_url') }}" placeholder="https://instagram.com/..." dir="ltr">
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-form-section">
         <h3>الإحصائيات والحالة</h3>
         <div class="admin-form-grid">
           <div class="admin-form-field">

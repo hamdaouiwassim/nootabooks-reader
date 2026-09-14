@@ -27,6 +27,9 @@ erDiagram
         string photo "nullable"
         string genre_tag "nullable"
         text bio "nullable"
+        string facebook_url "nullable"
+        string twitter_url "nullable"
+        string instagram_url "nullable"
         int followers_count "default: 0"
         decimal rating_average "2,1, default: 0"
         smallint joined_year "nullable"
@@ -114,6 +117,9 @@ Authors shown on the Writers / Writer Details pages.
 | `photo`            | string, nullable             | Path/URL                         |
 | `genre_tag`        | string, nullable             | Short genre label (e.g. `إثارة وغموض`) |
 | `bio`              | text, nullable                |                                   |
+| `facebook_url`     | string, nullable              | Optional social link             |
+| `twitter_url`      | string, nullable              | Optional social link (X/Twitter) |
+| `instagram_url`    | string, nullable              | Optional social link             |
 | `followers_count`  | int, unsigned                 | Default `0`                      |
 | `rating_average`   | decimal(2,1)                  | Default `0`                      |
 | `joined_year`      | smallint, unsigned, nullable  |                                   |
@@ -123,7 +129,8 @@ Authors shown on the Writers / Writer Details pages.
 
 **Migrations:**
 [`2026_09_08_000004_create_writers_table.php`](database/migrations/2026_09_08_000004_create_writers_table.php),
-[`2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php`](database/migrations/2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php) (adds `name_en`)
+[`2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php`](database/migrations/2026_09_14_000001_add_english_name_fields_to_writers_and_books_table.php) (adds `name_en`),
+[`2026_09_14_000002_add_social_links_to_writers_table.php`](database/migrations/2026_09_14_000002_add_social_links_to_writers_table.php) (adds `facebook_url`, `twitter_url`, `instagram_url`)
 
 ### `books`
 

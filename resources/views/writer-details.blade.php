@@ -18,6 +18,7 @@
     'description' => $currentWriter->bio,
     'image' => $currentWriter->photo_url,
     'url' => route('writer-details', $currentWriter->slug),
+    'sameAs' => array_values(array_filter([$currentWriter->facebook_url, $currentWriter->twitter_url, $currentWriter->instagram_url])),
 ]), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 @endpush
@@ -76,12 +77,20 @@
       @else
         <a href="{{ route('login') }}" class="btn btn-teal follow-btn"><i class="fa-solid fa-user-plus"></i> متابعة</a>
       @endauth
-      <button class="icon-btn-outline" aria-label="share"><i class="fa-solid fa-share-nodes"></i></button>
-      <div class="writer-socials">
-        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-      </div>
+      <button class="icon-btn-outline share-btn" aria-label="مشاركة"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
+      @if ($currentWriter->twitter_url || $currentWriter->instagram_url || $currentWriter->facebook_url)
+        <div class="writer-socials">
+          @if ($currentWriter->twitter_url)
+            <a href="{{ $currentWriter->twitter_url }}" target="_blank" rel="noopener noreferrer" aria-label="تويتر"><i class="fa-brands fa-twitter"></i></a>
+          @endif
+          @if ($currentWriter->instagram_url)
+            <a href="{{ $currentWriter->instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="انستغرام"><i class="fa-brands fa-instagram"></i></a>
+          @endif
+          @if ($currentWriter->facebook_url)
+            <a href="{{ $currentWriter->facebook_url }}" target="_blank" rel="noopener noreferrer" aria-label="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+          @endif
+        </div>
+      @endif
     </div>
   </div>
 </section>
