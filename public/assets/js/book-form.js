@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ---- Cover image uploads + previews (large/medium/small, independent) ----
+  // ---- Cover image upload + preview ----
   function setupCoverUpload(uploadId, inputId, previewId) {
     const upload = document.getElementById(uploadId);
     const input = document.getElementById(inputId);
@@ -20,9 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  setupCoverUpload('coverUploadLg', 'coverInputLg', 'coverPreviewLg');
-  setupCoverUpload('coverUploadMd', 'coverInputMd', 'coverPreviewMd');
-  setupCoverUpload('coverUploadSm', 'coverInputSm', 'coverPreviewSm');
+  setupCoverUpload('coverUpload', 'coverInput', 'coverPreview');
 
   // ---- Book file upload: echo the chosen filename ----
   const bookFileInput = document.getElementById('bookFile');

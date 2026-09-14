@@ -12,7 +12,7 @@ use Intervention\Image\ImageManager;
 const COVER_VARIANTS = [
     'lg' => [800, 1200],
     'md' => [600, 900],
-    'sm' => [174, 285],
+    'sm' => [300, 450],
 ];
 
 const COVER_VARIANT_LABELS = [

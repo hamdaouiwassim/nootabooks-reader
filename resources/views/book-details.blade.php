@@ -74,9 +74,8 @@
 <section class="section book-hero">
   <div class="book-hero-cover">
     @if ($currentBook->cover_image)
-      <img class="hero-cover-img cover-photo" src="{{ $currentBook->cover_image_md_url }}"
-        srcset="{{ $currentBook->cover_image_sm_url }} 174w, {{ $currentBook->cover_image_md_url }} 600w, {{ $currentBook->cover_image_url }} 800w"
-        sizes="(max-width: 900px) 90vw, 300px" width="600" height="900"
+      <img class="hero-cover-img cover-photo" src="{{ $currentBook->cover_image_url }}"
+        width="300" height="450"
         fetchpriority="high" decoding="async" alt="غلاف {{ $currentBook->title }}">
     @else
       <div class="hero-cover-img cover-{{ ($currentBook->id % 5) + 1 }}">
@@ -340,9 +339,7 @@
           @if ($similarBook->cover_image)
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $similarBook->cover_image_sm_url }}"
-                srcset="{{ $similarBook->cover_image_sm_url }} 174w, {{ $similarBook->cover_image_md_url }} 600w"
-                sizes="(max-width: 640px) 45vw, 200px" width="174" height="285"
-                loading="lazy" decoding="async" alt="{{ $similarBook->title }}">
+                width="300" height="450" loading="lazy" decoding="async" alt="{{ $similarBook->title }}">
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($similarBook->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>

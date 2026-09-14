@@ -142,44 +142,18 @@
     <!-- ---- Cover sidebar ---- -->
     <div>
       <div class="admin-form-section">
-        <h3>صور الغلاف</h3>
-        <p style="font-size:11px; color:var(--text-gray); margin-bottom:14px; line-height:1.7;">يمكنك رفع الأحجام الثلاثة إن كنت قد جهّزتها مسبقًا محليًا، أو الاكتفاء بالغلاف الكبير فقط — سيُستخدم تلقائيًا كبديل عند عدم توفر الحجم المتوسط أو الصغير.</p>
-
-        <div style="margin-bottom:18px;">
-          <label for="coverInputLg" class="admin-cover-caption">الغلاف الكبير</label>
-          <label class="admin-cover-upload" id="coverUploadLg">
-            <i class="fa-solid fa-image"></i>
-            <span>اضغط لرفع الغلاف الكبير<br>(JPG أو PNG، نسبة 2:3)</span>
-            <img id="coverPreviewLg" alt="معاينة الغلاف الكبير" hidden>
-          </label>
-          <input type="file" id="coverInputLg" name="cover_image" accept="image/*">
-          @error('cover_image')
-            <span class="admin-field-error">{{ $message }}</span>
-          @enderror
-        </div>
-
-        <div style="margin-bottom:18px;">
-          <label for="coverInputMd" class="admin-cover-caption">الغلاف المتوسط (اختياري)</label>
-          <label class="admin-cover-upload" id="coverUploadMd">
-            <i class="fa-solid fa-image"></i>
-            <span>اضغط لرفع الغلاف المتوسط</span>
-            <img id="coverPreviewMd" alt="معاينة الغلاف المتوسط" hidden>
-          </label>
-          <input type="file" id="coverInputMd" name="cover_image_md" accept="image/*">
-          @error('cover_image_md')
-            <span class="admin-field-error">{{ $message }}</span>
-          @enderror
-        </div>
+        <h3>غلاف الكتاب</h3>
+        <p style="font-size:11px; color:var(--text-gray); margin-bottom:14px; line-height:1.7;">يتم ضغط الصورة تلقائيًا إلى 300×450 عند الرفع وتُستخدم بهذا الحجم في كل صفحات الموقع.</p>
 
         <div>
-          <label for="coverInputSm" class="admin-cover-caption">الغلاف الصغير (اختياري)</label>
-          <label class="admin-cover-upload" id="coverUploadSm">
+          <label for="coverInput" class="admin-cover-caption">غلاف الكتاب</label>
+          <label class="admin-cover-upload" id="coverUpload">
             <i class="fa-solid fa-image"></i>
-            <span>اضغط لرفع الغلاف الصغير</span>
-            <img id="coverPreviewSm" alt="معاينة الغلاف الصغير" hidden>
+            <span>اضغط لرفع غلاف الكتاب<br>(JPG أو PNG، نسبة 2:3)</span>
+            <img id="coverPreview" alt="معاينة الغلاف" hidden>
           </label>
-          <input type="file" id="coverInputSm" name="cover_image_sm" accept="image/*">
-          @error('cover_image_sm')
+          <input type="file" id="coverInput" name="cover_image" accept="image/*">
+          @error('cover_image')
             <span class="admin-field-error">{{ $message }}</span>
           @enderror
         </div>

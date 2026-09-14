@@ -14,7 +14,7 @@ class OptimizeExistingImages extends Command
 {
     protected $signature = 'images:optimize';
 
-    protected $description = 'Re-encode already-uploaded book covers and writer photos as compressed WebP, backfilling any missing size variant';
+    protected $description = 'Re-encode already-uploaded book covers and writer photos as compressed WebP, shrinking book covers to 300×450 and backfilling any missing writer-photo size variant';
 
     public function handle(ImageOptimizer $optimizer): int
     {
@@ -25,13 +25,11 @@ class OptimizeExistingImages extends Command
     }
 
     /**
-     * Books store each cover size independently (cover_image / _md / _sm —
-     * see Admin\BookController::storeCoverVariant()), rather than deriving
-     * "-md"/"-sm" siblings from one filename. Retroactively: converts a
-     * legacy non-WebP cover_image to WebP, and backfills cover_image_md /
-     * cover_image_sm (resized from the current cover_image) for any book
-     * that doesn't have them yet — e.g. because the admin never uploaded
-     * those sizes manually.
+     * Books store a single compressed cover (cover_image, capped at 300×450 —
+     * see Admin\BookController::storeCoverVariant()); cover_image_md/_sm are
+     * legacy columns that Book::cover_image_{md,sm}_url now simply falls back
+     * from to this same file. Retroactively: converts a legacy non-WebP cover
+     * to WebP and shrinks any cover still larger than 300×450 down to it.
      */
     private function optimizeBookCovers(ImageOptimizer $optimizer): void
     {
@@ -53,39 +51,20 @@ class OptimizeExistingImages extends Command
             }
 
             $needsWebp = ! str_ends_with($relativePath, '.webp');
-            $needsMd = ! $book->cover_image_md;
-            $needsSm = ! $book->cover_image_sm;
-
-            if (! $needsWebp && ! $needsMd && ! $needsSm) {
-                continue; // already fully set up
-            }
-
             $sourcePath = Storage::disk('public')->path($relativePath);
+            [$width, $height] = @getimagesize($sourcePath) ?: [0, 0];
+            $needsShrink = $width > 300 || $height > 450;
 
-            if ($needsWebp) {
-                $newRelativePath = $optimizer->optimizePath($sourcePath, 'covers', 800, 1200, 80);
-                Storage::disk('public')->delete($relativePath);
-                $book->cover_image = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$newRelativePath;
-                $sourcePath = Storage::disk('public')->path($newRelativePath);
+            if (! $needsWebp && ! $needsShrink) {
+                continue; // already a compressed 300×450-max webp
             }
 
-            if ($needsMd) {
-                $mdPath = $optimizer->optimizePath($sourcePath, 'covers', 600, 900, 80);
-                $book->cover_image_md = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$mdPath;
-            }
-
-            if ($needsSm) {
-                $smPath = $optimizer->optimizePath($sourcePath, 'covers', 174, 285, 80);
-                $book->cover_image_sm = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$smPath;
-            }
-
+            $newRelativePath = $optimizer->optimizePath($sourcePath, 'covers', 300, 450, 80);
+            Storage::disk('public')->delete($relativePath);
+            $book->cover_image = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$newRelativePath;
             $book->save();
 
-            $this->line("  Book #{$book->id}: cover updated (".implode(', ', array_filter([
-                $needsWebp ? 'converted to webp' : null,
-                $needsMd ? '+medium' : null,
-                $needsSm ? '+small' : null,
-            ])).')');
+            $this->line("  Book #{$book->id}: cover compressed to ≤300×450 webp");
         }
     }
 

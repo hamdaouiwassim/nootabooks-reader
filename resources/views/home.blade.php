@@ -63,9 +63,7 @@
           @if ($book->cover_image)
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
-                srcset="{{ $book->cover_image_sm_url }} 174w, {{ $book->cover_image_md_url }} 600w"
-                sizes="(max-width: 640px) 45vw, 200px" width="174" height="285"
-                loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
+                width="300" height="450" loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($book->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
@@ -116,9 +114,7 @@
           @if ($book->cover_image)
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
-                srcset="{{ $book->cover_image_sm_url }} 174w, {{ $book->cover_image_md_url }} 600w"
-                sizes="(max-width: 640px) 45vw, 200px" width="174" height="285"
-                loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
+                width="300" height="450" loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($book->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
@@ -184,8 +180,7 @@
         <a href="{{ route('book-details', $book->slug) }}" class="mini-book">
           @if ($book->cover_image)
             <img class="mini-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
-              srcset="{{ $book->cover_image_sm_url }} 174w, {{ $book->cover_image_md_url }} 600w"
-              sizes="140px" width="174" height="285" loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
+              width="300" height="450" loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
           @else
             <div class="mini-cover mc-{{ ($book->id % 4) + 1 }}"><span class="cover-badge sm">B</span></div>
           @endif

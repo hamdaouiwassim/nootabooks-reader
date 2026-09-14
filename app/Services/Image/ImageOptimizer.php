@@ -45,7 +45,7 @@ class ImageOptimizer
      * small-context display (a card thumbnail) doesn't have to download the
      * full-size version just to be scaled down by the browser.
      *
-     * $variants: ['' => [800, 1200], '-sm' => [174, 285]] — key is the
+     * $variants: ['' => [800, 1200], '-sm' => [300, 450]] — key is the
      * filename suffix, value is [maxWidth, maxHeight]. Returns the same keys
      * mapped to each variant's disk-relative path.
      */

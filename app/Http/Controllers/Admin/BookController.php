@@ -106,16 +106,10 @@ class BookController extends Controller
             ? array_values(array_filter(array_map('trim', preg_split('/[,،]/u', (string) $request->string('tags')))))
             : [];
 
-        foreach (['cover_image', 'cover_image_md', 'cover_image_sm'] as $coverField) {
-            if ($request->hasFile($coverField)) {
-                $data[$coverField] = $this->storeCoverVariant($request->file($coverField), $book?->{$coverField});
-            } else {
-                unset($data[$coverField]);
-            }
-        }
-
         if ($request->hasFile('cover_image')) {
-            $this->deriveMissingCoverSizes($data, $request, $book);
+            $data['cover_image'] = $this->storeCoverVariant($request->file('cover_image'), $book?->cover_image);
+        } else {
+            unset($data['cover_image']);
         }
 
         if ($request->hasFile('book_file')) {
@@ -136,10 +130,10 @@ class BookController extends Controller
     }
 
     /**
-     * Deletes the old file for this specific cover slot (if any), converts
-     * the new upload to WebP — capped at a generous size only as a safety
-     * net, since the admin has typically already sized/optimized each of
-     * the three cover slots themselves — and returns the full URL to store.
+     * Deletes the old cover (if any), compresses the new upload to WebP at
+     * the single size used everywhere on the site (300×450 — see
+     * Book::cover_image_{md,sm}_url, which fall back to this same file), and
+     * returns the full URL to store.
      */
     private function storeCoverVariant(UploadedFile $file, ?string $oldValue): string
     {
@@ -147,47 +141,9 @@ class BookController extends Controller
             Storage::disk('public')->delete($relativePath);
         }
 
-        $path = app(ImageOptimizer::class)->optimize($file, 'covers', 2000, 3000, 80);
+        $path = app(ImageOptimizer::class)->optimize($file, 'covers', 300, 450, 80);
 
         return force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$path;
-    }
-
-    /**
-     * When the admin uploads only the large cover, derive the medium/small
-     * variants from it directly instead of leaving cover_image_md/cover_image_sm
-     * null (which makes Book::cover_image_{md,sm}_url fall back to serving the
-     * full-size image everywhere). The source here is always the WebP file
-     * storeCoverVariant() just wrote — the original jpg/png upload is never
-     * kept around — so this reads straight from that WebP, no raster source needed.
-     */
-    private function deriveMissingCoverSizes(array &$data, Request $request, ?Book $book): void
-    {
-        $relativePath = $this->relativeStoragePath($data['cover_image']);
-
-        if (! $relativePath) {
-            return;
-        }
-
-        $sourcePath = Storage::disk('public')->path($relativePath);
-        $optimizer = app(ImageOptimizer::class);
-
-        if (! $request->hasFile('cover_image_md')) {
-            if ($oldRelative = $this->relativeStoragePath($book?->cover_image_md)) {
-                Storage::disk('public')->delete($oldRelative);
-            }
-
-            $mdPath = $optimizer->optimizePath($sourcePath, 'covers', 600, 900, 80);
-            $data['cover_image_md'] = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$mdPath;
-        }
-
-        if (! $request->hasFile('cover_image_sm')) {
-            if ($oldRelative = $this->relativeStoragePath($book?->cover_image_sm)) {
-                Storage::disk('public')->delete($oldRelative);
-            }
-
-            $smPath = $optimizer->optimizePath($sourcePath, 'covers', 174, 285, 80);
-            $data['cover_image_sm'] = force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$smPath;
-        }
     }
 
     /**

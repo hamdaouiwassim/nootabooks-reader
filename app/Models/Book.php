@@ -162,8 +162,10 @@ class Book extends Model
     }
 
     /**
-     * Independently-uploadable size — falls back to the main cover when the
-     * admin hasn't provided one for this specific size.
+     * The admin only uploads one cover (compressed to 300×450 — see
+     * Admin\BookController::storeCoverVariant()); cover_image_md/_sm are
+     * legacy columns from an old multi-size pipeline and are normally empty
+     * for any book saved since, so this just falls back to the single cover.
      */
     protected function coverImageSmUrl(): Attribute
     {
