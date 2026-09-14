@@ -5,10 +5,14 @@
 @section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_min('assets/css/book-details.css') }}">
-<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
-<link rel="stylesheet" href="{{ asset_min('assets/css/writer-details.css') }}">
-<link rel="stylesheet" href="{{ asset_min('assets/css/categories.css') }}">
+<link rel="preload" href="{{ asset_min('assets/css/book-details.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/book-details.css') }}"></noscript>
+<link rel="preload" href="{{ asset_min('assets/css/writers.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}"></noscript>
+<link rel="preload" href="{{ asset_min('assets/css/writer-details.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/writer-details.css') }}"></noscript>
+<link rel="preload" href="{{ asset_min('assets/css/categories.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/categories.css') }}"></noscript>
 @endpush
 
 @push('schema')

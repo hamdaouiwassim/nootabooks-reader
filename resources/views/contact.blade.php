@@ -4,8 +4,10 @@
 @section('meta_description', 'تواصل مع فريق نوته بوك لأي استفسار أو اقتراح أو مشكلة تقنية.')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_min('assets/css/auth.css') }}">
-<link rel="stylesheet" href="{{ asset_min('assets/css/contact.css') }}">
+<link rel="preload" href="{{ asset_min('assets/css/auth.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/auth.css') }}"></noscript>
+<link rel="preload" href="{{ asset_min('assets/css/contact.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/contact.css') }}"></noscript>
 @endpush
 
 @php

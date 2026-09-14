@@ -4,8 +4,10 @@
 @section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
-<link rel="stylesheet" href="{{ asset_min('assets/css/reading-clubs.css') }}">
+<link rel="preload" href="{{ asset_min('assets/css/writers.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}"></noscript>
+<link rel="preload" href="{{ asset_min('assets/css/reading-clubs.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/reading-clubs.css') }}"></noscript>
 @endpush
 
 @push('schema')

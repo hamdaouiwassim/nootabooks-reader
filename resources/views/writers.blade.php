@@ -4,7 +4,8 @@
 @section('meta_description', 'اكتشف كتّاب ومؤلفي الكتب والروايات العربية والمترجمة على نوته بوك، وتصفح أعمالهم وكتبهم حسب المجال والتصنيف.')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
+<link rel="preload" href="{{ asset_min('assets/css/writers.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}"></noscript>
 @endpush
 
 @php

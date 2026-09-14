@@ -4,8 +4,10 @@
 @section('meta_description', 'تصفح تصنيفات الكتب والروايات العربية والمترجمة على نوته بوك، من الروايات والأدب إلى التاريخ والتكنولوجيا والتنمية الذاتية وغيرها من المجالات.')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
-<link rel="stylesheet" href="{{ asset_min('assets/css/categories.css') }}">
+<link rel="preload" href="{{ asset_min('assets/css/writers.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}"></noscript>
+<link rel="preload" href="{{ asset_min('assets/css/categories.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/categories.css') }}"></noscript>
 @endpush
 
 @php

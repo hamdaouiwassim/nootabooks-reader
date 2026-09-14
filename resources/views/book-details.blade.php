@@ -6,7 +6,8 @@
 @section('og_image', $currentBook->cover_image_url ?? asset('assets/images/hero-section.jpg'))
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_min('assets/css/book-details.css') }}">
+<link rel="preload" href="{{ asset_min('assets/css/book-details.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/book-details.css') }}"></noscript>
 @endpush
 
 @push('schema')

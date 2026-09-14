@@ -5,8 +5,10 @@
 @section('robots', $isFiltered ? 'noindex, follow' : 'index, follow')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}">
-<link rel="stylesheet" href="{{ asset_min('assets/css/discover.css') }}">
+<link rel="preload" href="{{ asset_min('assets/css/writers.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/writers.css') }}"></noscript>
+<link rel="preload" href="{{ asset_min('assets/css/discover.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/discover.css') }}"></noscript>
 @endpush
 
 @push('schema')

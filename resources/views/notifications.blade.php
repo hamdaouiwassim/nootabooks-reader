@@ -4,7 +4,8 @@
 @section('robots', 'noindex, nofollow')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset_min('assets/css/notifications.css') }}">
+<link rel="preload" href="{{ asset_min('assets/css/notifications.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/notifications.css') }}"></noscript>
 @endpush
 
 @section('content')
