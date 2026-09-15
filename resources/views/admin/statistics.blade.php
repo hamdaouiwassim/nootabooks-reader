@@ -80,6 +80,23 @@
   </div>
 </div>
 
+<div class="admin-panel" style="margin-bottom: 22px;">
+  <div class="admin-panel-head">
+    <h3>الكتب المضافة يوميًا</h3>
+    <span class="admin-breadcrumb">آخر 30 يومًا</span>
+  </div>
+
+  <div class="admin-trend-scroll">
+    <div class="admin-chart-wrap admin-chart-wrap-dense" style="min-width: {{ count($dailyBooksAdded) * 22 }}px;">
+      <canvas class="admin-chart-canvas"
+        data-chart-labels="{{ json_encode(array_column($dailyBooksAdded, 'label')) }}"
+        data-chart-values="{{ json_encode(array_column($dailyBooksAdded, 'count')) }}"
+        data-chart-tooltips="{{ json_encode(array_column($dailyBooksAdded, 'fullLabel')) }}"
+        data-chart-color="navy" data-chart-unit="كتاب"></canvas>
+    </div>
+  </div>
+</div>
+
 <div class="admin-stats-grid" style="grid-template-columns: repeat(2, 1fr);">
   <div class="admin-panel">
     <div class="admin-panel-head">

@@ -233,4 +233,31 @@ class Book extends Model
             ? URL::temporarySignedRoute('books.download', now()->addMinutes(30), ['book' => $this])
             : null;
     }
+
+    /**
+     * Real counts of books added per day for the last $days days, including
+     * days with zero additions (so a chart's x-axis stays a continuous
+     * timeline) — mirrors DownloadLog::perDay().
+     */
+    public static function perDay(int $days): array
+    {
+        $counts = static::query()
+            ->selectRaw('DATE(created_at) as day, COUNT(*) as total')
+            ->where('created_at', '>=', now()->subDays($days - 1)->startOfDay())
+            ->groupBy('day')
+            ->pluck('total', 'day');
+
+        $result = [];
+        for ($i = $days - 1; $i >= 0; $i--) {
+            $date = now()->subDays($i);
+            $key = $date->format('Y-m-d');
+            $result[] = [
+                'label' => $date->format('j'),
+                'fullLabel' => $date->translatedFormat('j M'),
+                'count' => (int) ($counts[$key] ?? 0),
+            ];
+        }
+
+        return $result;
+    }
 }

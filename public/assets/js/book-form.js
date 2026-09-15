@@ -83,12 +83,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupCombobox('writerCombobox', 'bookWriterSearch', 'bookWriterId', 'writerComboboxList');
 
-  // ---- Book file upload: echo the chosen filename ----
+  // ---- Book file upload: echo the chosen filename, reject oversized files early ----
   const bookFileInput = document.getElementById('bookFile');
   const bookFileName = document.getElementById('bookFileName');
+  const BOOK_FILE_MAX_BYTES = 100 * 1024 * 1024;
 
   bookFileInput?.addEventListener('change', () => {
     const file = bookFileInput.files?.[0];
+
+    if (file && file.size > BOOK_FILE_MAX_BYTES) {
+      bookFileName.textContent = `${file.name} — حجم الملف يتجاوز 100 ميجابايت`;
+      bookFileName.classList.add('admin-field-error');
+      bookFileInput.value = '';
+      return;
+    }
+
+    bookFileName.classList.remove('admin-field-error');
     bookFileName.textContent = file ? file.name : '';
   });
 

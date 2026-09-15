@@ -18,6 +18,7 @@ class StatisticsController extends Controller
     {
         $monthlySignups = $this->monthlyCounts(User::query());
         $dailyDownloads = DownloadLog::perDay(30);
+        $dailyBooksAdded = Book::perDay(30);
 
         return view('admin.statistics', [
             'activeNav' => 'statistics',
@@ -29,6 +30,7 @@ class StatisticsController extends Controller
                 ->count(),
             'monthlySignups' => $monthlySignups,
             'dailyDownloads' => $dailyDownloads,
+            'dailyBooksAdded' => $dailyBooksAdded,
             'topCategories' => Category::withCount('books')
                 ->orderByDesc('books_count')
                 ->take(5)

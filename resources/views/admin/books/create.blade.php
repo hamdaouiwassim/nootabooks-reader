@@ -151,6 +151,7 @@
           <div class="admin-form-field full">
             <label for="bookFile">ملف الكتاب (PDF)</label>
             <input type="file" id="bookFile" name="book_file" class="admin-input" accept=".pdf">
+            <span class="hint">الحد الأقصى لحجم الملف 100 ميجابايت</span>
             <span class="admin-file-name" id="bookFileName"></span>
             @error('book_file')
               <span class="admin-field-error">{{ $message }}</span>
