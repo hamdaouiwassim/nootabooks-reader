@@ -51,12 +51,38 @@
             </div>
           </div>
           <div class="admin-form-field">
-            <label for="bookCategory">التصنيف</label>
+            <label for="bookCategory">التصنيف الأساسي</label>
             <select id="bookCategory" name="category_id" class="admin-select" required>
               <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <option value="<?php echo e($category->id); ?>" <?php if(old('category_id', $book->category_id) == $category->id): echo 'selected'; endif; ?>><?php echo e($category->name); ?></option>
               <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
+          </div>
+          <div class="admin-form-field full">
+            <label>تصنيفات إضافية (اختياري)</label>
+            <div class="admin-checkbox-grid">
+              <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <label class="admin-checkbox-chip">
+                  <input type="checkbox" name="categories[]" value="<?php echo e($category->id); ?>" <?php if(in_array($category->id, old('categories', $selectedCategoryIds))): echo 'checked'; endif; ?>>
+                  <span><?php echo e($category->name); ?></span>
+                </label>
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+            <span class="hint">يمكن ربط الكتاب بأكثر من تصنيف، إلى جانب التصنيف الأساسي أعلاه</span>
+          </div>
+          <div class="admin-form-field">
+            <label for="bookSeriesName">السلسلة (اختياري)</label>
+            <input type="text" id="bookSeriesName" name="series_name" list="seriesDatalist" class="admin-input" value="<?php echo e(old('series_name', $book->series?->name)); ?>" placeholder="مثال: ثلاثية الأرض">
+            <datalist id="seriesDatalist">
+              <?php $__currentLoopData = $allSeries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $series): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($series->name); ?>">
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </datalist>
+            <span class="hint">اكتب اسم سلسلة موجودة لربط الكتاب بها، أو اسمًا جديدًا لإنشاء سلسلة جديدة، أو اترُكه فارغًا لإلغاء الربط</span>
+          </div>
+          <div class="admin-form-field">
+            <label for="bookSeriesOrder">رقم الجزء</label>
+            <input type="number" id="bookSeriesOrder" name="series_order" class="admin-input" value="<?php echo e(old('series_order', $book->series_order)); ?>" min="1" placeholder="مثال: 1">
           </div>
           <div class="admin-form-field">
             <label for="bookLanguage">اللغة</label>
@@ -177,22 +203,7 @@ unset($__errorArgs, $__bag); ?>
             <div><strong><?php echo e(number_format($book->rating_count)); ?></strong><span>عدد التقييمات</span></div>
           </div>
         </div>
-
-        <?php $maxDailyDownloads = max(array_column($dailyDownloads, 'count')) ?: 1; ?>
-        <div class="admin-panel-head" style="margin-top:22px;">
-          <h3>التحميلات يوميًا</h3>
-          <span class="admin-breadcrumb">آخر 30 يومًا</span>
-        </div>
-        <div class="admin-trend-scroll">
-          <div class="admin-trend-chart admin-trend-chart-dense">
-            <?php $__currentLoopData = $dailyDownloads; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $day): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <div class="admin-trend-bar-wrap">
-                <div class="admin-trend-bar" style="height: <?php echo e(($day['count'] / $maxDailyDownloads) * 100); ?>%" title="<?php echo e($day['fullLabel']); ?>: <?php echo e($day['count']); ?> تحميل"></div>
-                <span class="admin-trend-label"><?php echo e($day['label']); ?></span>
-              </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-          </div>
-        </div>
+        <a href="<?php echo e(route('admin.books.stats', $book)); ?>" class="btn btn-outline" style="margin-top:16px; width:100%; justify-content:center;"><i class="fa-solid fa-chart-line"></i> عرض إحصائيات التحميل اليومية</a>
       </div>
 
     </div>

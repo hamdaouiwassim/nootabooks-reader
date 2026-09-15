@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\DownloadLog;
+use App\Models\Series;
 use App\Models\Writer;
 use App\Services\Image\ImageOptimizer;
 use Illuminate\Http\RedirectResponse;
@@ -52,6 +53,7 @@ class BookController extends Controller
             'categories' => Category::orderBy('name')->get(),
             'writers' => Writer::orderBy('name')->get(),
             'selectedCategoryIds' => [],
+            'allSeries' => Series::orderBy('name')->get(),
         ]);
     }
 
@@ -73,6 +75,7 @@ class BookController extends Controller
             'categories' => Category::orderBy('name')->get(),
             'writers' => Writer::orderBy('name')->get(),
             'selectedCategoryIds' => $book->categories->pluck('id')->all(),
+            'allSeries' => Series::orderBy('name')->get(),
         ]);
     }
 
@@ -178,6 +181,17 @@ class BookController extends Controller
         $data['is_coming_soon'] = $request->boolean('is_coming_soon');
         $data['download_disabled'] = $request->boolean('download_disabled');
         unset($data['categories']); // extra categories go through the book_category pivot, not a books column
+
+        $seriesName = trim((string) ($data['series_name'] ?? ''));
+        unset($data['series_name']); // resolved into series_id below, not a books column itself
+
+        if ($seriesName !== '') {
+            $data['series_id'] = Series::firstOrCreate(['name' => $seriesName])->id;
+        } else {
+            $data['series_id'] = null;
+            $data['series_order'] = null;
+        }
+
         $data['tags'] = $request->filled('tags')
             ? array_values(array_filter(array_map('trim', preg_split('/[,،]/u', (string) $request->string('tags')))))
             : [];

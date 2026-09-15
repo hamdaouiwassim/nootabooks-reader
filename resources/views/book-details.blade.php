@@ -326,6 +326,64 @@
   </div>
 </section>
 
+@if ($seriesBooks->count() > 1)
+<!-- ===================== SERIES BOOKS ===================== -->
+<section class="section trending-section">
+  <div class="section-head">
+    <div class="section-title-wrap">
+      <h2 class="section-title">أجزاء سلسلة {{ $currentBook->series->name }}</h2>
+      <p class="section-sub">جميع أجزاء هذه السلسلة مرتبة حسب الجزء</p>
+    </div>
+  </div>
+
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" aria-label="previous"><i class="fa-solid fa-chevron-right"></i></button>
+
+    <div class="book-carousel">
+      @foreach ($seriesBooks as $seriesBook)
+        <a href="{{ route('book-details', $seriesBook->slug) }}" class="book-card @if ($seriesBook->id === $currentBook->id) current @endif">
+          @if ($seriesBook->cover_image)
+            <div class="cover-wrap">
+              <img class="book-cover cover-photo" src="{{ $seriesBook->cover_image_sm_url }}"
+                width="300" height="450" loading="lazy" decoding="async" alt="{{ $seriesBook->title }}">
+              <span class="brand-ribbon">nootabooks.com</span>
+              @if ($seriesBook->series_order)
+                <span class="series-part-badge">الجزء {{ $seriesBook->series_order }}</span>
+              @endif
+              @if ($seriesBook->is_coming_soon)
+                <span class="coming-soon-badge">قريبًا</span>
+              @endif
+            </div>
+          @else
+            <div class="book-cover cover-{{ ($seriesBook->id % 5) + 1 }}">
+              <span class="cover-badge">B</span>
+              <span class="cover-title">{{ $seriesBook->title }}</span>
+              <span class="brand-ribbon">nootabooks.com</span>
+              @if ($seriesBook->series_order)
+                <span class="series-part-badge">الجزء {{ $seriesBook->series_order }}</span>
+              @endif
+              @if ($seriesBook->is_coming_soon)
+                <span class="coming-soon-badge">قريبًا</span>
+              @endif
+            </div>
+          @endif
+          <h3>{{ $seriesBook->title }}</h3>
+          @if ($seriesBook->id === $currentBook->id)
+            <p class="rating no-rating">أنت تقرأ هذا الجزء الآن</p>
+          @elseif ($seriesBook->rating_count > 0)
+            <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($seriesBook->rating_average, 1) }}</p>
+          @else
+            <p class="rating no-rating">لا توجد تقييمات بعد</p>
+          @endif
+        </a>
+      @endforeach
+    </div>
+
+    <button class="carousel-btn next" aria-label="next"><i class="fa-solid fa-chevron-left"></i></button>
+  </div>
+</section>
+@endif
+
 @if ($writerBooks->isNotEmpty())
 <!-- ===================== WRITER BOOKS ===================== -->
 <section class="section trending-section">

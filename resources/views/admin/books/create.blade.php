@@ -73,6 +73,20 @@
             <span class="hint">يمكن ربط الكتاب بأكثر من تصنيف، إلى جانب التصنيف الأساسي أعلاه</span>
           </div>
           <div class="admin-form-field">
+            <label for="bookSeriesName">السلسلة (اختياري)</label>
+            <input type="text" id="bookSeriesName" name="series_name" list="seriesDatalist" class="admin-input" value="{{ old('series_name') }}" placeholder="مثال: ثلاثية الأرض">
+            <datalist id="seriesDatalist">
+              @foreach ($allSeries as $series)
+                <option value="{{ $series->name }}">
+              @endforeach
+            </datalist>
+            <span class="hint">اكتب اسم سلسلة موجودة لربط الكتاب بها، أو اسمًا جديدًا لإنشاء سلسلة جديدة</span>
+          </div>
+          <div class="admin-form-field">
+            <label for="bookSeriesOrder">رقم الجزء</label>
+            <input type="number" id="bookSeriesOrder" name="series_order" class="admin-input" value="{{ old('series_order') }}" min="1" placeholder="مثال: 1">
+          </div>
+          <div class="admin-form-field">
             <label for="bookLanguage">اللغة</label>
             <select id="bookLanguage" name="language" class="admin-select">
               @foreach (['العربية', 'الإنجليزية', 'مترجم إلى العربية'] as $language)

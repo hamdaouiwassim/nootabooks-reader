@@ -21,7 +21,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
     'inLanguage' => $currentBook->language,
     'numberOfPages' => $currentBook->pages_count,
     'datePublished' => $currentBook->published_year ? (string) $currentBook->published_year : null,
-    'genre' => $currentBook->category?->name,
+    'genre' => $currentBook->categories->pluck('name')->all() ?: null,
     'image' => $currentBook->cover_image_url,
     'author' => $currentBook->writer ? [
         '@type' => 'Person',
@@ -97,8 +97,12 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
   </div>
 
   <div class="book-hero-info">
-    <?php if($currentBook->category): ?>
-      <span class="genre-chip"><?php echo e($currentBook->category->name); ?></span>
+    <?php if($currentBook->categories->isNotEmpty()): ?>
+      <div class="genre-chip-row">
+        <?php $__currentLoopData = $currentBook->categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $bookCategory): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <a href="<?php echo e(route('category-details', $bookCategory->slug)); ?>" class="genre-chip"><?php echo e($bookCategory->name); ?></a>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+      </div>
     <?php endif; ?>
     <h1 class="book-title"><?php echo e($currentBook->title); ?></h1>
     <?php if($currentBook->writer): ?>
@@ -329,6 +333,118 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
     <?php endif; ?>
   </div>
 </section>
+
+<?php if($seriesBooks->count() > 1): ?>
+<!-- ===================== SERIES BOOKS ===================== -->
+<section class="section trending-section">
+  <div class="section-head">
+    <div class="section-title-wrap">
+      <h2 class="section-title">أجزاء سلسلة <?php echo e($currentBook->series->name); ?></h2>
+      <p class="section-sub">جميع أجزاء هذه السلسلة مرتبة حسب الجزء</p>
+    </div>
+  </div>
+
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" aria-label="previous"><i class="fa-solid fa-chevron-right"></i></button>
+
+    <div class="book-carousel">
+      <?php $__currentLoopData = $seriesBooks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $seriesBook): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <a href="<?php echo e(route('book-details', $seriesBook->slug)); ?>" class="book-card <?php if($seriesBook->id === $currentBook->id): ?> current <?php endif; ?>">
+          <?php if($seriesBook->cover_image): ?>
+            <div class="cover-wrap">
+              <img class="book-cover cover-photo" src="<?php echo e($seriesBook->cover_image_sm_url); ?>"
+                width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($seriesBook->title); ?>">
+              <span class="brand-ribbon">nootabooks.com</span>
+              <?php if($seriesBook->series_order): ?>
+                <span class="series-part-badge">الجزء <?php echo e($seriesBook->series_order); ?></span>
+              <?php endif; ?>
+              <?php if($seriesBook->is_coming_soon): ?>
+                <span class="coming-soon-badge">قريبًا</span>
+              <?php endif; ?>
+            </div>
+          <?php else: ?>
+            <div class="book-cover cover-<?php echo e(($seriesBook->id % 5) + 1); ?>">
+              <span class="cover-badge">B</span>
+              <span class="cover-title"><?php echo e($seriesBook->title); ?></span>
+              <span class="brand-ribbon">nootabooks.com</span>
+              <?php if($seriesBook->series_order): ?>
+                <span class="series-part-badge">الجزء <?php echo e($seriesBook->series_order); ?></span>
+              <?php endif; ?>
+              <?php if($seriesBook->is_coming_soon): ?>
+                <span class="coming-soon-badge">قريبًا</span>
+              <?php endif; ?>
+            </div>
+          <?php endif; ?>
+          <h3><?php echo e($seriesBook->title); ?></h3>
+          <?php if($seriesBook->id === $currentBook->id): ?>
+            <p class="rating no-rating">أنت تقرأ هذا الجزء الآن</p>
+          <?php elseif($seriesBook->rating_count > 0): ?>
+            <p class="rating"><i class="fa-solid fa-star"></i> <?php echo e(number_format($seriesBook->rating_average, 1)); ?></p>
+          <?php else: ?>
+            <p class="rating no-rating">لا توجد تقييمات بعد</p>
+          <?php endif; ?>
+        </a>
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    </div>
+
+    <button class="carousel-btn next" aria-label="next"><i class="fa-solid fa-chevron-left"></i></button>
+  </div>
+</section>
+<?php endif; ?>
+
+<?php if($writerBooks->isNotEmpty()): ?>
+<!-- ===================== WRITER BOOKS ===================== -->
+<section class="section trending-section">
+  <div class="section-head">
+    <div class="section-title-wrap">
+      <h2 class="section-title">كتب للمؤلف</h2>
+      <p class="section-sub">كتب أخرى لـ <?php echo e($currentBook->writer?->name); ?></p>
+    </div>
+    <?php if($currentBook->writer): ?>
+      <a href="<?php echo e(route('writer-details', $currentBook->writer->slug)); ?>" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
+    <?php endif; ?>
+  </div>
+
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" aria-label="previous"><i class="fa-solid fa-chevron-right"></i></button>
+
+    <div class="book-carousel">
+      <?php $__currentLoopData = $writerBooks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $writerBook): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <a href="<?php echo e(route('book-details', $writerBook->slug)); ?>" class="book-card">
+          <?php if($writerBook->cover_image): ?>
+            <div class="cover-wrap">
+              <img class="book-cover cover-photo" src="<?php echo e($writerBook->cover_image_sm_url); ?>"
+                width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($writerBook->title); ?>">
+              <span class="brand-ribbon">nootabooks.com</span>
+              <?php if($writerBook->is_coming_soon): ?>
+                <span class="coming-soon-badge">قريبًا</span>
+              <?php endif; ?>
+            </div>
+          <?php else: ?>
+            <div class="book-cover cover-<?php echo e(($writerBook->id % 5) + 1); ?>">
+              <span class="cover-badge">B</span>
+              <span class="cover-title"><?php echo e($writerBook->title); ?></span>
+              <span class="brand-ribbon">nootabooks.com</span>
+              <?php if($writerBook->is_coming_soon): ?>
+                <span class="coming-soon-badge">قريبًا</span>
+              <?php endif; ?>
+            </div>
+          <?php endif; ?>
+          <h3><?php echo e($writerBook->title); ?></h3>
+          <p class="author"><?php echo e($currentBook->writer?->name); ?></p>
+          <?php if($writerBook->rating_count > 0): ?>
+            <p class="rating"><i class="fa-solid fa-star"></i> <?php echo e(number_format($writerBook->rating_average, 1)); ?></p>
+          <?php else: ?>
+            <p class="rating no-rating">لا توجد تقييمات بعد</p>
+          <?php endif; ?>
+        </a>
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+    </div>
+
+    <button class="carousel-btn next" aria-label="next"><i class="fa-solid fa-chevron-left"></i></button>
+  </div>
+</section>
+<?php endif; ?>
 
 <!-- ===================== SIMILAR BOOKS ===================== -->
 <section class="section trending-section">

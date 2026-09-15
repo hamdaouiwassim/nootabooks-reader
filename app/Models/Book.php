@@ -30,6 +30,8 @@ class Book extends Model
 
     protected $fillable = [
         'category_id',
+        'series_id',
+        'series_order',
         'writer_id',
         'title',
         'title_en',
@@ -61,6 +63,7 @@ class Book extends Model
             'tags' => 'array',
             'is_coming_soon' => 'boolean',
             'download_disabled' => 'boolean',
+            'series_order' => 'integer',
             'pages_count' => 'integer',
             'published_year' => 'integer',
             'file_size_mb' => 'decimal:2',
@@ -98,6 +101,15 @@ class Book extends Model
     public function writer(): BelongsTo
     {
         return $this->belongsTo(Writer::class);
+    }
+
+    /**
+     * The series this book is part of ("الجزء 1", "الجزء 2", ...), if any —
+     * see Series::books() for the ordered sibling list.
+     */
+    public function series(): BelongsTo
+    {
+        return $this->belongsTo(Series::class);
     }
 
     public function reviews(): HasMany

@@ -50,13 +50,39 @@
             </div>
           </div>
           <div class="admin-form-field">
-            <label for="bookCategory">التصنيف</label>
+            <label for="bookCategory">التصنيف الأساسي</label>
             <select id="bookCategory" name="category_id" class="admin-select" required>
               <option value="" disabled selected>اختر التصنيف</option>
               <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <option value="<?php echo e($category->id); ?>" <?php if(old('category_id') == $category->id): echo 'selected'; endif; ?>><?php echo e($category->name); ?></option>
               <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
+          </div>
+          <div class="admin-form-field full">
+            <label>تصنيفات إضافية (اختياري)</label>
+            <div class="admin-checkbox-grid">
+              <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <label class="admin-checkbox-chip">
+                  <input type="checkbox" name="categories[]" value="<?php echo e($category->id); ?>" <?php if(in_array($category->id, old('categories', $selectedCategoryIds))): echo 'checked'; endif; ?>>
+                  <span><?php echo e($category->name); ?></span>
+                </label>
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </div>
+            <span class="hint">يمكن ربط الكتاب بأكثر من تصنيف، إلى جانب التصنيف الأساسي أعلاه</span>
+          </div>
+          <div class="admin-form-field">
+            <label for="bookSeriesName">السلسلة (اختياري)</label>
+            <input type="text" id="bookSeriesName" name="series_name" list="seriesDatalist" class="admin-input" value="<?php echo e(old('series_name')); ?>" placeholder="مثال: ثلاثية الأرض">
+            <datalist id="seriesDatalist">
+              <?php $__currentLoopData = $allSeries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $series): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($series->name); ?>">
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </datalist>
+            <span class="hint">اكتب اسم سلسلة موجودة لربط الكتاب بها، أو اسمًا جديدًا لإنشاء سلسلة جديدة</span>
+          </div>
+          <div class="admin-form-field">
+            <label for="bookSeriesOrder">رقم الجزء</label>
+            <input type="number" id="bookSeriesOrder" name="series_order" class="admin-input" value="<?php echo e(old('series_order')); ?>" min="1" placeholder="مثال: 1">
           </div>
           <div class="admin-form-field">
             <label for="bookLanguage">اللغة</label>
@@ -143,6 +169,16 @@ unset($__errorArgs, $__bag); ?>
           </div>
           <label class="admin-switch">
             <input type="checkbox" name="is_coming_soon" value="1" <?php if(old('is_coming_soon')): echo 'checked'; endif; ?>>
+            <span class="admin-switch-slider"></span>
+          </label>
+        </div>
+        <div class="admin-toggle-row" style="margin-top:16px;">
+          <div>
+            <strong>منع التحميل</strong>
+            <p>يبقى الكتاب ظاهرًا في البحث والقوائم وصفحته، لكن زر التحميل يظهر معطلاً بعبارة "غير متاح للتحميل"</p>
+          </div>
+          <label class="admin-switch">
+            <input type="checkbox" name="download_disabled" value="1" <?php if(old('download_disabled')): echo 'checked'; endif; ?>>
             <span class="admin-switch-slider"></span>
           </label>
         </div>

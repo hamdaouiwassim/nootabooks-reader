@@ -209,7 +209,7 @@ class PageController extends Controller
 
     public function bookDetails(?string $book = null): View
     {
-        $currentBook = Book::published()->with(['category', 'categories', 'writer'])
+        $currentBook = Book::published()->with(['category', 'categories', 'series', 'writer'])
             ->where('slug', $book ?? 'blue-elephant')
             ->firstOrFail();
 
@@ -222,6 +222,13 @@ class PageController extends Controller
         }
 
         $reviews = $currentBook->reviews()->with('user')->latest()->paginate(5)->withQueryString();
+
+        $seriesBooks = $currentBook->series_id
+            ? Book::published()
+                ->where('series_id', $currentBook->series_id)
+                ->orderBy('series_order')
+                ->get()
+            : collect();
 
         $writerBooks = $currentBook->writer_id
             ? Book::published()
@@ -244,6 +251,7 @@ class PageController extends Controller
             'currentBook' => $currentBook,
             'ratingBreakdown' => $ratingBreakdown,
             'reviews' => $reviews,
+            'seriesBooks' => $seriesBooks,
             'writerBooks' => $writerBooks,
             'similarBooks' => $similarBooks,
         ]);
