@@ -53,12 +53,24 @@
             </div>
           </div>
           <div class="admin-form-field">
-            <label for="bookCategory">التصنيف</label>
+            <label for="bookCategory">التصنيف الأساسي</label>
             <select id="bookCategory" name="category_id" class="admin-select" required>
               @foreach ($categories as $category)
                 <option value="{{ $category->id }}" @selected(old('category_id', $book->category_id) == $category->id)>{{ $category->name }}</option>
               @endforeach
             </select>
+          </div>
+          <div class="admin-form-field full">
+            <label>تصنيفات إضافية (اختياري)</label>
+            <div class="admin-checkbox-grid">
+              @foreach ($categories as $category)
+                <label class="admin-checkbox-chip">
+                  <input type="checkbox" name="categories[]" value="{{ $category->id }}" @checked(in_array($category->id, old('categories', $selectedCategoryIds)))>
+                  <span>{{ $category->name }}</span>
+                </label>
+              @endforeach
+            </div>
+            <span class="hint">يمكن ربط الكتاب بأكثر من تصنيف، إلى جانب التصنيف الأساسي أعلاه</span>
           </div>
           <div class="admin-form-field">
             <label for="bookLanguage">اللغة</label>

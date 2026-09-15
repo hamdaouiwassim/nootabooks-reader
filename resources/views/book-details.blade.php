@@ -20,7 +20,7 @@
     'inLanguage' => $currentBook->language,
     'numberOfPages' => $currentBook->pages_count,
     'datePublished' => $currentBook->published_year ? (string) $currentBook->published_year : null,
-    'genre' => $currentBook->category?->name,
+    'genre' => $currentBook->categories->pluck('name')->all() ?: null,
     'image' => $currentBook->cover_image_url,
     'author' => $currentBook->writer ? [
         '@type' => 'Person',
@@ -91,8 +91,12 @@
   </div>
 
   <div class="book-hero-info">
-    @if ($currentBook->category)
-      <span class="genre-chip">{{ $currentBook->category->name }}</span>
+    @if ($currentBook->categories->isNotEmpty())
+      <div class="genre-chip-row">
+        @foreach ($currentBook->categories as $bookCategory)
+          <a href="{{ route('category-details', $bookCategory->slug) }}" class="genre-chip">{{ $bookCategory->name }}</a>
+        @endforeach
+      </div>
     @endif
     <h1 class="book-title">{{ $currentBook->title }}</h1>
     @if ($currentBook->writer)

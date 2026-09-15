@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\URL;
 
@@ -74,9 +75,24 @@ class Book extends Model
         return $query->where('status', 'published');
     }
 
+    /**
+     * The book's main/primary category — drives the breadcrumb, JSON-LD
+     * genre, type_label, and admin table column. Always also present in
+     * categories() below; see book_category migration.
+     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * The full set of categories this book is tagged with (primary +
+     * whatever extra ones the admin picked) — used for discover filtering,
+     * category-page listings, and the category chips on the book page.
+     */
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'book_category');
     }
 
     public function writer(): BelongsTo

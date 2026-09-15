@@ -62,7 +62,7 @@ class PageController extends Controller
 
         $query = Book::published()->with(['category', 'writer'])
             ->when($selectedCategorySlugs, function ($q) use ($selectedCategorySlugs) {
-                $q->whereHas('category', fn ($cq) => $cq->whereIn('slug', $selectedCategorySlugs));
+                $q->whereHas('categories', fn ($cq) => $cq->whereIn('slug', $selectedCategorySlugs));
             })
             ->when($language === 'عربي', fn ($q) => $q->where('language', 'العربية'))
             ->when($language === 'إنجليزي', fn ($q) => $q->where('language', 'الإنجليزية'))
@@ -209,7 +209,7 @@ class PageController extends Controller
 
     public function bookDetails(?string $book = null): View
     {
-        $currentBook = Book::published()->with(['category', 'writer'])
+        $currentBook = Book::published()->with(['category', 'categories', 'writer'])
             ->where('slug', $book ?? 'blue-elephant')
             ->firstOrFail();
 
@@ -233,7 +233,7 @@ class PageController extends Controller
             : collect();
 
         $similarBooks = Book::published()->with('writer')
-            ->where('category_id', $currentBook->category_id)
+            ->whereHas('categories', fn ($q) => $q->whereIn('categories.id', $currentBook->categories->pluck('id')))
             ->where('id', '!=', $currentBook->id)
             ->orderByDesc('rating_average')
             ->take(5)

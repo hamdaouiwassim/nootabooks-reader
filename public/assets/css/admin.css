@@ -381,6 +381,24 @@
 .admin-combobox-option:hover { background: var(--cream-alt); }
 .admin-combobox-empty { padding: 9px 14px; font-size: 12px; color: var(--text-gray); }
 
+/* ============ CHECKBOX CHIP GRID (e.g. extra categories) ============ */
+.admin-checkbox-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.admin-checkbox-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease;
+}
+.admin-checkbox-chip:has(input:checked) { border-color: var(--teal); background: var(--cream-alt); color: var(--navy); }
+.admin-checkbox-chip input { accent-color: var(--teal); }
+
 .admin-toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 4px 0; }
 .admin-toggle-row strong { display: block; font-size: 13px; color: var(--navy); }
 .admin-toggle-row p { font-size: 12px; color: var(--text-gray); margin-top: 2px; }

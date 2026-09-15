@@ -71,6 +71,7 @@
   padding: 4px 0;
 }
 
+.genre-chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .genre-chip {
   display: inline-block;
   background: var(--cream-alt);
@@ -80,8 +81,8 @@
   font-weight: 700;
   padding: 6px 14px;
   border-radius: 20px;
-  margin-bottom: 14px;
 }
+.genre-chip:hover { border-color: var(--teal); }
 
 .book-title { font-size: 32px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
 .book-author { font-size: 15px; color: var(--text-gray); margin-bottom: 14px; }

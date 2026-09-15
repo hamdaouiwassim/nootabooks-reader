@@ -6,7 +6,7 @@ use App\Models\Concerns\FlushesAppCache;
 use App\Models\Concerns\GeneratesUniqueSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends Model
 {
@@ -29,8 +29,13 @@ class Category extends Model
         return 'name';
     }
 
-    public function books(): HasMany
+    /**
+     * A book can belong to more than one category (see book_category
+     * migration) — this is now the full many-to-many set, not just books
+     * whose primary category is this one.
+     */
+    public function books(): BelongsToMany
     {
-        return $this->hasMany(Book::class);
+        return $this->belongsToMany(Book::class, 'book_category');
     }
 }

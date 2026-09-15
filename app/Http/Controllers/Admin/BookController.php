@@ -31,7 +31,7 @@ class BookController extends Controller
                         ->orWhereHas('writer', fn ($w) => $w->where('name', 'like', "%{$term}%"));
                 });
             })
-            ->when($request->filled('category'), fn ($query) => $query->where('category_id', $request->integer('category')))
+            ->when($request->filled('category'), fn ($query) => $query->whereHas('categories', fn ($cq) => $cq->where('categories.id', $request->integer('category'))))
             ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')))
             ->latest()
             ->paginate(10)
@@ -51,6 +51,7 @@ class BookController extends Controller
             'activeNav' => 'books',
             'categories' => Category::orderBy('name')->get(),
             'writers' => Writer::orderBy('name')->get(),
+            'selectedCategoryIds' => [],
         ]);
     }
 
@@ -59,6 +60,7 @@ class BookController extends Controller
         $data = $this->prepareData($request);
 
         $book = Book::create($data);
+        $book->categories()->sync($this->resolveCategoryIds($request, $data['category_id']));
 
         return redirect()->route('admin.books.edit', $book)->with('status', 'تم حفظ الكتاب بنجاح');
     }
@@ -70,6 +72,7 @@ class BookController extends Controller
             'book' => $book,
             'categories' => Category::orderBy('name')->get(),
             'writers' => Writer::orderBy('name')->get(),
+            'selectedCategoryIds' => $book->categories->pluck('id')->all(),
         ]);
     }
 
@@ -133,8 +136,22 @@ class BookController extends Controller
         $data = $this->prepareData($request, $book);
 
         $book->update($data);
+        $book->categories()->sync($this->resolveCategoryIds($request, $data['category_id']));
 
         return redirect()->route('admin.books.edit', $book)->with('status', 'تم حفظ التعديلات بنجاح');
+    }
+
+    /**
+     * The primary category (category_id) is always included in the pivot
+     * alongside whatever extra categories the admin checked, so
+     * Category::books() sees every book regardless of which category is
+     * primary — no book can end up "missing" from its own primary category.
+     */
+    private function resolveCategoryIds(Request $request, int $primaryCategoryId): array
+    {
+        $extra = array_map('intval', $request->input('categories', []));
+
+        return array_values(array_unique([$primaryCategoryId, ...$extra]));
     }
 
     public function destroy(Book $book): RedirectResponse
@@ -160,6 +177,7 @@ class BookController extends Controller
 
         $data['is_coming_soon'] = $request->boolean('is_coming_soon');
         $data['download_disabled'] = $request->boolean('download_disabled');
+        unset($data['categories']); // extra categories go through the book_category pivot, not a books column
         $data['tags'] = $request->filled('tags')
             ? array_values(array_filter(array_map('trim', preg_split('/[,،]/u', (string) $request->string('tags')))))
             : [];
