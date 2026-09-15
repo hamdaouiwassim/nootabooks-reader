@@ -1,3 +1,17 @@
+/* Metric-matched local fallback so text doesn't reflow when Tajawal swaps
+   in (font-display: swap below). Values computed from Tajawal's and
+   Arial's real OS/2 metrics (unitsPerEm/ascent/descent/lineGap/xWidthAvg)
+   using the standard Capsize/next-font override formula, so the fallback
+   box-height matches Tajawal's almost exactly even before it loads. */
+@font-face {
+  font-family: 'Tajawal Fallback';
+  src: local('Arial');
+  ascent-override: 139.11%;
+  descent-override: 77.24%;
+  line-gap-override: 43.27%;
+  size-adjust: 46.22%;
+}
+
 /* arabic */
 @font-face {
   font-family: 'Tajawal';
