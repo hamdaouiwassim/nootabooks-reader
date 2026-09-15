@@ -322,6 +322,60 @@
   </div>
 </section>
 
+@if ($writerBooks->isNotEmpty())
+<!-- ===================== WRITER BOOKS ===================== -->
+<section class="section trending-section">
+  <div class="section-head">
+    <div class="section-title-wrap">
+      <h2 class="section-title">كتب للمؤلف</h2>
+      <p class="section-sub">كتب أخرى لـ {{ $currentBook->writer?->name }}</p>
+    </div>
+    @if ($currentBook->writer)
+      <a href="{{ route('writer-details', $currentBook->writer->slug) }}" class="view-all">عرض الكل <i class="fa-solid fa-arrow-left"></i></a>
+    @endif
+  </div>
+
+  <div class="carousel-wrap">
+    <button class="carousel-btn prev" aria-label="previous"><i class="fa-solid fa-chevron-right"></i></button>
+
+    <div class="book-carousel">
+      @foreach ($writerBooks as $writerBook)
+        <a href="{{ route('book-details', $writerBook->slug) }}" class="book-card">
+          @if ($writerBook->cover_image)
+            <div class="cover-wrap">
+              <img class="book-cover cover-photo" src="{{ $writerBook->cover_image_sm_url }}"
+                width="300" height="450" loading="lazy" decoding="async" alt="{{ $writerBook->title }}">
+              <span class="brand-ribbon">nootabooks.com</span>
+              @if ($writerBook->is_coming_soon)
+                <span class="coming-soon-badge">قريبًا</span>
+              @endif
+            </div>
+          @else
+            <div class="book-cover cover-{{ ($writerBook->id % 5) + 1 }}">
+              <span class="cover-badge">B</span>
+              <span class="cover-title">{{ $writerBook->title }}</span>
+              <span class="brand-ribbon">nootabooks.com</span>
+              @if ($writerBook->is_coming_soon)
+                <span class="coming-soon-badge">قريبًا</span>
+              @endif
+            </div>
+          @endif
+          <h3>{{ $writerBook->title }}</h3>
+          <p class="author">{{ $currentBook->writer?->name }}</p>
+          @if ($writerBook->rating_count > 0)
+            <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($writerBook->rating_average, 1) }}</p>
+          @else
+            <p class="rating no-rating">لا توجد تقييمات بعد</p>
+          @endif
+        </a>
+      @endforeach
+    </div>
+
+    <button class="carousel-btn next" aria-label="next"><i class="fa-solid fa-chevron-left"></i></button>
+  </div>
+</section>
+@endif
+
 <!-- ===================== SIMILAR BOOKS ===================== -->
 <section class="section trending-section">
   <div class="section-head">

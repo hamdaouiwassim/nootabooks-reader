@@ -223,6 +223,15 @@ class PageController extends Controller
 
         $reviews = $currentBook->reviews()->with('user')->latest()->paginate(5)->withQueryString();
 
+        $writerBooks = $currentBook->writer_id
+            ? Book::published()
+                ->where('writer_id', $currentBook->writer_id)
+                ->where('id', '!=', $currentBook->id)
+                ->orderByDesc('rating_average')
+                ->take(5)
+                ->get()
+            : collect();
+
         $similarBooks = Book::published()->with('writer')
             ->where('category_id', $currentBook->category_id)
             ->where('id', '!=', $currentBook->id)
@@ -235,6 +244,7 @@ class PageController extends Controller
             'currentBook' => $currentBook,
             'ratingBreakdown' => $ratingBreakdown,
             'reviews' => $reviews,
+            'writerBooks' => $writerBooks,
             'similarBooks' => $similarBooks,
         ]);
     }
