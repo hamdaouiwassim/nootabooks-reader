@@ -139,6 +139,8 @@
         <a href="{{ route('read', $currentBook->slug) }}" class="btn btn-teal"><i class="fa-solid fa-headphones"></i> قراءة الآن</a>
         @if ($currentBook->downloadUrl())
           <a href="{{ $currentBook->downloadUrl() }}" class="btn btn-gold"><i class="fa-solid fa-download"></i> تحميل الكتاب</a>
+        @elseif ($currentBook->download_disabled)
+          <button class="btn btn-gold" disabled title="غير متاح للتحميل"><i class="fa-solid fa-ban"></i> غير متاح للتحميل</button>
         @else
           <button class="btn btn-gold" disabled title="الملف غير متوفر حاليًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
         @endif

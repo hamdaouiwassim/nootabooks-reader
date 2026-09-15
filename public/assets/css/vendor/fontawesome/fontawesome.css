@@ -57,6 +57,7 @@
 .fa-arrow-rotate-right:before { content: "\f01e"; }
 .fa-atom:before { content: "\f5d2"; }
 .fa-award:before { content: "\f559"; }
+.fa-ban:before { content: "\f05e"; }
 .fa-bars:before { content: "\f0c9"; }
 .fa-bell:before { content: "\f0f3"; }
 .fa-book:before { content: "\f02d"; }
@@ -78,7 +79,6 @@
 .fa-circle-check:before { content: "\f058"; }
 .fa-clock:before { content: "\f017"; }
 .fa-cloud-arrow-down:before { content: "\f0ed"; }
-.fa-cloud-arrow-up:before { content: "\f0ee"; }
 .fa-comment:before { content: "\f075"; }
 .fa-comment-dots:before { content: "\f4ad"; }
 .fa-comments:before { content: "\f086"; }
@@ -89,7 +89,6 @@
 .fa-earth-africa:before { content: "\f57c"; }
 .fa-envelope-open-text:before { content: "\f658"; }
 .fa-expand:before { content: "\f065"; }
-.fa-eye:before { content: "\f06e"; }
 .fa-feather:before { content: "\f52d"; }
 .fa-file-arrow-down:before { content: "\f56d"; }
 .fa-file-circle-exclamation:before { content: "\e4eb"; }
@@ -98,14 +97,12 @@
 .fa-floppy-disk:before { content: "\f0c7"; }
 .fa-gauge-high:before { content: "\f625"; }
 .fa-gear:before { content: "\f013"; }
-.fa-gift:before { content: "\f06b"; }
 .fa-hashtag:before { content: "\23"; }
 .fa-headphones:before { content: "\f025"; }
 .fa-heart:before { content: "\f004"; }
 .fa-hourglass-half:before { content: "\f252"; }
 .fa-house:before { content: "\f015"; }
 .fa-image:before { content: "\f03e"; }
-.fa-images:before { content: "\f302"; }
 .fa-key:before { content: "\f084"; }
 .fa-landmark:before { content: "\f66f"; }
 .fa-landmark-dome:before { content: "\f752"; }
@@ -133,10 +130,10 @@
 .fa-server:before { content: "\f233"; }
 .fa-share-nodes:before { content: "\f1e0"; }
 .fa-shield-halved:before { content: "\f3ed"; }
+.fa-sliders:before { content: "\f1de"; }
 .fa-spinner:before { content: "\f110"; }
 .fa-star:before { content: "\f005"; }
 .fa-star-half-stroke:before { content: "\f5c0"; }
-.fa-table-cells:before { content: "\f00a"; }
 .fa-thumbs-up:before { content: "\f164"; }
 .fa-trash:before { content: "\f1f8"; }
 .fa-triangle-exclamation:before { content: "\f071"; }
@@ -146,6 +143,7 @@
 .fa-xmark:before { content: "\f00d"; }
 .fa-bell-slash:before { content: "\f1f6"; }
 .fa-envelope:before { content: "\f0e0"; }
+.fa-eye:before { content: "\f06e"; }
 .fa-eye-slash:before { content: "\f070"; }
 .fa-folder-open:before { content: "\f07c"; }
 .fa-message:before { content: "\f27a"; }

@@ -6,6 +6,7 @@
   $pageTitle = 'الإحصائيات';
   $breadcrumb = [['label' => 'الإحصائيات', 'url' => null]];
   $maxSignups = max(array_column($monthlySignups, 'count')) ?: 1;
+  $maxDownloads = max(array_column($dailyDownloads, 'count')) ?: 1;
   $maxCategoryBooks = optional($topCategories->first())->books_count ?: 1;
   $maxWriterFollowers = optional($topWriters->first())->followers_count ?: 1;
 @endphp
@@ -64,6 +65,24 @@
         <span class="admin-trend-label">{{ $month['label'] }}</span>
       </div>
     @endforeach
+  </div>
+</div>
+
+<div class="admin-panel" style="margin-bottom: 22px;">
+  <div class="admin-panel-head">
+    <h3>التحميلات يوميًا</h3>
+    <span class="admin-breadcrumb">آخر 30 يومًا</span>
+  </div>
+
+  <div class="admin-trend-scroll">
+    <div class="admin-trend-chart admin-trend-chart-dense">
+      @foreach ($dailyDownloads as $day)
+        <div class="admin-trend-bar-wrap">
+          <div class="admin-trend-bar" style="height: {{ ($day['count'] / $maxDownloads) * 100 }}%" title="{{ $day['fullLabel'] }}: {{ $day['count'] }} تحميل"></div>
+          <span class="admin-trend-label">{{ $day['label'] }}</span>
+        </div>
+      @endforeach
+    </div>
   </div>
 </div>
 

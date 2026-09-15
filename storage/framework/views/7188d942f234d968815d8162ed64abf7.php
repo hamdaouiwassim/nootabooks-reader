@@ -46,7 +46,8 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/fonts.css')); ?>">
 <link rel="preload" href="<?php echo e(asset_min('assets/css/vendor/fontawesome/fontawesome.css')); ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="<?php echo e(asset_min('assets/css/vendor/fontawesome/fontawesome.css')); ?>"></noscript>
-<link rel="stylesheet" href="<?php echo e(asset_min('assets/css/style.css')); ?>">
+<link rel="preload" href="<?php echo e(asset_min('assets/css/style.css')); ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="<?php echo e(asset_min('assets/css/style.css')); ?>"></noscript>
 <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
 <body>

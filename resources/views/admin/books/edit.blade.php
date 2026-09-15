@@ -39,13 +39,18 @@
             <input type="text" id="bookTitleEn" name="title_en" class="admin-input" value="{{ old('title_en', $book->title_en) }}" dir="ltr">
           </div>
           <div class="admin-form-field">
-            <label for="bookWriter">المؤلف</label>
-            <select id="bookWriter" name="writer_id" class="admin-select">
-              <option value="">بدون مؤلف محدد</option>
-              @foreach ($writers as $writer)
-                <option value="{{ $writer->id }}" @selected(old('writer_id', $book->writer_id) == $writer->id)>{{ $writer->name }}</option>
-              @endforeach
-            </select>
+            <label for="bookWriterSearch">المؤلف</label>
+            @php $selectedWriterId = old('writer_id', $book->writer_id); $oldWriterName = $writers->firstWhere('id', (int) $selectedWriterId)?->name; @endphp
+            <div class="admin-combobox" id="writerCombobox">
+              <input type="text" id="bookWriterSearch" class="admin-input" placeholder="ابحث عن مؤلف ..." autocomplete="off" value="{{ $oldWriterName }}">
+              <input type="hidden" name="writer_id" id="bookWriterId" value="{{ $selectedWriterId }}">
+              <div class="admin-combobox-list" id="writerComboboxList" hidden>
+                <div class="admin-combobox-option" data-id="" data-name="بدون مؤلف محدد">بدون مؤلف محدد</div>
+                @foreach ($writers as $writer)
+                  <div class="admin-combobox-option" data-id="{{ $writer->id }}" data-name="{{ $writer->name }}">{{ $writer->name }}</div>
+                @endforeach
+              </div>
+            </div>
           </div>
           <div class="admin-form-field">
             <label for="bookCategory">التصنيف</label>
@@ -142,6 +147,16 @@
             <span class="admin-switch-slider"></span>
           </label>
         </div>
+        <div class="admin-toggle-row" style="margin-top:16px;">
+          <div>
+            <strong>منع التحميل</strong>
+            <p>يبقى الكتاب ظاهرًا في البحث والقوائم وصفحته، لكن زر التحميل يظهر معطلاً بعبارة "غير متاح للتحميل"</p>
+          </div>
+          <label class="admin-switch">
+            <input type="checkbox" name="download_disabled" value="1" @checked(old('download_disabled', $book->download_disabled))>
+            <span class="admin-switch-slider"></span>
+          </label>
+        </div>
       </div>
 
       <div class="admin-form-section">
@@ -157,6 +172,7 @@
             <div><strong>{{ number_format($book->rating_count) }}</strong><span>عدد التقييمات</span></div>
           </div>
         </div>
+        <a href="{{ route('admin.books.stats', $book) }}" class="btn btn-outline" style="margin-top:16px; width:100%; justify-content:center;"><i class="fa-solid fa-chart-line"></i> عرض إحصائيات التحميل اليومية</a>
       </div>
 
     </div>

@@ -61,9 +61,7 @@
           <?php if($book->cover_image): ?>
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>"
-                srcset="<?php echo e($book->cover_image_sm_url); ?> 174w, <?php echo e($book->cover_image_md_url); ?> 600w"
-                sizes="(max-width: 640px) 45vw, 200px" width="174" height="285"
-                loading="lazy" decoding="async" alt="غلاف <?php echo e($book->title); ?>">
+                width="300" height="450" loading="lazy" decoding="async" alt="غلاف <?php echo e($book->title); ?>">
               <span class="brand-ribbon">nootabooks.com</span>
               <?php if($book->is_coming_soon): ?>
                 <span class="coming-soon-badge">قريبًا</span>
@@ -114,9 +112,7 @@
           <?php if($book->cover_image): ?>
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>"
-                srcset="<?php echo e($book->cover_image_sm_url); ?> 174w, <?php echo e($book->cover_image_md_url); ?> 600w"
-                sizes="(max-width: 640px) 45vw, 200px" width="174" height="285"
-                loading="lazy" decoding="async" alt="غلاف <?php echo e($book->title); ?>">
+                width="300" height="450" loading="lazy" decoding="async" alt="غلاف <?php echo e($book->title); ?>">
               <span class="brand-ribbon">nootabooks.com</span>
               <?php if($book->is_coming_soon): ?>
                 <span class="coming-soon-badge">قريبًا</span>
@@ -182,8 +178,7 @@
         <a href="<?php echo e(route('book-details', $book->slug)); ?>" class="mini-book">
           <?php if($book->cover_image): ?>
             <img class="mini-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>"
-              srcset="<?php echo e($book->cover_image_sm_url); ?> 174w, <?php echo e($book->cover_image_md_url); ?> 600w"
-              sizes="140px" width="174" height="285" loading="lazy" decoding="async" alt="غلاف <?php echo e($book->title); ?>">
+              width="300" height="450" loading="lazy" decoding="async" alt="غلاف <?php echo e($book->title); ?>">
           <?php else: ?>
             <div class="mini-cover mc-<?php echo e(($book->id % 4) + 1); ?>"><span class="cover-badge sm">B</span></div>
           <?php endif; ?>

@@ -26,6 +26,11 @@
       <option value="<?php echo e($category->id); ?>" <?php if(request('category') == $category->id): echo 'selected'; endif; ?>><?php echo e($category->name); ?></option>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
   </select>
+  <select class="admin-filter-select" name="status" onchange="this.form.submit()">
+    <option value="">كل الحالات</option>
+    <option value="published" <?php if(request('status') === 'published'): echo 'selected'; endif; ?>>منشور</option>
+    <option value="draft" <?php if(request('status') === 'draft'): echo 'selected'; endif; ?>>مخفي</option>
+  </select>
   <button type="submit" class="btn btn-outline">بحث</button>
 </form>
 
@@ -35,7 +40,6 @@
       <tr>
         <th>الكتاب</th>
         <th>التصنيف</th>
-        <th>الصيغ</th>
         <th>التقييم</th>
         <th>التحميلات</th>
         <th>تاريخ الإضافة</th>
@@ -48,21 +52,30 @@
           <td>
             <div class="admin-book-cell">
               <?php if($book->cover_image): ?>
-                <img class="admin-book-cover" src="<?php echo e($book->cover_image_sm_url); ?>" alt="<?php echo e($book->title); ?>">
+                <img class="admin-book-cover" src="<?php echo e($book->cover_image_sm_url); ?>" width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($book->title); ?>">
               <?php else: ?>
                 <span class="admin-book-cover placeholder"><i class="fa-solid fa-book"></i></span>
               <?php endif; ?>
-              <div><strong><?php echo e($book->title); ?></strong><span><?php echo e($book->writer?->name ?? 'بدون مؤلف'); ?></span></div>
+              <div>
+                <strong><?php echo e($book->title); ?></strong>
+                <span><?php echo e($book->writer?->name ?? 'بدون مؤلف'); ?></span>
+                <?php if($book->status === 'draft'): ?>
+                  <span class="status-badge draft">مخفي</span>
+                <?php endif; ?>
+                <?php if($book->is_coming_soon): ?>
+                  <span class="status-badge coming-soon">قريبًا</span>
+                <?php endif; ?>
+              </div>
             </div>
           </td>
           <td><?php echo e($book->category->name); ?></td>
-          <td><?php echo e($book->formats ? implode('، ', $book->formats) : '—'); ?></td>
           <td><i class="fa-solid fa-star" style="color:var(--star)"></i> <?php echo e(number_format($book->rating_average, 1)); ?></td>
           <td><?php echo e(number_format($book->downloads_count)); ?></td>
           <td><?php echo e($book->created_at->diffForHumans()); ?></td>
           <td>
             <div class="admin-row-actions">
               <a href="<?php echo e(route('read', $book->slug)); ?>" class="admin-icon-btn" title="عرض" aria-label="view"><i class="fa-regular fa-eye"></i></a>
+              <a href="<?php echo e(route('admin.books.stats', $book)); ?>" class="admin-icon-btn" title="إحصائيات" aria-label="stats"><i class="fa-solid fa-chart-line"></i></a>
               <a href="<?php echo e(route('admin.books.edit', $book)); ?>" class="admin-icon-btn" title="تعديل" aria-label="edit"><i class="fa-solid fa-pen"></i></a>
               <form method="POST" action="<?php echo e(route('admin.books.destroy', $book)); ?>" data-confirm-delete data-item-title="<?php echo e($book->title); ?>">
                 <?php echo csrf_field(); ?>
@@ -74,7 +87,7 @@
         </tr>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
         <tr class="admin-empty-row">
-          <td colspan="7">لا توجد كتب مطابقة لبحثك</td>
+          <td colspan="6">لا توجد كتب مطابقة لبحثك</td>
         </tr>
       <?php endif; ?>
     </tbody>

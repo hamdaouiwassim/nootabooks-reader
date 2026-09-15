@@ -20,8 +20,9 @@
 
     <span class="admin-nav-label">المجتمع</span>
     <a href="<?php echo e(route('admin.users.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'users']); ?>"><i class="fa-solid fa-users"></i> المستخدمون</a>
-    <a href="#"><i class="fa-solid fa-people-group"></i> نوادي القراءة</a>
-    <a href="#"><i class="fa-solid fa-comments"></i> المناقشات</a>
+    <a href="<?php echo e(route('admin.clubs.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'clubs']); ?>"><i class="fa-solid fa-people-group"></i> نوادي القراءة <span class="badge-count"><?php echo e($sidebarClubsCount); ?></span></a>
+    <a href="<?php echo e(route('admin.discussions.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'discussions']); ?>"><i class="fa-solid fa-comments"></i> المناقشات <span class="badge-count"><?php echo e($sidebarDiscussionsCount); ?></span></a>
+    <a href="<?php echo e(route('admin.comments.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'comments']); ?>"><i class="fa-solid fa-comment-dots"></i> التعليقات <span class="badge-count"><?php echo e($sidebarCommentsCount); ?></span></a>
 
     <span class="admin-nav-label">النظام</span>
     <a href="<?php echo e(route('admin.statistics')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'statistics']); ?>"><i class="fa-solid fa-chart-line"></i> الإحصائيات</a>

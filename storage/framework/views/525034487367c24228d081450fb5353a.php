@@ -66,7 +66,7 @@
             <td>
               <div class="admin-book-cell">
                 <?php if($book->cover_image): ?>
-                  <img class="admin-book-cover" src="<?php echo e($book->cover_image_sm_url); ?>" alt="<?php echo e($book->title); ?>">
+                  <img class="admin-book-cover" src="<?php echo e($book->cover_image_sm_url); ?>" width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($book->title); ?>">
                 <?php else: ?>
                   <span class="admin-book-cover placeholder"><i class="fa-solid fa-book"></i></span>
                 <?php endif; ?>
@@ -80,6 +80,52 @@
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
           <tr class="admin-empty-row">
             <td colspan="4">لا توجد كتب بعد</td>
+          </tr>
+        <?php endif; ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="admin-panel">
+  <div class="admin-panel-head">
+    <h3>أحدث المناقشات</h3>
+    <a href="<?php echo e(route('admin.discussions.index')); ?>" class="admin-breadcrumb">عرض كل المناقشات <i class="fa-solid fa-arrow-left"></i></a>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>المنشور</th>
+          <th>الكاتب</th>
+          <th>مرتبط بـ</th>
+          <th>التعليقات</th>
+          <th>تاريخ النشر</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php $__empty_1 = true; $__currentLoopData = $latestDiscussions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $discussion): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+          <tr>
+            <td style="max-width:280px;"><?php echo e(\Illuminate\Support\Str::limit($discussion->body, 70)); ?></td>
+            <td><?php echo e($discussion->user->name); ?></td>
+            <td>
+              <?php if($discussion->book): ?>
+                <?php echo e($discussion->book->title); ?>
+
+              <?php elseif($discussion->club): ?>
+                <?php echo e($discussion->club->name); ?>
+
+              <?php else: ?>
+                —
+              <?php endif; ?>
+            </td>
+            <td><?php echo e(number_format($discussion->comments_count)); ?></td>
+            <td><?php echo e($discussion->created_at->diffForHumans()); ?></td>
+          </tr>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+          <tr class="admin-empty-row">
+            <td colspan="5">لا توجد مناقشات بعد</td>
           </tr>
         <?php endif; ?>
       </tbody>

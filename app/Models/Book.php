@@ -41,6 +41,7 @@ class Book extends Model
         'cover_image_md',
         'cover_image_sm',
         'is_coming_soon',
+        'download_disabled',
         'status',
         'file_path',
         'pages_count',
@@ -58,6 +59,7 @@ class Book extends Model
         return [
             'tags' => 'array',
             'is_coming_soon' => 'boolean',
+            'download_disabled' => 'boolean',
             'pages_count' => 'integer',
             'published_year' => 'integer',
             'file_size_mb' => 'decimal:2',
@@ -199,7 +201,7 @@ class Book extends Model
      */
     public function downloadUrl(): ?string
     {
-        return $this->file_path
+        return ($this->file_path && ! $this->download_disabled)
             ? URL::temporarySignedRoute('books.download', now()->addMinutes(30), ['book' => $this])
             : null;
     }

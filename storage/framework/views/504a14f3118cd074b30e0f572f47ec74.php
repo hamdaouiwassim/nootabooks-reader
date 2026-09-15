@@ -80,9 +80,8 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
 <section class="section book-hero">
   <div class="book-hero-cover">
     <?php if($currentBook->cover_image): ?>
-      <img class="hero-cover-img cover-photo" src="<?php echo e($currentBook->cover_image_md_url); ?>"
-        srcset="<?php echo e($currentBook->cover_image_sm_url); ?> 174w, <?php echo e($currentBook->cover_image_md_url); ?> 600w, <?php echo e($currentBook->cover_image_url); ?> 800w"
-        sizes="(max-width: 900px) 90vw, 300px" width="600" height="900"
+      <img class="hero-cover-img cover-photo" src="<?php echo e($currentBook->cover_image_url); ?>"
+        width="300" height="450"
         fetchpriority="high" decoding="async" alt="غلاف <?php echo e($currentBook->title); ?>">
     <?php else: ?>
       <div class="hero-cover-img cover-<?php echo e(($currentBook->id % 5) + 1); ?>">
@@ -146,6 +145,8 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
         <a href="<?php echo e(route('read', $currentBook->slug)); ?>" class="btn btn-teal"><i class="fa-solid fa-headphones"></i> قراءة الآن</a>
         <?php if($currentBook->downloadUrl()): ?>
           <a href="<?php echo e($currentBook->downloadUrl()); ?>" class="btn btn-gold"><i class="fa-solid fa-download"></i> تحميل الكتاب</a>
+        <?php elseif($currentBook->download_disabled): ?>
+          <button class="btn btn-gold" disabled title="غير متاح للتحميل"><i class="fa-solid fa-ban"></i> غير متاح للتحميل</button>
         <?php else: ?>
           <button class="btn btn-gold" disabled title="الملف غير متوفر حاليًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
         <?php endif; ?>
@@ -348,9 +349,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
           <?php if($similarBook->cover_image): ?>
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="<?php echo e($similarBook->cover_image_sm_url); ?>"
-                srcset="<?php echo e($similarBook->cover_image_sm_url); ?> 174w, <?php echo e($similarBook->cover_image_md_url); ?> 600w"
-                sizes="(max-width: 640px) 45vw, 200px" width="174" height="285"
-                loading="lazy" decoding="async" alt="<?php echo e($similarBook->title); ?>">
+                width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($similarBook->title); ?>">
               <span class="brand-ribbon">nootabooks.com</span>
               <?php if($similarBook->is_coming_soon): ?>
                 <span class="coming-soon-badge">قريبًا</span>

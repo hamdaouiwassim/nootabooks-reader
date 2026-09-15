@@ -7,11 +7,13 @@ use App\Http\Requests\Admin\StoreBookRequest;
 use App\Http\Requests\Admin\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\DownloadLog;
 use App\Models\Writer;
 use App\Services\Image\ImageOptimizer;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Smalot\PdfParser\Parser as PdfParser;
@@ -71,6 +73,61 @@ class BookController extends Controller
         ]);
     }
 
+    public function stats(Request $request, Book $book): View
+    {
+        $period = $request->get('period', '7d');
+
+        if (! in_array($period, ['day', '7d', '1m', '3m', 'custom'], true)) {
+            $period = '7d';
+        }
+
+        $fromInput = $request->get('from');
+        $toInput = $request->get('to');
+
+        if ($period === 'day') {
+            $dailyDownloads = DownloadLog::perHour($book->id);
+            $periodLabel = 'اليوم، '.now()->translatedFormat('j F Y');
+        } elseif ($period === 'custom') {
+            $to = $toInput ? Carbon::parse($toInput)->endOfDay() : now();
+            $from = $fromInput ? Carbon::parse($fromInput)->startOfDay() : $to->copy()->subDays(6)->startOfDay();
+
+            if ($from->gt($to)) {
+                [$from, $to] = [$to->copy()->startOfDay(), $from->copy()->endOfDay()];
+            }
+
+            if ($from->diffInDays($to) > 366) {
+                $from = $to->copy()->subDays(366)->startOfDay();
+            }
+
+            $dailyDownloads = DownloadLog::perDayRange($from, $to, $book->id);
+            $periodLabel = 'من '.$from->translatedFormat('j M Y').' إلى '.$to->translatedFormat('j M Y');
+            $fromInput = $from->format('Y-m-d');
+            $toInput = $to->format('Y-m-d');
+        } else {
+            $days = match ($period) {
+                '7d' => 7,
+                '3m' => 90,
+                default => 30, // '1m'
+            };
+            $dailyDownloads = DownloadLog::perDay($days, $book->id);
+            $periodLabel = match ($period) {
+                '7d' => 'آخر 7 أيام',
+                '3m' => 'آخر 3 أشهر',
+                default => 'الشهر الماضي',
+            };
+        }
+
+        return view('admin.books.stats', [
+            'activeNav' => 'books',
+            'book' => $book,
+            'dailyDownloads' => $dailyDownloads,
+            'period' => $period,
+            'periodLabel' => $periodLabel,
+            'fromInput' => $fromInput ?? now()->subDays(6)->format('Y-m-d'),
+            'toInput' => $toInput ?? now()->format('Y-m-d'),
+        ]);
+    }
+
     public function update(UpdateBookRequest $request, Book $book): RedirectResponse
     {
         $data = $this->prepareData($request, $book);
@@ -102,6 +159,7 @@ class BookController extends Controller
         $data = $request->validated();
 
         $data['is_coming_soon'] = $request->boolean('is_coming_soon');
+        $data['download_disabled'] = $request->boolean('download_disabled');
         $data['tags'] = $request->filled('tags')
             ? array_values(array_filter(array_map('trim', preg_split('/[,،]/u', (string) $request->string('tags')))))
             : [];

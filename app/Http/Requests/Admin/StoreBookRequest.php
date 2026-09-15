@@ -30,6 +30,7 @@ class StoreBookRequest extends FormRequest
             'cover_image' => ['nullable', 'image', 'max:4096'],
             'book_file' => ['nullable', 'file', 'mimes:pdf', 'max:102400'],
             'is_coming_soon' => ['nullable', 'boolean'],
+            'download_disabled' => ['nullable', 'boolean'],
             'status' => ['required', 'in:published,draft'],
         ];
     }

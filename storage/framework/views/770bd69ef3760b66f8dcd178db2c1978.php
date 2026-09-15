@@ -6,7 +6,7 @@
 <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 <title>تسجيل الدخول - لوحة تحكم مكتبتي</title>
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/fonts.css')); ?>">
-<link rel="stylesheet" href="<?php echo e(asset('assets/css/vendor/fontawesome/all.min.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset_min('assets/css/vendor/fontawesome/fontawesome.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/style.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/admin.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/auth.css')); ?>">
@@ -14,7 +14,7 @@
 <body>
 
 <div class="auth-wrapper">
-  <div class="auth-visual">
+  <div class="auth-visual admin-visual">
     <div class="admin-sidebar-head" style="border:none; padding:0;">
       <i class="fa-solid fa-book-bookmark logo-icon"></i>
       <div class="logo-text">
@@ -75,7 +75,7 @@
   </div>
 </div>
 
-<script src="<?php echo e(asset_min('assets/js/admin-login.js')); ?>"></script>
+<script src="<?php echo e(asset_min('assets/js/admin-login.js')); ?>" defer></script>
 </body>
 </html>
 <?php /**PATH C:\Users\USER\Desktop\nootabooksui-reader\resources\views/admin/auth/login.blade.php ENDPATH**/ ?>

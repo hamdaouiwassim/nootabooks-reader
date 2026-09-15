@@ -7,7 +7,7 @@
 <title><?php echo $__env->yieldContent('title', 'لوحة التحكم - مكتبتي'); ?></title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/fonts.css')); ?>">
-<link rel="stylesheet" href="<?php echo e(asset('assets/css/vendor/fontawesome/all.min.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset_min('assets/css/vendor/fontawesome/fontawesome.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/style.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/admin.css')); ?>">
 <?php echo $__env->yieldPushContent('styles'); ?>
@@ -46,7 +46,7 @@
 
 <?php echo $__env->yieldPushContent('modals'); ?>
 
-<script src="<?php echo e(asset_min('assets/js/admin.js')); ?>"></script>
+<script src="<?php echo e(asset_min('assets/js/admin.js')); ?>" defer></script>
 <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>

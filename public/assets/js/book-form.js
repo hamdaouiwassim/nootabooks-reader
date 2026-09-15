@@ -22,6 +22,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupCoverUpload('coverUpload', 'coverInput', 'coverPreview');
 
+  // ---- Searchable writer combobox (filters options as you type) ----
+  function setupCombobox(wrapperId, inputId, hiddenId, listId) {
+    const wrapper = document.getElementById(wrapperId);
+    const input = document.getElementById(inputId);
+    const hidden = document.getElementById(hiddenId);
+    const list = document.getElementById(listId);
+    if (!wrapper || !input || !hidden || !list) return;
+
+    const options = Array.from(list.querySelectorAll('.admin-combobox-option'));
+
+    function filterOptions() {
+      const term = input.value.trim().toLowerCase();
+      options.forEach((opt) => {
+        const name = (opt.dataset.name || '').toLowerCase();
+        opt.hidden = term !== '' && !name.includes(term);
+      });
+    }
+
+    function selectOption(opt) {
+      input.value = opt.dataset.name || '';
+      hidden.value = opt.dataset.id || '';
+      list.hidden = true;
+    }
+
+    input.addEventListener('focus', () => {
+      filterOptions();
+      list.hidden = false;
+    });
+    input.addEventListener('input', () => {
+      filterOptions();
+      list.hidden = false;
+      hidden.value = ''; // typing invalidates the previous selection until an option is picked
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        list.hidden = true;
+        input.blur();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        const firstVisible = options.find((opt) => !opt.hidden);
+        if (firstVisible) selectOption(firstVisible);
+      }
+    });
+
+    options.forEach((opt) => {
+      // mousedown (not click) fires before the input's blur handler below
+      opt.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        selectOption(opt);
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (wrapper.contains(e.target)) return;
+      list.hidden = true;
+      if (!hidden.value) input.value = '';
+    });
+  }
+
+  setupCombobox('writerCombobox', 'bookWriterSearch', 'bookWriterId', 'writerComboboxList');
+
   // ---- Book file upload: echo the chosen filename ----
   const bookFileInput = document.getElementById('bookFile');
   const bookFileName = document.getElementById('bookFileName');

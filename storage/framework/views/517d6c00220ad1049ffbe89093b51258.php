@@ -6,7 +6,6 @@
     ['label' => 'إدارة الكتب', 'url' => route('admin.books.index')],
     ['label' => 'تعديل', 'url' => null],
   ];
-  $selectedFormats = old('formats', $book->formats ?? []);
 ?>
 
 <?php $__env->startSection('content'); ?>
@@ -33,14 +32,23 @@
             <label for="bookTitle">عنوان الكتاب</label>
             <input type="text" id="bookTitle" name="title" class="admin-input" value="<?php echo e(old('title', $book->title)); ?>" required>
           </div>
+          <div class="admin-form-field full">
+            <label for="bookTitleEn">العنوان بالإنجليزية (اختياري)</label>
+            <input type="text" id="bookTitleEn" name="title_en" class="admin-input" value="<?php echo e(old('title_en', $book->title_en)); ?>" dir="ltr">
+          </div>
           <div class="admin-form-field">
-            <label for="bookWriter">المؤلف</label>
-            <select id="bookWriter" name="writer_id" class="admin-select">
-              <option value="">بدون مؤلف محدد</option>
-              <?php $__currentLoopData = $writers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $writer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <option value="<?php echo e($writer->id); ?>" <?php if(old('writer_id', $book->writer_id) == $writer->id): echo 'selected'; endif; ?>><?php echo e($writer->name); ?></option>
-              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </select>
+            <label for="bookWriterSearch">المؤلف</label>
+            <?php $selectedWriterId = old('writer_id', $book->writer_id); $oldWriterName = $writers->firstWhere('id', (int) $selectedWriterId)?->name; ?>
+            <div class="admin-combobox" id="writerCombobox">
+              <input type="text" id="bookWriterSearch" class="admin-input" placeholder="ابحث عن مؤلف ..." autocomplete="off" value="<?php echo e($oldWriterName); ?>">
+              <input type="hidden" name="writer_id" id="bookWriterId" value="<?php echo e($selectedWriterId); ?>">
+              <div class="admin-combobox-list" id="writerComboboxList" hidden>
+                <div class="admin-combobox-option" data-id="" data-name="بدون مؤلف محدد">بدون مؤلف محدد</div>
+                <?php $__currentLoopData = $writers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $writer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                  <div class="admin-combobox-option" data-id="<?php echo e($writer->id); ?>" data-name="<?php echo e($writer->name); ?>"><?php echo e($writer->name); ?></div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+              </div>
+            </div>
           </div>
           <div class="admin-form-field">
             <label for="bookCategory">التصنيف</label>
@@ -56,6 +64,13 @@
               <?php $__currentLoopData = ['العربية', 'الإنجليزية', 'مترجم إلى العربية']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $language): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <option <?php if(old('language', $book->language) === $language): echo 'selected'; endif; ?>><?php echo e($language); ?></option>
               <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </select>
+          </div>
+          <div class="admin-form-field">
+            <label for="bookStatus">حالة النشر</label>
+            <select id="bookStatus" name="status" class="admin-select">
+              <option value="published" <?php if(old('status', $book->status) === 'published'): echo 'selected'; endif; ?>>منشور (ظاهر للجميع)</option>
+              <option value="draft" <?php if(old('status', $book->status) === 'draft'): echo 'selected'; endif; ?>>مخفي (غير ظاهر على المنصة)</option>
             </select>
           </div>
           <div class="admin-form-field">
@@ -79,7 +94,22 @@
       </div>
 
       <div class="admin-form-section">
-        <h3>الملف والصيغ</h3>
+        <h3>إعدادات السيو (اختياري)</h3>
+        <p style="font-size:11px; color:var(--text-gray); margin-bottom:14px; line-height:1.7;">اتركها فارغة ليتم توليد عنوان ووصف مناسبين لمحركات البحث تلقائيًا من عنوان الكتاب ونبذته. المُولَّد حاليًا:</p>
+        <div class="admin-form-grid">
+          <div class="admin-form-field full">
+            <label for="bookSeoTitle">عنوان السيو</label>
+            <input type="text" id="bookSeoTitle" name="seo_title" class="admin-input" value="<?php echo e(old('seo_title', $book->seo_title)); ?>" placeholder="<?php echo e($book->resolved_seo_title); ?>">
+          </div>
+          <div class="admin-form-field full">
+            <label for="bookSeoDescription">وصف السيو</label>
+            <textarea id="bookSeoDescription" name="seo_description" class="admin-textarea" rows="3" maxlength="500" placeholder="<?php echo e($book->resolved_seo_description); ?>"><?php echo e(old('seo_description', $book->seo_description)); ?></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-form-section">
+        <h3>ملف الكتاب</h3>
         <div class="admin-form-grid">
           <div class="admin-form-field">
             <label for="bookFileSize">حجم الملف (ميجابايت)</label>
@@ -91,19 +121,8 @@
             <input type="text" id="bookTags" name="tags" class="admin-input" value="<?php echo e(old('tags', implode('، ', $book->tags ?? []))); ?>">
           </div>
           <div class="admin-form-field full">
-            <label>الصيغ المتوفرة</label>
-            <div class="admin-toggle-row" style="gap:20px;">
-              <?php $__currentLoopData = ['PDF', 'EPUB', 'MOBI']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $format): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <label style="display:flex; align-items:center; gap:6px; font-weight:600; font-size:13px;">
-                  <input type="checkbox" name="formats[]" value="<?php echo e($format); ?>" <?php if(in_array($format, $selectedFormats)): echo 'checked'; endif; ?>> <?php echo e($format); ?>
-
-                </label>
-              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-            </div>
-          </div>
-          <div class="admin-form-field full">
-            <label for="bookFile">ملف الكتاب (PDF، EPUB أو MOBI)</label>
-            <input type="file" id="bookFile" name="book_file" class="admin-input" accept=".pdf,.epub,.mobi">
+            <label for="bookFile">ملف الكتاب (PDF)</label>
+            <input type="file" id="bookFile" name="book_file" class="admin-input" accept=".pdf">
             <?php if($book->file_path): ?>
               <div class="admin-file-current">
                 <i class="fa-solid fa-file-arrow-down"></i>
@@ -123,6 +142,26 @@ endif;
 unset($__errorArgs, $__bag); ?>
           </div>
         </div>
+        <div class="admin-toggle-row" style="margin-top:16px;">
+          <div>
+            <strong>كتاب قريبًا</strong>
+            <p>يظهر الكتاب بدون إمكانية القراءة أو التحميل مع إشارة "قريبًا"</p>
+          </div>
+          <label class="admin-switch">
+            <input type="checkbox" name="is_coming_soon" value="1" <?php if(old('is_coming_soon', $book->is_coming_soon)): echo 'checked'; endif; ?>>
+            <span class="admin-switch-slider"></span>
+          </label>
+        </div>
+        <div class="admin-toggle-row" style="margin-top:16px;">
+          <div>
+            <strong>منع التحميل</strong>
+            <p>يبقى الكتاب ظاهرًا في البحث والقوائم وصفحته، لكن زر التحميل يظهر معطلاً بعبارة "غير متاح للتحميل"</p>
+          </div>
+          <label class="admin-switch">
+            <input type="checkbox" name="download_disabled" value="1" <?php if(old('download_disabled', $book->download_disabled)): echo 'checked'; endif; ?>>
+            <span class="admin-switch-slider"></span>
+          </label>
+        </div>
       </div>
 
       <div class="admin-form-section">
@@ -138,6 +177,22 @@ unset($__errorArgs, $__bag); ?>
             <div><strong><?php echo e(number_format($book->rating_count)); ?></strong><span>عدد التقييمات</span></div>
           </div>
         </div>
+
+        <?php $maxDailyDownloads = max(array_column($dailyDownloads, 'count')) ?: 1; ?>
+        <div class="admin-panel-head" style="margin-top:22px;">
+          <h3>التحميلات يوميًا</h3>
+          <span class="admin-breadcrumb">آخر 30 يومًا</span>
+        </div>
+        <div class="admin-trend-scroll">
+          <div class="admin-trend-chart admin-trend-chart-dense">
+            <?php $__currentLoopData = $dailyDownloads; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $day): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <div class="admin-trend-bar-wrap">
+                <div class="admin-trend-bar" style="height: <?php echo e(($day['count'] / $maxDailyDownloads) * 100); ?>%" title="<?php echo e($day['fullLabel']); ?>: <?php echo e($day['count']); ?> تحميل"></div>
+                <span class="admin-trend-label"><?php echo e($day['label']); ?></span>
+              </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -145,13 +200,28 @@ unset($__errorArgs, $__bag); ?>
     <!-- ---- Cover sidebar ---- -->
     <div>
       <div class="admin-form-section">
-        <h3>صورة الغلاف</h3>
-        <label class="admin-cover-upload <?php if($book->cover_image): ?> has-image <?php endif; ?>" id="coverUpload">
-          <i class="fa-solid fa-image"></i>
-          <span>اضغط لرفع صورة الغلاف<br>(JPG أو PNG، نسبة 2:3)</span>
-          <img id="coverPreview" <?php if($book->cover_image): ?> src="<?php echo e($book->cover_image_url); ?>" <?php else: ?> hidden <?php endif; ?> alt="معاينة الغلاف">
-        </label>
-        <input type="file" id="coverInput" name="cover_image" accept="image/*">
+        <h3>غلاف الكتاب</h3>
+        <p style="font-size:11px; color:var(--text-gray); margin-bottom:14px; line-height:1.7;">يتم ضغط الصورة تلقائيًا إلى 300×450 عند الرفع وتُستخدم بهذا الحجم في كل صفحات الموقع. رفع غلاف جديد يستبدل الحالي.</p>
+
+        <div>
+          <label for="coverInput" class="admin-cover-caption">غلاف الكتاب</label>
+          <label class="admin-cover-upload <?php if($book->cover_image): ?> has-image <?php endif; ?>" id="coverUpload">
+            <i class="fa-solid fa-image"></i>
+            <span>اضغط لرفع غلاف الكتاب<br>(JPG أو PNG، نسبة 2:3)</span>
+            <img id="coverPreview" <?php if($book->cover_image): ?> src="<?php echo e($book->cover_image_url); ?>" <?php else: ?> hidden <?php endif; ?> alt="معاينة الغلاف">
+          </label>
+          <input type="file" id="coverInput" name="cover_image" accept="image/*">
+          <?php $__errorArgs = ['cover_image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+            <span class="admin-field-error"><?php echo e($message); ?></span>
+          <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+        </div>
       </div>
     </div>
 
@@ -192,7 +262,7 @@ unset($__errorArgs, $__bag); ?>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startPush('scripts'); ?>
-<script src="<?php echo e(asset_min('assets/js/book-form.js')); ?>"></script>
+<script src="<?php echo e(asset_min('assets/js/book-form.js')); ?>" defer></script>
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('admin.layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\USER\Desktop\nootabooksui-reader\resources\views/admin/books/edit.blade.php ENDPATH**/ ?>

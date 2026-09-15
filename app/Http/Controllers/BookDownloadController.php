@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\DownloadLog;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -11,6 +12,7 @@ class BookDownloadController extends Controller
     public function download(Book $book): Response
     {
         abort_if($book->is_coming_soon, 404);
+        abort_if($book->download_disabled, 404);
         abort_unless($book->status === 'published', 404);
         abort_unless($book->file_path, 404);
 
@@ -22,6 +24,7 @@ class BookDownloadController extends Controller
             $filename = "{$title}-(nootabooks.com).{$extension}";
 
             $book->increment('downloads_count');
+            $this->logDownload($book);
 
             return Storage::disk('public')->download($relativePath, $filename);
         }
@@ -31,6 +34,7 @@ class BookDownloadController extends Controller
             // effort, so still count it: we're handing the visitor a real
             // place to get the file, even though we can't confirm it loads.
             $book->increment('downloads_count');
+            $this->logDownload($book);
 
             return redirect()->away($book->file_url);
         }
@@ -55,6 +59,19 @@ class BookDownloadController extends Controller
         abort_unless($relativePath && Storage::disk('public')->exists($relativePath), 404);
 
         return Storage::disk('public')->response($relativePath);
+    }
+
+    /**
+     * Records a timestamped download event (in addition to the running
+     * Book::downloads_count counter) so admin stats can chart downloads per
+     * day — the counter alone has no history to bucket by date.
+     */
+    private function logDownload(Book $book): void
+    {
+        DownloadLog::create([
+            'book_id' => $book->id,
+            'user_id' => auth()->id(),
+        ]);
     }
 
     /**

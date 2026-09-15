@@ -77,6 +77,7 @@
           <td>
             <div class="admin-row-actions">
               <a href="{{ route('read', $book->slug) }}" class="admin-icon-btn" title="عرض" aria-label="view"><i class="fa-regular fa-eye"></i></a>
+              <a href="{{ route('admin.books.stats', $book) }}" class="admin-icon-btn" title="إحصائيات" aria-label="stats"><i class="fa-solid fa-chart-line"></i></a>
               <a href="{{ route('admin.books.edit', $book) }}" class="admin-icon-btn" title="تعديل" aria-label="edit"><i class="fa-solid fa-pen"></i></a>
               <form method="POST" action="{{ route('admin.books.destroy', $book) }}" data-confirm-delete data-item-title="{{ $book->title }}">
                 @csrf

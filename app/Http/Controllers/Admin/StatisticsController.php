@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\DownloadLog;
 use App\Models\Review;
 use App\Models\User;
 use App\Models\Writer;
@@ -16,6 +17,7 @@ class StatisticsController extends Controller
     public function index(): View
     {
         $monthlySignups = $this->monthlyCounts(User::query());
+        $dailyDownloads = DownloadLog::perDay(30);
 
         return view('admin.statistics', [
             'activeNav' => 'statistics',
@@ -26,6 +28,7 @@ class StatisticsController extends Controller
                 ->whereYear('created_at', now()->year)
                 ->count(),
             'monthlySignups' => $monthlySignups,
+            'dailyDownloads' => $dailyDownloads,
             'topCategories' => Category::withCount('books')
                 ->orderByDesc('books_count')
                 ->take(5)
