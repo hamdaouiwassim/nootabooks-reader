@@ -2,10 +2,12 @@
   "name": "nootabook",
   "private": true,
   "scripts": {
-    "build:fontawesome": "node scripts/build-fontawesome-subset.js"
+    "build:fontawesome": "node scripts/build-fontawesome-subset.js",
+    "vendor:chartjs": "node scripts/vendor-chartjs.js"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "6.5.1",
+    "chart.js": "4.5.1",
     "fontawesome-subset": "^4.6.0"
   }
 }

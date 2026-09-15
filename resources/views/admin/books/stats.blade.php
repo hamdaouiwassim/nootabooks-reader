@@ -8,7 +8,6 @@
     ['label' => 'إدارة الكتب', 'url' => route('admin.books.index')],
     ['label' => 'إحصائيات', 'url' => null],
   ];
-  $maxDailyDownloads = max(array_column($dailyDownloads, 'count')) ?: 1;
 @endphp
 
 @section('content')
@@ -83,15 +82,19 @@
   </form>
 
   <div class="admin-trend-scroll">
-    <div class="admin-trend-chart admin-trend-chart-dense">
-      @foreach ($dailyDownloads as $day)
-        <div class="admin-trend-bar-wrap">
-          <div class="admin-trend-bar" style="height: {{ ($day['count'] / $maxDailyDownloads) * 100 }}%" title="{{ $day['fullLabel'] }}: {{ $day['count'] }} تحميل"></div>
-          <span class="admin-trend-label">{{ $day['label'] }}</span>
-        </div>
-      @endforeach
+    <div class="admin-chart-wrap admin-chart-wrap-dense" style="min-width: {{ max(count($dailyDownloads) * 22, 320) }}px;">
+      <canvas class="admin-chart-canvas"
+        data-chart-labels="{{ json_encode(array_column($dailyDownloads, 'label')) }}"
+        data-chart-values="{{ json_encode(array_column($dailyDownloads, 'count')) }}"
+        data-chart-tooltips="{{ json_encode(array_column($dailyDownloads, 'fullLabel')) }}"
+        data-chart-color="gold" data-chart-unit="تحميل"></canvas>
     </div>
   </div>
 </div>
 
 @endsection
+
+@push('scripts')
+<script src="{{ asset_min('assets/js/vendor/chartjs/chart.umd.min.js') }}" defer></script>
+<script src="{{ asset_min('assets/js/admin-charts.js') }}" defer></script>
+@endpush

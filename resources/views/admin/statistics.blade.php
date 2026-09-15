@@ -5,8 +5,6 @@
 @php
   $pageTitle = 'الإحصائيات';
   $breadcrumb = [['label' => 'الإحصائيات', 'url' => null]];
-  $maxSignups = max(array_column($monthlySignups, 'count')) ?: 1;
-  $maxDownloads = max(array_column($dailyDownloads, 'count')) ?: 1;
   $maxCategoryBooks = optional($topCategories->first())->books_count ?: 1;
   $maxWriterFollowers = optional($topWriters->first())->followers_count ?: 1;
 @endphp
@@ -57,14 +55,11 @@
     <span class="admin-breadcrumb">آخر 6 أشهر</span>
   </div>
 
-  <div class="admin-trend-chart">
-    @foreach ($monthlySignups as $month)
-      <div class="admin-trend-bar-wrap">
-        <span class="admin-trend-value">{{ $month['count'] }}</span>
-        <div class="admin-trend-bar" style="height: {{ ($month['count'] / $maxSignups) * 100 }}%" title="{{ $month['label'] }}: {{ $month['count'] }}"></div>
-        <span class="admin-trend-label">{{ $month['label'] }}</span>
-      </div>
-    @endforeach
+  <div class="admin-chart-wrap">
+    <canvas class="admin-chart-canvas"
+      data-chart-labels="{{ json_encode(array_column($monthlySignups, 'label')) }}"
+      data-chart-values="{{ json_encode(array_column($monthlySignups, 'count')) }}"
+      data-chart-color="teal" data-chart-unit="مستخدم"></canvas>
   </div>
 </div>
 
@@ -75,13 +70,12 @@
   </div>
 
   <div class="admin-trend-scroll">
-    <div class="admin-trend-chart admin-trend-chart-dense">
-      @foreach ($dailyDownloads as $day)
-        <div class="admin-trend-bar-wrap">
-          <div class="admin-trend-bar" style="height: {{ ($day['count'] / $maxDownloads) * 100 }}%" title="{{ $day['fullLabel'] }}: {{ $day['count'] }} تحميل"></div>
-          <span class="admin-trend-label">{{ $day['label'] }}</span>
-        </div>
-      @endforeach
+    <div class="admin-chart-wrap admin-chart-wrap-dense" style="min-width: {{ count($dailyDownloads) * 22 }}px;">
+      <canvas class="admin-chart-canvas"
+        data-chart-labels="{{ json_encode(array_column($dailyDownloads, 'label')) }}"
+        data-chart-values="{{ json_encode(array_column($dailyDownloads, 'count')) }}"
+        data-chart-tooltips="{{ json_encode(array_column($dailyDownloads, 'fullLabel')) }}"
+        data-chart-color="gold" data-chart-unit="تحميل"></canvas>
     </div>
   </div>
 </div>
@@ -178,3 +172,8 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script src="{{ asset_min('assets/js/vendor/chartjs/chart.umd.min.js') }}" defer></script>
+<script src="{{ asset_min('assets/js/admin-charts.js') }}" defer></script>
+@endpush

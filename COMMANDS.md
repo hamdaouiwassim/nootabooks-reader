@@ -9,6 +9,7 @@ This document describes the custom Artisan commands added to this project, defin
 | [`assets:minify`](#assets-minify) | Generate `.min.css` / `.min.js` files for production |
 | [`urls:fix-domain`](#urlsfix-domain) | Rewrite the domain baked into already-stored cover/photo/file URLs after a domain change |
 | [`build:fontawesome`](#build-fontawesome) | Regenerate the self-hosted, subsetted Font Awesome build (only the icons this app actually uses) |
+| [`vendor:chartjs`](#vendorchartjs) | Copy the Chart.js UMD build into `public/assets/js/vendor/chartjs/` so the admin panel's charts self-host it |
 | [`scripts/optimize-cover.php`](#scriptsoptimize-coverphp) | Generate the 3 book-cover sizes (large/medium/small) locally from one source image, ready to upload into the admin's 3 cover fields |
 | [`scripts/optimize-cover-server.php`](#scriptsoptimize-cover-serverphp) | Same as above, but with a browser file-picker/drag-and-drop UI instead of typing a CLI path |
 
@@ -120,6 +121,24 @@ node scripts/build-fontawesome-subset.js
 **When to run it:** any time a **new** Font Awesome icon class is introduced anywhere in the app — a new `<i class="fa-solid fa-whatever">`, a JS file that sets an icon class dynamically, or a new `<option value="fa-...">` in an icon picker. Forgetting to re-run it doesn't error — the new icon just silently renders as an empty/missing-glyph box, since its glyph isn't in the subset font.
 
 **Requires:** Node.js + npm (this is the one piece of tooling in this project that isn't PHP/Composer-based — there's no comparable font-subsetting library in the PHP ecosystem). Not required for normal app usage, only for regenerating this build.
+
+---
+
+## `vendor:chartjs`
+
+```bash
+npm install   # once — installs chart.js as a devDependency
+node scripts/vendor-chartjs.js
+# or: npm run vendor:chartjs
+```
+
+**Purpose:** the admin panel's charts (statistics page, per-book stats page) are rendered with [Chart.js](https://www.chartjs.org/) (MIT license) instead of hand-rolled CSS bars. Like Font Awesome, it's self-hosted rather than pulled from a CDN — [`scripts/vendor-chartjs.js`](scripts/vendor-chartjs.js) just copies the single-file UMD minified build (`node_modules/chart.js/dist/chart.umd.min.js`, no bundler needed) to `public/assets/js/vendor/chartjs/chart.umd.min.js`, loaded via `asset_min()` like any other script (so `?v=` cache-busting still applies even though the file itself is already minified).
+
+**What it does:** copies one file. That's it — there's no subsetting step like Font Awesome, since Chart.js doesn't have a per-feature build for this app's simple bar-chart usage.
+
+**When to run it:** after bumping the pinned `chart.js` version in `package.json`'s devDependencies (currently `4.5.1`).
+
+**Requires:** Node.js + npm. Not required for normal app usage, only for re-vendoring after a version bump.
 
 ---
 
