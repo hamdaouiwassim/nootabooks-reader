@@ -11,7 +11,7 @@
 <header class="site-header">
   <div class="header-inner">
     <a href="{{ route('home') }}" class="logo">
-      <i class="fa-solid fa-book-bookmark logo-icon"></i>
+      <img src="{{ asset('assets/images/logo.svg') }}" alt="" class="logo-icon">
       <div class="logo-text">
         <span class="logo-title">نوته بوك</span>
         <span class="logo-tagline">عالم من الكتب بين يديك</span>

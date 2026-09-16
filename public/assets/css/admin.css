@@ -52,7 +52,7 @@
   padding: 22px 22px 18px;
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
-.admin-sidebar-head .logo-icon { font-size: 26px; color: var(--gold); }
+.admin-sidebar-head .logo-icon { height: 26px; width: auto; flex: none; }
 .admin-sidebar-head .logo-title { font-size: 17px; font-weight: 800; color: #fff; }
 .admin-sidebar-head .logo-tagline { font-size: 10px; color: #9fb0ae; }
 .admin-sidebar-close { display: none; }

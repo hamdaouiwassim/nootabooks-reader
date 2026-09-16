@@ -1,7 +1,7 @@
 <div class="page-loader" id="pageLoader">
   <div class="loader-badge">
     <div class="loader-ring"></div>
-    <i class="fa-solid fa-book-bookmark loader-mark"></i>
+    <img src="{{ asset('assets/images/logo.svg') }}" alt="" class="loader-mark">
   </div>
   <span class="loader-percent" id="loaderPercent">0%</span>
 </div>
