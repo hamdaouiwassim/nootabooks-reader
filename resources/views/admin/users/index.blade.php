@@ -46,7 +46,7 @@
               @else
                 <span class="admin-book-cover placeholder" style="border-radius:50%; width:44px; height:44px;"><i class="fa-solid fa-feather"></i></span>
               @endif
-              <div><strong>{{ $user->name }}</strong></div>
+              <div><a href="{{ route('admin.users.show', $user) }}" style="color:var(--navy); font-weight:700;">{{ $user->name }}</a></div>
             </div>
           </td>
           <td>{{ $user->email }}</td>
@@ -55,6 +55,7 @@
           <td>{{ $user->created_at->diffForHumans() }}</td>
           <td>
             <div class="admin-row-actions">
+              <a href="{{ route('admin.users.show', $user) }}" class="admin-icon-btn" title="عرض" aria-label="view"><i class="fa-regular fa-eye"></i></a>
               <form method="POST" action="{{ route('admin.users.destroy', $user) }}" data-confirm-delete data-item-title="{{ $user->name }}">
                 @csrf
                 @method('DELETE')

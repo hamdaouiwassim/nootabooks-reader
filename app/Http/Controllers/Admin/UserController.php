@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\BookReport;
+use App\Models\DownloadLog;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,6 +30,24 @@ class UserController extends Controller
             'activeNav' => 'users',
             'users' => $users,
             'totalUsers' => User::count(),
+        ]);
+    }
+
+    public function show(User $user): View
+    {
+        return view('admin.users.show', [
+            'activeNav' => 'users',
+            'user' => $user,
+            'downloadsCount' => DownloadLog::where('user_id', $user->id)->count(),
+            'recentDownloads' => DownloadLog::where('user_id', $user->id)->with('book')->latest()->limit(5)->get(),
+            'reviewsCount' => $user->reviews()->count(),
+            'recentReviews' => $user->reviews()->with('book')->latest()->limit(5)->get(),
+            'discussionsCount' => $user->discussions()->count(),
+            'recentDiscussions' => $user->discussions()->with(['book', 'club'])->latest()->limit(5)->get(),
+            'commentsCount' => $user->comments()->count(),
+            'clubs' => $user->clubs()->get(),
+            'followedWritersCount' => $user->followedWriters()->count(),
+            'bookReportsCount' => BookReport::where('user_id', $user->id)->count(),
         ]);
     }
 
