@@ -153,7 +153,7 @@
       @php $tagColors = ['tag-purple', 'tag-green', 'tag-brown', 'tag-blue']; @endphp
       @foreach ($categories->take(4) as $category)
         <a href="{{ route('category-details', $category->slug) }}" class="tag-item">
-          <span class="tag-icon {{ $tagColors[$loop->index % count($tagColors)] }}"><i class="fa-solid {{ $category->icon ?? 'fa-book' }}"></i></span>
+          <span class="tag-icon {{ $tagColors[$loop->index % count($tagColors)] }}">{{ mb_substr($category->name, 0, 1) }}</span>
           <span>{{ $category->name }}</span>
         </a>
       @endforeach
@@ -222,7 +222,7 @@
 
   <div class="categories-grid">
     @foreach ($categories as $category)
-      <a href="{{ route('category-details', $category->slug) }}" class="category-card"><i class="fa-solid {{ $category->icon }}"></i><span>{{ $category->name }}</span></a>
+      <a href="{{ route('category-details', $category->slug) }}" class="category-card"><span>{{ $category->name }}</span></a>
     @endforeach
   </div>
 </section>

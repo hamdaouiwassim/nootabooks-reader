@@ -13,7 +13,6 @@ erDiagram
         bigint id PK
         string name
         string slug UK
-        string icon "nullable"
         string color "nullable"
         timestamp created_at
         timestamp updated_at
@@ -98,7 +97,6 @@ Book genres/categories shown on the Categories page.
 | `id`         | bigint, unsigned  | Primary key                |
 | `name`       | string            |                             |
 | `slug`       | string            | Unique                     |
-| `icon`       | string, nullable  | Font Awesome class         |
 | `color`      | string, nullable  | Theme color key (e.g. `cat-purple`) |
 | `created_at` | timestamp         |                             |
 | `updated_at` | timestamp         |                             |

@@ -19,7 +19,6 @@ class UpdateCategoryRequest extends FormRequest
                 'required', 'string', 'max:255',
                 Rule::unique('categories', 'name')->ignore($this->route('category')),
             ],
-            'icon' => ['nullable', 'string', 'max:100'],
             'color' => ['nullable', 'string', 'max:100'],
         ];
     }

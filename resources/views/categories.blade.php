@@ -95,7 +95,7 @@
 
     @foreach ($categories as $category)
       <a href="{{ route('category-details', $category->slug) }}" class="category-full-card @if ($category->books_count === 0) is-empty @endif" data-name="{{ $category->name }}" data-count="{{ $category->books_count }}">
-        <span class="cat-icon-circle {{ $category->color ?? 'cat-navy' }}"><i class="fa-solid {{ $category->icon ?? 'fa-book' }}"></i></span>
+        <span class="cat-icon-circle {{ $category->color ?? 'cat-navy' }}">{{ mb_substr($category->name, 0, 1) }}</span>
         <div class="cat-info">
           <h3>{{ $category->name }}</h3>
           <p>{{ $category->books_count > 0 ? number_format($category->books_count).' كتاب' : 'لا توجد كتب بعد' }}</p>

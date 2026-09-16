@@ -39,14 +39,18 @@
           </div>
           <div class="admin-form-field">
             <label for="bookWriterSearch">المؤلف</label>
-            @php $oldWriterName = $writers->firstWhere('id', (int) old('writer_id'))?->name; @endphp
+            @php
+              $oldWriter = $writers->firstWhere('id', (int) old('writer_id'));
+              $oldWriterName = $oldWriter ? $oldWriter->name.($oldWriter->name_en ? ' ('.$oldWriter->name_en.')' : '') : null;
+            @endphp
             <div class="admin-combobox" id="writerCombobox">
               <input type="text" id="bookWriterSearch" class="admin-input" placeholder="ابحث عن مؤلف ..." autocomplete="off" value="{{ $oldWriterName }}">
               <input type="hidden" name="writer_id" id="bookWriterId" value="{{ old('writer_id') }}">
               <div class="admin-combobox-list" id="writerComboboxList" hidden>
                 <div class="admin-combobox-option" data-id="" data-name="بدون مؤلف محدد">بدون مؤلف محدد</div>
                 @foreach ($writers as $writer)
-                  <div class="admin-combobox-option" data-id="{{ $writer->id }}" data-name="{{ $writer->name }}">{{ $writer->name }}</div>
+                  @php $writerDisplay = $writer->name.($writer->name_en ? ' ('.$writer->name_en.')' : ''); @endphp
+                  <div class="admin-combobox-option" data-id="{{ $writer->id }}" data-name="{{ $writerDisplay }}">{{ $writerDisplay }}</div>
                 @endforeach
               </div>
             </div>

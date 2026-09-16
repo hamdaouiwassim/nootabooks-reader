@@ -6,10 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalError = document.getElementById('categoryModalError');
   const form = document.getElementById('categoryForm');
   const nameInput = document.getElementById('categoryName');
-  const iconSelect = document.getElementById('categoryIcon');
   const colorSelect = document.getElementById('categoryColor');
   const preview = document.getElementById('categoryPreview');
-  const previewIcon = preview?.querySelector('i');
   const addBtn = document.getElementById('addCategoryBtn');
   const cancelBtn = document.getElementById('categoryModalCancel');
   const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
@@ -20,10 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const COLOR_CLASSES = ['cat-navy', 'cat-teal', 'cat-green', 'cat-rose', 'cat-purple', 'cat-brown', 'cat-gold'];
 
   function updatePreview() {
-    if (!preview || !previewIcon) return;
+    if (!preview) return;
     COLOR_CLASSES.forEach(c => preview.classList.remove(c));
     preview.classList.add(colorSelect.value);
-    previewIcon.className = `fa-solid ${iconSelect.value}`;
+    preview.textContent = (nameInput.value.trim() || '؟').charAt(0);
   }
 
   function showError(message) {
@@ -62,13 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     editingId = card.dataset.catId;
     nameInput.value = card.dataset.catName || '';
-    iconSelect.value = card.dataset.catIcon || 'fa-book';
     colorSelect.value = card.dataset.catColor || 'cat-navy';
     updatePreview();
     openModal('تعديل التصنيف');
   });
 
-  iconSelect?.addEventListener('change', updatePreview);
+  nameInput?.addEventListener('input', updatePreview);
   colorSelect?.addEventListener('change', updatePreview);
   cancelBtn?.addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
@@ -96,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         body: JSON.stringify({
           name,
-          icon: iconSelect.value,
           color: colorSelect.value,
         }),
       });

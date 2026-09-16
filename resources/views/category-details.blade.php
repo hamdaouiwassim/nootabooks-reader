@@ -46,7 +46,7 @@
 <!-- ===================== CATEGORY HERO ===================== -->
 <section class="section writer-hero">
   <span class="cat-icon-circle {{ $currentCategory->color ?? 'cat-navy' }}" style="width:90px;height:90px;font-size:36px;justify-self:center;">
-    <i class="fa-solid {{ $currentCategory->icon ?? 'fa-book' }}"></i>
+    {{ mb_substr($currentCategory->name, 0, 1) }}
   </span>
 
   <div class="writer-hero-info">
@@ -131,7 +131,7 @@
   <div class="categories-full-grid">
     @foreach ($similarCategories as $category)
       <a href="{{ route('category-details', $category->slug) }}" class="category-full-card">
-        <span class="cat-icon-circle {{ $category->color ?? 'cat-navy' }}"><i class="fa-solid {{ $category->icon ?? 'fa-book' }}"></i></span>
+        <span class="cat-icon-circle {{ $category->color ?? 'cat-navy' }}">{{ mb_substr($category->name, 0, 1) }}</span>
         <div class="cat-info">
           <h3>{{ $category->name }}</h3>
           <p>{{ number_format($category->books_count) }} كتاب</p>

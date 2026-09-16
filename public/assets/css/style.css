@@ -715,7 +715,7 @@ img { display: block; }
   width: 50px; height: 50px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 18px;
+  color: #fff; font-size: 18px; font-weight: 800;
   transition: transform .15s ease, box-shadow .15s ease;
 }
 .tag-item:hover .tag-icon { transform: translateY(-3px) scale(1.08); box-shadow: 0 8px 16px rgba(0,0,0,.18); }
