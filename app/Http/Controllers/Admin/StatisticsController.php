@@ -19,6 +19,7 @@ class StatisticsController extends Controller
         $monthlySignups = $this->monthlyCounts(User::query());
         $dailyDownloads = DownloadLog::perDay(30);
         $dailyBooksAdded = Book::perDay(30);
+        $topDownloaded48h = $this->topDownloaded48h();
 
         return view('admin.statistics', [
             'activeNav' => 'statistics',
@@ -31,6 +32,7 @@ class StatisticsController extends Controller
             'monthlySignups' => $monthlySignups,
             'dailyDownloads' => $dailyDownloads,
             'dailyBooksAdded' => $dailyBooksAdded,
+            'topDownloaded48h' => $topDownloaded48h,
             'topCategories' => Category::withCount('books')
                 ->orderByDesc('books_count')
                 ->take(5)
@@ -68,5 +70,33 @@ class StatisticsController extends Controller
         }
 
         return $months;
+    }
+
+    /**
+     * Top 10 books by download count in the last 48 hours specifically —
+     * distinct from Book.downloads_count, which is a lifetime running total
+     * and can't answer "trending right now". Two queries: an aggregate count
+     * from download_logs, then a batch fetch of just those books.
+     */
+    private function topDownloaded48h()
+    {
+        $recentCounts = DownloadLog::query()
+            ->selectRaw('book_id, COUNT(*) as downloads')
+            ->where('created_at', '>=', now()->subHours(48))
+            ->groupBy('book_id')
+            ->orderByDesc('downloads')
+            ->take(10)
+            ->pluck('downloads', 'book_id');
+
+        if ($recentCounts->isEmpty()) {
+            return collect();
+        }
+
+        return Book::with(['writer', 'category'])
+            ->whereIn('id', $recentCounts->keys())
+            ->get()
+            ->each(fn ($book) => $book->recent_downloads = $recentCounts[$book->id])
+            ->sortByDesc('recent_downloads')
+            ->values();
     }
 }

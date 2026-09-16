@@ -188,6 +188,49 @@
   </div>
 </div>
 
+<div class="admin-panel" style="margin-top: 22px;">
+  <div class="admin-panel-head">
+    <h3>الأكثر تحميلاً خلال آخر 48 ساعة</h3>
+    <span class="admin-breadcrumb">أفضل 10 كتب</span>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>الكتاب</th>
+          <th>التصنيف</th>
+          <th>تحميلات آخر 48 ساعة</th>
+          <th>التقييم</th>
+        </tr>
+      </thead>
+      <tbody>
+        @forelse ($topDownloaded48h as $book)
+          <tr>
+            <td>
+              <div class="admin-book-cell">
+                @if ($book->cover_image)
+                  <img class="admin-book-cover" src="{{ $book->cover_image_sm_url }}" width="300" height="450" loading="lazy" decoding="async" alt="{{ $book->title }}">
+                @else
+                  <span class="admin-book-cover placeholder"><i class="fa-solid fa-book"></i></span>
+                @endif
+                <div><strong>{{ $book->title }}</strong><span>{{ $book->writer?->name ?? 'بدون مؤلف' }}</span></div>
+              </div>
+            </td>
+            <td>{{ $book->category?->name ?? '—' }}</td>
+            <td>{{ number_format($book->recent_downloads) }}</td>
+            <td><i class="fa-solid fa-star" style="color:var(--star)"></i> {{ number_format($book->rating_average, 1) }}</td>
+          </tr>
+        @empty
+          <tr class="admin-empty-row">
+            <td colspan="4">لا توجد تحميلات خلال آخر 48 ساعة</td>
+          </tr>
+        @endforelse
+      </tbody>
+    </table>
+  </div>
+</div>
+
 @endsection
 
 @push('scripts')
