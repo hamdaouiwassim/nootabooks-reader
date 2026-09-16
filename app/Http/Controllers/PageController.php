@@ -513,4 +513,9 @@ class PageController extends Controller
     {
         return view('copyright', ['activeNav' => null]);
     }
+
+    public function faq(): View
+    {
+        return view('faq', ['activeNav' => null]);
+    }
 }

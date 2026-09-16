@@ -24,7 +24,7 @@
 
     <div class="footer-col">
       <h4>مساعدة</h4>
-      <a href="#">الأسئلة الشائعة</a>
+      <a href="{{ route('faq') }}">الأسئلة الشائعة</a>
       <a href="{{ route('privacy') }}">سياسة الخصوصية</a>
       <a href="{{ route('terms') }}">شروط الاستخدام</a>
       <a href="{{ route('copyright') }}">حقوق النشر</a>

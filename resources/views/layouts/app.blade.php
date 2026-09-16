@@ -6,6 +6,7 @@
 <title>@yield('title', 'نوته بوك - عالم من الكتب بين يديك')</title>
 @include('partials.favicons')
 @include('partials.google-analytics')
+@include('partials.google-adsense')
 @include('partials.seo-meta')
 <script type="application/ld+json">
 {!! json_encode([

@@ -73,6 +73,7 @@ Route::post('/contact', [PageController::class, 'submitContact'])->name('contact
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 Route::get('/copyright', [PageController::class, 'copyright'])->name('copyright');
+Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 
 Route::get('/login', [AuthPageController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthPageController::class, 'login'])->name('login.submit');
