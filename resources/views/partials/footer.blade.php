@@ -5,6 +5,7 @@
       <a href="{{ route('home') }}" class="logo">
         <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
       </a>
+      <p class="footer-about">منصة عربية تجمع عشاق القراءة، وتساعدك على اكتشاف الكتب وقراءتها أونلاين في مختلف المجالات.</p>
       <div class="social-icons">
         <a href="#"><i class="fa-brands fa-youtube"></i></a>
         <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -28,11 +29,6 @@
       <a href="{{ route('terms') }}">شروط الاستخدام</a>
       <a href="{{ route('copyright') }}">حقوق النشر</a>
       <a href="{{ route('contact') }}">تواصل معنا</a>
-    </div>
-
-    <div class="footer-col">
-      <h4>عن نوته بوك</h4>
-      <p class="footer-about">منصة عربية تجمع عشاق القراءة، وتساعدك على اكتشاف الكتب وقراءتها أونلاين في مختلف المجالات.</p>
     </div>
 
     {{-- Store badges hidden for now — no mobile app yet, re-enable once one exists.
