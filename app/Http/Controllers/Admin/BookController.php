@@ -180,6 +180,7 @@ class BookController extends Controller
 
         $data['is_coming_soon'] = $request->boolean('is_coming_soon');
         $data['download_disabled'] = $request->boolean('download_disabled');
+        $data['reading_disabled'] = $request->boolean('reading_disabled');
         unset($data['categories']); // extra categories go through the book_category pivot, not a books column
 
         $seriesName = trim((string) ($data['series_name'] ?? ''));

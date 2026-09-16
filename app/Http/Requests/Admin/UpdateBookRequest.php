@@ -35,6 +35,7 @@ class UpdateBookRequest extends FormRequest
             'book_file' => ['nullable', 'file', 'mimes:pdf', 'max:102400'],
             'is_coming_soon' => ['nullable', 'boolean'],
             'download_disabled' => ['nullable', 'boolean'],
+            'reading_disabled' => ['nullable', 'boolean'],
             'status' => ['required', 'in:published,draft'],
         ];
     }

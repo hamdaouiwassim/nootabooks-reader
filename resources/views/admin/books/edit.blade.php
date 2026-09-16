@@ -189,6 +189,16 @@
             <span class="admin-switch-slider"></span>
           </label>
         </div>
+        <div class="admin-toggle-row" style="margin-top:16px;">
+          <div>
+            <strong>منع القراءة</strong>
+            <p>يبقى الكتاب ظاهرًا في البحث والقوائم وصفحته، لكن زر القراءة يظهر معطلاً بعبارة "غير متاح للقراءة"</p>
+          </div>
+          <label class="admin-switch">
+            <input type="checkbox" name="reading_disabled" value="1" @checked(old('reading_disabled', $book->reading_disabled))>
+            <span class="admin-switch-slider"></span>
+          </label>
+        </div>
       </div>
 
       <div class="admin-form-section">

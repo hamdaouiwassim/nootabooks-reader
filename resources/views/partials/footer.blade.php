@@ -30,6 +30,7 @@
       <a href="#">الأسئلة الشائعة</a>
       <a href="{{ route('privacy') }}">سياسة الخصوصية</a>
       <a href="{{ route('terms') }}">شروط الاستخدام</a>
+      <a href="{{ route('copyright') }}">حقوق النشر</a>
       <a href="{{ route('contact') }}">تواصل معنا</a>
     </div>
 
@@ -55,7 +56,7 @@
   <div class="footer-bottom">
     <p>نوته بوك © {{ date('Y') }}. جميع الحقوق محفوظة</p>
     <div class="footer-legal">
-      <a href="{{ route('privacy') }}">الخصوصية</a> | <a href="{{ route('terms') }}">الشروط</a> | <a href="{{ route('contact') }}">اتصل بنا</a>
+      <a href="{{ route('privacy') }}">الخصوصية</a> | <a href="{{ route('terms') }}">الشروط</a> | <a href="{{ route('copyright') }}">حقوق النشر</a> | <a href="{{ route('contact') }}">اتصل بنا</a>
     </div>
   </div>
 </footer>

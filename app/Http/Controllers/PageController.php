@@ -136,7 +136,7 @@ class PageController extends Controller
                 });
             })
             ->orderByDesc('rating_average')
-            ->paginate(9)
+            ->paginate(12)
             ->withQueryString();
 
         $similarCategories = Category::withCount(['books' => fn ($q) => $q->published()])
@@ -167,7 +167,7 @@ class PageController extends Controller
     {
         return view('writers', [
             'activeNav' => 'writers',
-            'writers' => Writer::withCount(['books' => fn ($q) => $q->published()])->orderBy('name')->paginate(9)->withQueryString(),
+            'writers' => Writer::withCount(['books' => fn ($q) => $q->published()])->orderBy('name')->paginate(10)->withQueryString(),
             'featuredWriter' => Writer::withCount(['books' => fn ($q) => $q->published()])->where('is_featured', true)->first(),
         ]);
     }
@@ -274,6 +274,11 @@ class PageController extends Controller
         if ($currentBook->is_coming_soon) {
             return redirect()->route('book-details', $currentBook->slug)
                 ->with('info', 'هذا الكتاب سيتوفر قريبًا، لا يمكن قراءته الآن.');
+        }
+
+        if ($currentBook->reading_disabled) {
+            return redirect()->route('book-details', $currentBook->slug)
+                ->with('info', 'القراءة غير متاحة لهذا الكتاب حاليًا.');
         }
 
         return view('read', ['currentBook' => $currentBook]);
@@ -502,5 +507,10 @@ class PageController extends Controller
     public function terms(): View
     {
         return view('terms', ['activeNav' => null]);
+    }
+
+    public function copyright(): View
+    {
+        return view('copyright', ['activeNav' => null]);
     }
 }

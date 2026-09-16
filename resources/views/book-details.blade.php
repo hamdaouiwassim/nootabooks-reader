@@ -140,7 +140,11 @@
         <button class="btn btn-teal" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-clock"></i> قريبًا</button>
         <button class="btn btn-gold" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
       @else
-        <a href="{{ route('read', $currentBook->slug) }}" class="btn btn-teal"><i class="fa-solid fa-headphones"></i> قراءة الآن</a>
+        @if ($currentBook->reading_disabled)
+          <button class="btn btn-teal" disabled title="غير متاح للقراءة"><i class="fa-solid fa-ban"></i> غير متاح للقراءة</button>
+        @else
+          <a href="{{ route('read', $currentBook->slug) }}" class="btn btn-teal"><i class="fa-solid fa-headphones"></i> قراءة الآن</a>
+        @endif
         @if ($currentBook->downloadUrl())
           <a href="{{ $currentBook->downloadUrl() }}" class="btn btn-gold"><i class="fa-solid fa-download"></i> تحميل الكتاب</a>
         @elseif ($currentBook->download_disabled)
@@ -151,6 +155,7 @@
       @endif
       <button class="btn btn-navy" aria-label="مشاركة"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
       <a href="{{ route('community', ['book' => $currentBook->slug]) }}" class="btn btn-outline"><i class="fa-solid fa-comments"></i> دردش حول الكتاب</a>
+      <a href="{{ route('books.report', $currentBook->slug) }}" class="btn btn-outline" title="الإبلاغ عن حقوق النشر"><i class="fa-solid fa-flag"></i> الإبلاغ عن حقوق النشر</a>
     </div>
   </div>
 </section>
@@ -186,6 +191,8 @@
       <h2 id="online-reading">قراءة {{ $currentBook->title }} أونلاين</h2>
       @if ($currentBook->is_coming_soon)
         <p>سيتوفر {{ $currentBook->type_label }} {{ $currentBook->title }} للقراءة أونلاين على نوته بوك قريبًا.</p>
+      @elseif ($currentBook->reading_disabled)
+        <p>القراءة أونلاين غير متاحة حاليًا لـ {{ $currentBook->title }}.</p>
       @else
         <p>يمكنك قراءة {{ $currentBook->title }} أونلاين مباشرة من خلال قارئ الكتب في نوته بوك، دون الحاجة لتحميل أي برنامج إضافي.</p>
         <a href="{{ route('read', $currentBook->slug) }}">قراءة {{ $currentBook->type_label }} أونلاين</a>

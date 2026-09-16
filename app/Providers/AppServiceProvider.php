@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Book;
+use App\Models\BookReport;
 use App\Models\Category;
 use App\Models\Club;
 use App\Models\Discussion;
@@ -51,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
                 'sidebarClubsCount' => Club::count(),
                 'sidebarDiscussionsCount' => Discussion::count(),
                 'sidebarCommentsCount' => DiscussionComment::count(),
+                'sidebarBookReportsCount' => BookReport::where('status', 'pending')->count(),
             ]);
         });
     }

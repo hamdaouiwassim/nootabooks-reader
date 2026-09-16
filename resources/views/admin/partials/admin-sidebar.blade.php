@@ -23,10 +23,12 @@
     <a href="{{ route('admin.clubs.index') }}" @class(['active' => $activeNav === 'clubs'])><i class="fa-solid fa-people-group"></i> نوادي القراءة <span class="badge-count">{{ $sidebarClubsCount }}</span></a>
     <a href="{{ route('admin.discussions.index') }}" @class(['active' => $activeNav === 'discussions'])><i class="fa-solid fa-comments"></i> المناقشات <span class="badge-count">{{ $sidebarDiscussionsCount }}</span></a>
     <a href="{{ route('admin.comments.index') }}" @class(['active' => $activeNav === 'comments'])><i class="fa-solid fa-comment-dots"></i> التعليقات <span class="badge-count">{{ $sidebarCommentsCount }}</span></a>
+    <a href="{{ route('admin.book-reports.index') }}" @class(['active' => $activeNav === 'book-reports'])><i class="fa-solid fa-flag"></i> بلاغات حقوق النشر <span class="badge-count">{{ $sidebarBookReportsCount }}</span></a>
 
     <span class="admin-nav-label">النظام</span>
     <a href="{{ route('admin.statistics') }}" @class(['active' => $activeNav === 'statistics'])><i class="fa-solid fa-chart-line"></i> الإحصائيات</a>
     <a href="{{ route('admin.file-audit') }}" @class(['active' => $activeNav === 'file-audit'])><i class="fa-solid fa-hard-drive"></i> فحص حجم الملفات</a>
+    <a href="{{ route('admin.backup.index') }}" @class(['active' => $activeNav === 'backup'])><i class="fa-solid fa-database"></i> النسخ الاحتياطي</a>
     <a href="#"><i class="fa-solid fa-gear"></i> الإعدادات</a>
   </nav>
 

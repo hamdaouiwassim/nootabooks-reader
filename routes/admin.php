@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\BookReportController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\CommentController;
@@ -80,6 +82,13 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
+    Route::get('/book-reports', [BookReportController::class, 'index'])->name('book-reports.index');
+    Route::put('/book-reports/{bookReport}/reviewed', [BookReportController::class, 'markReviewed'])->name('book-reports.mark-reviewed');
+    Route::delete('/book-reports/{bookReport}', [BookReportController::class, 'destroy'])->name('book-reports.destroy');
+
     Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics');
     Route::get('/file-audit', [FileAuditController::class, 'index'])->name('file-audit');
+
+    Route::get('/backup', [BackupController::class, 'index'])->name('backup.index');
+    Route::post('/backup', [BackupController::class, 'create'])->name('backup.create')->middleware('throttle:3,10');
 });

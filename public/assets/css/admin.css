@@ -14,6 +14,7 @@
 }
 .admin-alert.success { background: #eaf7ee; color: #2f7a4a; border: 1px solid #cdeddb; }
 .admin-alert.error { background: #fdecea; color: #c0392b; border: 1px solid #f3c7c1; }
+.admin-alert.info { background: var(--cream-alt); color: var(--text-dark); border: 1px solid var(--border-light); }
 .admin-alert ul { margin: 0; padding-inline-start: 18px; font-weight: 500; }
 
 .admin-page-head .btn,

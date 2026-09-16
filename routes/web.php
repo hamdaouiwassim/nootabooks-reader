@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthPageController;
 use App\Http\Controllers\BookDownloadController;
+use App\Http\Controllers\BookReportController;
 use App\Http\Controllers\ClubController;
 use App\Http\Controllers\DiscussionCommentController;
 use App\Http\Controllers\DiscussionController;
@@ -34,6 +35,10 @@ Route::post('/books/{book}/reviews', [ReviewController::class, 'store'])
 Route::get('/read/{book?}', [PageController::class, 'read'])->name('read');
 Route::get('/books/{book}/stream', [BookDownloadController::class, 'stream'])->name('books.stream')->middleware('signed');
 Route::get('/books/{book}/download', [BookDownloadController::class, 'download'])->name('books.download')->middleware('signed');
+Route::get('/books/{book}/report', [BookReportController::class, 'create'])->name('books.report');
+Route::post('/books/{book}/report', [BookReportController::class, 'store'])
+    ->middleware('throttle:5,60')
+    ->name('books.report.store');
 
 Route::get('/community', [PageController::class, 'community'])->name('community');
 Route::post('/community/discussions', [DiscussionController::class, 'store'])
@@ -67,6 +72,7 @@ Route::post('/contact', [PageController::class, 'submitContact'])->name('contact
 
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
+Route::get('/copyright', [PageController::class, 'copyright'])->name('copyright');
 
 Route::get('/login', [AuthPageController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthPageController::class, 'login'])->name('login.submit');

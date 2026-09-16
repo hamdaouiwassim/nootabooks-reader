@@ -70,9 +70,10 @@
   </div>
 
   <form method="GET" action="{{ route('category-details', $currentCategory->slug) }}" class="writers-search">
-    <button type="submit" aria-label="بحث"><i class="fa-solid fa-magnifying-glass"></i></button>
+    <i class="fa-solid fa-magnifying-glass"></i>
     <label for="categoryBookSearch" class="sr-only">ابحث بعنوان الكتاب أو اسم المؤلف في {{ $currentCategory->name }}</label>
     <input type="text" id="categoryBookSearch" name="q" value="{{ $search }}" placeholder="ابحث بعنوان الكتاب أو اسم المؤلف في {{ $currentCategory->name }} ...">
+    <button type="submit" class="btn btn-gold small">بحث</button>
   </form>
 
   @if ($categoryBooks->isNotEmpty())

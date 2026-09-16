@@ -51,6 +51,7 @@ class BookDownloadController extends Controller
     public function stream(Book $book): Response
     {
         abort_if($book->is_coming_soon, 404);
+        abort_if($book->reading_disabled, 404);
         abort_unless($book->status === 'published', 404);
         abort_unless($book->file_path, 404);
 
