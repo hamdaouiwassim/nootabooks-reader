@@ -194,6 +194,14 @@ img { display: block; }
 }
 .btn-outline:hover { background: var(--cream-alt); }
 
+.btn-alert {
+  background: #fdecea;
+  color: #c0392b;
+  border: 1px solid #f3c7c1;
+  box-shadow: none;
+}
+.btn-alert:hover { background: #fbdedb; }
+
 /* ============ HEADER ============ */
 .site-header {
   background: var(--cream);

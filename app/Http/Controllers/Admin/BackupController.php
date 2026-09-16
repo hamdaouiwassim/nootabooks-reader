@@ -72,7 +72,14 @@ class BackupController extends Controller
         fwrite($handle, "SET FOREIGN_KEY_CHECKS=0;\nSET NAMES utf8mb4;\n\n");
 
         $pdo = DB::connection()->getPdo();
-        $tables = Schema::getTableListing();
+
+        // Scope explicitly to this app's own database — Schema::getTableListing()
+        // with no schema argument lists tables across every database the DB
+        // user can see on the server (everything except the built-in MySQL
+        // system schemas), which on shared hosting can include unrelated
+        // sites' databases if the same DB user has grants on more than one.
+        $database = DB::connection()->getDatabaseName();
+        $tables = Schema::getTableListing($database, schemaQualified: false);
 
         foreach ($tables as $table) {
             $createRow = (array) DB::selectOne("SHOW CREATE TABLE `{$table}`");
