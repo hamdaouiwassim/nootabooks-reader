@@ -3,11 +3,7 @@
   <div class="footer-top">
     <div class="footer-brand">
       <a href="{{ route('home') }}" class="logo">
-        <img src="{{ asset('assets/images/logo.svg') }}" alt="" class="logo-icon">
-        <div class="logo-text">
-          <span class="logo-title">نوته بوك</span>
-          <span class="logo-tagline">عالم من الكتب بين يديك</span>
-        </div>
+        <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
       </a>
       <div class="social-icons">
         <a href="#"><i class="fa-brands fa-youtube"></i></a>

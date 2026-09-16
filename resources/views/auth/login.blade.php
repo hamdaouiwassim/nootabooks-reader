@@ -8,11 +8,7 @@
   <!-- ===================== VISUAL PANEL ===================== -->
   <div class="auth-visual login-visual">
     <a href="{{ route('home') }}" class="logo">
-      <img src="{{ asset('assets/images/logo.svg') }}" alt="" class="logo-icon">
-      <div class="logo-text">
-        <span class="logo-title">نوته بوك</span>
-        <span class="logo-tagline">عالم من الكتب بين يديك</span>
-      </div>
+      <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
     </a>
 
     <h1 class="auth-visual-heading">تسجيل الدخول</h1>

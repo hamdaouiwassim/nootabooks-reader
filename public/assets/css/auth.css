@@ -20,7 +20,6 @@ body { min-height: 100vh; }
   justify-content: space-between;
   padding: 44px 50px;
 }
-.auth-visual .logo-title { color: #fff; }
 .auth-visual .logo-tagline { color: #cdd6d4; }
 
 .auth-illustration { position: relative; flex: 1; }

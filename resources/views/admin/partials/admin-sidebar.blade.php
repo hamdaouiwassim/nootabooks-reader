@@ -1,8 +1,7 @@
 <aside class="admin-sidebar" id="adminSidebar">
   <div class="admin-sidebar-head">
-    <img src="{{ asset('assets/images/logo.svg') }}" alt="" class="logo-icon">
+    <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
     <div class="logo-text">
-      <span class="logo-title">مكتبتي</span>
       <span class="logo-tagline">لوحة التحكم</span>
     </div>
     <button class="admin-sidebar-close" id="adminSidebarClose" aria-label="close"><i class="fa-solid fa-xmark"></i></button>

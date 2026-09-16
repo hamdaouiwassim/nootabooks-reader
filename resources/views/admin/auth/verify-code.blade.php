@@ -17,9 +17,8 @@
 <div class="auth-wrapper">
   <div class="auth-visual">
     <div class="admin-sidebar-head" style="border:none; padding:0;">
-      <img src="{{ asset('assets/images/logo.svg') }}" alt="" class="logo-icon">
+      <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
       <div class="logo-text">
-        <span class="logo-title">مكتبتي</span>
         <span class="logo-tagline">لوحة التحكم</span>
       </div>
     </div>

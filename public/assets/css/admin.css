@@ -52,9 +52,8 @@
   padding: 22px 22px 18px;
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
-.admin-sidebar-head .logo-icon { height: 26px; width: auto; flex: none; }
-.admin-sidebar-head .logo-title { font-size: 17px; font-weight: 800; color: #fff; }
-.admin-sidebar-head .logo-tagline { font-size: 10px; color: #9fb0ae; }
+.admin-sidebar-head .logo-icon { height: 44px; width: auto; flex: none; }
+.admin-sidebar-head .logo-tagline { font-size: 11px; font-weight: 700; color: #9fb0ae; }
 .admin-sidebar-close { display: none; }
 
 .admin-nav { flex: 1; padding: 14px 12px; display: flex; flex-direction: column; gap: 2px; }

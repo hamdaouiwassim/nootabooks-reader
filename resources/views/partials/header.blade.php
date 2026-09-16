@@ -11,11 +11,7 @@
 <header class="site-header">
   <div class="header-inner">
     <a href="{{ route('home') }}" class="logo">
-      <img src="{{ asset('assets/images/logo.svg') }}" alt="" class="logo-icon">
-      <div class="logo-text">
-        <span class="logo-title">نوته بوك</span>
-        <span class="logo-tagline">عالم من الكتب بين يديك</span>
-      </div>
+      <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
     </a>
 
     <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="menu" aria-expanded="false">
