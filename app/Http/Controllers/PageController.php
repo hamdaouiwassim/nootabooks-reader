@@ -234,6 +234,14 @@ class PageController extends Controller
             ? Book::published()
                 ->where('writer_id', $currentBook->writer_id)
                 ->where('id', '!=', $currentBook->id)
+                // Exclude the current book's own series-mates — those are
+                // already listed in the "أجزاء السلسلة" section above, so
+                // showing them again here would just duplicate that list.
+                ->when($currentBook->series_id, function ($q) use ($currentBook) {
+                    $q->where(function ($sq) use ($currentBook) {
+                        $sq->whereNull('series_id')->orWhere('series_id', '!=', $currentBook->series_id);
+                    });
+                })
                 ->orderByDesc('rating_average')
                 ->take(5)
                 ->get()
