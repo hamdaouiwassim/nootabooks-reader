@@ -195,12 +195,11 @@ img { display: block; }
 .btn-outline:hover { background: var(--cream-alt); }
 
 .btn-alert {
-  background: #fdecea;
-  color: #c0392b;
-  border: 1px solid #f3c7c1;
-  box-shadow: none;
+  background: #c0392b;
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(192, 57, 43, .3);
 }
-.btn-alert:hover { background: #fbdedb; }
+.btn-alert:hover { background: #a53125; }
 
 /* ============ HEADER ============ */
 .site-header {

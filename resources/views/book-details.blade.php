@@ -154,8 +154,8 @@
         @endif
       @endif
       <button class="btn btn-navy" aria-label="مشاركة"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
-      <a href="{{ route('community', ['book' => $currentBook->slug]) }}" class="btn btn-outline"><i class="fa-solid fa-comments"></i> دردش حول الكتاب</a>
       <a href="{{ route('books.report', $currentBook->slug) }}" class="btn btn-alert" title="الإبلاغ عن حقوق النشر"><i class="fa-solid fa-triangle-exclamation"></i> الإبلاغ عن حقوق النشر</a>
+      <a href="{{ route('community', ['book' => $currentBook->slug]) }}" class="btn btn-outline"><i class="fa-solid fa-comments"></i> دردش حول الكتاب</a>
     </div>
   </div>
 </section>
