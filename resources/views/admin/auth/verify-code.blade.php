@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>التحقق من الرمز - لوحة تحكم مكتبتي</title>
+@include('partials.favicons')
 <link rel="stylesheet" href="{{ asset_min('assets/css/fonts.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/vendor/fontawesome/fontawesome.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/style.css') }}">

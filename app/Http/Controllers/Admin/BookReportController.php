@@ -34,6 +34,16 @@ class BookReportController extends Controller
         ]);
     }
 
+    public function show(BookReport $bookReport): View
+    {
+        $bookReport->load(['book.writer', 'user']);
+
+        return view('admin.book-reports.show', [
+            'activeNav' => 'book-reports',
+            'report' => $bookReport,
+        ]);
+    }
+
     public function markReviewed(BookReport $bookReport): RedirectResponse
     {
         $bookReport->update(['status' => $bookReport->status === 'pending' ? 'reviewed' : 'pending']);

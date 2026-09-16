@@ -6,6 +6,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>@yield('title', 'لوحة التحكم - مكتبتي')</title>
 <meta name="robots" content="noindex, nofollow">
+@include('partials.favicons')
 <link rel="stylesheet" href="{{ asset_min('assets/css/fonts.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/vendor/fontawesome/fontawesome.css') }}">
 <link rel="stylesheet" href="{{ asset_min('assets/css/style.css') }}">

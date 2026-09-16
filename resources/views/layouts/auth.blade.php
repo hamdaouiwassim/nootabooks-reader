@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>@yield('title', 'نوته بوك - عالم من الكتب بين يديك')</title>
+@include('partials.favicons')
 @include('partials.google-analytics')
 @include('partials.seo-meta', ['defaultRobots' => 'noindex, follow'])
 <link rel="preload" href="{{ asset('assets/fonts/tajawal/Iura6YBj_oCad4k1nzSBC45I.woff2') }}" as="font" type="font/woff2" crossorigin>

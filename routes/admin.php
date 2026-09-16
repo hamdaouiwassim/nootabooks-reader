@@ -83,6 +83,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
     Route::get('/book-reports', [BookReportController::class, 'index'])->name('book-reports.index');
+    Route::get('/book-reports/{bookReport}', [BookReportController::class, 'show'])->name('book-reports.show');
     Route::put('/book-reports/{bookReport}/reviewed', [BookReportController::class, 'markReviewed'])->name('book-reports.mark-reviewed');
     Route::delete('/book-reports/{bookReport}', [BookReportController::class, 'destroy'])->name('book-reports.destroy');
 

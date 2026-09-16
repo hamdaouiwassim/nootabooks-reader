@@ -73,9 +73,7 @@
           <td>{{ $report->created_at->diffForHumans() }}</td>
           <td>
             <div class="admin-row-actions">
-              @if ($report->book)
-                <a href="{{ route('book-details', $report->book->slug) }}" target="_blank" rel="noopener" class="admin-icon-btn" title="عرض الكتاب" aria-label="view"><i class="fa-regular fa-eye"></i></a>
-              @endif
+              <a href="{{ route('admin.book-reports.show', $report) }}" class="admin-icon-btn" title="عرض تفاصيل البلاغ" aria-label="view"><i class="fa-regular fa-eye"></i></a>
               <form method="POST" action="{{ route('admin.book-reports.mark-reviewed', $report) }}">
                 @csrf
                 @method('PUT')

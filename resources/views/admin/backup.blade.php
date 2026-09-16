@@ -41,6 +41,40 @@
   </form>
 </div>
 
+<div class="admin-panel" style="margin-top:22px;">
+  <div class="admin-panel-head">
+    <h3>سجل النسخ الاحتياطية</h3>
+    <span class="admin-breadcrumb">آخر 20 عملية</span>
+  </div>
+
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>التاريخ</th>
+          <th>المسؤول</th>
+          <th>اسم الملف</th>
+          <th>الحجم</th>
+        </tr>
+      </thead>
+      <tbody>
+        @forelse ($backupLogs as $log)
+          <tr>
+            <td>{{ $log->created_at->format('Y-m-d H:i') }} <span style="color:var(--text-gray); font-size:12px;">({{ $log->created_at->diffForHumans() }})</span></td>
+            <td>{{ $log->admin?->name ?? '—' }}</td>
+            <td>{{ $log->file_name }}</td>
+            <td>{{ number_format($log->file_size_bytes / 1024 / 1024, 1) }} MB</td>
+          </tr>
+        @empty
+          <tr class="admin-empty-row">
+            <td colspan="4">لم يتم إنشاء أي نسخة احتياطية بعد</td>
+          </tr>
+        @endforelse
+      </tbody>
+    </table>
+  </div>
+</div>
+
 @endsection
 
 @push('scripts')

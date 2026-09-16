@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\BackupLog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +17,10 @@ class BackupController extends Controller
 {
     public function index(): View
     {
-        return view('admin.backup', ['activeNav' => 'backup']);
+        return view('admin.backup', [
+            'activeNav' => 'backup',
+            'backupLogs' => BackupLog::with('admin')->latest()->take(20)->get(),
+        ]);
     }
 
     /**
@@ -53,6 +57,12 @@ class BackupController extends Controller
                 unlink($sqlPath);
             }
         }
+
+        BackupLog::create([
+            'admin_id' => auth('admin')->id(),
+            'file_name' => basename($zipPath),
+            'file_size_bytes' => filesize($zipPath),
+        ]);
 
         return response()->download($zipPath, "nootabooks-backup-{$timestamp}.zip")
             ->deleteFileAfterSend(true);
