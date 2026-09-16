@@ -26,6 +26,7 @@
 
     <span class="admin-nav-label">النظام</span>
     <a href="{{ route('admin.statistics') }}" @class(['active' => $activeNav === 'statistics'])><i class="fa-solid fa-chart-line"></i> الإحصائيات</a>
+    <a href="{{ route('admin.file-audit') }}" @class(['active' => $activeNav === 'file-audit'])><i class="fa-solid fa-hard-drive"></i> فحص حجم الملفات</a>
     <a href="#"><i class="fa-solid fa-gear"></i> الإعدادات</a>
   </nav>
 

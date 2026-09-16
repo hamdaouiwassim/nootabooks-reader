@@ -294,6 +294,9 @@
 .status-badge.paid { background: #fbf1e0; color: var(--gold-dark); }
 .status-badge.coming-soon { background: #fbf1e0; color: var(--gold-dark); }
 
+.file-audit-oversized { color: #c0392b; font-weight: 800; }
+.file-audit-warn-icon { color: #c0392b; margin-right: 6px; }
+
 .admin-row-actions { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
 .admin-icon-btn {
   width: 32px; height: 32px;

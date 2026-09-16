@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DiscussionController;
+use App\Http\Controllers\Admin\FileAuditController;
 use App\Http\Controllers\Admin\QuoteController;
 use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\UserController;
@@ -80,4 +81,5 @@ Route::middleware('auth:admin')->group(function () {
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
     Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics');
+    Route::get('/file-audit', [FileAuditController::class, 'index'])->name('file-audit');
 });
