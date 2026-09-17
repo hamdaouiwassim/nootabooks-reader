@@ -39,7 +39,7 @@
             </div>
           </div>
           <a href="{{ route('my-library') }}" class="dropdown-item"><i class="fa-solid fa-book"></i> مكتبتي</a>
-          <a href="#" class="dropdown-item"><i class="fa-regular fa-heart"></i> المفضلة</a>
+          <a href="{{ route('profile') }}#tab-favorites" class="dropdown-item"><i class="fa-regular fa-heart"></i> المفضلة</a>
           <a href="{{ route('profile') }}" class="dropdown-item"><i class="fa-regular fa-user"></i> الملف الشخصي</a>
           <a href="{{ route('settings') }}" class="dropdown-item"><i class="fa-solid fa-gear"></i> الإعدادات</a>
           <div class="dropdown-divider"></div>
@@ -133,7 +133,7 @@
             </div>
           </div>
           <a href="{{ route('my-library') }}" class="dropdown-item"><i class="fa-solid fa-book"></i> مكتبتي</a>
-          <a href="#" class="dropdown-item"><i class="fa-regular fa-heart"></i> المفضلة</a>
+          <a href="{{ route('profile') }}#tab-favorites" class="dropdown-item"><i class="fa-regular fa-heart"></i> المفضلة</a>
           <a href="{{ route('profile') }}" class="dropdown-item"><i class="fa-regular fa-user"></i> الملف الشخصي</a>
           <a href="{{ route('settings') }}" class="dropdown-item"><i class="fa-solid fa-gear"></i> الإعدادات</a>
           <div class="dropdown-divider"></div>

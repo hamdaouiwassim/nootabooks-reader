@@ -124,6 +124,11 @@ class Book extends Model
         return $this->hasMany(Discussion::class);
     }
 
+    public function bookmarkedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'book_bookmarks')->withTimestamps();
+    }
+
     public function recalculateRating(): void
     {
         $this->rating_average = round($this->reviews()->avg('rating') ?? 0, 1);

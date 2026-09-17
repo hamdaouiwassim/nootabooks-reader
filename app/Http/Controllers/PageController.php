@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Models\Club;
 use App\Models\Discussion;
+use App\Models\DownloadLog;
 use App\Models\Quote;
 use App\Models\User;
 use App\Models\Writer;
@@ -466,7 +467,82 @@ class PageController extends Controller
 
     public function profile(): View
     {
-        return view('profile', ['activeNav' => null]);
+        $user = auth()->user();
+
+        $bookmarks = $user->bookmarks()->with('writer')->orderByDesc('book_bookmarks.created_at')->get();
+        $reviews = $user->reviews()->with('book.writer')->latest()->get();
+        $clubs = $user->clubs()->get();
+        $followedWriters = $user->followedWriters()->get();
+
+        $downloadsCount = DownloadLog::where('user_id', $user->id)->count();
+        $discussionsCount = $user->discussions()->count();
+        $commentsCount = $user->comments()->count();
+
+        return view('profile', [
+            'activeNav' => null,
+            'profileUser' => $user,
+            'bookmarks' => $bookmarks,
+            'reviews' => $reviews,
+            'reviewsCount' => $reviews->count(),
+            'bookmarksCount' => $bookmarks->count(),
+            'clubsCount' => $clubs->count(),
+            'followedWritersCount' => $followedWriters->count(),
+            'downloadsCount' => $downloadsCount,
+            'activity' => $this->buildProfileActivity($user, $reviews, $clubs, $followedWriters),
+            'achievements' => [
+                ['icon' => 'book-open-reader', 'title' => 'قارئ نهم', 'goal' => 5, 'progress' => $downloadsCount, 'description' => 'حمّل 5 كتب'],
+                ['icon' => 'pen-nib', 'title' => 'ناقد أدبي', 'goal' => 3, 'progress' => $reviews->count(), 'description' => 'كتب 3 تقييمات'],
+                ['icon' => 'people-group', 'title' => 'عضو فعّال', 'goal' => 1, 'progress' => $clubs->count(), 'description' => 'انضم إلى نادي قراءة'],
+                ['icon' => 'comments', 'title' => 'صوت المجتمع', 'goal' => 10, 'progress' => $discussionsCount + $commentsCount, 'description' => 'شارك في 10 مناقشات وتعليقات'],
+                ['icon' => 'user-plus', 'title' => 'متابع مخلص', 'goal' => 3, 'progress' => $followedWriters->count(), 'description' => 'تابع 3 مؤلفين'],
+                ['icon' => 'heart', 'title' => 'جامع الكتب', 'goal' => 5, 'progress' => $bookmarks->count(), 'description' => 'أضف 5 كتب إلى المفضلة'],
+            ],
+        ]);
+    }
+
+    /**
+     * Merges reviews, club joins, and writer follows into a single
+     * reverse-chronological feed — there's no unified "activity" table, so
+     * this stitches together the handful of real, timestamped user actions
+     * that exist today.
+     */
+    private function buildProfileActivity(User $user, $reviews, $clubs, $followedWriters): array
+    {
+        $items = [];
+
+        foreach ($reviews->take(10) as $review) {
+            if (! $review->book) {
+                continue;
+            }
+            $items[] = [
+                'icon' => 'star',
+                'type' => 'review',
+                'text' => "قيّم <a href=\"".route('book-details', $review->book->slug)."\">{$review->book->title}</a> بـ {$review->rating} نجوم",
+                'time' => $review->created_at,
+            ];
+        }
+
+        foreach ($clubs as $club) {
+            $items[] = [
+                'icon' => 'people-group',
+                'type' => 'club',
+                'text' => "انضم إلى نادي <a href=\"".route('club-details', $club->slug)."\">{$club->name}</a>",
+                'time' => $club->pivot->created_at,
+            ];
+        }
+
+        foreach ($followedWriters as $writer) {
+            $items[] = [
+                'icon' => 'user-plus',
+                'type' => 'follow',
+                'text' => "بدأ متابعة <a href=\"".route('writer-details', $writer->slug)."\">{$writer->name}</a>",
+                'time' => $writer->pivot->created_at,
+            ];
+        }
+
+        usort($items, fn ($a, $b) => $b['time'] <=> $a['time']);
+
+        return array_slice($items, 0, 10);
     }
 
     public function settings(): View

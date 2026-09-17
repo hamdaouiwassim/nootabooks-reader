@@ -81,4 +81,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Club::class, 'club_user')->withPivot('role')->withTimestamps();
     }
+
+    public function bookmarks(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class, 'book_bookmarks')->withTimestamps();
+    }
 }

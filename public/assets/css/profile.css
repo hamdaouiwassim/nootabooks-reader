@@ -102,8 +102,19 @@
 
 /* ============ FAVORITES TAB ============ */
 .favorites-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.favorites-grid .book-card { flex: none; }
+.favorites-grid .book-card { flex: none; position: relative; }
 .pcover-1 { background: linear-gradient(160deg,#4a3a2a,#1c140c); }
+.favorite-remove-form { position: absolute; top: 10px; left: 10px; z-index: 2; margin: 0; }
+.favorite-remove-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.92);
+  color: #d1493f;
+  border: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.favorite-remove-btn:hover { background: #fff; }
 
 /* ============ REVIEWS TAB ============ */
 .my-reviews-list { display: flex; flex-direction: column; gap: 20px; }
@@ -111,6 +122,7 @@
 .my-review-card:last-child { border-bottom: none; }
 .my-review-card .book-cover.mini { width: 70px; height: 100px; padding: 8px; flex: none; display: flex; }
 .my-review-card .book-cover.mini .cover-title { font-size: 11px; }
+.my-review-card .book-cover.cover-photo { width: 70px; height: 100px; flex: none; margin-bottom: 0; border-radius: 8px; }
 .my-review-body h4 { font-size: 15px; font-weight: 800; margin-bottom: 2px; }
 .my-review-author { font-size: 12px; color: var(--text-gray); margin-bottom: 6px; }
 .my-review-body .stars i { color: var(--star); font-size: 13px; }

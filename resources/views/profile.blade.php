@@ -32,15 +32,23 @@
     <div class="profile-cover"></div>
     <div class="profile-header">
       <div class="profile-avatar-wrap">
-        <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
-        <button class="avatar-edit-btn" aria-label="edit avatar"><i class="fa-solid fa-camera"></i></button>
+        @if ($profileUser->avatar)
+          <img src="{{ asset($profileUser->avatar) }}" width="120" height="120" alt="{{ $profileUser->name }}">
+        @else
+          <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
+        @endif
+        <button class="avatar-edit-btn" aria-label="edit avatar" data-href="{{ route('settings') }}"><i class="fa-solid fa-camera"></i></button>
       </div>
       <div class="profile-info">
-        <h1>أحمد محمد</h1>
-        <p class="profile-bio">قارئ شغوف بالروايات النفسية والأدب العربي المعاصر. أشارك آرائي في الكتب وأبحث دائمًا عن توصية جديدة 📚</p>
+        <h1>{{ $profileUser->name }}</h1>
+        @if ($profileUser->bio)
+          <p class="profile-bio">{{ $profileUser->bio }}</p>
+        @endif
         <div class="profile-meta-row">
-          <span><i class="fa-solid fa-calendar-days"></i> انضم في يناير 2024</span>
-          <span><i class="fa-solid fa-location-dot"></i> القاهرة، مصر</span>
+          <span><i class="fa-solid fa-calendar-days"></i> انضم في {{ $profileUser->created_at->translatedFormat('F Y') }}</span>
+          @if ($profileUser->location)
+            <span><i class="fa-solid fa-location-dot"></i> {{ $profileUser->location }}</span>
+          @endif
         </div>
       </div>
       <div class="profile-actions">
@@ -49,11 +57,11 @@
     </div>
 
     <div class="profile-stats">
-      <div class="profile-stat"><strong>47</strong><span>كتاب مقروء</span></div>
-      <div class="profile-stat"><strong>32</strong><span>تقييم</span></div>
-      <div class="profile-stat"><strong>1,240</strong><span>متابِع</span></div>
-      <div class="profile-stat"><strong>380</strong><span>يتابع</span></div>
-      <div class="profile-stat"><strong>2,150</strong><span>نقطة</span></div>
+      <div class="profile-stat"><strong>{{ number_format($downloadsCount) }}</strong><span>كتاب محمّل</span></div>
+      <div class="profile-stat"><strong>{{ number_format($reviewsCount) }}</strong><span>تقييم</span></div>
+      <div class="profile-stat"><strong>{{ number_format($bookmarksCount) }}</strong><span>مفضلة</span></div>
+      <div class="profile-stat"><strong>{{ number_format($followedWritersCount) }}</strong><span>مؤلف متابَع</span></div>
+      <div class="profile-stat"><strong>{{ number_format($profileUser->points) }}</strong><span>نقطة</span></div>
     </div>
   </div>
 </section>
@@ -70,131 +78,113 @@
 
   <!-- ---- Activity ---- -->
   <div class="tab-panel active" id="tab-activity">
-    <div class="activity-list">
-      <div class="activity-item">
-        <span class="activity-icon completed"><i class="fa-solid fa-circle-check"></i></span>
-        <p>أنهى قراءة <a href="{{ route('book-details', 'blue-elephant') }}">الفيل الأزرق</a> <span class="activity-time">منذ يومين</span></p>
+    @if (count($activity))
+      <div class="activity-list">
+        @foreach ($activity as $item)
+          <div class="activity-item">
+            <span class="activity-icon {{ $item['type'] }}"><i class="fa-solid fa-{{ $item['icon'] }}"></i></span>
+            <p>{!! $item['text'] !!} <span class="activity-time">{{ $item['time']->diffForHumans() }}</span></p>
+          </div>
+        @endforeach
       </div>
-      <div class="activity-item">
-        <span class="activity-icon review"><i class="fa-solid fa-star"></i></span>
-        <p>قيّم <a href="#">يوتوبيا</a> بـ 5 نجوم <span class="activity-time">منذ 3 أيام</span></p>
+    @else
+      <div class="empty-state">
+        <i class="fa-regular fa-folder-open"></i>
+        <p>لا يوجد نشاط بعد</p>
+        <a href="{{ route('discover') }}" class="btn btn-gold">استكشف الكتب</a>
       </div>
-      <div class="activity-item">
-        <span class="activity-icon club"><i class="fa-solid fa-people-group"></i></span>
-        <p>انضم إلى نادي <a href="{{ route('club-details', 'arabic-literature') }}">أدب عربي معاصر</a> <span class="activity-time">منذ أسبوع</span></p>
-      </div>
-      <div class="activity-item">
-        <span class="activity-icon comment"><i class="fa-solid fa-comment"></i></span>
-        <p>علّق على مناقشة <a href="{{ route('discussion-details') }}">حول الفيل الأزرق</a> <span class="activity-time">منذ أسبوعين</span></p>
-      </div>
-      <div class="activity-item">
-        <span class="activity-icon follow"><i class="fa-solid fa-user-plus"></i></span>
-        <p>بدأ متابعة <a href="{{ route('writer-details', 'ahmed-mourad') }}">أحمد مراد</a> <span class="activity-time">منذ 3 أسابيع</span></p>
-      </div>
-    </div>
+    @endif
   </div>
 
   <!-- ---- Favorites ---- -->
   <div class="tab-panel" id="tab-favorites">
-    <div class="favorites-grid">
-      <a href="{{ route('book-details', 'blue-elephant') }}" class="book-card">
-        <span class="book-cover cover-1">
-          <span class="cover-badge">B</span>
-          <span class="cover-title">الفيل الأزرق</span>
-        </span>
-        <h3>الفيل الأزرق</h3>
-        <p class="author">أحمد مراد</p>
-        <p class="rating"><i class="fa-solid fa-star"></i> 4.5</p>
-      </a>
-      <a href="{{ route('book-details', 'the-alchemist') }}" class="book-card">
-        <span class="book-cover cover-3">
-          <span class="cover-badge">B</span>
-          <span class="cover-title">الخيميائي</span>
-        </span>
-        <h3>الخيميائي</h3>
-        <p class="author">باولو كويلو</p>
-        <p class="rating"><i class="fa-solid fa-star"></i> 4.6</p>
-      </a>
-      <a href="{{ route('book-details', 'one-hundred-years-of-solitude') }}" class="book-card">
-        <span class="book-cover cover-4">
-          <span class="cover-badge">B</span>
-          <span class="cover-title">منذ عام من العزلة</span>
-        </span>
-        <h3>منذ عام من العزلة</h3>
-        <p class="author">غابرييل غارسيا ماركيز</p>
-        <p class="rating"><i class="fa-solid fa-star"></i> 4.7</p>
-      </a>
-      <a href="{{ route('book-details', 'turab-al-mas') }}" class="book-card">
-        <span class="book-cover pcover-1">
-          <span class="cover-badge">B</span>
-          <span class="cover-title">تراب الماس</span>
-        </span>
-        <h3>تراب الماس</h3>
-        <p class="author">أحمد مراد</p>
-        <p class="rating"><i class="fa-solid fa-star"></i> 4.6</p>
-      </a>
-    </div>
+    @if ($bookmarks->isNotEmpty())
+      <div class="favorites-grid">
+        @foreach ($bookmarks as $book)
+          <div class="book-card">
+            <form method="POST" action="{{ route('books.bookmark', $book->slug) }}" class="favorite-remove-form">
+              @csrf
+              <button type="submit" class="favorite-remove-btn" aria-label="إزالة من المفضلة" title="إزالة من المفضلة"><i class="fa-solid fa-heart"></i></button>
+            </form>
+            @if ($book->cover_image)
+              <a href="{{ route('book-details', $book->slug) }}">
+                <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" width="300" height="450" loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
+              </a>
+            @else
+              <a href="{{ route('book-details', $book->slug) }}" class="book-cover cover-{{ ($book->id % 5) + 1 }}">
+                <span class="cover-badge">B</span>
+                <span class="cover-title">{{ $book->title }}</span>
+              </a>
+            @endif
+            <h3><a href="{{ route('book-details', $book->slug) }}">{{ $book->title }}</a></h3>
+            @if ($book->writer)
+              <p class="author">{{ $book->writer->name }}</p>
+            @endif
+            @if ($book->rating_count > 0)
+              <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
+            @else
+              <p class="rating no-rating">لا توجد تقييمات بعد</p>
+            @endif
+          </div>
+        @endforeach
+      </div>
+    @else
+      <div class="empty-state">
+        <i class="fa-regular fa-heart"></i>
+        <p>لم تُضِف أي كتاب إلى المفضلة بعد</p>
+        <a href="{{ route('discover') }}" class="btn btn-gold">استكشف الكتب</a>
+      </div>
+    @endif
   </div>
 
   <!-- ---- Reviews ---- -->
   <div class="tab-panel" id="tab-reviews">
-    <div class="my-reviews-list">
-      <article class="my-review-card">
-        <span class="book-cover cover-2 mini"><span class="cover-title">يوتوبيا</span></span>
-        <div class="my-review-body">
-          <h4>يوتوبيا</h4>
-          <p class="my-review-author">أحمد خالد توفيق</p>
-          <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
-          <p class="my-review-text">من أقوى الروايات العربية في الديستوبيا، أسلوب أحمد خالد توفيق مميز جدًا في بناء عالم مرعب لكنه قريب من واقعنا.</p>
-          <span class="my-review-date">منذ 3 أيام</span>
-        </div>
-      </article>
-      <article class="my-review-card">
-        <span class="book-cover cover-1 mini"><span class="cover-title">الفيل الأزرق</span></span>
-        <div class="my-review-body">
-          <h4>الفيل الأزرق</h4>
-          <p class="my-review-author">أحمد مراد</p>
-          <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></span>
-          <p class="my-review-text">حبكة مشوقة ونهاية غير متوقعة، لكن بعض الأحداث في المنتصف شعرت إنها بطيئة شوية.</p>
-          <span class="my-review-date">منذ أسبوعين</span>
-        </div>
-      </article>
-    </div>
+    @if ($reviews->isNotEmpty())
+      <div class="my-reviews-list">
+        @foreach ($reviews as $review)
+          @continue(! $review->book)
+          <article class="my-review-card">
+            @if ($review->book->cover_image)
+              <img class="book-cover cover-photo" src="{{ $review->book->cover_image_sm_url }}" width="70" height="100" loading="lazy" decoding="async" alt="غلاف {{ $review->book->title }}">
+            @else
+              <span class="book-cover mini cover-{{ ($review->book->id % 5) + 1 }}"><span class="cover-title">{{ $review->book->title }}</span></span>
+            @endif
+            <div class="my-review-body">
+              <h4><a href="{{ route('book-details', $review->book->slug) }}">{{ $review->book->title }}</a></h4>
+              <p class="my-review-author">{{ $review->book->writer?->name }}</p>
+              <span class="stars">
+                @for ($i = 1; $i <= 5; $i++)
+                  <i class="fa-{{ $i <= $review->rating ? 'solid' : 'regular' }} fa-star"></i>
+                @endfor
+              </span>
+              @if ($review->comment)
+                <p class="my-review-text">{{ $review->comment }}</p>
+              @endif
+              <span class="my-review-date">{{ $review->created_at->diffForHumans() }}</span>
+            </div>
+          </article>
+        @endforeach
+      </div>
+    @else
+      <div class="empty-state">
+        <i class="fa-regular fa-star"></i>
+        <p>لم تكتب أي تقييم بعد</p>
+        <a href="{{ route('discover') }}" class="btn btn-gold">استكشف الكتب</a>
+      </div>
+    @endif
   </div>
 
   <!-- ---- Achievements ---- -->
   <div class="tab-panel" id="tab-achievements">
     <div class="achievements-grid">
-      <div class="achievement-card unlocked">
-        <span class="achievement-icon"><i class="fa-solid fa-book-open-reader"></i></span>
-        <strong>قارئ نهم</strong>
-        <p>أنهيت قراءة 25 كتابًا</p>
-      </div>
-      <div class="achievement-card unlocked">
-        <span class="achievement-icon"><i class="fa-solid fa-pen-nib"></i></span>
-        <strong>ناقد أدبي</strong>
-        <p>كتبت 30 تقييمًا</p>
-      </div>
-      <div class="achievement-card unlocked">
-        <span class="achievement-icon"><i class="fa-solid fa-people-group"></i></span>
-        <strong>عضو فعّال</strong>
-        <p>انضممت إلى 3 نوادي قراءة</p>
-      </div>
-      <div class="achievement-card">
-        <span class="achievement-icon"><i class="fa-solid fa-fire"></i></span>
-        <strong>سلسلة القراءة</strong>
-        <p>اقرأ 30 يومًا متتاليًا (12/30)</p>
-      </div>
-      <div class="achievement-card">
-        <span class="achievement-icon"><i class="fa-solid fa-crown"></i></span>
-        <strong>خبير المكتبة</strong>
-        <p>أنهِ قراءة 100 كتاب</p>
-      </div>
-      <div class="achievement-card">
-        <span class="achievement-icon"><i class="fa-solid fa-comments"></i></span>
-        <strong>صوت المجتمع</strong>
-        <p>احصل على 100 إعجاب على تعليقاتك</p>
-      </div>
+      @foreach ($achievements as $achievement)
+        @php $unlocked = $achievement['progress'] >= $achievement['goal']; @endphp
+        <div class="achievement-card @if ($unlocked) unlocked @endif">
+          <span class="achievement-icon"><i class="fa-solid fa-{{ $achievement['icon'] }}"></i></span>
+          <strong>{{ $achievement['title'] }}</strong>
+          <p>{{ $achievement['description'] }} @unless ($unlocked) ({{ min($achievement['progress'], $achievement['goal']) }}/{{ $achievement['goal'] }}) @endunless</p>
+        </div>
+      @endforeach
     </div>
   </div>
 </section>

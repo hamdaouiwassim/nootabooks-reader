@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthPageController;
+use App\Http\Controllers\BookBookmarkController;
 use App\Http\Controllers\BookDownloadController;
 use App\Http\Controllers\BookReportController;
 use App\Http\Controllers\ClubController;
@@ -35,6 +36,9 @@ Route::post('/books/{book}/reviews', [ReviewController::class, 'store'])
 Route::get('/read/{book?}', [PageController::class, 'read'])->name('read');
 Route::get('/books/{book}/stream', [BookDownloadController::class, 'stream'])->name('books.stream')->middleware('signed');
 Route::get('/books/{book}/download', [BookDownloadController::class, 'download'])->name('books.download')->middleware('signed');
+Route::post('/books/{book}/bookmark', [BookBookmarkController::class, 'toggle'])
+    ->middleware('auth')
+    ->name('books.bookmark');
 Route::get('/books/{book}/report', [BookReportController::class, 'create'])->name('books.report');
 Route::post('/books/{book}/report', [BookReportController::class, 'store'])
     ->middleware('throttle:5,60')
@@ -63,7 +67,7 @@ Route::post('/comments/{comment}/like', [DiscussionCommentController::class, 'to
     ->middleware('auth')
     ->name('comments.like');
 
-Route::get('/profile', [PageController::class, 'profile'])->name('profile');
+Route::get('/profile', [PageController::class, 'profile'])->middleware('auth')->name('profile');
 Route::get('/settings', [PageController::class, 'settings'])->name('settings');
 Route::get('/notifications', [PageController::class, 'notifications'])->name('notifications');
 
@@ -79,4 +83,7 @@ Route::get('/login', [AuthPageController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthPageController::class, 'login'])->name('login.submit');
 Route::get('/register', [AuthPageController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthPageController::class, 'register'])->name('register.submit');
+Route::get('/register/verify', [AuthPageController::class, 'showVerifyEmail'])->name('register.verify');
+Route::post('/register/verify', [AuthPageController::class, 'verifyEmail'])->name('register.verify.submit');
+Route::post('/register/verify/resend', [AuthPageController::class, 'resendVerification'])->name('register.verify.resend');
 Route::post('/logout', [AuthPageController::class, 'logout'])->name('logout');

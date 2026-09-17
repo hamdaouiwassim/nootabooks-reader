@@ -125,6 +125,8 @@
 .meta-item strong { font-size: 14px; color: var(--text-dark); }
 
 .book-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.bookmark-btn.active { border-color: #d1493f; color: #d1493f; }
+.bookmark-btn.active:hover { background: #fdecea; }
 .icon-btn-outline {
   width: 46px; height: 46px;
   border-radius: 10px;
