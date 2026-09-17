@@ -87,7 +87,17 @@
     @if ($currentBook->is_coming_soon)
       <span class="coming-soon-badge">قريبًا</span>
     @endif
-    <button class="wishlist-btn" aria-label="add to wishlist"><i class="fa-regular fa-heart"></i></button>
+    @auth
+      @php $isBookmarked = auth()->user()->bookmarks()->where('book_id', $currentBook->id)->exists(); @endphp
+      <form method="POST" action="{{ route('books.bookmark', $currentBook->slug) }}">
+        @csrf
+        <button type="submit" class="wishlist-btn @if ($isBookmarked) active @endif" aria-label="{{ $isBookmarked ? 'إزالة من المفضلة' : 'أضف إلى المفضلة' }}" title="{{ $isBookmarked ? 'إزالة من المفضلة' : 'أضف إلى المفضلة' }}">
+          <i class="fa-{{ $isBookmarked ? 'solid' : 'regular' }} fa-heart"></i>
+        </button>
+      </form>
+    @else
+      <a href="{{ route('login') }}" class="wishlist-btn" aria-label="سجل الدخول لإضافة الكتاب إلى المفضلة" title="سجل الدخول لإضافة الكتاب إلى المفضلة"><i class="fa-regular fa-heart"></i></a>
+    @endauth
   </div>
 
   <div class="book-hero-info">
@@ -154,18 +164,6 @@
         @endif
       @endif
       <button class="btn btn-navy" aria-label="مشاركة"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
-      @auth
-        @php $isBookmarked = auth()->user()->bookmarks()->where('book_id', $currentBook->id)->exists(); @endphp
-        <form method="POST" action="{{ route('books.bookmark', $currentBook->slug) }}">
-          @csrf
-          <button type="submit" class="btn btn-outline bookmark-btn @if ($isBookmarked) active @endif">
-            <i class="fa-{{ $isBookmarked ? 'solid' : 'regular' }} fa-heart"></i>
-            {{ $isBookmarked ? 'في المفضلة' : 'أضف إلى المفضلة' }}
-          </button>
-        </form>
-      @else
-        <a href="{{ route('login') }}" class="btn btn-outline"><i class="fa-regular fa-heart"></i> أضف إلى المفضلة</a>
-      @endauth
       <a href="{{ route('books.report', $currentBook->slug) }}" class="btn btn-alert" title="الإبلاغ عن حقوق النشر"><i class="fa-solid fa-triangle-exclamation"></i> الإبلاغ عن حقوق النشر</a>
       <a href="{{ route('community', ['book' => $currentBook->slug]) }}" class="btn btn-outline"><i class="fa-solid fa-comments"></i> دردش حول الكتاب</a>
     </div>

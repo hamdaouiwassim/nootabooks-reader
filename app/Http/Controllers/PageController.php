@@ -8,6 +8,7 @@ use App\Models\Club;
 use App\Models\Discussion;
 use App\Models\DownloadLog;
 use App\Models\Quote;
+use App\Models\SearchLog;
 use App\Models\User;
 use App\Models\Writer;
 use Illuminate\Http\RedirectResponse;
@@ -85,6 +86,10 @@ class PageController extends Controller
 
         $books = $query->paginate(16)->withQueryString();
 
+        if ($search !== '' && $request->integer('page', 1) === 1) {
+            SearchLog::record($search, $books->total());
+        }
+
         // Only the plain, unfiltered catalog (optionally paginated) is a
         // deliberate SEO landing page — any active search/category/language/
         // rating filter produces a near-duplicate slice of the same catalog
@@ -139,6 +144,10 @@ class PageController extends Controller
             ->orderByDesc('rating_average')
             ->paginate(12)
             ->withQueryString();
+
+        if ($search !== '' && $request->integer('page', 1) === 1) {
+            SearchLog::record($search, $categoryBooks->total());
+        }
 
         $similarCategories = Category::withCount(['books' => fn ($q) => $q->published()])
             ->where('id', '!=', $currentCategory->id)

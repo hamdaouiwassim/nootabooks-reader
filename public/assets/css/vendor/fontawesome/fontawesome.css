@@ -61,6 +61,7 @@
 .fa-book:before { content: "\f02d"; }
 .fa-book-open:before { content: "\f518"; }
 .fa-book-open-reader:before { content: "\f5da"; }
+.fa-broom:before { content: "\f51a"; }
 .fa-calendar-check:before { content: "\f274"; }
 .fa-calendar-days:before { content: "\f073"; }
 .fa-camera:before { content: "\f030"; }
@@ -109,7 +110,6 @@
 .fa-magnifying-glass:before { content: "\f002"; }
 .fa-paper-plane:before { content: "\f1d8"; }
 .fa-pen:before { content: "\f304"; }
-.fa-pen-nib:before { content: "\f5ad"; }
 .fa-people-group:before { content: "\e533"; }
 .fa-phone:before { content: "\f095"; }
 .fa-play:before { content: "\f04b"; }

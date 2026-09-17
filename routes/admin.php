@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DiscussionController;
 use App\Http\Controllers\Admin\FileAuditController;
 use App\Http\Controllers\Admin\QuoteController;
+use App\Http\Controllers\Admin\SearchLogController;
 use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WriterController;
@@ -90,6 +91,10 @@ Route::middleware('auth:admin')->group(function () {
 
     Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics');
     Route::get('/file-audit', [FileAuditController::class, 'index'])->name('file-audit');
+
+    Route::get('/search-logs', [SearchLogController::class, 'index'])->name('search-logs.index');
+    Route::delete('/search-logs/{searchLog}', [SearchLogController::class, 'destroy'])->name('search-logs.destroy');
+    Route::delete('/search-logs', [SearchLogController::class, 'clear'])->name('search-logs.clear');
 
     Route::get('/backup', [BackupController::class, 'index'])->name('backup.index');
     Route::post('/backup', [BackupController::class, 'create'])->name('backup.create')->middleware('throttle:3,10');

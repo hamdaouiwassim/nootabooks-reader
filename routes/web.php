@@ -72,7 +72,9 @@ Route::get('/settings', [PageController::class, 'settings'])->name('settings');
 Route::get('/notifications', [PageController::class, 'notifications'])->name('notifications');
 
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-Route::post('/contact', [PageController::class, 'submitContact'])->name('contact.submit');
+Route::post('/contact', [PageController::class, 'submitContact'])
+    ->middleware('throttle:5,60')
+    ->name('contact.submit');
 
 Route::get('/privacy', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
@@ -80,10 +82,18 @@ Route::get('/copyright', [PageController::class, 'copyright'])->name('copyright'
 Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 
 Route::get('/login', [AuthPageController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthPageController::class, 'login'])->name('login.submit');
+Route::post('/login', [AuthPageController::class, 'login'])
+    ->middleware('throttle:5,1')
+    ->name('login.submit');
 Route::get('/register', [AuthPageController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthPageController::class, 'register'])->name('register.submit');
+Route::post('/register', [AuthPageController::class, 'register'])
+    ->middleware('throttle:5,60')
+    ->name('register.submit');
 Route::get('/register/verify', [AuthPageController::class, 'showVerifyEmail'])->name('register.verify');
-Route::post('/register/verify', [AuthPageController::class, 'verifyEmail'])->name('register.verify.submit');
-Route::post('/register/verify/resend', [AuthPageController::class, 'resendVerification'])->name('register.verify.resend');
+Route::post('/register/verify', [AuthPageController::class, 'verifyEmail'])
+    ->middleware('throttle:10,1')
+    ->name('register.verify.submit');
+Route::post('/register/verify/resend', [AuthPageController::class, 'resendVerification'])
+    ->middleware('throttle:5,1')
+    ->name('register.verify.resend');
 Route::post('/logout', [AuthPageController::class, 'logout'])->name('logout');
