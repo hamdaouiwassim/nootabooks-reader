@@ -24,12 +24,14 @@
       <h1 class="auth-form-heading">تسجيل الدخول</h1>
       <p class="auth-subtitle">مرحبًا بعودتك! سجل دخولك لمتابعة القراءة</p>
 
+      {{-- Social login disabled for now — no OAuth backend wired up yet, re-enable once one exists.
       <div class="social-auth-buttons">
         <button type="button" class="btn btn-outline social-btn"><i class="fa-brands fa-google"></i> المتابعة عبر جوجل</button>
         <button type="button" class="btn btn-outline social-btn"><i class="fa-brands fa-facebook-f"></i> المتابعة عبر فيسبوك</button>
       </div>
 
       <div class="auth-divider"><span>أو عبر البريد الإلكتروني</span></div>
+      --}}
 
       <form id="loginForm" method="POST" action="{{ route('login.submit') }}" data-recaptcha-action="login" novalidate>
         @csrf

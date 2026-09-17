@@ -21,6 +21,14 @@ body { min-height: 100vh; }
   padding: 44px 50px;
 }
 .auth-visual .logo-tagline { color: #cdd6d4; }
+.auth-visual .logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.auth-visual .logo-icon { height: 110px; }
 
 .auth-illustration { position: relative; flex: 1; }
 

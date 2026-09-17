@@ -24,12 +24,14 @@
       <h1 class="auth-form-heading">إنشاء حساب جديد</h1>
       <p class="auth-subtitle">انضم إلى مجتمع القراء وابدأ رحلتك مع آلاف الكتب</p>
 
+      {{-- Social signup disabled for now — no OAuth backend wired up yet, re-enable once one exists.
       <div class="social-auth-buttons">
         <button type="button" class="btn btn-outline social-btn"><i class="fa-brands fa-google"></i> التسجيل عبر جوجل</button>
         <button type="button" class="btn btn-outline social-btn"><i class="fa-brands fa-facebook-f"></i> التسجيل عبر فيسبوك</button>
       </div>
 
       <div class="auth-divider"><span>أو عبر البريد الإلكتروني</span></div>
+      --}}
 
       <form id="registerForm" method="POST" action="{{ route('register.submit') }}" data-recaptcha-action="register" novalidate>
         @csrf
