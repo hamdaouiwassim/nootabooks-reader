@@ -194,4 +194,5 @@
 
 @push('scripts')
 <script src="{{ asset_min('assets/js/discover.js') }}" defer></script>
+<script src="{{ asset_min('assets/js/search-autocomplete.js') }}" defer></script>
 @endpush

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Concerns\FlushesAppCache;
 use App\Models\Concerns\GeneratesUniqueSlug;
 use App\Models\Concerns\ResolvesUploadedFileUrl;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -59,6 +60,20 @@ class Writer extends Model
     public function followers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'following')->withTimestamps();
+    }
+
+    /**
+     * A profile worth linking to: has at least one published book, or a
+     * bio, so a thin/empty writer row is never surfaced (search suggestions,
+     * sitemap). Mirrors the same rule PageController::writerDetails() uses
+     * for its own single-record isIndexable check.
+     */
+    public function scopeIndexable(Builder $query): Builder
+    {
+        return $query->where(function ($q) {
+            $q->whereHas('books', fn ($bq) => $bq->published())
+                ->orWhere(fn ($bq) => $bq->whereNotNull('bio')->where('bio', '!=', ''));
+        });
     }
 
     protected function photoUrl(): Attribute

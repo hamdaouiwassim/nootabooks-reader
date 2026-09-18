@@ -10,6 +10,7 @@ use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\RobotsController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\WriterFollowController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,9 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap')
 Route::get('/robots.txt', [RobotsController::class, 'index'])->name('robots');
 
 Route::get('/discover', [PageController::class, 'discover'])->name('discover');
+Route::get('/search/autocomplete', [SearchController::class, 'autocomplete'])
+    ->middleware('throttle:30,1')
+    ->name('search.autocomplete');
 Route::get('/categories', [PageController::class, 'categories'])->name('categories');
 Route::get('/categories/{category?}', [PageController::class, 'categoryDetails'])->name('category-details');
 Route::get('/my-library', [PageController::class, 'myLibrary'])->name('my-library');

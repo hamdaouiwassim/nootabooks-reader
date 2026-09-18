@@ -18,6 +18,7 @@
 .writers-hero p { color: var(--text-gray); font-size: 15px; margin-bottom: 26px; }
 
 .writers-search {
+  position: relative;
   max-width: 480px;
   margin: 0 auto 22px;
   display: flex;

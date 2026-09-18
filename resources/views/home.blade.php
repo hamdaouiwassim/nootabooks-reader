@@ -242,3 +242,7 @@
 
 </main>
 @endsection
+
+@push('scripts')
+<script src="{{ asset_min('assets/js/search-autocomplete.js') }}" defer></script>
+@endpush

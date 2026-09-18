@@ -37,10 +37,7 @@ class SitemapController extends Controller
             $books = Book::published()->select('slug', 'updated_at')->orderByDesc('updated_at')->get();
             // Mirrors writerDetails()'s indexability rule: a profile with no
             // published books and no bio is a thin, noindexed page.
-            $writers = Writer::where(function ($q) {
-                $q->whereHas('books', fn ($bq) => $bq->published())
-                    ->orWhere(fn ($bq) => $bq->whereNotNull('bio')->where('bio', '!=', ''));
-            })
+            $writers = Writer::indexable()
                 ->select('slug', 'updated_at')
                 ->orderByDesc('updated_at')
                 ->get();
