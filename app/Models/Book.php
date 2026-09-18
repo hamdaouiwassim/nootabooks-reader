@@ -256,7 +256,7 @@ class Book extends Model
      */
     public function streamUrl(): ?string
     {
-        return $this->file_path
+        return ($this->file_path && ! $this->reading_disabled && ! $this->copyright_blocked)
             ? URL::temporarySignedRoute('books.stream', now()->addHours(2), ['book' => $this])
             : null;
     }

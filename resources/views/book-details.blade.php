@@ -186,8 +186,13 @@
         <button class="btn btn-teal" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-clock"></i> قريبًا</button>
         <button class="btn btn-gold" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
       @elseif ($currentBook->copyright_blocked)
-        <button class="btn btn-teal" disabled title="غير متاح بسبب حقوق النشر"><i class="fa-solid fa-scale-balanced"></i> غير متاح بسبب حقوق النشر</button>
-        <button class="btn btn-gold" disabled title="غير متاح بسبب حقوق النشر"><i class="fa-solid fa-scale-balanced"></i> غير متاح بسبب حقوق النشر</button>
+        {{-- Plain disabled <button>s with no href/signed URL at all (see
+        Book::downloadUrl(), which returns null when copyright_blocked, and
+        the server-side abort_if() guards in PageController::read() /
+        BookDownloadController) — there's nothing here for a user to reveal
+        by flipping `disabled` off via devtools. --}}
+        <button class="btn btn-teal" disabled title="غير متاح بسبب حقوق النشر"><i class="fa-solid fa-headphones"></i> قراءة الآن</button>
+        <button class="btn btn-gold" disabled title="غير متاح بسبب حقوق النشر"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
       @else
         @if ($currentBook->reading_disabled)
           <button class="btn btn-teal" disabled title="غير متاح للقراءة"><i class="fa-solid fa-ban"></i> غير متاح للقراءة</button>
@@ -240,6 +245,8 @@
       <h2 id="online-reading">قراءة {{ $currentBook->title }} أونلاين</h2>
       @if ($currentBook->is_coming_soon)
         <p>سيتوفر {{ $currentBook->type_label }} {{ $currentBook->title }} للقراءة أونلاين على نوته بوك قريبًا.</p>
+      @elseif ($currentBook->copyright_blocked)
+        <p>تم إيقاف قراءة {{ $currentBook->title }} أونلاين بناءً على طلب الناشر لحماية حقوق النشر.</p>
       @elseif ($currentBook->reading_disabled)
         <p>القراءة أونلاين غير متاحة حاليًا لـ {{ $currentBook->title }}.</p>
       @else
