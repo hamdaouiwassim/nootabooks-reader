@@ -10,7 +10,7 @@
 @include('partials.seo-meta')
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@@context' => 'https://schema.org',
     '@type' => 'WebSite',
     'name' => 'نوته بوك',
     'url' => url('/'),
@@ -28,7 +28,7 @@
 </script>
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@@context' => 'https://schema.org',
     '@type' => 'Organization',
     'name' => 'نوته بوك',
     'url' => url('/'),

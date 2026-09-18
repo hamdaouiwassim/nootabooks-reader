@@ -13,7 +13,7 @@
 @push('schema')
 <script type="application/ld+json">
 {!! json_encode(array_filter([
-    '@context' => 'https://schema.org',
+    '@@context' => 'https://schema.org',
     '@type' => 'Book',
     'name' => $currentBook->title,
     'description' => $currentBook->description_short ?: strip_tags((string) $currentBook->description),
@@ -36,7 +36,7 @@
 </script>
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@@context' => 'https://schema.org',
     '@type' => 'BreadcrumbList',
     'itemListElement' => array_values(array_filter([
         ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
@@ -76,7 +76,7 @@
     @if ($currentBook->cover_image)
       <img class="hero-cover-img cover-photo" src="{{ $currentBook->cover_image_url }}"
         width="300" height="450"
-        fetchpriority="high" decoding="async" alt="غلاف {{ $currentBook->title }}">
+        fetchpriority="high" decoding="async" alt="{{ $currentBook->cover_alt }}">
     @else
       <div class="hero-cover-img cover-{{ ($currentBook->id % 5) + 1 }}">
         <span class="cover-badge">B</span>

@@ -199,6 +199,20 @@ class Book extends Model
     }
 
     /**
+     * Descriptive alt text for the cover image — "غلاف {رواية|كتاب} {title} -
+     * {writer}" — used everywhere the cover is rendered so it reads well for
+     * both accessibility and image-search SEO instead of just the bare title.
+     */
+    protected function coverAlt(): Attribute
+    {
+        return Attribute::make(get: function () {
+            $label = "غلاف {$this->type_label} {$this->title}";
+
+            return $this->writer ? "{$label} - {$this->writer->name}" : $label;
+        });
+    }
+
+    /**
      * The admin only uploads one cover (compressed to 300×450 — see
      * Admin\BookController::storeCoverVariant()); cover_image_md/_sm are
      * legacy columns from an old multi-size pipeline and are normally empty

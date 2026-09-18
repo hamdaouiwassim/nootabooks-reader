@@ -17,7 +17,7 @@
 @push('schema')
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@@context' => 'https://schema.org',
     '@type' => 'BreadcrumbList',
     'itemListElement' => [
         ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
@@ -28,7 +28,7 @@
 @if ($indexableCategories->isNotEmpty())
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@@context' => 'https://schema.org',
     '@type' => 'ItemList',
     'name' => 'تصنيفات الكتب',
     'numberOfItems' => $indexableCategories->count(),

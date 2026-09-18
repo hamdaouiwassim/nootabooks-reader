@@ -22,7 +22,7 @@
 @push('schema')
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@@context' => 'https://schema.org',
     '@type' => 'BreadcrumbList',
     'itemListElement' => [
         ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
@@ -200,7 +200,7 @@
         <h3>الكتاب المُناقَش</h3>
         <a href="{{ route('book-details', $discussion->book->slug) }}" class="book-mini-link">
           @if ($discussion->book->cover_image)
-            <img src="{{ $discussion->book->cover_image_sm_url }}" width="300" height="450" loading="lazy" decoding="async" alt="{{ $discussion->book->title }}" class="book-cover mini" style="padding:0;width:70px;height:90px;object-fit:cover;">
+            <img src="{{ $discussion->book->cover_image_sm_url }}" width="300" height="450" loading="lazy" decoding="async" alt="{{ $discussion->book->cover_alt }}" class="book-cover mini" style="padding:0;width:70px;height:90px;object-fit:cover;">
           @else
             <span class="book-cover cover-{{ ($discussion->book->id % 5) + 1 }} mini"><span class="cover-title">{{ $discussion->book->title }}</span></span>
           @endif

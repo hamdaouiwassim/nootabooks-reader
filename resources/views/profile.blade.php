@@ -108,7 +108,7 @@
             </form>
             @if ($book->cover_image)
               <a href="{{ route('book-details', $book->slug) }}">
-                <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" width="300" height="450" loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
+                <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}" width="300" height="450" loading="lazy" decoding="async" alt="{{ $book->cover_alt }}">
               </a>
             @else
               <a href="{{ route('book-details', $book->slug) }}" class="book-cover cover-{{ ($book->id % 5) + 1 }}">
@@ -145,7 +145,7 @@
           @continue(! $review->book)
           <article class="my-review-card">
             @if ($review->book->cover_image)
-              <img class="book-cover cover-photo" src="{{ $review->book->cover_image_sm_url }}" width="70" height="100" loading="lazy" decoding="async" alt="غلاف {{ $review->book->title }}">
+              <img class="book-cover cover-photo" src="{{ $review->book->cover_image_sm_url }}" width="70" height="100" loading="lazy" decoding="async" alt="{{ $review->book->cover_alt }}">
             @else
               <span class="book-cover mini cover-{{ ($review->book->id % 5) + 1 }}"><span class="cover-title">{{ $review->book->title }}</span></span>
             @endif

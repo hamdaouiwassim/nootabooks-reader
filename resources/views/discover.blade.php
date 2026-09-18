@@ -14,7 +14,7 @@
 @push('schema')
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@@context' => 'https://schema.org',
     '@type' => 'BreadcrumbList',
     'itemListElement' => [
         ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
@@ -25,7 +25,7 @@
 @if ($books->isNotEmpty())
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@@context' => 'https://schema.org',
     '@type' => 'ItemList',
     'itemListElement' => $books->getCollection()->values()->map(fn ($book, $index) => [
         '@type' => 'ListItem',
@@ -127,7 +127,7 @@
           @if ($book->cover_image)
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
-                width="300" height="450" loading="lazy" decoding="async" alt="غلاف {{ $book->title }}">
+                width="300" height="450" loading="lazy" decoding="async" alt="{{ $book->cover_alt }}">
               <span class="brand-ribbon">nootabooks.com</span>
               @if ($book->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
