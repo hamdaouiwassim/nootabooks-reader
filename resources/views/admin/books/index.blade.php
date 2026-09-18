@@ -33,6 +33,15 @@
     <option value="published" @selected(request('status') === 'published')>منشور</option>
     <option value="draft" @selected(request('status') === 'draft')>مخفي</option>
   </select>
+  <select class="admin-filter-select" name="sort" onchange="this.form.submit()">
+    <option value="newest" @selected(request('sort', 'newest') === 'newest')>الأحدث إضافة</option>
+    <option value="oldest" @selected(request('sort') === 'oldest')>الأقدم إضافة</option>
+    <option value="title_asc" @selected(request('sort') === 'title_asc')>العنوان (أ - ي)</option>
+    <option value="title_desc" @selected(request('sort') === 'title_desc')>العنوان (ي - أ)</option>
+    <option value="downloads_desc" @selected(request('sort') === 'downloads_desc')>الأكثر تحميلًا</option>
+    <option value="rating_desc" @selected(request('sort') === 'rating_desc')>الأعلى تقييمًا</option>
+    <option value="published_year_desc" @selected(request('sort') === 'published_year_desc')>سنة النشر (الأحدث)</option>
+  </select>
   <button type="submit" class="btn btn-outline">بحث</button>
 </form>
 
@@ -59,13 +68,16 @@
                 <span class="admin-book-cover placeholder"><i class="fa-solid fa-book"></i></span>
               @endif
               <div>
-                <strong>{{ $book->title }}</strong>
+                <strong><a href="{{ route('admin.books.show', $book) }}" style="color:var(--navy);">{{ $book->title }}</a></strong>
                 <span>{{ $book->writer?->name ?? 'بدون مؤلف' }}</span>
                 @if ($book->status === 'draft')
                   <span class="status-badge draft">مخفي</span>
                 @endif
                 @if ($book->is_coming_soon)
                   <span class="status-badge coming-soon">قريبًا</span>
+                @endif
+                @if ($book->copyright_blocked)
+                  <span class="status-badge copyright"><i class="fa-solid fa-scale-balanced"></i> محجوب لحقوق النشر</span>
                 @endif
               </div>
             </div>
@@ -76,7 +88,7 @@
           <td>{{ $book->created_at->diffForHumans() }}</td>
           <td>
             <div class="admin-row-actions">
-              <a href="{{ route('read', $book->slug) }}" class="admin-icon-btn" title="عرض" aria-label="view"><i class="fa-regular fa-eye"></i></a>
+              <a href="{{ route('admin.books.show', $book) }}" class="admin-icon-btn" title="عرض التفاصيل" aria-label="view"><i class="fa-regular fa-eye"></i></a>
               <a href="{{ route('admin.books.stats', $book) }}" class="admin-icon-btn" title="إحصائيات" aria-label="stats"><i class="fa-solid fa-chart-line"></i></a>
               <a href="{{ route('admin.books.edit', $book) }}" class="admin-icon-btn" title="تعديل" aria-label="edit"><i class="fa-solid fa-pen"></i></a>
               <form method="POST" action="{{ route('admin.books.destroy', $book) }}" data-confirm-delete data-item-title="{{ $book->title }}">

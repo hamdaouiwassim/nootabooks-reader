@@ -1,8 +1,7 @@
 <aside class="admin-sidebar" id="adminSidebar">
   <div class="admin-sidebar-head">
-    <i class="fa-solid fa-book-bookmark logo-icon"></i>
+    <img src="<?php echo e(asset('assets/images/logo.png')); ?>" alt="نوته بوك" class="logo-icon">
     <div class="logo-text">
-      <span class="logo-title">مكتبتي</span>
       <span class="logo-tagline">لوحة التحكم</span>
     </div>
     <button class="admin-sidebar-close" id="adminSidebarClose" aria-label="close"><i class="fa-solid fa-xmark"></i></button>
@@ -23,9 +22,13 @@
     <a href="<?php echo e(route('admin.clubs.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'clubs']); ?>"><i class="fa-solid fa-people-group"></i> نوادي القراءة <span class="badge-count"><?php echo e($sidebarClubsCount); ?></span></a>
     <a href="<?php echo e(route('admin.discussions.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'discussions']); ?>"><i class="fa-solid fa-comments"></i> المناقشات <span class="badge-count"><?php echo e($sidebarDiscussionsCount); ?></span></a>
     <a href="<?php echo e(route('admin.comments.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'comments']); ?>"><i class="fa-solid fa-comment-dots"></i> التعليقات <span class="badge-count"><?php echo e($sidebarCommentsCount); ?></span></a>
+    <a href="<?php echo e(route('admin.book-reports.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'book-reports']); ?>"><i class="fa-solid fa-flag"></i> بلاغات حقوق النشر <span class="badge-count"><?php echo e($sidebarBookReportsCount); ?></span></a>
 
     <span class="admin-nav-label">النظام</span>
     <a href="<?php echo e(route('admin.statistics')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'statistics']); ?>"><i class="fa-solid fa-chart-line"></i> الإحصائيات</a>
+    <a href="<?php echo e(route('admin.search-logs.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'search-logs']); ?>"><i class="fa-solid fa-magnifying-glass"></i> سجل بحث المستخدمين</a>
+    <a href="<?php echo e(route('admin.file-audit')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'file-audit']); ?>"><i class="fa-solid fa-hard-drive"></i> فحص حجم الملفات</a>
+    <a href="<?php echo e(route('admin.backup.index')); ?>" class="<?php echo \Illuminate\Support\Arr::toCssClasses(['active' => $activeNav === 'backup']); ?>"><i class="fa-solid fa-database"></i> النسخ الاحتياطي</a>
     <a href="#"><i class="fa-solid fa-gear"></i> الإعدادات</a>
   </nav>
 

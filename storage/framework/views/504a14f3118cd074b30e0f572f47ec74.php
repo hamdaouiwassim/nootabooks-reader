@@ -2,29 +2,32 @@
 <?php $__env->startSection('meta_description', $currentBook->resolved_seo_description); ?>
 <?php $__env->startSection('og_type', 'book'); ?>
 <?php $__env->startSection('og_image', $currentBook->cover_image_url ?? asset('assets/images/hero-section.jpg')); ?>
+<?php $__env->startSection('og_image_alt', $currentBook->cover_alt); ?>
 
 <?php $__env->startPush('styles'); ?>
 <link rel="preload" href="<?php echo e(asset_min('assets/css/book-details.css')); ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="<?php echo e(asset_min('assets/css/book-details.css')); ?>"></noscript>
+<link rel="preload" href="<?php echo e(asset_min('assets/css/faq.css')); ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="<?php echo e(asset_min('assets/css/faq.css')); ?>"></noscript>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startPush('schema'); ?>
 <script type="application/ld+json">
 <?php echo json_encode(array_filter([
-    '<?php $__contextArgs = [];
-if (context()->has($__contextArgs[0])) :
-if (isset($value)) { $__contextPrevious[] = $value; }
-$value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
+    '@context' => 'https://schema.org',
     '@type' => 'Book',
+    '@id' => route('book-details', $currentBook->slug).'#book',
     'name' => $currentBook->title,
+    'url' => route('book-details', $currentBook->slug),
     'description' => $currentBook->description_short ?: strip_tags((string) $currentBook->description),
     'inLanguage' => $currentBook->language,
     'numberOfPages' => $currentBook->pages_count,
     'datePublished' => $currentBook->published_year ? (string) $currentBook->published_year : null,
-    'genre' => $currentBook->categories->pluck('name')->all() ?: null,
+    'genre' => $currentBook->category?->name,
     'image' => $currentBook->cover_image_url,
     'author' => $currentBook->writer ? [
         '@type' => 'Person',
+        '@id' => route('writer-details', $currentBook->writer->slug).'#person',
         'name' => $currentBook->writer->name,
         'url' => route('writer-details', $currentBook->writer->slug),
     ] : null,
@@ -33,15 +36,16 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
         'ratingValue' => (string) $currentBook->rating_average,
         'reviewCount' => $currentBook->rating_count,
     ] : null,
+    'mainEntityOfPage' => [
+        '@type' => 'WebPage',
+        '@id' => route('book-details', $currentBook->slug),
+    ],
 ]), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>
 
 </script>
 <script type="application/ld+json">
 <?php echo json_encode([
-    '<?php $__contextArgs = [];
-if (context()->has($__contextArgs[0])) :
-if (isset($value)) { $__contextPrevious[] = $value; }
-$value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
+    '@context' => 'https://schema.org',
     '@type' => 'BreadcrumbList',
     'itemListElement' => array_values(array_filter([
         ['@type' => 'ListItem', 'position' => 1, 'name' => 'الرئيسية', 'item' => route('home')],
@@ -52,6 +56,23 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>
 
 </script>
+<?php if($faqs->isNotEmpty()): ?>
+<script type="application/ld+json">
+<?php echo json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'FAQPage',
+    'mainEntity' => $faqs->map(fn ($faq) => [
+        '@type' => 'Question',
+        'name' => $faq->question,
+        'acceptedAnswer' => [
+            '@type' => 'Answer',
+            'text' => $faq->answer,
+        ],
+    ])->all(),
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>
+
+</script>
+<?php endif; ?>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -82,7 +103,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
     <?php if($currentBook->cover_image): ?>
       <img class="hero-cover-img cover-photo" src="<?php echo e($currentBook->cover_image_url); ?>"
         width="300" height="450"
-        fetchpriority="high" decoding="async" alt="غلاف <?php echo e($currentBook->title); ?>">
+        fetchpriority="high" decoding="async" alt="<?php echo e($currentBook->cover_alt); ?>">
     <?php else: ?>
       <div class="hero-cover-img cover-<?php echo e(($currentBook->id % 5) + 1); ?>">
         <span class="cover-badge">B</span>
@@ -93,7 +114,17 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
     <?php if($currentBook->is_coming_soon): ?>
       <span class="coming-soon-badge">قريبًا</span>
     <?php endif; ?>
-    <button class="wishlist-btn" aria-label="add to wishlist"><i class="fa-regular fa-heart"></i></button>
+    <?php if(auth()->guard()->check()): ?>
+      <?php $isBookmarked = auth()->user()->bookmarks()->where('book_id', $currentBook->id)->exists(); ?>
+      <form method="POST" action="<?php echo e(route('books.bookmark', $currentBook->slug)); ?>">
+        <?php echo csrf_field(); ?>
+        <button type="submit" class="wishlist-btn <?php if($isBookmarked): ?> active <?php endif; ?>" aria-label="<?php echo e($isBookmarked ? 'إزالة من المفضلة' : 'أضف إلى المفضلة'); ?>" title="<?php echo e($isBookmarked ? 'إزالة من المفضلة' : 'أضف إلى المفضلة'); ?>">
+          <i class="fa-<?php echo e($isBookmarked ? 'solid' : 'regular'); ?> fa-heart"></i>
+        </button>
+      </form>
+    <?php else: ?>
+      <a href="<?php echo e(route('login')); ?>" class="wishlist-btn" aria-label="سجل الدخول لإضافة الكتاب إلى المفضلة" title="سجل الدخول لإضافة الكتاب إلى المفضلة"><i class="fa-regular fa-heart"></i></a>
+    <?php endif; ?>
   </div>
 
   <div class="book-hero-info">
@@ -146,7 +177,11 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
         <button class="btn btn-teal" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-clock"></i> قريبًا</button>
         <button class="btn btn-gold" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
       <?php else: ?>
-        <a href="<?php echo e(route('read', $currentBook->slug)); ?>" class="btn btn-teal"><i class="fa-solid fa-headphones"></i> قراءة الآن</a>
+        <?php if($currentBook->reading_disabled): ?>
+          <button class="btn btn-teal" disabled title="غير متاح للقراءة"><i class="fa-solid fa-ban"></i> غير متاح للقراءة</button>
+        <?php else: ?>
+          <a href="<?php echo e(route('read', $currentBook->slug)); ?>" class="btn btn-teal"><i class="fa-solid fa-headphones"></i> قراءة الآن</a>
+        <?php endif; ?>
         <?php if($currentBook->downloadUrl()): ?>
           <a href="<?php echo e($currentBook->downloadUrl()); ?>" class="btn btn-gold"><i class="fa-solid fa-download"></i> تحميل الكتاب</a>
         <?php elseif($currentBook->download_disabled): ?>
@@ -156,6 +191,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
         <?php endif; ?>
       <?php endif; ?>
       <button class="btn btn-navy" aria-label="مشاركة"><i class="fa-solid fa-share-nodes"></i> مشاركة</button>
+      <a href="<?php echo e(route('books.report', $currentBook->slug)); ?>" class="btn btn-alert" title="الإبلاغ عن حقوق النشر"><i class="fa-solid fa-triangle-exclamation"></i> الإبلاغ عن حقوق النشر</a>
       <a href="<?php echo e(route('community', ['book' => $currentBook->slug])); ?>" class="btn btn-outline"><i class="fa-solid fa-comments"></i> دردش حول الكتاب</a>
     </div>
   </div>
@@ -192,6 +228,8 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
       <h2 id="online-reading">قراءة <?php echo e($currentBook->title); ?> أونلاين</h2>
       <?php if($currentBook->is_coming_soon): ?>
         <p>سيتوفر <?php echo e($currentBook->type_label); ?> <?php echo e($currentBook->title); ?> للقراءة أونلاين على نوته بوك قريبًا.</p>
+      <?php elseif($currentBook->reading_disabled): ?>
+        <p>القراءة أونلاين غير متاحة حاليًا لـ <?php echo e($currentBook->title); ?>.</p>
       <?php else: ?>
         <p>يمكنك قراءة <?php echo e($currentBook->title); ?> أونلاين مباشرة من خلال قارئ الكتب في نوته بوك، دون الحاجة لتحميل أي برنامج إضافي.</p>
         <a href="<?php echo e(route('read', $currentBook->slug)); ?>">قراءة <?php echo e($currentBook->type_label); ?> أونلاين</a>
@@ -497,6 +535,23 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
     <button class="carousel-btn next" aria-label="next"><i class="fa-solid fa-chevron-left"></i></button>
   </div>
 </section>
+
+<?php if($faqs->isNotEmpty()): ?>
+<!-- ===================== BOOK FAQ ===================== -->
+<section class="section book-faq-section">
+  <h2>أسئلة شائعة حول <?php echo e($currentBook->title); ?></h2>
+  <div class="faq-list">
+    <?php $__currentLoopData = $faqs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $faq): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+      <details class="faq-item">
+        <summary><?php echo e($faq->question); ?><i class="fa-solid fa-chevron-down"></i></summary>
+        <div class="faq-answer">
+          <p><?php echo e($faq->answer); ?></p>
+        </div>
+      </details>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+  </div>
+</section>
+<?php endif; ?>
 
 </main>
 <?php $__env->stopSection(); ?>

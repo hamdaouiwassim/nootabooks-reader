@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 <title>تسجيل الدخول - لوحة تحكم مكتبتي</title>
+<?php echo $__env->make('partials.favicons', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/fonts.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/vendor/fontawesome/fontawesome.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/style.css')); ?>">
@@ -16,9 +17,8 @@
 <div class="auth-wrapper">
   <div class="auth-visual admin-visual">
     <div class="admin-sidebar-head" style="border:none; padding:0;">
-      <i class="fa-solid fa-book-bookmark logo-icon"></i>
+      <img src="<?php echo e(asset('assets/images/logo.png')); ?>" alt="نوته بوك" class="logo-icon">
       <div class="logo-text">
-        <span class="logo-title">مكتبتي</span>
         <span class="logo-tagline">لوحة التحكم</span>
       </div>
     </div>

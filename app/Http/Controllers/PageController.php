@@ -264,6 +264,10 @@ class PageController extends Controller
             ->take(5)
             ->get();
 
+        // Single source for both the visible FAQ section and the FAQPage
+        // JSON-LD below — see Book::activeFaqs().
+        $faqs = $currentBook->activeFaqs()->get();
+
         return view('book-details', [
             'activeNav' => null,
             'currentBook' => $currentBook,
@@ -272,6 +276,7 @@ class PageController extends Controller
             'seriesBooks' => $seriesBooks,
             'writerBooks' => $writerBooks,
             'similarBooks' => $similarBooks,
+            'faqs' => $faqs,
         ]);
     }
 
@@ -284,6 +289,11 @@ class PageController extends Controller
         if ($currentBook->is_coming_soon) {
             return redirect()->route('book-details', $currentBook->slug)
                 ->with('info', 'هذا الكتاب سيتوفر قريبًا، لا يمكن قراءته الآن.');
+        }
+
+        if ($currentBook->copyright_blocked) {
+            return redirect()->route('book-details', $currentBook->slug)
+                ->with('info', 'تم إيقاف قراءة هذا الكتاب بناءً على طلب الناشر لحماية حقوق النشر.');
         }
 
         if ($currentBook->reading_disabled) {

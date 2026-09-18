@@ -61,7 +61,7 @@
           <?php if($book->cover_image): ?>
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>"
-                width="300" height="450" loading="lazy" decoding="async" alt="غلاف <?php echo e($book->title); ?>">
+                width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($book->cover_alt); ?>">
               <span class="brand-ribbon">nootabooks.com</span>
               <?php if($book->is_coming_soon): ?>
                 <span class="coming-soon-badge">قريبًا</span>
@@ -112,7 +112,7 @@
           <?php if($book->cover_image): ?>
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>"
-                width="300" height="450" loading="lazy" decoding="async" alt="غلاف <?php echo e($book->title); ?>">
+                width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($book->cover_alt); ?>">
               <span class="brand-ribbon">nootabooks.com</span>
               <?php if($book->is_coming_soon): ?>
                 <span class="coming-soon-badge">قريبًا</span>
@@ -151,7 +151,7 @@
       <?php $tagColors = ['tag-purple', 'tag-green', 'tag-brown', 'tag-blue']; ?>
       <?php $__currentLoopData = $categories->take(4); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <a href="<?php echo e(route('category-details', $category->slug)); ?>" class="tag-item">
-          <span class="tag-icon <?php echo e($tagColors[$loop->index % count($tagColors)]); ?>"><i class="fa-solid <?php echo e($category->icon ?? 'fa-book'); ?>"></i></span>
+          <span class="tag-icon <?php echo e($tagColors[$loop->index % count($tagColors)]); ?>"><?php echo e(mb_substr($category->name, 0, 1)); ?></span>
           <span><?php echo e($category->name); ?></span>
         </a>
       <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -178,7 +178,7 @@
         <a href="<?php echo e(route('book-details', $book->slug)); ?>" class="mini-book">
           <?php if($book->cover_image): ?>
             <img class="mini-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>"
-              width="300" height="450" loading="lazy" decoding="async" alt="غلاف <?php echo e($book->title); ?>">
+              width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($book->cover_alt); ?>">
           <?php else: ?>
             <div class="mini-cover mc-<?php echo e(($book->id % 4) + 1); ?>"><span class="cover-badge sm">B</span></div>
           <?php endif; ?>
@@ -220,7 +220,7 @@
 
   <div class="categories-grid">
     <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-      <a href="<?php echo e(route('category-details', $category->slug)); ?>" class="category-card"><i class="fa-solid <?php echo e($category->icon); ?>"></i><span><?php echo e($category->name); ?></span></a>
+      <a href="<?php echo e(route('category-details', $category->slug)); ?>" class="category-card"><span><?php echo e($category->name); ?></span></a>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
   </div>
 </section>

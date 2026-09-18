@@ -141,6 +141,8 @@
         </div>
       </div>
 
+      @include('admin.books._faqs-section', ['book' => $book])
+
       <div class="admin-form-section">
         <h3>ملف الكتاب</h3>
         <div class="admin-form-grid">
@@ -196,6 +198,16 @@
           </div>
           <label class="admin-switch">
             <input type="checkbox" name="reading_disabled" value="1" @checked(old('reading_disabled', $book->reading_disabled))>
+            <span class="admin-switch-slider"></span>
+          </label>
+        </div>
+        <div class="admin-toggle-row" style="margin-top:16px; background:#fdecea; border:1px solid #f3c7c1; border-radius:10px; padding:14px;">
+          <div>
+            <strong style="color:#a53125;"><i class="fa-solid fa-scale-balanced"></i> منع بسبب حقوق الملكية</strong>
+            <p>يعطّل زري القراءة والتحميل معًا فورًا، ويظهر تنبيه في صفحة الكتاب بأن ذلك تم بناءً على طلب الناشر لحماية حقوق النشر</p>
+          </div>
+          <label class="admin-switch">
+            <input type="checkbox" name="copyright_blocked" value="1" @checked(old('copyright_blocked', $book->copyright_blocked))>
             <span class="admin-switch-slider"></span>
           </label>
         </div>

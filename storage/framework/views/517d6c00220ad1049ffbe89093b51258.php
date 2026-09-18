@@ -38,14 +38,19 @@
           </div>
           <div class="admin-form-field">
             <label for="bookWriterSearch">المؤلف</label>
-            <?php $selectedWriterId = old('writer_id', $book->writer_id); $oldWriterName = $writers->firstWhere('id', (int) $selectedWriterId)?->name; ?>
+            <?php
+              $selectedWriterId = old('writer_id', $book->writer_id);
+              $oldWriter = $writers->firstWhere('id', (int) $selectedWriterId);
+              $oldWriterName = $oldWriter ? $oldWriter->name.($oldWriter->name_en ? ' ('.$oldWriter->name_en.')' : '') : null;
+            ?>
             <div class="admin-combobox" id="writerCombobox">
               <input type="text" id="bookWriterSearch" class="admin-input" placeholder="ابحث عن مؤلف ..." autocomplete="off" value="<?php echo e($oldWriterName); ?>">
               <input type="hidden" name="writer_id" id="bookWriterId" value="<?php echo e($selectedWriterId); ?>">
               <div class="admin-combobox-list" id="writerComboboxList" hidden>
                 <div class="admin-combobox-option" data-id="" data-name="بدون مؤلف محدد">بدون مؤلف محدد</div>
                 <?php $__currentLoopData = $writers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $writer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                  <div class="admin-combobox-option" data-id="<?php echo e($writer->id); ?>" data-name="<?php echo e($writer->name); ?>"><?php echo e($writer->name); ?></div>
+                  <?php $writerDisplay = $writer->name.($writer->name_en ? ' ('.$writer->name_en.')' : ''); ?>
+                  <div class="admin-combobox-option" data-id="<?php echo e($writer->id); ?>" data-name="<?php echo e($writerDisplay); ?>"><?php echo e($writerDisplay); ?></div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </div>
             </div>
@@ -134,6 +139,8 @@
         </div>
       </div>
 
+      <?php echo $__env->make('admin.books._faqs-section', ['book' => $book], array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
       <div class="admin-form-section">
         <h3>ملف الكتاب</h3>
         <div class="admin-form-grid">
@@ -149,6 +156,7 @@
           <div class="admin-form-field full">
             <label for="bookFile">ملف الكتاب (PDF)</label>
             <input type="file" id="bookFile" name="book_file" class="admin-input" accept=".pdf">
+            <span class="hint">الحد الأقصى لحجم الملف 100 ميجابايت</span>
             <?php if($book->file_path): ?>
               <div class="admin-file-current">
                 <i class="fa-solid fa-file-arrow-down"></i>
@@ -185,6 +193,16 @@ unset($__errorArgs, $__bag); ?>
           </div>
           <label class="admin-switch">
             <input type="checkbox" name="download_disabled" value="1" <?php if(old('download_disabled', $book->download_disabled)): echo 'checked'; endif; ?>>
+            <span class="admin-switch-slider"></span>
+          </label>
+        </div>
+        <div class="admin-toggle-row" style="margin-top:16px;">
+          <div>
+            <strong>منع القراءة</strong>
+            <p>يبقى الكتاب ظاهرًا في البحث والقوائم وصفحته، لكن زر القراءة يظهر معطلاً بعبارة "غير متاح للقراءة"</p>
+          </div>
+          <label class="admin-switch">
+            <input type="checkbox" name="reading_disabled" value="1" <?php if(old('reading_disabled', $book->reading_disabled)): echo 'checked'; endif; ?>>
             <span class="admin-switch-slider"></span>
           </label>
         </div>

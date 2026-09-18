@@ -13,6 +13,7 @@ class BookDownloadController extends Controller
     {
         abort_if($book->is_coming_soon, 404);
         abort_if($book->download_disabled, 404);
+        abort_if($book->copyright_blocked, 404);
         abort_unless($book->status === 'published', 404);
         abort_unless($book->file_path, 404);
 
@@ -52,6 +53,7 @@ class BookDownloadController extends Controller
     {
         abort_if($book->is_coming_soon, 404);
         abort_if($book->reading_disabled, 404);
+        abort_if($book->copyright_blocked, 404);
         abort_unless($book->status === 'published', 404);
         abort_unless($book->file_path, 404);
 

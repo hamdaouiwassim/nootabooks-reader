@@ -9,6 +9,8 @@
 @push('styles')
 <link rel="preload" href="{{ asset_min('assets/css/book-details.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="{{ asset_min('assets/css/book-details.css') }}"></noscript>
+<link rel="preload" href="{{ asset_min('assets/css/faq.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/faq.css') }}"></noscript>
 @endpush
 
 @push('schema')
@@ -54,6 +56,22 @@
     ])),
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
+@if ($faqs->isNotEmpty())
+<script type="application/ld+json">
+{!! json_encode([
+    '@@context' => 'https://schema.org',
+    '@type' => 'FAQPage',
+    'mainEntity' => $faqs->map(fn ($faq) => [
+        '@type' => 'Question',
+        'name' => $faq->question,
+        'acceptedAnswer' => [
+            '@type' => 'Answer',
+            'text' => $faq->answer,
+        ],
+    ])->all(),
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
+@endif
 @endpush
 
 @section('content')
@@ -153,10 +171,20 @@
       <div class="meta-item"><i class="fa-solid fa-cloud-arrow-down"></i><span>مرات التحميل</span><strong>{{ number_format($currentBook->downloads_count) }}</strong></div>
     </div>
 
+    @if ($currentBook->copyright_blocked)
+      <div class="copyright-block-notice">
+        <i class="fa-solid fa-scale-balanced"></i>
+        <p>تم إيقاف قراءة وتحميل هذا الكتاب بناءً على طلب الناشر لحماية حقوق النشر.</p>
+      </div>
+    @endif
+
     <div class="book-actions">
       @if ($currentBook->is_coming_soon)
         <button class="btn btn-teal" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-clock"></i> قريبًا</button>
         <button class="btn btn-gold" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
+      @elseif ($currentBook->copyright_blocked)
+        <button class="btn btn-teal" disabled title="غير متاح بسبب حقوق النشر"><i class="fa-solid fa-scale-balanced"></i> غير متاح بسبب حقوق النشر</button>
+        <button class="btn btn-gold" disabled title="غير متاح بسبب حقوق النشر"><i class="fa-solid fa-scale-balanced"></i> غير متاح بسبب حقوق النشر</button>
       @else
         @if ($currentBook->reading_disabled)
           <button class="btn btn-teal" disabled title="غير متاح للقراءة"><i class="fa-solid fa-ban"></i> غير متاح للقراءة</button>
@@ -514,6 +542,23 @@
     <button class="carousel-btn next" aria-label="next"><i class="fa-solid fa-chevron-left"></i></button>
   </div>
 </section>
+
+@if ($faqs->isNotEmpty())
+<!-- ===================== BOOK FAQ ===================== -->
+<section class="section book-faq-section">
+  <h2>أسئلة شائعة حول {{ $currentBook->title }}</h2>
+  <div class="faq-list">
+    @foreach ($faqs as $faq)
+      <details class="faq-item">
+        <summary>{{ $faq->question }}<i class="fa-solid fa-chevron-down"></i></summary>
+        <div class="faq-answer">
+          <p>{{ $faq->answer }}</p>
+        </div>
+      </details>
+    @endforeach
+  </div>
+</section>
+@endif
 
 </main>
 @endsection

@@ -34,7 +34,17 @@ class BookController extends Controller
             })
             ->when($request->filled('category'), fn ($query) => $query->whereHas('categories', fn ($cq) => $cq->where('categories.id', $request->integer('category'))))
             ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')))
-            ->latest()
+            ->tap(function ($query) use ($request) {
+                match ($request->string('sort', 'newest')->toString()) {
+                    'oldest' => $query->oldest(),
+                    'title_asc' => $query->orderBy('title'),
+                    'title_desc' => $query->orderByDesc('title'),
+                    'downloads_desc' => $query->orderByDesc('downloads_count'),
+                    'rating_desc' => $query->orderByDesc('rating_average'),
+                    'published_year_desc' => $query->orderByDesc('published_year'),
+                    default => $query->latest(),
+                };
+            })
             ->paginate(10)
             ->withQueryString();
 
@@ -63,8 +73,20 @@ class BookController extends Controller
 
         $book = Book::create($data);
         $book->categories()->sync($this->resolveCategoryIds($request, $data['category_id']));
+        $this->syncFaqs($book, $request);
 
         return redirect()->route('admin.books.edit', $book)->with('status', 'تم حفظ الكتاب بنجاح');
+    }
+
+    public function show(Book $book): View
+    {
+        $book->load(['writer', 'category', 'categories', 'series']);
+
+        return view('admin.books.show', [
+            'activeNav' => 'books',
+            'book' => $book,
+            'recentDownloads' => DownloadLog::where('book_id', $book->id)->with('user')->latest()->limit(5)->get(),
+        ]);
     }
 
     public function edit(Book $book): View
@@ -140,8 +162,39 @@ class BookController extends Controller
 
         $book->update($data);
         $book->categories()->sync($this->resolveCategoryIds($request, $data['category_id']));
+        $this->syncFaqs($book, $request);
 
         return redirect()->route('admin.books.edit', $book)->with('status', 'تم حفظ التعديلات بنجاح');
+    }
+
+    /**
+     * Wholesale-replaces the book's FAQs from the submitted repeater rows —
+     * simplest correct approach given a book only ever has a handful of
+     * FAQs. Rows with no question/answer (e.g. an empty trailing row left
+     * in the form) are skipped. sort_order is just the row's position in
+     * the submitted array, which PHP preserves in submission order.
+     */
+    private function syncFaqs(Book $book, Request $request): void
+    {
+        $book->faqs()->delete();
+
+        $order = 0;
+
+        foreach ($request->input('faqs', []) as $row) {
+            $question = trim((string) ($row['question'] ?? ''));
+            $answer = trim((string) ($row['answer'] ?? ''));
+
+            if ($question === '' || $answer === '') {
+                continue;
+            }
+
+            $book->faqs()->create([
+                'question' => $question,
+                'answer' => $answer,
+                'sort_order' => $order++,
+                'is_active' => ! empty($row['is_active']),
+            ]);
+        }
     }
 
     /**
@@ -155,6 +208,17 @@ class BookController extends Controller
         $extra = array_map('intval', $request->input('categories', []));
 
         return array_values(array_unique([$primaryCategoryId, ...$extra]));
+    }
+
+    public function toggleCopyrightBlock(Book $book): RedirectResponse
+    {
+        $book->update(['copyright_blocked' => ! $book->copyright_blocked]);
+
+        $status = $book->copyright_blocked
+            ? 'تم حظر الكتاب بسبب حقوق النشر — لن يظهر زرا القراءة والتحميل بعد الآن'
+            : 'تم إلغاء حظر الكتاب';
+
+        return back()->with('status', $status);
     }
 
     public function destroy(Book $book): RedirectResponse
@@ -181,6 +245,7 @@ class BookController extends Controller
         $data['is_coming_soon'] = $request->boolean('is_coming_soon');
         $data['download_disabled'] = $request->boolean('download_disabled');
         $data['reading_disabled'] = $request->boolean('reading_disabled');
+        $data['copyright_blocked'] = $request->boolean('copyright_blocked');
         unset($data['categories']); // extra categories go through the book_category pivot, not a books column
 
         $seriesName = trim((string) ($data['series_name'] ?? ''));

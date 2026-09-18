@@ -4,14 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php echo $__env->yieldContent('title', 'نوته بوك - عالم من الكتب بين يديك'); ?></title>
+<?php echo $__env->make('partials.favicons', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <?php echo $__env->make('partials.google-analytics', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+<?php echo $__env->make('partials.google-adsense', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <?php echo $__env->make('partials.seo-meta', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <script type="application/ld+json">
 <?php echo json_encode([
-    '<?php $__contextArgs = [];
-if (context()->has($__contextArgs[0])) :
-if (isset($value)) { $__contextPrevious[] = $value; }
-$value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
+    '@context' => 'https://schema.org',
     '@type' => 'WebSite',
     'name' => 'نوته بوك',
     'url' => url('/'),
@@ -30,10 +29,7 @@ $value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
 </script>
 <script type="application/ld+json">
 <?php echo json_encode([
-    '<?php $__contextArgs = [];
-if (context()->has($__contextArgs[0])) :
-if (isset($value)) { $__contextPrevious[] = $value; }
-$value = context()->get($__contextArgs[0]); ?>' => 'https://schema.org',
+    '@context' => 'https://schema.org',
     '@type' => 'Organization',
     'name' => 'نوته بوك',
     'url' => url('/'),

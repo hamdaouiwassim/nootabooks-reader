@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>الصفحة غير موجودة - نوته بوك</title>
+<?php echo $__env->make('partials.favicons', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <link rel="preload" href="<?php echo e(asset('assets/fonts/tajawal/Iura6YBj_oCad4k1nzSBC45I.woff2')); ?>" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="<?php echo e(asset('assets/fonts/tajawal/Iurf6YBj_oCad4k1l5anHrRpiYlJ.woff2')); ?>" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/fonts.css')); ?>">

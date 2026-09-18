@@ -6,6 +6,7 @@
 <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 <title><?php echo $__env->yieldContent('title', 'لوحة التحكم - مكتبتي'); ?></title>
 <meta name="robots" content="noindex, nofollow">
+<?php echo $__env->make('partials.favicons', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/fonts.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/vendor/fontawesome/fontawesome.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(asset_min('assets/css/style.css')); ?>">

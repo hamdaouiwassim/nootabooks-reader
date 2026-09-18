@@ -36,7 +36,13 @@ class StoreBookRequest extends FormRequest
             'is_coming_soon' => ['nullable', 'boolean'],
             'download_disabled' => ['nullable', 'boolean'],
             'reading_disabled' => ['nullable', 'boolean'],
+            'copyright_blocked' => ['nullable', 'boolean'],
             'status' => ['required', 'in:published,draft'],
+            'faqs' => ['nullable', 'array'],
+            'faqs.*.id' => ['nullable', 'integer'],
+            'faqs.*.question' => ['nullable', 'required_with:faqs.*.answer', 'string', 'max:500'],
+            'faqs.*.answer' => ['nullable', 'required_with:faqs.*.question', 'string', 'max:2000'],
+            'faqs.*.is_active' => ['nullable', 'boolean'],
         ];
     }
 
@@ -73,6 +79,10 @@ class StoreBookRequest extends FormRequest
             'book_file.uploaded' => 'فشل رفع ملف الكتاب، تأكد أن حجمه لا يتجاوز الحد المسموح به من الخادم وحاول مرة أخرى.',
             'status.required' => 'يجب تحديد حالة الكتاب.',
             'status.in' => 'حالة الكتاب غير صحيحة.',
+            'faqs.*.question.required_with' => 'يجب كتابة نص السؤال.',
+            'faqs.*.question.max' => 'السؤال طويل جدًا (الحد الأقصى 500 حرف).',
+            'faqs.*.answer.required_with' => 'يجب كتابة نص الإجابة.',
+            'faqs.*.answer.max' => 'الإجابة طويلة جدًا (الحد الأقصى 2000 حرف).',
         ];
     }
 }

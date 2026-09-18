@@ -3,12 +3,9 @@
   <div class="footer-top">
     <div class="footer-brand">
       <a href="<?php echo e(route('home')); ?>" class="logo">
-        <i class="fa-solid fa-book-bookmark logo-icon"></i>
-        <div class="logo-text">
-          <span class="logo-title">نوته بوك</span>
-          <span class="logo-tagline">عالم من الكتب بين يديك</span>
-        </div>
+        <img src="<?php echo e(asset('assets/images/logo.png')); ?>" alt="نوته بوك" class="logo-icon">
       </a>
+      <p class="footer-about">منصة عربية تجمع عشاق القراءة، وتساعدك على اكتشاف الكتب وقراءتها أونلاين في مختلف المجالات.</p>
       <div class="social-icons">
         <a href="#"><i class="fa-brands fa-youtube"></i></a>
         <a href="#"><i class="fa-brands fa-instagram"></i></a>
@@ -27,15 +24,11 @@
 
     <div class="footer-col">
       <h4>مساعدة</h4>
-      <a href="#">الأسئلة الشائعة</a>
+      <a href="<?php echo e(route('faq')); ?>">الأسئلة الشائعة</a>
       <a href="<?php echo e(route('privacy')); ?>">سياسة الخصوصية</a>
       <a href="<?php echo e(route('terms')); ?>">شروط الاستخدام</a>
+      <a href="<?php echo e(route('copyright')); ?>">حقوق النشر</a>
       <a href="<?php echo e(route('contact')); ?>">تواصل معنا</a>
-    </div>
-
-    <div class="footer-col">
-      <h4>عن نوته بوك</h4>
-      <p class="footer-about">منصة عربية تجمع عشاق القراءة، وتساعدك على اكتشاف الكتب وقراءتها أونلاين في مختلف المجالات.</p>
     </div>
 
     
@@ -44,7 +37,7 @@
   <div class="footer-bottom">
     <p>نوته بوك © <?php echo e(date('Y')); ?>. جميع الحقوق محفوظة</p>
     <div class="footer-legal">
-      <a href="<?php echo e(route('privacy')); ?>">الخصوصية</a> | <a href="<?php echo e(route('terms')); ?>">الشروط</a> | <a href="<?php echo e(route('contact')); ?>">اتصل بنا</a>
+      <a href="<?php echo e(route('privacy')); ?>">الخصوصية</a> | <a href="<?php echo e(route('terms')); ?>">الشروط</a> | <a href="<?php echo e(route('copyright')); ?>">حقوق النشر</a> | <a href="<?php echo e(route('contact')); ?>">اتصل بنا</a>
     </div>
   </div>
 </footer>

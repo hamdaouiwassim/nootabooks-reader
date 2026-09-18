@@ -102,6 +102,32 @@ document.addEventListener('DOMContentLoaded', () => {
     bookFileName.textContent = file ? file.name : '';
   });
 
+  // ---- FAQ repeater ----
+  const faqRows = document.getElementById('faqRows');
+  const faqTemplate = document.getElementById('faqRowTemplate');
+  const addFaqBtn = document.getElementById('addFaqRow');
+  let faqNewRowIndex = 9000; // clear of any server-rendered row indices (0, 1, 2, ...)
+
+  addFaqBtn?.addEventListener('click', () => {
+    const html = faqTemplate.innerHTML.replaceAll('__INDEX__', String(faqNewRowIndex++));
+    faqRows.insertAdjacentHTML('beforeend', html);
+  });
+
+  faqRows?.addEventListener('click', (e) => {
+    const row = e.target.closest('[data-faq-row]');
+    if (!row) return;
+
+    if (e.target.closest('[data-faq-remove]')) {
+      row.remove();
+    } else if (e.target.closest('[data-faq-move-up]')) {
+      const prev = row.previousElementSibling;
+      if (prev) faqRows.insertBefore(row, prev);
+    } else if (e.target.closest('[data-faq-move-down]')) {
+      const next = row.nextElementSibling;
+      if (next) faqRows.insertBefore(next, row);
+    }
+  });
+
   // ---- Form submit feedback (real submission — just disable the button) ----
   const form = document.getElementById('bookForm');
   form?.addEventListener('submit', () => {

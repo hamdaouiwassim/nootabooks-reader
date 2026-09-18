@@ -11,11 +11,7 @@
 <header class="site-header">
   <div class="header-inner">
     <a href="<?php echo e(route('home')); ?>" class="logo">
-      <i class="fa-solid fa-book-bookmark logo-icon"></i>
-      <div class="logo-text">
-        <span class="logo-title">نوته بوك</span>
-        <span class="logo-tagline">عالم من الكتب بين يديك</span>
-      </div>
+      <img src="<?php echo e(asset('assets/images/logo.png')); ?>" alt="نوته بوك" class="logo-icon">
     </a>
 
     <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="menu" aria-expanded="false">
@@ -43,7 +39,7 @@
             </div>
           </div>
           <a href="<?php echo e(route('my-library')); ?>" class="dropdown-item"><i class="fa-solid fa-book"></i> مكتبتي</a>
-          <a href="#" class="dropdown-item"><i class="fa-regular fa-heart"></i> المفضلة</a>
+          <a href="<?php echo e(route('profile')); ?>#tab-favorites" class="dropdown-item"><i class="fa-regular fa-heart"></i> المفضلة</a>
           <a href="<?php echo e(route('profile')); ?>" class="dropdown-item"><i class="fa-regular fa-user"></i> الملف الشخصي</a>
           <a href="<?php echo e(route('settings')); ?>" class="dropdown-item"><i class="fa-solid fa-gear"></i> الإعدادات</a>
           <div class="dropdown-divider"></div>
@@ -137,7 +133,7 @@
             </div>
           </div>
           <a href="<?php echo e(route('my-library')); ?>" class="dropdown-item"><i class="fa-solid fa-book"></i> مكتبتي</a>
-          <a href="#" class="dropdown-item"><i class="fa-regular fa-heart"></i> المفضلة</a>
+          <a href="<?php echo e(route('profile')); ?>#tab-favorites" class="dropdown-item"><i class="fa-regular fa-heart"></i> المفضلة</a>
           <a href="<?php echo e(route('profile')); ?>" class="dropdown-item"><i class="fa-regular fa-user"></i> الملف الشخصي</a>
           <a href="<?php echo e(route('settings')); ?>" class="dropdown-item"><i class="fa-solid fa-gear"></i> الإعدادات</a>
           <div class="dropdown-divider"></div>

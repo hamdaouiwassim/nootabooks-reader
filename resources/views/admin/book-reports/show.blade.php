@@ -38,6 +38,14 @@
     <div class="admin-row-actions" style="justify-content:flex-start; gap:10px;">
       <a href="{{ route('book-details', $report->book->slug) }}" target="_blank" rel="noopener" class="btn btn-outline small">عرض على الموقع</a>
       <a href="{{ route('admin.books.edit', $report->book) }}" class="btn btn-outline small">تعديل الكتاب</a>
+      <form method="POST" action="{{ route('admin.books.copyright-block', $report->book) }}">
+        @csrf
+        @method('PUT')
+        <button type="submit" class="btn small" style="background:#fdecea; color:#a53125;">
+          <i class="fa-solid fa-scale-balanced"></i>
+          {{ $report->book->copyright_blocked ? 'إلغاء الحظر' : 'حظر الكتاب بسبب حقوق النشر' }}
+        </button>
+      </form>
     </div>
   @else
     <p style="color:var(--text-gray);">تم حذف هذا الكتاب من المنصة.</p>

@@ -50,11 +50,13 @@
   font-family: "Font Awesome 6 Brands";
   font-weight: 400;
 }
+.fa-arrow-down:before { content: "\f063"; }
 .fa-arrow-left:before { content: "\f060"; }
 .fa-arrow-right:before { content: "\f061"; }
 .fa-arrow-right-from-bracket:before { content: "\f08b"; }
 .fa-arrow-right-to-bracket:before { content: "\f090"; }
 .fa-arrow-rotate-right:before { content: "\f01e"; }
+.fa-arrow-up:before { content: "\f062"; }
 .fa-award:before { content: "\f559"; }
 .fa-ban:before { content: "\f05e"; }
 .fa-bars:before { content: "\f0c9"; }
@@ -73,6 +75,7 @@
 .fa-chevron-right:before { content: "\f054"; }
 .fa-circle-check:before { content: "\f058"; }
 .fa-circle-info:before { content: "\f05a"; }
+.fa-circle-question:before { content: "\f059"; }
 .fa-clock:before { content: "\f017"; }
 .fa-cloud-arrow-down:before { content: "\f0ed"; }
 .fa-comment:before { content: "\f075"; }
@@ -118,6 +121,7 @@
 .fa-quote-right:before { content: "\f10e"; }
 .fa-right-to-bracket:before { content: "\f2f6"; }
 .fa-rotate-left:before { content: "\f2ea"; }
+.fa-scale-balanced:before { content: "\f24e"; }
 .fa-seedling:before { content: "\f4d8"; }
 .fa-server:before { content: "\f233"; }
 .fa-share-nodes:before { content: "\f1e0"; }

@@ -1,6 +1,12 @@
 <?php $__env->startSection('title', 'قراءة: '.$currentBook->title.' - نوته بوك'); ?>
 
 <?php $__env->startSection('content'); ?>
+
+<?php
+  $bookDownloadUrl = $currentBook->downloadUrl();
+  $bookStreamUrl = $currentBook->streamUrl();
+?>
+
 <div class="reader-page">
 
   <!-- ===================== READER TOPBAR ===================== -->
@@ -12,7 +18,7 @@
 
     <div class="reader-book-info">
       <?php if($currentBook->cover_image): ?>
-        <img src="<?php echo e($currentBook->cover_image_sm_url); ?>" alt="<?php echo e($currentBook->title); ?>" class="reader-mini-cover">
+        <img src="<?php echo e($currentBook->cover_image_sm_url); ?>" width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($currentBook->cover_alt); ?>" class="reader-mini-cover">
       <?php endif; ?>
       <div class="reader-book-info-text">
         <strong><?php echo e($currentBook->title); ?></strong>
@@ -21,8 +27,8 @@
     </div>
 
     <div class="reader-actions">
-      <?php if($currentBook->file_path): ?>
-        <a href="<?php echo e(route('books.download', $currentBook)); ?>" class="reader-action-btn" title="تحميل الكتاب" aria-label="download">
+      <?php if($bookDownloadUrl): ?>
+        <a href="<?php echo e($bookDownloadUrl); ?>" class="reader-action-btn" title="تحميل الكتاب" aria-label="download">
           <i class="fa-solid fa-download"></i>
         </a>
       <?php endif; ?>
@@ -34,8 +40,8 @@
 
   <!-- ===================== PDF VIEWER ===================== -->
   <main class="reader-frame-wrap" id="readerFrameWrap">
-    <?php if($currentBook->file_path): ?>
-      <iframe src="<?php echo e($currentBook->file_url); ?>" class="reader-frame" title="<?php echo e($currentBook->title); ?>"></iframe>
+    <?php if($bookStreamUrl): ?>
+      <iframe src="<?php echo e($bookStreamUrl); ?>" class="reader-frame" title="<?php echo e($currentBook->title); ?>"></iframe>
     <?php else: ?>
       <div class="reader-empty">
         <i class="fa-solid fa-file-circle-exclamation"></i>

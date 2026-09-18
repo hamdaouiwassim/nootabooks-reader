@@ -46,6 +46,7 @@ class Book extends Model
         'is_coming_soon',
         'download_disabled',
         'reading_disabled',
+        'copyright_blocked',
         'status',
         'file_path',
         'pages_count',
@@ -65,6 +66,7 @@ class Book extends Model
             'is_coming_soon' => 'boolean',
             'download_disabled' => 'boolean',
             'reading_disabled' => 'boolean',
+            'copyright_blocked' => 'boolean',
             'series_order' => 'integer',
             'pages_count' => 'integer',
             'published_year' => 'integer',
@@ -127,6 +129,21 @@ class Book extends Model
     public function bookmarkedBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'book_bookmarks')->withTimestamps();
+    }
+
+    public function faqs(): HasMany
+    {
+        return $this->hasMany(BookFaq::class)->orderBy('sort_order');
+    }
+
+    /**
+     * The subset actually shown on the book page and fed into the FAQPage
+     * JSON-LD — both read from this single collection so the visible
+     * section and the structured data can never drift apart.
+     */
+    public function activeFaqs(): HasMany
+    {
+        return $this->faqs()->where('is_active', true);
     }
 
     public function recalculateRating(): void
@@ -250,7 +267,7 @@ class Book extends Model
      */
     public function downloadUrl(): ?string
     {
-        return ($this->file_path && ! $this->download_disabled)
+        return ($this->file_path && ! $this->download_disabled && ! $this->copyright_blocked)
             ? URL::temporarySignedRoute('books.download', now()->addMinutes(30), ['book' => $this])
             : null;
     }
