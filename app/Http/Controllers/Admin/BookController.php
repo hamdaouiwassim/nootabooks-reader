@@ -10,7 +10,7 @@ use App\Models\Category;
 use App\Models\DownloadLog;
 use App\Models\Series;
 use App\Models\Writer;
-use App\Services\Image\ImageOptimizer;
+use App\Services\Image\CoverRibbonStamper;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -264,6 +264,7 @@ class BookController extends Controller
 
         if ($request->hasFile('cover_image')) {
             $data['cover_image'] = $this->storeCoverVariant($request->file('cover_image'), $book?->cover_image);
+            $data['cover_ribbon_stamped'] = true;
         } else {
             unset($data['cover_image']);
         }
@@ -288,7 +289,8 @@ class BookController extends Controller
     /**
      * Deletes the old cover (if any), compresses the new upload to WebP at
      * the single size used everywhere on the site (300×450 — see
-     * Book::cover_image_{md,sm}_url, which fall back to this same file), and
+     * Book::cover_image_{md,sm}_url, which fall back to this same file),
+     * bakes the brand ribbon into the pixels (see CoverRibbonStamper), and
      * returns the full URL to store.
      */
     private function storeCoverVariant(UploadedFile $file, ?string $oldValue): string
@@ -297,7 +299,7 @@ class BookController extends Controller
             Storage::disk('public')->delete($relativePath);
         }
 
-        $path = app(ImageOptimizer::class)->optimize($file, 'covers', 300, 450, 80);
+        $path = app(CoverRibbonStamper::class)->stamp($file, 'covers', 300, 450, 80);
 
         return force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$path;
     }

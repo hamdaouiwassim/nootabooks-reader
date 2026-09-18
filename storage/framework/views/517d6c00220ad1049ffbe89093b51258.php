@@ -206,6 +206,16 @@ unset($__errorArgs, $__bag); ?>
             <span class="admin-switch-slider"></span>
           </label>
         </div>
+        <div class="admin-toggle-row" style="margin-top:16px; background:#fdecea; border:1px solid #f3c7c1; border-radius:10px; padding:14px;">
+          <div>
+            <strong style="color:#a53125;"><i class="fa-solid fa-scale-balanced"></i> منع بسبب حقوق الملكية</strong>
+            <p>يعطّل زري القراءة والتحميل معًا فورًا، ويظهر تنبيه في صفحة الكتاب بأن ذلك تم بناءً على طلب الناشر لحماية حقوق النشر</p>
+          </div>
+          <label class="admin-switch">
+            <input type="checkbox" name="copyright_blocked" value="1" <?php if(old('copyright_blocked', $book->copyright_blocked)): echo 'checked'; endif; ?>>
+            <span class="admin-switch-slider"></span>
+          </label>
+        </div>
       </div>
 
       <div class="admin-form-section">

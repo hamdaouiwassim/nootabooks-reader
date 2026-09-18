@@ -6,6 +6,7 @@ This document describes the custom Artisan commands added to this project, defin
 |---|---|
 | [`images:optimize`](#images-optimize) | Compress already-uploaded book covers & writer photos to WebP, with a small card-thumbnail variant |
 | [`images:optimize-assets`](#images-optimize-assets) | Compress the static hero/banner images in `public/assets/images`, with a small mobile variant of each |
+| [`covers:stamp-ribbon`](#coversstamp-ribbon) | One-time backfill: bake the "nootabooks.com" brand ribbon into every already-uploaded book cover |
 | [`assets:minify`](#assets-minify) | Generate `.min.css` / `.min.js` files for production |
 | [`urls:fix-domain`](#urlsfix-domain) | Rewrite the domain baked into already-stored cover/photo/file URLs after a domain change |
 | [`build:fontawesome`](#build-fontawesome) | Regenerate the self-hosted, subsetted Font Awesome build (only the icons this app actually uses) |
@@ -38,6 +39,23 @@ php artisan images:optimize
 - Anytime you suspect some covers/photos are still in their original (large, non-WebP) form.
 
 **Requires:** `intervention/image` (`composer update`).
+
+---
+
+## `covers:stamp-ribbon`
+
+```bash
+php artisan covers:stamp-ribbon
+php artisan covers:stamp-ribbon --force   # re-stamp every cover, even ones already marked done
+```
+
+**Purpose:** book covers now get the "nootabooks.com" brand ribbon baked directly into the image pixels at upload time (see [`CoverRibbonStamper`](app/Services/Image/CoverRibbonStamper.php), wired into `Admin\BookController::storeCoverVariant()`) instead of the old CSS `.brand-ribbon` overlay — this command backfills that ribbon onto every cover uploaded *before* that pipeline existed.
+
+**What it does:** for every book with a non-null `cover_image` and `cover_ribbon_stamped = false`, re-reads the cover from disk, re-runs it through `CoverRibbonStamper` (same 300×450/quality-80 WebP pipeline as `images:optimize`, plus the ribbon composite), replaces the stored file, and sets `cover_ribbon_stamped = true`. Skips rows with an external cover URL or a missing local file (with a warning), so it's safe to re-run — anything already stamped or unreachable is left alone.
+
+**When to run it:** once, right after deploying this feature, to bring existing covers up to date. New uploads and edits are stamped automatically going forward and never need this command. Use `--force` only if the ribbon design itself changes and every cover needs re-stamping with the new artwork.
+
+**Requires:** `intervention/image` (`composer update`) and the `public/assets/images/cover-ribbon-overlay.png` asset present.
 
 ---
 

@@ -62,7 +62,6 @@
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>"
                 width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($book->cover_alt); ?>">
-              <span class="brand-ribbon">nootabooks.com</span>
               <?php if($book->is_coming_soon): ?>
                 <span class="coming-soon-badge">قريبًا</span>
               <?php endif; ?>
@@ -113,7 +112,6 @@
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="<?php echo e($book->cover_image_sm_url); ?>"
                 width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($book->cover_alt); ?>">
-              <span class="brand-ribbon">nootabooks.com</span>
               <?php if($book->is_coming_soon): ?>
                 <span class="coming-soon-badge">قريبًا</span>
               <?php endif; ?>

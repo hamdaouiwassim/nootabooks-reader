@@ -84,7 +84,6 @@
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
                 width="300" height="450" loading="lazy" decoding="async" alt="{{ $book->cover_alt }}">
-              <span class="brand-ribbon">nootabooks.com</span>
               @if ($book->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
               @endif

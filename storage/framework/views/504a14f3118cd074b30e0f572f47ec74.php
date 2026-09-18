@@ -108,9 +108,9 @@
       <div class="hero-cover-img cover-<?php echo e(($currentBook->id % 5) + 1); ?>">
         <span class="cover-badge">B</span>
         <span class="cover-title"><?php echo e($currentBook->title); ?></span>
+        <span class="brand-ribbon">nootabooks.com</span>
       </div>
     <?php endif; ?>
-    <span class="brand-ribbon">nootabooks.com</span>
     <?php if($currentBook->is_coming_soon): ?>
       <span class="coming-soon-badge">قريبًا</span>
     <?php endif; ?>
@@ -172,10 +172,24 @@
       <div class="meta-item"><i class="fa-solid fa-cloud-arrow-down"></i><span>مرات التحميل</span><strong><?php echo e(number_format($currentBook->downloads_count)); ?></strong></div>
     </div>
 
+    <?php if($currentBook->copyright_blocked): ?>
+      <div class="copyright-block-notice">
+        <i class="fa-solid fa-scale-balanced"></i>
+        <div>
+          <p>تم إيقاف إمكانية قراءة وتحميل هذا الكتاب بناءً على طلب الناشر، وذلك احترامًا لحقوق النشر والملكية الفكرية.</p>
+          <p>تحرص منصة نوته بوك على احترام حقوق المؤلفين والناشرين، وتلتزم بإزالة أو تقييد الوصول إلى أي محتوى بناءً على طلب أصحاب الحقوق، دعمًا لحماية الملكية الفكرية وتشجيعًا على نشر المحتوى بصورة قانونية ومسؤولة.</p>
+        </div>
+      </div>
+    <?php endif; ?>
+
     <div class="book-actions">
       <?php if($currentBook->is_coming_soon): ?>
         <button class="btn btn-teal" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-clock"></i> قريبًا</button>
         <button class="btn btn-gold" disabled title="هذا الكتاب سيتوفر قريبًا"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
+      <?php elseif($currentBook->copyright_blocked): ?>
+        
+        <button class="btn btn-teal" disabled title="غير متاح بسبب حقوق النشر"><i class="fa-solid fa-headphones"></i> قراءة الآن</button>
+        <button class="btn btn-gold" disabled title="غير متاح بسبب حقوق النشر"><i class="fa-solid fa-download"></i> تحميل الكتاب</button>
       <?php else: ?>
         <?php if($currentBook->reading_disabled): ?>
           <button class="btn btn-teal" disabled title="غير متاح للقراءة"><i class="fa-solid fa-ban"></i> غير متاح للقراءة</button>
@@ -228,6 +242,8 @@
       <h2 id="online-reading">قراءة <?php echo e($currentBook->title); ?> أونلاين</h2>
       <?php if($currentBook->is_coming_soon): ?>
         <p>سيتوفر <?php echo e($currentBook->type_label); ?> <?php echo e($currentBook->title); ?> للقراءة أونلاين على نوته بوك قريبًا.</p>
+      <?php elseif($currentBook->copyright_blocked): ?>
+        <p>تم إيقاف قراءة <?php echo e($currentBook->title); ?> أونلاين بناءً على طلب الناشر لحماية حقوق النشر.</p>
       <?php elseif($currentBook->reading_disabled): ?>
         <p>القراءة أونلاين غير متاحة حاليًا لـ <?php echo e($currentBook->title); ?>.</p>
       <?php else: ?>
@@ -392,7 +408,6 @@
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="<?php echo e($seriesBook->cover_image_sm_url); ?>"
                 width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($seriesBook->title); ?>">
-              <span class="brand-ribbon">nootabooks.com</span>
               <?php if($seriesBook->series_order): ?>
                 <span class="series-part-badge">الجزء <?php echo e($seriesBook->series_order); ?></span>
               <?php endif; ?>
@@ -453,7 +468,6 @@
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="<?php echo e($writerBook->cover_image_sm_url); ?>"
                 width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($writerBook->title); ?>">
-              <span class="brand-ribbon">nootabooks.com</span>
               <?php if($writerBook->is_coming_soon): ?>
                 <span class="coming-soon-badge">قريبًا</span>
               <?php endif; ?>
@@ -504,7 +518,6 @@
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="<?php echo e($similarBook->cover_image_sm_url); ?>"
                 width="300" height="450" loading="lazy" decoding="async" alt="<?php echo e($similarBook->title); ?>">
-              <span class="brand-ribbon">nootabooks.com</span>
               <?php if($similarBook->is_coming_soon): ?>
                 <span class="coming-soon-badge">قريبًا</span>
               <?php endif; ?>

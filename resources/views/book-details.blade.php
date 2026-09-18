@@ -107,9 +107,9 @@
       <div class="hero-cover-img cover-{{ ($currentBook->id % 5) + 1 }}">
         <span class="cover-badge">B</span>
         <span class="cover-title">{{ $currentBook->title }}</span>
+        <span class="brand-ribbon">nootabooks.com</span>
       </div>
     @endif
-    <span class="brand-ribbon">nootabooks.com</span>
     @if ($currentBook->is_coming_soon)
       <span class="coming-soon-badge">قريبًا</span>
     @endif
@@ -409,7 +409,6 @@
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $seriesBook->cover_image_sm_url }}"
                 width="300" height="450" loading="lazy" decoding="async" alt="{{ $seriesBook->title }}">
-              <span class="brand-ribbon">nootabooks.com</span>
               @if ($seriesBook->series_order)
                 <span class="series-part-badge">الجزء {{ $seriesBook->series_order }}</span>
               @endif
@@ -470,7 +469,6 @@
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $writerBook->cover_image_sm_url }}"
                 width="300" height="450" loading="lazy" decoding="async" alt="{{ $writerBook->title }}">
-              <span class="brand-ribbon">nootabooks.com</span>
               @if ($writerBook->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
               @endif
@@ -521,7 +519,6 @@
             <div class="cover-wrap">
               <img class="book-cover cover-photo" src="{{ $similarBook->cover_image_sm_url }}"
                 width="300" height="450" loading="lazy" decoding="async" alt="{{ $similarBook->title }}">
-              <span class="brand-ribbon">nootabooks.com</span>
               @if ($similarBook->is_coming_soon)
                 <span class="coming-soon-badge">قريبًا</span>
               @endif

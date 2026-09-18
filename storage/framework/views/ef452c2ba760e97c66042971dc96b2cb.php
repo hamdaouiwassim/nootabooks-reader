@@ -31,6 +31,15 @@
     <option value="published" <?php if(request('status') === 'published'): echo 'selected'; endif; ?>>منشور</option>
     <option value="draft" <?php if(request('status') === 'draft'): echo 'selected'; endif; ?>>مخفي</option>
   </select>
+  <select class="admin-filter-select" name="sort" onchange="this.form.submit()">
+    <option value="newest" <?php if(request('sort', 'newest') === 'newest'): echo 'selected'; endif; ?>>الأحدث إضافة</option>
+    <option value="oldest" <?php if(request('sort') === 'oldest'): echo 'selected'; endif; ?>>الأقدم إضافة</option>
+    <option value="title_asc" <?php if(request('sort') === 'title_asc'): echo 'selected'; endif; ?>>العنوان (أ - ي)</option>
+    <option value="title_desc" <?php if(request('sort') === 'title_desc'): echo 'selected'; endif; ?>>العنوان (ي - أ)</option>
+    <option value="downloads_desc" <?php if(request('sort') === 'downloads_desc'): echo 'selected'; endif; ?>>الأكثر تحميلًا</option>
+    <option value="rating_desc" <?php if(request('sort') === 'rating_desc'): echo 'selected'; endif; ?>>الأعلى تقييمًا</option>
+    <option value="published_year_desc" <?php if(request('sort') === 'published_year_desc'): echo 'selected'; endif; ?>>سنة النشر (الأحدث)</option>
+  </select>
   <button type="submit" class="btn btn-outline">بحث</button>
 </form>
 
@@ -57,13 +66,16 @@
                 <span class="admin-book-cover placeholder"><i class="fa-solid fa-book"></i></span>
               <?php endif; ?>
               <div>
-                <strong><?php echo e($book->title); ?></strong>
+                <strong><a href="<?php echo e(route('admin.books.show', $book)); ?>" style="color:var(--navy);"><?php echo e($book->title); ?></a></strong>
                 <span><?php echo e($book->writer?->name ?? 'بدون مؤلف'); ?></span>
                 <?php if($book->status === 'draft'): ?>
                   <span class="status-badge draft">مخفي</span>
                 <?php endif; ?>
                 <?php if($book->is_coming_soon): ?>
                   <span class="status-badge coming-soon">قريبًا</span>
+                <?php endif; ?>
+                <?php if($book->copyright_blocked): ?>
+                  <span class="status-badge copyright"><i class="fa-solid fa-scale-balanced"></i> محجوب لحقوق النشر</span>
                 <?php endif; ?>
               </div>
             </div>
@@ -74,7 +86,7 @@
           <td><?php echo e($book->created_at->diffForHumans()); ?></td>
           <td>
             <div class="admin-row-actions">
-              <a href="<?php echo e(route('read', $book->slug)); ?>" class="admin-icon-btn" title="عرض" aria-label="view"><i class="fa-regular fa-eye"></i></a>
+              <a href="<?php echo e(route('admin.books.show', $book)); ?>" class="admin-icon-btn" title="عرض التفاصيل" aria-label="view"><i class="fa-regular fa-eye"></i></a>
               <a href="<?php echo e(route('admin.books.stats', $book)); ?>" class="admin-icon-btn" title="إحصائيات" aria-label="stats"><i class="fa-solid fa-chart-line"></i></a>
               <a href="<?php echo e(route('admin.books.edit', $book)); ?>" class="admin-icon-btn" title="تعديل" aria-label="edit"><i class="fa-solid fa-pen"></i></a>
               <form method="POST" action="<?php echo e(route('admin.books.destroy', $book)); ?>" data-confirm-delete data-item-title="<?php echo e($book->title); ?>">
