@@ -4,6 +4,7 @@
 @section('meta_description', $currentBook->resolved_seo_description)
 @section('og_type', 'book')
 @section('og_image', $currentBook->cover_image_url ?? asset('assets/images/hero-section.jpg'))
+@section('og_image_alt', $currentBook->cover_alt)
 
 @push('styles')
 <link rel="preload" href="{{ asset_min('assets/css/book-details.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -15,15 +16,18 @@
 {!! json_encode(array_filter([
     '@@context' => 'https://schema.org',
     '@type' => 'Book',
+    '@id' => route('book-details', $currentBook->slug).'#book',
     'name' => $currentBook->title,
+    'url' => route('book-details', $currentBook->slug),
     'description' => $currentBook->description_short ?: strip_tags((string) $currentBook->description),
     'inLanguage' => $currentBook->language,
     'numberOfPages' => $currentBook->pages_count,
     'datePublished' => $currentBook->published_year ? (string) $currentBook->published_year : null,
-    'genre' => $currentBook->categories->pluck('name')->all() ?: null,
+    'genre' => $currentBook->category?->name,
     'image' => $currentBook->cover_image_url,
     'author' => $currentBook->writer ? [
         '@type' => 'Person',
+        '@id' => route('writer-details', $currentBook->writer->slug).'#person',
         'name' => $currentBook->writer->name,
         'url' => route('writer-details', $currentBook->writer->slug),
     ] : null,
@@ -32,6 +36,10 @@
         'ratingValue' => (string) $currentBook->rating_average,
         'reviewCount' => $currentBook->rating_count,
     ] : null,
+    'mainEntityOfPage' => [
+        '@type' => 'WebPage',
+        '@id' => route('book-details', $currentBook->slug),
+    ],
 ]), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
 <script type="application/ld+json">

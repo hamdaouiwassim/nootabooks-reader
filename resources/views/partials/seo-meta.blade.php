@@ -3,6 +3,7 @@
     $seoDescription = trim($__env->yieldContent('meta_description')) ?: 'نوته بوك: منصة عربية لاكتشاف وقراءة وتحميل أفضل الكتب والروايات العربية، مع مراجعات القراء ومتابعة المؤلفين المفضلين لديك.';
     $seoRobots = trim($__env->yieldContent('robots')) ?: ($defaultRobots ?? 'index, follow');
     $seoImage = trim($__env->yieldContent('og_image')) ?: asset('assets/images/hero-section.jpg');
+    $seoImageAlt = trim($__env->yieldContent('og_image_alt')) ?: null;
     $seoType = trim($__env->yieldContent('og_type')) ?: 'website';
     // Self-reference the "page" query param on the canonical (so /discover?page=2
     // isn't collapsed into /discover's canonical) while ignoring other query
@@ -22,9 +23,15 @@
 <meta property="og:type" content="{{ $seoType }}">
 <meta property="og:url" content="{{ $canonicalUrl }}">
 <meta property="og:image" content="{{ $seoImage }}">
+@if ($seoImageAlt)
+<meta property="og:image:alt" content="{{ $seoImageAlt }}">
+@endif
 <meta property="og:locale" content="ar_AR">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ $seoTitle }}">
 <meta name="twitter:description" content="{{ $seoDescription }}">
 <meta name="twitter:image" content="{{ $seoImage }}">
+@if ($seoImageAlt)
+<meta name="twitter:image:alt" content="{{ $seoImageAlt }}">
+@endif
