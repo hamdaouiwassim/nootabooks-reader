@@ -515,11 +515,22 @@ img { display: block; }
 
 /* ============ SEARCH AUTOCOMPLETE ============ */
 /* Shared by the /discover search box and the homepage hero search — both
-   load style.css, so this lives here rather than a page-specific file. */
-.search-suggestions {
-  right: 0;
-  left: 0;
-  top: calc(100% + 10px);
+   load style.css, so this lives here rather than a page-specific file.
+   Selector is qualified (.writers-search/.hero-search ancestor) rather than
+   a bare .search-suggestions so it reliably beats the header dropdowns'
+   "@media (max-width: 1024px) { .dropdown-panel { left: 10px; right: auto } }"
+   override further down this file — same .dropdown-panel base class, same
+   specificity, so without the extra qualifier that rule would win on any
+   screen ≤1024px regardless of source order.
+   position: fixed (not the .dropdown-panel default of absolute), with
+   left/top/width set inline by search-autocomplete.js — the homepage hero
+   search sits inside .hero, which has overflow:hidden for its background
+   image/quote-card animations, and an absolutely-positioned panel would be
+   silently clipped by that ancestor. Fixed positioning escapes it (and any
+   future overflow:hidden container) entirely. */
+.writers-search .search-suggestions,
+.hero-search .search-suggestions {
+  position: fixed;
   max-height: 360px;
   overflow-y: auto;
   padding: 8px;
@@ -557,6 +568,7 @@ img { display: block; }
   flex-direction: column;
   gap: 2px;
   min-width: 0;
+  align-items: flex-start;
 }
 .suggestion-title {
   font-size: 14px;

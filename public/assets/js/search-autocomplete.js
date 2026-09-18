@@ -39,6 +39,22 @@ document.addEventListener('DOMContentLoaded', () => {
       activeIndex = -1;
     }
 
+    // position: fixed, so coordinates are relative to the viewport, not the
+    // wrapper — recomputed on open and kept in sync on scroll/resize so the
+    // panel tracks the search box instead of the page scrolling out from
+    // under a stale absolute position.
+    function positionPanel() {
+      const rect = wrapper.getBoundingClientRect();
+      const top = rect.bottom + 10;
+      panel.style.left = `${rect.left}px`;
+      panel.style.top = `${top}px`;
+      panel.style.width = `${rect.width}px`;
+      // Cap height to whatever room is left below the search box, so on a
+      // short mobile viewport the panel's own scrollbar kicks in instead of
+      // its bottom rows landing off-screen.
+      panel.style.maxHeight = `${Math.max(160, Math.min(360, window.innerHeight - top - 12))}px`;
+    }
+
     function renderResults(results) {
       items = results;
       activeIndex = -1;
@@ -58,9 +74,17 @@ document.addEventListener('DOMContentLoaded', () => {
         </a>
       `).join('');
 
+      positionPanel();
       panel.classList.add('open');
       input.setAttribute('aria-expanded', 'true');
     }
+
+    window.addEventListener('scroll', () => {
+      if (panel.classList.contains('open')) positionPanel();
+    }, true);
+    window.addEventListener('resize', () => {
+      if (panel.classList.contains('open')) positionPanel();
+    });
 
     async function fetchSuggestions(query) {
       abortController?.abort();
