@@ -23,9 +23,16 @@ Route::get('/categories', [PageController::class, 'categories'])->name('categori
 Route::get('/categories/{category?}', [PageController::class, 'categoryDetails'])->name('category-details');
 Route::get('/my-library', [PageController::class, 'myLibrary'])->name('my-library');
 
-Route::get('/writers', [PageController::class, 'writers'])->name('writers');
-Route::get('/writers/{writer?}', [PageController::class, 'writerDetails'])->name('writer-details');
-Route::post('/writers/{writer}/follow', [WriterFollowController::class, 'toggle'])
+// Old /writers URLs are already indexed/linked externally — 301 them to the
+// new /authors path instead of letting them 404 (see routes below).
+Route::redirect('/writers', '/authors', 301);
+Route::get('/writers/{writer}', function (string $writer) {
+    return redirect()->route('writer-details', $writer, 301);
+});
+
+Route::get('/authors', [PageController::class, 'writers'])->name('writers');
+Route::get('/authors/{writer?}', [PageController::class, 'writerDetails'])->name('writer-details');
+Route::post('/authors/{writer}/follow', [WriterFollowController::class, 'toggle'])
     ->middleware('auth')
     ->name('writers.follow');
 

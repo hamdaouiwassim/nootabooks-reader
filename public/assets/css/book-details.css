@@ -267,3 +267,14 @@
   .reviews-overview { flex-direction: column; align-items: stretch; }
   .add-review-btn { margin: 0 auto; }
 }
+
+/* On mobile, show the three tab panels stacked as blocks (about, author,
+   then reviews) instead of one-at-a-time tab switching. */
+@media (max-width: 640px) {
+  .tabs-section .tabs-nav { display: none; }
+  .tabs-section { display: flex; flex-direction: column; gap: 36px; }
+  .tabs-section .tab-panel { display: block; }
+  .tabs-section #tab-about { order: 1; }
+  .tabs-section #tab-author { order: 2; }
+  .tabs-section #tab-reviews { order: 3; }
+}

@@ -13,16 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ---- Wishlist toggle ----
-  const wishlistBtn = document.querySelector('.wishlist-btn');
-  if (wishlistBtn) {
-    wishlistBtn.addEventListener('click', () => {
-      wishlistBtn.classList.toggle('active');
-      const icon = wishlistBtn.querySelector('i');
-      icon.classList.toggle('fa-regular');
-      icon.classList.toggle('fa-solid');
-    });
-  }
+  // ---- Bookmark toggle ----
+  // Bookmark state is handled server-side (see BookBookmarkController) via a
+  // real form submission, so no client-side toggle is needed here.
 
   // ---- Add review form toggle ----
   const toggleReviewBtn = document.getElementById('toggleReviewForm');
