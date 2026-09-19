@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'كتب وروايات '.$currentCategory->name.' للقراءة أونلاين | نوته بوك')
-@section('meta_description', 'اكتشف مجموعة من كتب وروايات '.$currentCategory->name.' على نوته بوك، وتصفح الكتب حسب العنوان والمؤلف واقرأها أونلاين.')
+@section('title', 'تحميل كتب وروايات '.$currentCategory->name.' للقراءة أونلاين | نوته بوك')
+@section('meta_description', 'تحميل مجموعة من كتب وروايات '.$currentCategory->name.' على نوته بوك، وتصفح الكتب حسب العنوان والمؤلف واقرأها أونلاين.')
 @section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')

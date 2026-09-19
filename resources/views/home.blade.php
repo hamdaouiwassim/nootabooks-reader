@@ -42,6 +42,9 @@
   <div class="stat-item">
     <div class="stat-text stat-text-lg"><strong class="stat-count" data-count="{{ $booksCount }}">0</strong><span>كتاب متوفر</span></div>
   </div>
+  <div class="stat-item">
+    <div class="stat-text stat-text-lg"><strong class="stat-count" data-count="{{ $downloadsSum }}">0</strong><span>إجمالي التحميلات</span></div>
+  </div>
 </section>
 
 <!-- ===================== TRENDING BOOKS ===================== -->

@@ -33,6 +33,7 @@ class PageController extends Controller
                 ->get();
 
             $booksCount = Book::published()->count();
+            $downloadsSum = Book::published()->sum('downloads_count');
 
             return [
                 'trendingBooks' => $trendingBooks,
@@ -48,6 +49,7 @@ class PageController extends Controller
                 'popularWriters' => Writer::orderByDesc('followers_count')->take(4)->get(),
                 'heroQuotes' => Quote::orderByDesc('id')->take(3)->get(),
                 'booksCount' => $booksCount,
+                'downloadsSum' => $downloadsSum,
             ];
         });
 
