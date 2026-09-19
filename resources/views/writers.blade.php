@@ -164,7 +164,7 @@
 
   <p class="no-results" id="noResults" hidden>لا يوجد مؤلفون مطابقون لبحثك.</p>
 
-  {{ $writers->links() }}
+  {{ $writers->onEachSide(1)->links() }}
 </section>
 
 </main>

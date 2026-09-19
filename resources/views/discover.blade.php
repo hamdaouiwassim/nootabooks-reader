@@ -158,7 +158,7 @@
 
     <p class="no-results" id="noResults" @unless ($books->isEmpty()) hidden @endunless>لا توجد كتب مطابقة لهذا البحث أو الفلاتر المحددة.</p>
 
-    {{ $books->links() }}
+    {{ $books->onEachSide(1)->links() }}
   </div>
 
 </section>

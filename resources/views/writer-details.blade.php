@@ -164,7 +164,7 @@
       @endforeach
     </div>
 
-    {{ $writerBooks->links() }}
+    {{ $writerBooks->onEachSide(1)->links() }}
   @else
     <p class="no-results">لا توجد كتب منشورة لهذا المؤلف بعد.</p>
   @endif

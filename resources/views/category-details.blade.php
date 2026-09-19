@@ -109,7 +109,7 @@
       @endforeach
     </div>
 
-    {{ $categoryBooks->links() }}
+    {{ $categoryBooks->onEachSide(1)->links() }}
   @else
     <p class="no-results">
       @if ($search !== '')

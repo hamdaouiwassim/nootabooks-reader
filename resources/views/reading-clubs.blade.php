@@ -148,7 +148,7 @@
       @endforeach
     </div>
 
-    {{ $clubs->links() }}
+    {{ $clubs->onEachSide(1)->links() }}
   @else
     <div class="no-results">
       @if ($search !== '')

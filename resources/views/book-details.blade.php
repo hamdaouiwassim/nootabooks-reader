@@ -351,7 +351,7 @@
       @endforelse
     </div>
 
-    {{ $reviews->links() }}
+    {{ $reviews->onEachSide(1)->links() }}
   </div>
 
   <div class="tab-panel" id="tab-author">
