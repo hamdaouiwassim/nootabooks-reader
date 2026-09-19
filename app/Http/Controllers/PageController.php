@@ -144,7 +144,7 @@ class PageController extends Controller
                 });
             })
             ->orderByDesc('rating_average')
-            ->paginate(12)
+            ->paginate(20)
             ->withQueryString();
 
         if ($search !== '' && $request->integer('page', 1) === 1) {
@@ -193,7 +193,7 @@ class PageController extends Controller
         $writerBooks = $currentWriter->books()
             ->published()
             ->orderByDesc('published_year')
-            ->paginate(8)
+            ->paginate(20)
             ->withQueryString();
 
         $similarWriters = Writer::where('id', '!=', $currentWriter->id)
