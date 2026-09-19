@@ -92,10 +92,16 @@
   display: flex; align-items: center; justify-content: center;
   color: var(--text-gray);
   font-size: 12px;
-  opacity: 0;
   transition: opacity .15s ease, background .15s ease, color .15s ease;
 }
-.notif-page-item:hover .notif-dismiss-btn { opacity: 1; }
+/* Hover-reveal only makes sense on a real mouse — on touch (no :hover
+   state) a permanently invisible button would be untappable, so it stays
+   visible by default and is only hidden-until-hover on devices that can
+   actually hover. */
+@media (hover: hover) and (pointer: fine) {
+  .notif-dismiss-btn { opacity: 0; }
+  .notif-page-item:hover .notif-dismiss-btn { opacity: 1; }
+}
 .notif-dismiss-btn:hover { background: #fdecea; color: #c0392b; }
 
 /* ============ EMPTY STATE ============ */

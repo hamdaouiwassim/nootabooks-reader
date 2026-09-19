@@ -6,12 +6,30 @@
         <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
       </a>
       <p class="footer-about">منصة عربية تجمع عشاق القراءة، وتساعدك على اكتشاف الكتب وقراءتها أونلاين في مختلف المجالات.</p>
-      <div class="social-icons">
-        <a href="#"><i class="fa-brands fa-youtube"></i></a>
-        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-      </div>
+      @php
+        $socialLinks = [
+          'youtube' => \App\Models\Setting::get('social_youtube'),
+          'instagram' => \App\Models\Setting::get('social_instagram'),
+          'twitter' => \App\Models\Setting::get('social_twitter'),
+          'facebook' => \App\Models\Setting::get('social_facebook'),
+        ];
+      @endphp
+      @if (array_filter($socialLinks))
+        <div class="social-icons">
+          @if ($socialLinks['youtube'])
+            <a href="{{ $socialLinks['youtube'] }}" target="_blank" rel="noopener noreferrer" aria-label="يوتيوب"><i class="fa-brands fa-youtube"></i></a>
+          @endif
+          @if ($socialLinks['instagram'])
+            <a href="{{ $socialLinks['instagram'] }}" target="_blank" rel="noopener noreferrer" aria-label="انستغرام"><i class="fa-brands fa-instagram"></i></a>
+          @endif
+          @if ($socialLinks['twitter'])
+            <a href="{{ $socialLinks['twitter'] }}" target="_blank" rel="noopener noreferrer" aria-label="تويتر"><i class="fa-brands fa-twitter"></i></a>
+          @endif
+          @if ($socialLinks['facebook'])
+            <a href="{{ $socialLinks['facebook'] }}" target="_blank" rel="noopener noreferrer" aria-label="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+          @endif
+        </div>
+      @endif
     </div>
 
     <div class="footer-col">

@@ -601,7 +601,7 @@ img { display: block; }
 .stat-item {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 16px;
   width: 260px;
   background: #fff;

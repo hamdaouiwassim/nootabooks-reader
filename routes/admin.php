@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\DiscussionController;
 use App\Http\Controllers\Admin\FileAuditController;
 use App\Http\Controllers\Admin\QuoteController;
 use App\Http\Controllers\Admin\SearchLogController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StatisticsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WriterController;
@@ -100,4 +101,7 @@ Route::middleware('auth:admin')->group(function () {
 
     Route::get('/backup', [BackupController::class, 'index'])->name('backup.index');
     Route::post('/backup', [BackupController::class, 'create'])->name('backup.create')->middleware('throttle:3,10');
+
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
 });

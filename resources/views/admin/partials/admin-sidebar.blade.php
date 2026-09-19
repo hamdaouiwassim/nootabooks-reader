@@ -29,7 +29,7 @@
     <a href="{{ route('admin.search-logs.index') }}" @class(['active' => $activeNav === 'search-logs'])><i class="fa-solid fa-magnifying-glass"></i> سجل بحث المستخدمين</a>
     <a href="{{ route('admin.file-audit') }}" @class(['active' => $activeNav === 'file-audit'])><i class="fa-solid fa-hard-drive"></i> فحص حجم الملفات</a>
     <a href="{{ route('admin.backup.index') }}" @class(['active' => $activeNav === 'backup'])><i class="fa-solid fa-database"></i> النسخ الاحتياطي</a>
-    <a href="#"><i class="fa-solid fa-gear"></i> الإعدادات</a>
+    <a href="{{ route('admin.settings.index') }}" @class(['active' => $activeNav === 'settings'])><i class="fa-solid fa-gear"></i> الإعدادات</a>
   </nav>
 
   <div class="admin-sidebar-foot">
