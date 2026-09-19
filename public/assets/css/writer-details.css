@@ -43,9 +43,16 @@
 /* ============ BOOKS GRID ============ */
 .filter-tabs { justify-content: flex-start; margin-bottom: 26px; }
 
+/* Fixed 216px track (not 1fr) to match the /discover page's book-card size
+   exactly — discover's cards are narrower because its filters sidebar eats
+   into the available width, so matching column-count there doesn't match
+   pixel size here. Auto-fill lets column count adapt to this page's wider,
+   sidebar-less container instead of forcing a matching column count. Below
+   640px it switches to a full-width single column (see RESPONSIVE below) so
+   a lone 216px card doesn't float in a sea of empty space on phones. */
 .writer-books-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, 216px);
   gap: 20px;
 }
 .writer-books-grid .book-card { flex: none; }
@@ -83,9 +90,10 @@
   .writer-hero-photo { margin: 0 auto; }
   .writer-hero-meta { grid-template-columns: repeat(2, 1fr); max-width: none; }
   .writer-hero-actions { justify-content: center; }
-  .writer-books-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .writer-books-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
-  .writer-books-grid { grid-template-columns: 1fr; }
   .writer-hero-meta { grid-template-columns: 1fr 1fr; }
 }
