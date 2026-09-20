@@ -21,8 +21,12 @@ class SearchController extends Controller
         // search) — writer matches already get their own 'author' row below,
         // so matching them here too would flood the list with one popular
         // writer's books instead of a clean, separate author suggestion.
+        // Arabic-normalized (see Book::scopeMatchingTitle()) so a query
+        // typed without diacritics/hamzas still finds the right book, with
+        // the closest title match ranked first and downloads as tie-break.
         $books = Book::published()->with('writer')
-            ->where('title', 'like', "%{$search}%")
+            ->matchingTitle($search)
+            ->orderByTitleRelevance($search)
             ->orderByDesc('downloads_count')
             ->take(5)
             ->get()

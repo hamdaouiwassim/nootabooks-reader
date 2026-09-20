@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Concerns\FlushesAppCache;
 use App\Models\Concerns\GeneratesUniqueSlug;
 use App\Models\Concerns\ResolvesUploadedFileUrl;
+use App\Services\Search\ArabicTextNormalizer;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,6 +18,20 @@ use Illuminate\Support\Facades\URL;
 class Book extends Model
 {
     use HasFactory, GeneratesUniqueSlug, ResolvesUploadedFileUrl, FlushesAppCache;
+
+    /**
+     * Keeps `search_title` (an Arabic-normalized copy of `title` — see
+     * ArabicTextNormalizer) in sync on every save, so admins never manage it
+     * directly and it can never drift out of sync with the real title.
+     */
+    protected static function booted(): void
+    {
+        static::saving(function (Book $book) {
+            if ($book->isDirty('title')) {
+                $book->search_title = ArabicTextNormalizer::normalize($book->title);
+            }
+        });
+    }
 
     public function getRouteKeyName(): string
     {
@@ -82,6 +97,58 @@ class Book extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', 'published');
+    }
+
+    /**
+     * Arabic-aware title search: matches the raw query against the stored
+     * title (unchanged, exact-substring behavior as before) OR the
+     * normalized query against `search_title` — so "الفيل الازرق" finds a
+     * book stored as "الفيل الأزرق" without requiring exact diacritics/alef
+     * spelling. Also matches when the query's words appear in the title in
+     * any order (e.g. "ازرق الفيل" still finds "الفيل الأزرق").
+     *
+     * Never touches writer-name matching — callers that also want to match
+     * on writer name (e.g. PageController::discover()) OR this into their
+     * own where() alongside it.
+     */
+    public function scopeMatchingTitle(Builder $query, string $search): Builder
+    {
+        $normalized = ArabicTextNormalizer::normalize($search);
+        $words = ArabicTextNormalizer::words($normalized);
+
+        return $query->where(function (Builder $q) use ($search, $normalized, $words) {
+            $q->where('title', 'like', '%'.$search.'%')
+                ->orWhere('search_title', 'like', '%'.$normalized.'%');
+
+            if (count($words) > 1) {
+                $q->orWhere(function (Builder $wq) use ($words) {
+                    foreach ($words as $word) {
+                        $wq->where('search_title', 'like', '%'.$word.'%');
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * Ranks already-matched rows (see scopeMatchingTitle()) so the closest
+     * title match comes first: exact match, then "starts with", then
+     * "contains the full phrase", then everything else (word-order-
+     * independent matches from scopeMatchingTitle's word clause).
+     */
+    public function scopeOrderByTitleRelevance(Builder $query, string $search): Builder
+    {
+        $normalized = ArabicTextNormalizer::normalize($search);
+
+        return $query->orderByRaw(
+            'CASE
+                WHEN search_title = ? THEN 0
+                WHEN search_title LIKE ? THEN 1
+                WHEN search_title LIKE ? THEN 2
+                ELSE 3
+            END',
+            [$normalized, $normalized.'%', '%'.$normalized.'%']
+        );
     }
 
     /**

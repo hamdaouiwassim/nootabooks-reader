@@ -74,10 +74,17 @@ class PageController extends Controller
             ->when($selectedRatings, fn ($q) => $q->where('rating_average', '>=', min($selectedRatings)))
             ->when($search !== '', function ($q) use ($search) {
                 $q->where(function ($sq) use ($search) {
-                    $sq->where('title', 'like', "%{$search}%")
+                    $sq->matchingTitle($search)
                         ->orWhereHas('writer', fn ($wq) => $wq->where('name', 'like', "%{$search}%"));
                 });
             });
+
+        // While actively searching, the closest title match should lead
+        // regardless of the chosen sort — the sort option still applies as
+        // a tie-breaker within each relevance tier.
+        if ($search !== '') {
+            $query->orderByTitleRelevance($search);
+        }
 
         match ($sort) {
             'newest' => $query->orderByDesc('published_year'),
@@ -139,10 +146,11 @@ class PageController extends Controller
             ->with('writer')
             ->when($search !== '', function ($q) use ($search) {
                 $q->where(function ($sq) use ($search) {
-                    $sq->where('title', 'like', "%{$search}%")
+                    $sq->matchingTitle($search)
                         ->orWhereHas('writer', fn ($wq) => $wq->where('name', 'like', "%{$search}%"));
                 });
             })
+            ->when($search !== '', fn ($q) => $q->orderByTitleRelevance($search))
             ->orderByDesc('rating_average')
             ->paginate(20)
             ->withQueryString();
