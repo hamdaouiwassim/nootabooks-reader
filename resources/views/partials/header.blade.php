@@ -12,6 +12,7 @@
   <div class="header-inner">
     <a href="{{ route('home') }}" class="logo">
       <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
+      <span class="logo-brand-mobile"><span class="brand-noota">Noota</span><span class="brand-books">Books</span></span>
     </a>
 
     <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="menu" aria-expanded="false">
