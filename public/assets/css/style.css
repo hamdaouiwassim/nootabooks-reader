@@ -235,6 +235,7 @@ img { display: block; }
   flex: 1;
   align-items: center;
   justify-content: center;
+  font-family: 'Nunito', 'Tajawal', sans-serif;
   font-size: 18px;
   font-weight: 800;
   letter-spacing: .2px;
