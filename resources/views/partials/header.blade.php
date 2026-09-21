@@ -14,7 +14,7 @@
       <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
     </a>
 
-    <span class="logo-brand-mobile"><span class="brand-noota">Noota</span><span class="brand-books">Books</span></span>
+    <span class="logo-brand-mobile" dir="ltr"><span class="brand-noota">Noota</span><span class="brand-books">Books</span></span>
 
     <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="menu" aria-expanded="false">
       <i class="fa-solid fa-bars"></i>

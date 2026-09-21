@@ -1013,6 +1013,8 @@ img { display: block; }
 
   .header-inner { flex-wrap: wrap; }
 
+  .logo-brand-mobile { display: inline-flex; }
+
   .mobile-nav-toggle { display: flex; order: 2; }
 
   .dropdown { position: static; }
@@ -1075,7 +1077,6 @@ img { display: block; }
   .header-inner { flex-wrap: wrap; position: relative; gap: 10px; padding: 12px 16px; margin-right: 1.3rem; }
   .logo-tagline { display: none; }
   .logo-icon { height: 40px; }
-  .logo-brand-mobile { display: inline-flex; }
   .header-icons { gap: 2px; }
   .icon-btn { width: 34px; height: 34px; font-size: 15px; }
   .book-card { flex-basis: 220px; }
