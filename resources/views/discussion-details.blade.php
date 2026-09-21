@@ -222,7 +222,7 @@
         @else
           <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
         @endif
-        <div class="contributor-info"><strong>{{ $discussion->user->name }}</strong><span>{{ number_format($discussion->user->discussions()->count()) }} منشور · {{ number_format($discussion->user->points) }} نقطة</span></div>
+        <div class="contributor-info"><strong>{{ $discussion->user->name }}</strong><span>{{ format_count($discussion->user->discussions()->count()) }} منشور · {{ format_count($discussion->user->points) }} نقطة</span></div>
       </div>
     </div>
 
@@ -232,7 +232,7 @@
         @foreach ($relatedDiscussions as $related)
           <a href="{{ route('discussion-details', $related->id) }}" class="related-topic">
             <p>{{ \Illuminate\Support\Str::limit($related->body, 70) }}</p>
-            <span><i class="fa-regular fa-comment"></i> {{ number_format($related->comments_count) }} تعليق</span>
+            <span><i class="fa-regular fa-comment"></i> {{ format_count($related->comments_count) }} تعليق</span>
           </a>
         @endforeach
       </div>

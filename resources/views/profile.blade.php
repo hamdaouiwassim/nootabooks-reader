@@ -57,11 +57,11 @@
     </div>
 
     <div class="profile-stats">
-      <div class="profile-stat"><strong>{{ number_format($downloadsCount) }}</strong><span>كتاب محمّل</span></div>
-      <div class="profile-stat"><strong>{{ number_format($reviewsCount) }}</strong><span>تقييم</span></div>
-      <div class="profile-stat"><strong>{{ number_format($bookmarksCount) }}</strong><span>مفضلة</span></div>
-      <div class="profile-stat"><strong>{{ number_format($followedWritersCount) }}</strong><span>مؤلف متابَع</span></div>
-      <div class="profile-stat"><strong>{{ number_format($profileUser->points) }}</strong><span>نقطة</span></div>
+      <div class="profile-stat"><strong>{{ format_count($downloadsCount) }}</strong><span>كتاب محمّل</span></div>
+      <div class="profile-stat"><strong>{{ format_count($reviewsCount) }}</strong><span>تقييم</span></div>
+      <div class="profile-stat"><strong>{{ format_count($bookmarksCount) }}</strong><span>مفضلة</span></div>
+      <div class="profile-stat"><strong>{{ format_count($followedWritersCount) }}</strong><span>مؤلف متابَع</span></div>
+      <div class="profile-stat"><strong>{{ format_count($profileUser->points) }}</strong><span>نقطة</span></div>
     </div>
   </div>
 </section>

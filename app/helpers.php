@@ -19,6 +19,60 @@ if (! function_exists('asset_min')) {
     }
 }
 
+if (! function_exists('format_count')) {
+    /**
+     * Abbreviates a large public-facing count (downloads, followers, pages,
+     * etc.) as 1.2K / 3.4M / 1B — the usual social-proof-number convention.
+     * Admin panel tables intentionally keep exact numbers, so this is only
+     * used on public-facing pages.
+     */
+    function format_count(int|string $number): string
+    {
+        $number = (int) $number;
+
+        $units = [
+            1_000_000_000 => 'B',
+            1_000_000 => 'M',
+            1_000 => 'K',
+        ];
+
+        foreach ($units as $divisor => $suffix) {
+            if ($number >= $divisor) {
+                $value = rtrim(rtrim(number_format($number / $divisor, 1), '0'), '.');
+
+                return $value.$suffix;
+            }
+        }
+
+        return number_format($number);
+    }
+}
+
+if (! function_exists('format_file_size')) {
+    /**
+     * Renders a book's file_size_mb (always stored in MB) as "X MB", or
+     * "X.XX GB" once it reaches 1024MB, trimming trailing zeros either way.
+     */
+    function format_file_size(float|string|null $megabytes): ?string
+    {
+        if ($megabytes === null) {
+            return null;
+        }
+
+        $megabytes = (float) $megabytes;
+
+        if ($megabytes >= 1024) {
+            $value = rtrim(rtrim(number_format($megabytes / 1024, 2), '0'), '.');
+
+            return $value.' GB';
+        }
+
+        $value = rtrim(rtrim(number_format($megabytes, 2), '0'), '.');
+
+        return $value.' MB';
+    }
+}
+
 if (! function_exists('force_https_url')) {
     /**
      * Upgrades a stored http:// URL to https:// everywhere except local dev,

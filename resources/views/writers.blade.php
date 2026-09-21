@@ -91,8 +91,8 @@
       <h2>{{ $featuredWriter->name }}</h2>
       <p>{{ $featuredWriter->bio }}</p>
       <div class="featured-stats">
-        <span><i class="fa-solid fa-book"></i> {{ number_format($featuredWriter->books_count) }} كتاب</span>
-        <span><i class="fa-solid fa-users"></i> {{ number_format($featuredWriter->followers_count) }} متابع</span>
+        <span><i class="fa-solid fa-book"></i> {{ format_count($featuredWriter->books_count) }} كتاب</span>
+        <span><i class="fa-solid fa-users"></i> {{ format_count($featuredWriter->followers_count) }} متابع</span>
         <span><i class="fa-solid fa-star"></i> {{ number_format($featuredWriter->rating_average, 1) }} تقييم</span>
       </div>
       <div class="featured-actions">
@@ -144,8 +144,8 @@
           <p>{{ \Illuminate\Support\Str::limit($writer->bio, 100) }}</p>
         @endif
         <div class="writer-stats">
-          <span><i class="fa-solid fa-book"></i> {{ number_format($writer->books_count) }} كتاب</span>
-          <span><i class="fa-solid fa-users"></i> {{ number_format($writer->followers_count) }} متابع</span>
+          <span><i class="fa-solid fa-book"></i> {{ format_count($writer->books_count) }} كتاب</span>
+          <span><i class="fa-solid fa-users"></i> {{ format_count($writer->followers_count) }} متابع</span>
         </div>
         @auth
           <form method="POST" action="{{ route('writers.follow', $writer->slug) }}">

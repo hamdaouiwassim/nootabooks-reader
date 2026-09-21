@@ -83,6 +83,7 @@
   border-radius: 20px;
 }
 .genre-chip:hover { border-color: var(--teal); }
+:root[data-theme="dark"] .genre-chip { color: #fff; }
 
 .book-title { font-size: 32px; font-weight: 800; color: var(--heading-text); margin-bottom: 8px; }
 .book-author { font-size: 15px; color: var(--text-gray); margin-bottom: 14px; }

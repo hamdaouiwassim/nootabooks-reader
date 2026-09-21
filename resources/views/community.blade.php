@@ -66,19 +66,19 @@
   <div class="library-stats">
     <div class="lib-stat-card">
       <i class="fa-solid fa-users"></i>
-      <div><strong>{{ number_format($membersCount) }}</strong><span>عضو</span></div>
+      <div><strong>{{ format_count($membersCount) }}</strong><span>عضو</span></div>
     </div>
     <div class="lib-stat-card">
       <i class="fa-solid fa-comments"></i>
-      <div><strong>{{ number_format($discussionsCount) }}</strong><span>مناقشة</span></div>
+      <div><strong>{{ format_count($discussionsCount) }}</strong><span>مناقشة</span></div>
     </div>
     <div class="lib-stat-card">
       <i class="fa-solid fa-people-group"></i>
-      <div><strong>{{ number_format($clubsCount) }}</strong><span>نادي قراءة</span></div>
+      <div><strong>{{ format_count($clubsCount) }}</strong><span>نادي قراءة</span></div>
     </div>
     <div class="lib-stat-card">
       <i class="fa-solid fa-fire"></i>
-      <div><strong>{{ number_format($postsTodayCount) }}</strong><span>منشور اليوم</span></div>
+      <div><strong>{{ format_count($postsTodayCount) }}</strong><span>منشور اليوم</span></div>
     </div>
   </div>
 </section>
@@ -197,7 +197,7 @@
               @if ($topClubBook)
                 <p>يقرأون الآن: {{ $topClubBook->title }}</p>
               @endif
-              <span class="club-members">{{ number_format($topClub->members_count) }} عضو</span>
+              <span class="club-members">{{ format_count($topClub->members_count) }} عضو</span>
             </div>
           </a>
         </div>
@@ -222,7 +222,7 @@
           @else
             <span class="avatar-placeholder"><i class="fa-solid fa-feather"></i></span>
           @endif
-          <div class="contributor-info"><strong>{{ $contributor->name }}</strong><span>{{ number_format($contributor->points) }} نقطة</span></div>
+          <div class="contributor-info"><strong>{{ $contributor->name }}</strong><span>{{ format_count($contributor->points) }} نقطة</span></div>
         </div>
       @empty
         <div class="no-results">

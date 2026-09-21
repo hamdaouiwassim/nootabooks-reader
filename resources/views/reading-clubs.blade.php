@@ -141,7 +141,7 @@
             <p class="club-reading"><i class="fa-solid fa-book-open"></i> يقرأون الآن: {{ $currentBook->title }}</p>
           @endif
           <div class="club-card-footer">
-            <span><i class="fa-solid fa-users"></i> {{ number_format($club->members_count) }} عضو</span>
+            <span><i class="fa-solid fa-users"></i> {{ format_count($club->members_count) }} عضو</span>
             <span class="btn btn-outline small">عرض النادي</span>
           </div>
         </a>

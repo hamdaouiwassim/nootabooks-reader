@@ -153,7 +153,7 @@
           @endfor
         </span>
         <strong>{{ number_format($currentBook->rating_average, 1) }}</strong>
-        <span class="review-count">({{ number_format($currentBook->rating_count) }} تقييم)</span>
+        <span class="review-count">({{ format_count($currentBook->rating_count) }} تقييم)</span>
       @else
         <span class="no-reviews">لا توجد تقييمات بعد</span>
       @endif
@@ -164,11 +164,11 @@
     @endif
 
     <div class="book-meta-grid">
-      <div class="meta-item"><i class="fa-solid fa-file-lines"></i><span>عدد الصفحات</span><strong>{{ $currentBook->pages_count ? number_format($currentBook->pages_count).' صفحة' : '—' }}</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-file-lines"></i><span>عدد الصفحات</span><strong>{{ $currentBook->pages_count ? format_count($currentBook->pages_count).' صفحة' : '—' }}</strong></div>
       <div class="meta-item"><i class="fa-solid fa-language"></i><span>اللغة</span><strong>{{ $currentBook->language }}</strong></div>
       <div class="meta-item"><i class="fa-solid fa-calendar-days"></i><span>تاريخ النشر</span><strong>{{ $currentBook->published_year ?? '—' }}</strong></div>
-      <div class="meta-item"><i class="fa-solid fa-file-arrow-down"></i><span>حجم الملف</span><strong>{{ $currentBook->file_size_mb ? $currentBook->file_size_mb.' MB' : '—' }}</strong></div>
-      <div class="meta-item"><i class="fa-solid fa-cloud-arrow-down"></i><span>مرات التحميل</span><strong>{{ number_format($currentBook->downloads_count) }}</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-file-arrow-down"></i><span>حجم الملف</span><strong>{{ format_file_size($currentBook->file_size_mb) ?? '—' }}</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-cloud-arrow-down"></i><span>مرات التحميل</span><strong>{{ format_count($currentBook->downloads_count) }}</strong></div>
     </div>
 
     @if ($currentBook->copyright_blocked)
@@ -284,7 +284,7 @@
               @endif
             @endfor
           </span>
-          <span class="review-count">من {{ number_format($bookRatingCount) }} تقييم</span>
+          <span class="review-count">من {{ format_count($bookRatingCount) }} تقييم</span>
         @else
           <span class="no-reviews">لا توجد تقييمات بعد</span>
         @endif
@@ -368,8 +368,8 @@
             <p>{{ $currentBook->writer->bio }}</p>
           @endif
           <div class="author-mini-stats">
-            <span><i class="fa-solid fa-book"></i> {{ number_format($currentBook->writer->books()->count()) }} كتاب</span>
-            <span><i class="fa-solid fa-users"></i> {{ number_format($currentBook->writer->followers_count) }} متابع</span>
+            <span><i class="fa-solid fa-book"></i> {{ format_count($currentBook->writer->books()->count()) }} كتاب</span>
+            <span><i class="fa-solid fa-users"></i> {{ format_count($currentBook->writer->followers_count) }} متابع</span>
           </div>
         </div>
         @auth

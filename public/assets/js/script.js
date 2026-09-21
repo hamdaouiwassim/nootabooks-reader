@@ -160,6 +160,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===================== STAT COUNTER =====================
   const statCounters = document.querySelectorAll('.stat-count[data-count]');
   if (statCounters.length) {
+    // Mirrors app/helpers.php's format_count() so the animated total lands
+    // on the same 1.2K/3.4M/1B abbreviation the rest of the site uses.
+    const formatCount = (n) => {
+      if (n < 1000) return n.toLocaleString('en-US');
+      const units = [[1e9, 'B'], [1e6, 'M'], [1e3, 'K']];
+      for (const [divisor, suffix] of units) {
+        if (n >= divisor) {
+          const value = (n / divisor).toFixed(1).replace(/\.0$/, '');
+          return value + suffix;
+        }
+      }
+      return n.toLocaleString('en-US');
+    };
+
     const animateCount = (el) => {
       const target = parseInt(el.dataset.count, 10) || 0;
       const duration = 1200;
@@ -167,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const step = (now) => {
         const progress = Math.min((now - start) / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.round(target * eased).toLocaleString('en-US');
+        el.textContent = formatCount(Math.round(target * eased));
         if (progress < 1) requestAnimationFrame(step);
       };
       requestAnimationFrame(step);

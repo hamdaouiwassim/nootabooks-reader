@@ -79,8 +79,8 @@
     @endif
 
     <div class="writer-hero-meta">
-      <div class="meta-item"><i class="fa-solid fa-book"></i><span>عدد الكتب</span><strong>{{ number_format($currentWriter->books_count) }}</strong></div>
-      <div class="meta-item"><i class="fa-solid fa-users"></i><span>المتابعون</span><strong>{{ number_format($currentWriter->followers_count) }}</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-book"></i><span>عدد الكتب</span><strong>{{ format_count($currentWriter->books_count) }}</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-users"></i><span>المتابعون</span><strong>{{ format_count($currentWriter->followers_count) }}</strong></div>
       <div class="meta-item"><i class="fa-solid fa-star"></i><span>متوسط التقييم</span><strong>{{ number_format($currentWriter->rating_average, 1) }} / 5</strong></div>
       <div class="meta-item"><i class="fa-solid fa-calendar-days"></i><span>انضم منذ</span><strong>{{ $currentWriter->joined_year ?? '—' }}</strong></div>
     </div>

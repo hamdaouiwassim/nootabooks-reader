@@ -59,9 +59,9 @@
     <p class="club-hero-desc">{{ $club->description }}</p>
 
     <div class="club-hero-meta">
-      <div class="meta-item"><i class="fa-solid fa-users"></i><span>الأعضاء</span><strong>{{ number_format($club->members_count) }}</strong></div>
-      <div class="meta-item"><i class="fa-solid fa-comments"></i><span>المناقشات</span><strong>{{ number_format($club->discussions_count) }}</strong></div>
-      <div class="meta-item"><i class="fa-solid fa-book"></i><span>كتب أُنجزت</span><strong>{{ number_format($pastBooks->count()) }}</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-users"></i><span>الأعضاء</span><strong>{{ format_count($club->members_count) }}</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-comments"></i><span>المناقشات</span><strong>{{ format_count($club->discussions_count) }}</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-book"></i><span>كتب أُنجزت</span><strong>{{ format_count($pastBooks->count()) }}</strong></div>
       <div class="meta-item"><i class="fa-solid fa-calendar-days"></i><span>تأسس في</span><strong>{{ $club->created_at->format('Y') }}</strong></div>
     </div>
 
@@ -213,7 +213,7 @@
       @endforeach
     </div>
     @if ($club->members_count > $members->count())
-      <p class="members-more">و {{ number_format($club->members_count - $members->count()) }} عضوًا آخر</p>
+      <p class="members-more">و {{ format_count($club->members_count - $members->count()) }} عضوًا آخر</p>
     @endif
   </div>
 

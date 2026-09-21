@@ -134,6 +134,7 @@
   border-radius: 14px;
   margin-bottom: 10px;
 }
+:root[data-theme="dark"] .writer-tag { color: #fff; }
 .writer-card p { color: var(--text-gray); font-size: 12px; line-height: 1.7; margin-bottom: 14px; min-height: 40px; }
 .writer-stats { display: flex; justify-content: center; gap: 16px; font-size: 12px; font-weight: 700; color: var(--text-dark); margin-bottom: 14px; }
 .writer-stats i { color: var(--gold-dark); margin-left: 4px; }

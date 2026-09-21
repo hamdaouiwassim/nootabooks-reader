@@ -63,7 +63,7 @@
             <td>{{ $log->created_at->format('Y-m-d H:i') }} <span style="color:var(--text-gray); font-size:12px;">({{ $log->created_at->diffForHumans() }})</span></td>
             <td>{{ $log->admin?->name ?? '—' }}</td>
             <td>{{ $log->file_name }}</td>
-            <td>{{ number_format($log->file_size_bytes / 1024 / 1024, 1) }} MB</td>
+            <td>{{ format_file_size($log->file_size_bytes / 1024 / 1024) }}</td>
           </tr>
         @empty
           <tr class="admin-empty-row">

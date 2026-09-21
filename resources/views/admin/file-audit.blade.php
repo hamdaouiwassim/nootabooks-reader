@@ -27,14 +27,14 @@
   <div class="admin-stat-card">
     <span class="admin-stat-icon tone-gold"><i class="fa-solid fa-file-pdf"></i></span>
     <div>
-      <strong>{{ number_format($summary['totalPdfMb'], 1) }} MB</strong>
+      <strong>{{ format_file_size($summary['totalPdfMb']) }}</strong>
       <span>إجمالي حجم ملفات PDF</span>
     </div>
   </div>
   <div class="admin-stat-card">
     <span class="admin-stat-icon tone-teal"><i class="fa-solid fa-image"></i></span>
     <div>
-      <strong>{{ number_format($summary['totalCoverMb'], 2) }} MB</strong>
+      <strong>{{ format_file_size($summary['totalCoverMb']) }}</strong>
       <span>إجمالي حجم صور الأغلفة</span>
     </div>
   </div>
@@ -81,7 +81,7 @@
               @elseif ($row->pdfSizeMb === null)
                 <span>—</span>
               @else
-                <span @class(['file-audit-oversized' => $row->pdfOversized])>{{ number_format($row->pdfSizeMb, 1) }} MB</span>
+                <span @class(['file-audit-oversized' => $row->pdfOversized])>{{ format_file_size($row->pdfSizeMb) }}</span>
                 @if ($row->pdfOversized)
                   <i class="fa-solid fa-triangle-exclamation file-audit-warn-icon" title="يتجاوز {{ $pdfWarnMb }} ميجابايت"></i>
                 @endif

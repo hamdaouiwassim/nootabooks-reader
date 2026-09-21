@@ -85,7 +85,7 @@
     </div>
     <div class="admin-form-field">
       <label>حجم الملف</label>
-      <p style="font-size:14px; color:var(--text-dark);">{{ $book->file_size_mb ? $book->file_size_mb.' MB' : '—' }}</p>
+      <p style="font-size:14px; color:var(--text-dark);">{{ format_file_size($book->file_size_mb) ?? '—' }}</p>
     </div>
     @if ($book->series)
       <div class="admin-form-field">

@@ -164,7 +164,7 @@
     <div class="discover-left">
       <div class="discover-text">
         <h3>اكتشف عوالم جديدة</h3>
-        <p>{{ number_format($booksCount) }} كتاب في انتظارك ...</p>
+        <p>{{ format_count($booksCount) }} كتاب في انتظارك ...</p>
         <a href="{{ route('discover') }}" class="btn btn-gold small"><i class="fa-solid fa-arrow-left"></i> <span class="btn-label">استكشف</span></a>
       </div>
     </div>

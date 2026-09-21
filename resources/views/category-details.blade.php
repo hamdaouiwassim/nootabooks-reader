@@ -54,7 +54,7 @@
     <p class="writer-hero-desc">اكتشف مجموعة من الكتب في تصنيف {{ $currentCategory->name }} على نوته بوك، وتصفح الأعمال حسب العنوان والمؤلف.</p>
 
     <div class="writer-hero-meta" style="grid-template-columns: max-content;">
-      <div class="meta-item"><i class="fa-solid fa-book"></i><span>عدد الكتب</span><strong>{{ number_format($currentCategory->books_count) }}</strong></div>
+      <div class="meta-item"><i class="fa-solid fa-book"></i><span>عدد الكتب</span><strong>{{ format_count($currentCategory->books_count) }}</strong></div>
     </div>
   </div>
 </section>
@@ -134,7 +134,7 @@
         <span class="cat-icon-circle {{ $category->color ?? 'cat-navy' }}">{{ mb_substr($category->name, 0, 1) }}</span>
         <div class="cat-info">
           <h3>{{ $category->name }}</h3>
-          <p>{{ number_format($category->books_count) }} كتاب</p>
+          <p>{{ format_count($category->books_count) }} كتاب</p>
         </div>
       </a>
     @endforeach

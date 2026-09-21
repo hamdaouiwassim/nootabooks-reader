@@ -205,8 +205,9 @@ body { min-height: 100vh; }
   .auth-quote { display: none; }
   .auth-form-panel { padding: 36px 20px 50px; }
 
-  .auth-visual { display: flex; align-items: center; justify-content: center; }
-  .auth-visual .logo { display: none; }
+  .auth-visual { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+  .auth-visual .logo { display: block; position: static; transform: none; }
+  .auth-visual .logo-icon { height: 44px; width: auto; }
   .auth-visual .auth-visual-heading {
     display: block;
     color: #fff;
