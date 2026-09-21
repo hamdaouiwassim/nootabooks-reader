@@ -111,6 +111,7 @@
 .fa-location-dot:before { content: "\f3c5"; }
 .fa-lock:before { content: "\f023"; }
 .fa-magnifying-glass:before { content: "\f002"; }
+.fa-moon:before { content: "\f186"; }
 .fa-paper-plane:before { content: "\f1d8"; }
 .fa-pen:before { content: "\f304"; }
 .fa-people-group:before { content: "\e533"; }
@@ -130,6 +131,7 @@
 .fa-spinner:before { content: "\f110"; }
 .fa-star:before { content: "\f005"; }
 .fa-star-half-stroke:before { content: "\f5c0"; }
+.fa-sun:before { content: "\f185"; }
 .fa-thumbs-up:before { content: "\f164"; }
 .fa-trash:before { content: "\f1f8"; }
 .fa-triangle-exclamation:before { content: "\f071"; }

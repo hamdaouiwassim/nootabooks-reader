@@ -348,7 +348,7 @@
       <?php endif; ?>
     </div>
 
-    <?php echo e($reviews->links()); ?>
+    <?php echo e($reviews->onEachSide(1)->links()); ?>
 
   </div>
 

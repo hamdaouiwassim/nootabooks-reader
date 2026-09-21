@@ -10,9 +10,9 @@
 .breadcrumb a { color: var(--text-gray); }
 .breadcrumb a:hover { color: var(--teal); }
 .breadcrumb i { font-size: 10px; }
-.breadcrumb span { color: var(--navy); font-weight: 700; }
+.breadcrumb span { color: var(--heading-text); font-weight: 700; }
 
-.settings-title { font-size: 28px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+.settings-title { font-size: 28px; font-weight: 800; color: var(--heading-text); margin-bottom: 6px; }
 .settings-subtitle { color: var(--text-gray); font-size: 14px; }
 
 /* ============ LAYOUT ============ */
@@ -47,13 +47,13 @@
   text-align: right;
 }
 .settings-nav-btn i { width: 16px; color: var(--text-gray); }
-.settings-nav-btn:hover { background: #fff; }
+.settings-nav-btn:hover { background: var(--card-bg); }
 .settings-nav-btn.active { background: var(--navy); color: #fff; }
 .settings-nav-btn.active i { color: #fff; }
-.settings-nav-btn.danger { color: #c0392b; }
-.settings-nav-btn.danger i { color: #c0392b; }
-.settings-nav-btn.danger:hover { background: #fdecea; }
-.settings-nav-btn.danger.active { background: #c0392b; color: #fff; }
+.settings-nav-btn.danger { color: var(--danger); }
+.settings-nav-btn.danger i { color: var(--danger); }
+.settings-nav-btn.danger:hover { background: var(--danger-bg); }
+.settings-nav-btn.danger.active { background: var(--danger); color: #fff; }
 .settings-nav-btn.danger.active i { color: #fff; }
 
 /* ============ CONTENT ============ */
@@ -65,7 +65,7 @@
 }
 .settings-panel { display: none; }
 .settings-panel.active { display: block; }
-.settings-panel h2 { font-size: 19px; font-weight: 800; color: var(--navy); margin-bottom: 22px; }
+.settings-panel h2 { font-size: 19px; font-weight: 800; color: var(--heading-text); margin-bottom: 22px; }
 
 .settings-panel form { max-width: 460px; }
 
@@ -138,17 +138,17 @@
 .account-action-row .btn { flex: none; width: auto; }
 
 .danger-zone {
-  background: #fdecea;
-  border: 1px solid #f3c7c1;
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
   border-radius: 14px;
   padding: 22px;
   max-width: 640px;
 }
-.danger-zone h3 { display: flex; align-items: center; gap: 8px; color: #c0392b; font-size: 15px; font-weight: 800; margin-bottom: 8px; }
-.danger-zone p { font-size: 13px; color: #7a3129; line-height: 1.8; margin-bottom: 16px; }
+.danger-zone h3 { display: flex; align-items: center; gap: 8px; color: var(--danger); font-size: 15px; font-weight: 800; margin-bottom: 8px; }
+.danger-zone p { font-size: 13px; color: var(--danger); line-height: 1.8; margin-bottom: 16px; }
 
-.btn-danger { background: #c0392b; color: #fff; }
-.btn-danger:hover { background: #a53125; }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover { background: var(--danger-dark); }
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 900px) {

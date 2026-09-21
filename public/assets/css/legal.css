@@ -10,7 +10,7 @@
 .breadcrumb a { color: var(--text-gray); }
 .breadcrumb a:hover { color: var(--teal); }
 .breadcrumb i { font-size: 10px; }
-.breadcrumb span { color: var(--navy); font-weight: 700; }
+.breadcrumb span { color: var(--heading-text); font-weight: 700; }
 
 /* ============ LEGAL PAGE ============ */
 .legal-section { max-width: 880px; margin: 0 auto; }
@@ -21,9 +21,9 @@
   margin-bottom: 30px;
   border-bottom: 1px solid var(--border-light);
 }
-.legal-head h1 { font-size: 28px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+.legal-head h1 { font-size: 28px; font-weight: 800; color: var(--heading-text); margin-bottom: 8px; }
 .legal-updated { font-size: 13px; color: var(--text-gray); margin-bottom: 14px; }
-.legal-intro { font-size: 15px; color: #4a4a4a; line-height: 1.9; max-width: 600px; margin: 0 auto; }
+.legal-intro { font-size: 15px; color: var(--body-text); line-height: 1.9; max-width: 600px; margin: 0 auto; }
 
 .legal-toc {
   display: flex;
@@ -39,7 +39,7 @@
   font-size: 13px;
   font-weight: 700;
   color: var(--teal);
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border-light);
   border-radius: 20px;
   padding: 7px 14px;
@@ -48,10 +48,10 @@
 
 .legal-body section { margin-bottom: 34px; scroll-margin-top: 100px; }
 .legal-body section:last-child { margin-bottom: 0; }
-.legal-body h2 { font-size: 19px; font-weight: 800; color: var(--navy); margin-bottom: 12px; }
-.legal-body p { font-size: 14px; color: #4a4a4a; line-height: 1.9; margin-bottom: 10px; }
+.legal-body h2 { font-size: 19px; font-weight: 800; color: var(--heading-text); margin-bottom: 12px; }
+.legal-body p { font-size: 14px; color: var(--body-text); line-height: 1.9; margin-bottom: 10px; }
 .legal-body ul { padding-right: 22px; margin-bottom: 10px; }
-.legal-body li { font-size: 14px; color: #4a4a4a; line-height: 1.9; margin-bottom: 6px; list-style: disc; }
+.legal-body li { font-size: 14px; color: var(--body-text); line-height: 1.9; margin-bottom: 6px; list-style: disc; }
 .legal-body a { color: var(--teal); font-weight: 700; }
 .legal-body a:hover { text-decoration: underline; }
 

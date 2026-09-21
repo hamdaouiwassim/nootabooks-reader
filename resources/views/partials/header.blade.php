@@ -11,7 +11,10 @@
 <header class="site-header">
   <div class="header-inner">
     <a href="{{ route('home') }}" class="logo">
-      <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
+      <img src="{{ asset('assets/logos/light-logo-books-with-typo.png') }}" alt="نوته بوك" class="logo-icon logo-desktop logo-light">
+      <img src="{{ asset('assets/logos/dark-logo-books-with-typo.png') }}" alt="نوته بوك" class="logo-icon logo-desktop logo-dark">
+      <img src="{{ asset('assets/logos/light-logo-nootabooks.png') }}" alt="نوته بوك" class="logo-icon logo-mobile logo-light">
+      <img src="{{ asset('assets/logos/dark-logo-nootabooks.png') }}" alt="نوته بوك" class="logo-icon logo-mobile logo-dark">
     </a>
 
     <span class="logo-brand-mobile" dir="ltr"><span class="brand-noota">Noota</span><span class="brand-books">Books</span></span>
@@ -57,6 +60,10 @@
     </nav>
 
     <div class="header-icons">
+      <button class="icon-btn theme-toggle" id="themeToggle" aria-label="toggle theme">
+        <i class="fa-solid fa-moon"></i>
+        <i class="fa-solid fa-sun"></i>
+      </button>
       @auth
         <div class="dropdown notif-dropdown">
           <button class="icon-btn" aria-label="notifications" id="notifBtn">

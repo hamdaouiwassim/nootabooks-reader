@@ -3,7 +3,8 @@
   <div class="footer-top">
     <div class="footer-brand">
       <a href="{{ route('home') }}" class="logo">
-        <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
+        <img src="{{ asset('assets/logos/light-logo-nootabooks-with-slogan.png') }}" alt="نوته بوك" class="logo-icon logo-light">
+        <img src="{{ asset('assets/logos/dark-logo-nootabooks-with-slogan.png') }}" alt="نوته بوك" class="logo-icon logo-dark">
       </a>
       <p class="footer-about">منصة عربية تجمع عشاق القراءة، وتساعدك على اكتشاف الكتب وقراءتها أونلاين في مختلف المجالات.</p>
       @php

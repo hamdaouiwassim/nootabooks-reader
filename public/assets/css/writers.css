@@ -10,11 +10,11 @@
 .breadcrumb a { color: var(--text-gray); }
 .breadcrumb a:hover { color: var(--teal); }
 .breadcrumb i { font-size: 10px; }
-.breadcrumb span { color: var(--navy); font-weight: 700; }
+.breadcrumb span { color: var(--heading-text); font-weight: 700; }
 
 /* ============ PAGE HEADING ============ */
 .writers-hero { text-align: center; padding-bottom: 8px; }
-.writers-hero h1 { font-size: 34px; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+.writers-hero h1 { font-size: 34px; font-weight: 800; color: var(--heading-text); margin-bottom: 10px; }
 .writers-hero p { color: var(--text-gray); font-size: 15px; margin-bottom: 26px; }
 
 .writers-search {
@@ -24,11 +24,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border-light);
   border-radius: 12px;
   padding: 13px 18px;
-  box-shadow: 0 6px 16px rgba(0,0,0,.04);
+  box-shadow: 0 6px 16px rgba(var(--shadow-color),.04);
 }
 .writers-search i { color: var(--text-gray); }
 .writers-search input { flex: 1; border: none; outline: none; font-size: 14px; background: none; }
@@ -46,7 +46,7 @@
   font-size: 13px;
   color: var(--text-dark);
 }
-.filter-tab:hover { background: #fff; }
+.filter-tab:hover { background: var(--card-bg); }
 .filter-tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
 
 /* ============ FEATURED AUTHOR ============ */
@@ -91,7 +91,7 @@
 
 /* ============ RESULTS COUNT ============ */
 .results-count { color: var(--text-gray); font-size: 13px; font-weight: 700; }
-.results-count #resultsCount { color: var(--navy); }
+.results-count #resultsCount { color: var(--heading-text); }
 
 /* ============ WRITERS GRID ============ */
 .writers-grid {
@@ -108,7 +108,7 @@
   text-align: center;
   transition: transform .15s ease, box-shadow .15s ease;
 }
-.writer-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,.06); background: #fff; }
+.writer-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(var(--shadow-color),.06); background: var(--card-bg); }
 .writer-card-link { display: block; color: inherit; }
 /* "Stretched link": the whole card stays clickable to the author page via
    this invisible overlay, while the follow button (z-index 2) keeps working
@@ -122,13 +122,13 @@
   border: 1px solid var(--border-light);
 }
 .writer-card .avatar-placeholder { font-size: 26px; }
-.writer-card h3 { font-size: 15px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+.writer-card h3 { font-size: 15px; font-weight: 800; color: var(--heading-text); margin-bottom: 6px; }
 .writer-tag {
   display: inline-block;
   font-size: 11px;
   font-weight: 700;
   color: var(--teal);
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border-light);
   padding: 3px 10px;
   border-radius: 14px;

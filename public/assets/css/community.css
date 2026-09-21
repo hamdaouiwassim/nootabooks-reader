@@ -10,7 +10,7 @@
 .breadcrumb a { color: var(--text-gray); }
 .breadcrumb a:hover { color: var(--teal); }
 .breadcrumb i { font-size: 10px; }
-.breadcrumb span { color: var(--navy); font-weight: 700; }
+.breadcrumb span { color: var(--heading-text); font-weight: 700; }
 
 .no-results p:first-child { font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
 
@@ -41,7 +41,7 @@
   padding: 11px 18px;
   font-size: 13px;
   outline: none;
-  background: #fff;
+  background: var(--card-bg);
 }
 .new-post-box .btn.small { flex: none; }
 
@@ -72,14 +72,14 @@
   border-radius: 20px;
   white-space: nowrap;
 }
-.book-tag:hover { background: #fff; }
+.book-tag:hover { background: var(--card-bg); }
 
-.discussion-text { color: #333; font-size: 14px; line-height: 1.9; margin-bottom: 16px; }
+.discussion-text { color: var(--body-text); font-size: 14px; line-height: 1.9; margin-bottom: 16px; }
 
 .discussion-footer { display: flex; align-items: center; gap: 22px; border-top: 1px solid var(--border-light); padding-top: 12px; }
 .engage-btn { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-gray); font-weight: 600; }
 .engage-btn:hover { color: var(--teal); }
-.engage-btn.liked { color: #d1493f; }
+.engage-btn.liked { color: var(--like-red); }
 .engage-btn.liked i { font-weight: 900; }
 
 .btn-outline.center { display: flex; margin: 0 auto; max-width: 220px; }
@@ -92,7 +92,7 @@
   border-radius: 14px;
   padding: 20px;
 }
-.sidebar-card h2, .sidebar-card h3 { font-size: 15px; font-weight: 800; color: var(--navy); margin-bottom: 16px; }
+.sidebar-card h2, .sidebar-card h3 { font-size: 15px; font-weight: 800; color: var(--heading-text); margin-bottom: 16px; }
 
 /* ---- reading clubs ---- */
 .club-item { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
@@ -121,7 +121,7 @@
 .rank {
   width: 22px; height: 22px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border-light);
   color: var(--text-gray);
   font-size: 11px;
@@ -139,7 +139,7 @@
 /* ---- trending tags ---- */
 .trend-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .trend-tags a {
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border-light);
   color: var(--teal);
   font-size: 12px;

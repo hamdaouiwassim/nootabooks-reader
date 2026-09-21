@@ -11,7 +11,7 @@
 .breadcrumb a { color: var(--text-gray); }
 .breadcrumb a:hover { color: var(--teal); }
 .breadcrumb i { font-size: 10px; }
-.breadcrumb span { color: var(--navy); font-weight: 700; }
+.breadcrumb span { color: var(--heading-text); font-weight: 700; }
 
 /* ============ BOOK HERO ============ */
 .book-hero {
@@ -30,7 +30,7 @@
   align-items: center; justify-content: center;
   text-align: center;
   padding: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,.18);
+  box-shadow: 0 20px 40px rgba(var(--shadow-color),.18);
 }
 .hero-cover-img .cover-title { font-size: 28px; }
 .hero-cover-img .cover-sub { font-size: 14px; }
@@ -44,13 +44,13 @@
   width: 38px; height: 38px;
   border-radius: 50%;
   background: rgba(255,255,255,.9);
-  color: var(--navy);
+  color: #0d2b30;
   display: flex; align-items: center; justify-content: center;
   font-size: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,.15);
+  box-shadow: 0 4px 10px rgba(var(--shadow-color),.15);
 }
-.wishlist-btn:hover { color: #d1493f; }
-.wishlist-btn.active { color: #d1493f; }
+.wishlist-btn:hover { color: var(--like-red); }
+.wishlist-btn.active { color: var(--like-red); }
 .wishlist-btn.active i { font-weight: 900; }
 
 .book-hero-cover .coming-soon-badge {
@@ -84,7 +84,7 @@
 }
 .genre-chip:hover { border-color: var(--teal); }
 
-.book-title { font-size: 32px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+.book-title { font-size: 32px; font-weight: 800; color: var(--heading-text); margin-bottom: 8px; }
 .book-author { font-size: 15px; color: var(--text-gray); margin-bottom: 14px; }
 .book-author a { color: var(--gold-dark); font-weight: 700; }
 
@@ -96,7 +96,7 @@
 .no-reviews { color: var(--text-gray); font-size: 13px; font-weight: 500; }
 
 .book-desc-short {
-  color: #4a4a4a;
+  color: var(--body-text);
   font-size: 15px;
   line-height: 1.9;
   margin-bottom: 24px;
@@ -128,14 +128,14 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  background: #fdecea;
-  border: 1px solid #f3c7c1;
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
   border-radius: 12px;
   padding: 16px 18px;
   margin-bottom: 16px;
 }
-.copyright-block-notice i { color: #c0392b; font-size: 18px; flex: none; margin-top: 3px; }
-.copyright-block-notice p { color: #a53125; font-size: 14px; line-height: 1.8; font-weight: 700; margin: 0 0 8px; }
+.copyright-block-notice i { color: var(--danger); font-size: 18px; flex: none; margin-top: 3px; }
+.copyright-block-notice p { color: var(--danger); font-size: 14px; line-height: 1.8; font-weight: 700; margin: 0 0 8px; }
 .copyright-block-notice p:last-child { margin-bottom: 0; font-weight: 600; }
 
 .book-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
@@ -143,8 +143,8 @@
   width: 46px; height: 46px;
   border-radius: 10px;
   border: 1px solid var(--border-light);
-  background: #fff;
-  color: var(--navy);
+  background: var(--card-bg);
+  color: var(--heading-text);
   display: flex; align-items: center; justify-content: center;
   font-size: 16px;
 }
@@ -167,18 +167,18 @@
   border-bottom: 3px solid transparent;
   white-space: nowrap;
 }
-.tab-btn.active { color: var(--navy); border-bottom-color: var(--gold); }
+.tab-btn.active { color: var(--heading-text); border-bottom-color: var(--gold); }
 .tab-btn:hover { color: var(--teal); }
 
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
-.tab-panel h2 { font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 16px; }
-.tab-panel p { color: #4a4a4a; font-size: 15px; line-height: 1.9; margin-bottom: 16px; max-width: 800px; }
+.tab-panel h2 { font-size: 20px; font-weight: 800; color: var(--heading-text); margin-bottom: 16px; }
+.tab-panel p { color: var(--body-text); font-size: 15px; line-height: 1.9; margin-bottom: 16px; max-width: 800px; }
 .tab-panel section[aria-labelledby] a { color: var(--teal); font-weight: 700; text-decoration: underline; }
 .tab-panel section[aria-labelledby] a:hover { color: var(--gold-dark); }
 
-.book-faq-section h2 { font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 20px; }
+.book-faq-section h2 { font-size: 20px; font-weight: 800; color: var(--heading-text); margin-bottom: 20px; }
 .book-faq-section .faq-list { max-width: 800px; }
 
 .genre-tags { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
@@ -191,6 +191,7 @@
   padding: 6px 14px;
   border-radius: 20px;
 }
+:root[data-theme="dark"] .genre-tags span { color: #fff; }
 
 /* ============ REVIEWS ============ */
 .reviews-overview {
@@ -205,12 +206,12 @@
   flex-wrap: wrap;
 }
 .rating-big { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: none; }
-.big-number { font-size: 42px; font-weight: 800; color: var(--navy); }
+.big-number { font-size: 42px; font-weight: 800; color: var(--heading-text); }
 
 .rating-bars { flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 8px; }
 .bar-row { display: flex; align-items: center; gap: 10px; font-size: 13px; }
 .bar-row > span:first-child { width: 12px; font-weight: 700; color: var(--text-gray); }
-.bar { flex: 1; height: 8px; border-radius: 6px; background: #e6e2d8; overflow: hidden; }
+.bar { flex: 1; height: 8px; border-radius: 6px; background: var(--track-bg); overflow: hidden; }
 .bar .fill { height: 100%; background: var(--gold); border-radius: 6px; }
 .pct { width: 36px; color: var(--text-gray); }
 
@@ -227,7 +228,7 @@
   margin-bottom: 28px;
 }
 .add-review-form .form-field { display: flex; flex-direction: column; gap: 6px; }
-.add-review-form label { font-size: 13px; font-weight: 700; color: var(--navy); }
+.add-review-form label { font-size: 13px; font-weight: 700; color: var(--heading-text); }
 .add-review-form select,
 .add-review-form textarea {
   border: 1px solid var(--border-light);
@@ -235,7 +236,7 @@
   padding: 10px 14px;
   font-family: inherit;
   font-size: 14px;
-  background: #fff;
+  background: var(--card-bg);
   resize: vertical;
 }
 .add-review-form .btn { align-self: flex-start; }
@@ -247,7 +248,7 @@
 .review-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
 .review-head strong { font-size: 14px; }
 .review-date { color: var(--text-gray); font-size: 12px; margin-right: auto; }
-.review-body p { color: #4a4a4a; font-size: 14px; line-height: 1.8; margin: 0; max-width: none; }
+.review-body p { color: var(--body-text); font-size: 14px; line-height: 1.8; margin: 0; max-width: none; }
 .no-results { text-align: center; color: var(--text-gray); padding: 30px 0; width: 100%; }
 
 .btn-outline.center { display: flex; margin: 0 auto; max-width: 220px; }
@@ -266,9 +267,9 @@
 .author-mini-card img, .author-mini-card .avatar-placeholder { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; flex: none; }
 .author-mini-card .avatar-placeholder { font-size: 28px; }
 .author-mini-info { flex: 1; min-width: 240px; }
-.author-mini-info h3 { font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+.author-mini-info h3 { font-size: 18px; font-weight: 800; color: var(--heading-text); margin-bottom: 6px; }
 .author-mini-info p { color: var(--text-gray); font-size: 14px; line-height: 1.8; margin-bottom: 12px; max-width: 560px; }
-.author-mini-stats { display: flex; gap: 20px; font-size: 13px; font-weight: 700; color: var(--navy); }
+.author-mini-stats { display: flex; gap: 20px; font-size: 13px; font-weight: 700; color: var(--heading-text); }
 .author-mini-stats i { color: var(--gold-dark); margin-left: 6px; }
 
 /* extra cover gradients reused for similar-book carousel */

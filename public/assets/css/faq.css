@@ -6,7 +6,7 @@
 .faq-item {
   border: 1px solid var(--border-light);
   border-radius: 14px;
-  background: #fff;
+  background: var(--card-bg);
   overflow: hidden;
 }
 .faq-item[open] { border-color: var(--teal); }
@@ -16,7 +16,7 @@
   padding: 18px 22px;
   font-weight: 800;
   font-size: 15px;
-  color: var(--navy);
+  color: var(--heading-text);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -32,7 +32,7 @@
 }
 .faq-item[open] summary i { transform: rotate(180deg); }
 
-.faq-answer { padding: 0 22px 20px; font-size: 14px; color: #4a4a4a; line-height: 1.9; }
+.faq-answer { padding: 0 22px 20px; font-size: 14px; color: var(--body-text); line-height: 1.9; }
 .faq-answer a { color: var(--teal); font-weight: 700; }
 .faq-answer a:hover { text-decoration: underline; }
 

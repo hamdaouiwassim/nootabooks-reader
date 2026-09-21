@@ -15,6 +15,59 @@
   --text-gray: #767676;
   --text-light: #fdfdfd;
   --star: #f5a524;
+
+  /* Heading/emphasis text — kept separate from --navy because --navy is
+     also used as a background fill (buttons, icon badges) that must stay
+     dark in both themes; this only ever holds a *text* color, so it's safe
+     to flip for dark mode below without touching those fills. */
+  --heading-text: #0d2b30;
+
+  --shadow-color: 13, 43, 48;
+  --success: #2f7a4a;
+  --success-bg: #e6f4ea;
+  --success-border: #bfe3c9;
+  --danger: #c0392b;
+  --danger-dark: #a53125;
+  --danger-bg: #fdecea;
+  --danger-border: #f5c6c0;
+  --warning: #a9720f;
+  --warning-bg: #fdf3e0;
+  --warning-border: #f3ddab;
+  --info: #1c6c9c;
+  --info-bg: #e8f1f7;
+  --info-border: #c7dfee;
+  --body-text: #4a4a4a;
+  --track-bg: #e6e2d8;
+  --like-red: #d1493f;
+}
+
+/* ============ DARK MODE ============ */
+:root[data-theme="dark"] {
+  --cream: #0f2327;
+  --cream-alt: #14343a;
+  --card-bg: #1a3a40;
+  --border-light: #2c4e54;
+  --text-dark: #eef4f2;
+  --text-gray: #9fb3b0;
+  --heading-text: #f5efe0;
+
+  --shadow-color: 0, 0, 0;
+  --success: #4caf74;
+  --success-bg: #16301f;
+  --success-border: #2f5b3d;
+  --danger: #e5594a;
+  --danger-dark: #c0392b;
+  --danger-bg: #3a1f1c;
+  --danger-border: #5c332c;
+  --warning: #d99a3a;
+  --warning-bg: #3a2e14;
+  --warning-border: #5c4a24;
+  --info: #4fa3d1;
+  --info-bg: #17303d;
+  --info-border: #2c4f61;
+  --body-text: #c9d3d1;
+  --track-bg: #2a4247;
+  --like-red: #e2685f;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -52,7 +105,11 @@
   height: 58px;
   width: auto;
   animation: loaderPulse 1.4s ease-in-out infinite;
+  display: none;
 }
+.loader-mark.logo-light { display: block; }
+:root[data-theme="dark"] .loader-mark.logo-light { display: none; }
+:root[data-theme="dark"] .loader-mark.logo-dark { display: block; }
 @keyframes loaderSpin { to { transform: rotate(360deg); } }
 @keyframes loaderPulse {
   0%, 100% { transform: scale(1); opacity: 1; }
@@ -123,7 +180,7 @@ img { display: block; }
   font-size: 13px;
   font-weight: 700;
   border: 1px solid transparent;
-  box-shadow: 0 14px 32px rgba(0,0,0,.14);
+  box-shadow: 0 14px 32px rgba(var(--shadow-color),.14);
   pointer-events: auto;
   opacity: 0;
   transform: translateY(-16px);
@@ -136,10 +193,10 @@ img { display: block; }
 .alert-close { flex: none; color: inherit; opacity: .6; font-size: 13px; }
 .alert-close:hover { opacity: 1; }
 
-.alert-success { background: #e6f4ea; color: #2f7a4a; border-color: #bfe3c9; }
-.alert-error   { background: #fdecea; color: #c0392b; border-color: #f5c6c0; }
-.alert-warning { background: #fdf3e0; color: #a9720f; border-color: #f3ddab; }
-.alert-info    { background: #e8f1f7; color: #1c6c9c; border-color: #c7dfee; }
+.alert-success { background: var(--success-bg); color: var(--success); border-color: var(--success-border); }
+.alert-error   { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-border); }
+.alert-warning { background: var(--warning-bg); color: var(--warning); border-color: var(--warning-border); }
+.alert-info    { background: var(--info-bg); color: var(--info); border-color: var(--info-border); }
 
 @media (max-width: 640px) {
   .alert-wrap { top: 12px; max-width: none; }
@@ -185,7 +242,7 @@ img { display: block; }
 
 .btn-outline {
   justify-content: center;
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border-light);
   color: var(--text-dark);
   font-weight: 700;
@@ -195,11 +252,11 @@ img { display: block; }
 .btn-outline:hover { background: var(--cream-alt); }
 
 .btn-alert {
-  background: #c0392b;
+  background: var(--danger);
   color: #fff;
   box-shadow: 0 6px 16px rgba(192, 57, 43, .3);
 }
-.btn-alert:hover { background: #a53125; }
+.btn-alert:hover { background: var(--danger-dark); }
 
 /* ============ HEADER ============ */
 .site-header {
@@ -225,6 +282,27 @@ img { display: block; }
 .logo-text { display: flex; flex-direction: column; line-height: 1.25; }
 .logo-tagline { font-size: 11px; color: var(--text-gray); }
 
+/* The light/dark logo pairs aren't always the same aspect ratio as each
+   other (e.g. the desktop pair is 1:1 vs 1.5:1) — a fixed box + object-fit
+   keeps both variants the exact same rendered size so toggling themes never
+   shifts the rest of the header row, regardless of the source PNGs' shapes. */
+.logo-desktop { width: 78px; object-fit: contain; }
+
+/* Header logo: 4 images (desktop/mobile x light/dark), CSS picks the right
+   one via data-theme + viewport — same dual-markup pattern as the theme
+   toggle's sun/moon icons, so it's correct on the very first paint with no
+   JS swap needed. Desktop uses the "books-with-typo" wordmark; mobile/
+   tablet (see the 1024px breakpoint below) uses the plain "nootabooks" mark.
+   Desktop and mobile/tablet each only get rules inside their own
+   (mutually-exclusive) media query, so a dark-mode override in one can
+   never out-specificity a hide rule meant for the other viewport. */
+.logo-icon { display: none; }
+@media (min-width: 1025px) {
+  .logo-desktop.logo-light { display: block; }
+  :root[data-theme="dark"] .logo-desktop.logo-light { display: none; }
+  :root[data-theme="dark"] .logo-desktop.logo-dark { display: block; }
+}
+
 /* Two-tone "NootaBooks" wordmark shown between the logo and the hamburger
    button only on mobile (see the 640px breakpoint below) — hidden on larger
    screens where the full Arabic logo image already carries the brand name.
@@ -236,12 +314,13 @@ img { display: block; }
   align-items: center;
   justify-content: center;
   font-family: 'Nunito', 'Tajawal', sans-serif;
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 27px;
+  font-weight: 900;
   letter-spacing: .2px;
 }
 .logo-brand-mobile .brand-noota { color: #022539; }
 .logo-brand-mobile .brand-books { color: #d28728; }
+:root[data-theme="dark"] .logo-brand-mobile .brand-noota { color: #fff; }
 
 .main-nav { align-self: stretch; }
 .main-nav ul { display: flex; gap: 22px; height: 100%; }
@@ -273,7 +352,7 @@ img { display: block; }
   justify-content: center;
   border-radius: 10px;
   font-size: 18px;
-  color: var(--navy);
+  color: var(--heading-text);
   flex: none;
 }
 .mobile-nav-toggle:hover { background: var(--cream-alt); }
@@ -287,9 +366,17 @@ img { display: block; }
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
   font-size: 17px;
-  color: var(--navy);
+  color: var(--heading-text);
 }
 .icon-btn:hover { background: var(--cream-alt); }
+
+/* Both icons ship in the markup; CSS (not JS) decides which shows, driven by
+   the data-theme attribute the anti-FOUC script sets before first paint —
+   so the correct icon is already visible on the very first frame, with no
+   flash while script.js's click handler loads. */
+.theme-toggle .fa-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .fa-sun { display: inline-block; }
+:root[data-theme="dark"] .theme-toggle .fa-moon { display: none; }
 .badge-dot {
   position: absolute;
   top: 8px; left: 10px;
@@ -328,10 +415,10 @@ img { display: block; }
   position: absolute;
   top: calc(100% + 14px);
   left: 0;
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border-light);
   border-radius: 14px;
-  box-shadow: 0 16px 40px rgba(0,0,0,.14);
+  box-shadow: 0 16px 40px rgba(var(--shadow-color),.14);
   z-index: 200;
   opacity: 0;
   visibility: hidden;
@@ -347,7 +434,7 @@ img { display: block; }
   padding: 0 18px 12px; margin-bottom: 6px;
   border-bottom: 1px solid var(--border-light);
 }
-.dropdown-panel-head h4 { font-size: 15px; font-weight: 800; color: var(--navy); }
+.dropdown-panel-head h4 { font-size: 15px; font-weight: 800; color: var(--heading-text); }
 .mark-read-btn { font-size: 12px; color: var(--teal); font-weight: 700; }
 .mark-read-btn:hover { text-decoration: underline; }
 
@@ -369,7 +456,7 @@ img { display: block; }
 .notif-icon.follow { background: #5c3f78; }
 .notif-icon.achievement { background: var(--navy); }
 .notif-text p { font-size: 13px; color: var(--text-dark); line-height: 1.6; margin-bottom: 4px; }
-.notif-text strong { color: var(--navy); }
+.notif-text strong { color: var(--heading-text); }
 .notif-time { font-size: 11px; color: var(--text-gray); }
 
 .dropdown-panel-footer {
@@ -394,8 +481,8 @@ img { display: block; }
 .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 13px; font-weight: 600; color: var(--text-dark); }
 .dropdown-item:hover { background: var(--cream-alt); }
 .dropdown-item i { width: 16px; color: var(--text-gray); }
-.dropdown-item.logout { color: #c0392b; }
-.dropdown-item.logout i { color: #c0392b; }
+.dropdown-item.logout { color: var(--danger); }
+.dropdown-item.logout i { color: var(--danger); }
 .dropdown-divider { height: 1px; background: var(--border-light); margin: 6px 0; }
 
 @media (max-width: 480px) {
@@ -462,7 +549,7 @@ img { display: block; }
   font-style: italic;
   line-height: 1.75;
   text-align: right;
-  box-shadow: 0 12px 30px rgba(0,0,0,.25);
+  box-shadow: 0 12px 30px rgba(var(--shadow-color),.25);
   opacity: 0;
   animation: heroQuoteStack 15s ease-in-out infinite;
 }
@@ -513,7 +600,7 @@ img { display: block; }
   background: #fff;
   border-radius: 50px;
   padding: 6px 20px 6px 6px;
-  box-shadow: 0 12px 30px rgba(0,0,0,.25);
+  box-shadow: 0 12px 30px rgba(var(--shadow-color),.25);
 }
 .hero-search i { color: var(--text-gray); font-size: 15px; flex: none; }
 .hero-search input {
@@ -591,7 +678,7 @@ img { display: block; }
 .suggestion-title {
   font-size: 14px;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--heading-text);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -622,11 +709,11 @@ img { display: block; }
   justify-content: flex-start;
   gap: 16px;
   width: 260px;
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border-light);
   border-radius: 16px;
   padding: 18px 28px;
-  box-shadow: 0 6px 16px rgba(0,0,0,.04);
+  box-shadow: 0 6px 16px rgba(var(--shadow-color),.04);
 }
 .stat-icon {
   font-size: 26px;
@@ -651,7 +738,7 @@ img { display: block; }
   justify-content: space-between;
   margin-bottom: 22px;
 }
-.section-title { font-size: 22px; font-weight: 800; color: var(--navy); display: flex; align-items: center; gap: 10px; }
+.section-title { font-size: 22px; font-weight: 800; color: var(--heading-text); display: flex; align-items: center; gap: 10px; }
 .fire-icon { color: #ef6c3a; font-size: 18px; }
 .section-sub { color: var(--text-gray); font-size: 13px; margin-top: 4px; }
 .view-all { color: var(--teal); font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 6px; }
@@ -663,11 +750,11 @@ img { display: block; }
   flex: none;
   width: 40px; height: 40px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border-light);
-  color: var(--navy);
+  color: var(--heading-text);
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,.05);
+  box-shadow: 0 4px 10px rgba(var(--shadow-color),.05);
 }
 .carousel-btn:hover { background: var(--cream-alt); }
 
@@ -691,7 +778,7 @@ img { display: block; }
 }
 .book-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0,0,0,.08);
+  box-shadow: 0 10px 24px rgba(var(--shadow-color),.08);
   border-color: var(--gold-dark);
 }
 .book-cover {
@@ -712,10 +799,10 @@ img { display: block; }
   border-radius: 50%;
   font-size: 11px; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
-  color: var(--navy);
+  color: var(--heading-text);
 }
 .cover-badge.sm { width: 18px; height: 18px; font-size: 10px; }
-.cover-title { font-weight: 800; font-size: 20px; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.4); }
+.cover-title { font-weight: 800; font-size: 20px; color: #fff; text-shadow: 0 2px 6px rgba(var(--shadow-color),.4); }
 .cover-sub { color: #eee; font-size: 12px; margin-top: 6px; }
 
 .cover-1 { background: linear-gradient(160deg,#c7d3da,#5b6c76); }
@@ -773,7 +860,7 @@ img { display: block; }
   letter-spacing: .3px;
   padding: 4px 0;
   z-index: 1;
-  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  box-shadow: 0 2px 6px rgba(var(--shadow-color),.2);
   pointer-events: none;
 }
 
@@ -814,7 +901,7 @@ img { display: block; }
   align-items: center;
   padding-left: 45%;
 }
-.discover-text h3 { font-size: 19px; font-weight: 800; margin-bottom: 6px; color: var(--navy); }
+.discover-text h3 { font-size: 19px; font-weight: 800; margin-bottom: 6px; color: var(--heading-text); }
 .discover-text p { color: var(--text-gray); font-size: 14px; margin-bottom: 12px; }
 
 .discover-tags { display: flex; gap: 26px; flex-wrap: wrap; }
@@ -828,7 +915,7 @@ img { display: block; }
   color: #fff; font-size: 18px; font-weight: 800;
   transition: transform .15s ease, box-shadow .15s ease;
 }
-.tag-item:hover .tag-icon { transform: translateY(-3px) scale(1.08); box-shadow: 0 8px 16px rgba(0,0,0,.18); }
+.tag-item:hover .tag-icon { transform: translateY(-3px) scale(1.08); box-shadow: 0 8px 16px rgba(var(--shadow-color),.18); }
 .tag-blue { background: #1c6c78; }
 .tag-brown { background: #5a3a24; }
 .tag-green { background: #2f7a4a; }
@@ -868,7 +955,7 @@ img { display: block; }
 }
 .mini-book:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0,0,0,.08);
+  box-shadow: 0 10px 24px rgba(var(--shadow-color),.08);
   border-color: var(--gold-dark);
 }
 .mini-cover {
@@ -909,9 +996,9 @@ img { display: block; }
   font-weight: 700;
   transition: transform .15s ease;
 }
-.category-card:hover { transform: translateY(-3px); background: #fff; }
+.category-card:hover { transform: translateY(-3px); background: var(--card-bg); }
 .category-card i { font-size: 26px; }
-.cat-navy { color: var(--navy); }
+.cat-navy { color: var(--heading-text); }
 .cat-teal { color: #1c6c78; }
 .cat-green { color: #2f7a4a; }
 .cat-rose { color: #b25a4a; }
@@ -963,18 +1050,21 @@ img { display: block; }
   gap: 24px;
 }
 .footer-brand .logo { margin-bottom: 16px; }
-.footer-brand .logo-icon { height: 72px; }
+.footer-brand .logo-icon { height: 72px; width: 108px; object-fit: contain; }
+.footer-brand .logo-light { display: block; }
+:root[data-theme="dark"] .footer-brand .logo-light { display: none; }
+:root[data-theme="dark"] .footer-brand .logo-dark { display: block; }
 .footer-brand .footer-about { margin-bottom: 16px; max-width: 320px; }
 .social-icons { display: flex; gap: 14px; }
 .social-icons a {
   width: 34px; height: 34px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border-light);
-  color: var(--navy);
+  color: var(--heading-text);
 }
-.footer-col h4 { font-size: 15px; font-weight: 800; margin-bottom: 16px; color: var(--navy); }
+.footer-col h4 { font-size: 15px; font-weight: 800; margin-bottom: 16px; color: var(--heading-text); }
 .footer-col a { display: block; margin-bottom: 12px; color: var(--text-gray); font-size: 14px; }
 .footer-about { color: var(--text-gray); font-size: 13px; line-height: 1.8; }
 
@@ -1016,6 +1106,11 @@ img { display: block; }
 
   .logo-brand-mobile { display: inline-flex; }
 
+  .logo-mobile { width: 78px; object-fit: contain; }
+  .logo-mobile.logo-light { display: block; }
+  :root[data-theme="dark"] .logo-mobile.logo-light { display: none; }
+  :root[data-theme="dark"] .logo-mobile.logo-dark { display: block; }
+
   .mobile-nav-toggle { display: flex; order: 2; }
 
   .dropdown { position: static; }
@@ -1033,7 +1128,7 @@ img { display: block; }
     z-index: 50;
     background: var(--cream);
     border-bottom: 1px solid var(--border-light);
-    box-shadow: 0 16px 30px rgba(0,0,0,.08);
+    box-shadow: 0 16px 30px rgba(var(--shadow-color),.08);
     max-height: 0;
     overflow: hidden;
     visibility: hidden;
@@ -1058,7 +1153,7 @@ img { display: block; }
   .main-nav a:hover i, .main-nav a:active i,
   .mobile-nav-account .dropdown-item:hover i, .mobile-nav-account .dropdown-item:active i { color: var(--gold-dark); }
   .mobile-nav-account .dropdown-item.logout:hover, .mobile-nav-account .dropdown-item.logout:active,
-  .mobile-nav-account .dropdown-item.logout:hover i, .mobile-nav-account .dropdown-item.logout:active i { color: #c0392b; }
+  .mobile-nav-account .dropdown-item.logout:hover i, .mobile-nav-account .dropdown-item.logout:active i { color: var(--danger); }
 
   .mobile-nav-account {
     display: block;
@@ -1076,8 +1171,15 @@ img { display: block; }
 
 @media (max-width: 640px) {
   .header-inner { flex-wrap: wrap; position: relative; gap: 10px; padding: 12px 16px; margin-right: 1.3rem; }
+  /* .main-nav (position:absolute; right:0; left:0;) resolves against
+     .header-inner, its nearest positioned ancestor — the margin-right above
+     shrinks that box, which would otherwise leave the open mobile nav ~1.3rem
+     short of the real viewport edge on the right. Push it back out to
+     compensate so it still spans edge-to-edge when open. */
+  .main-nav { right: -1.3rem; }
   .logo-tagline { display: none; }
   .logo-icon { height: 40px; }
+  .logo-mobile { width: 60px; object-fit: contain; }
   .header-icons { gap: 2px; }
   .icon-btn { width: 34px; height: 34px; font-size: 15px; }
   .book-card { flex-basis: 220px; }
@@ -1133,8 +1235,8 @@ img { display: block; }
   width: 38px; height: 38px;
   border-radius: 8px;
   border: 1px solid var(--border-light);
-  background: #fff;
-  color: var(--navy);
+  background: var(--card-bg);
+  color: var(--heading-text);
   font-weight: 700;
   font-size: 13px;
   display: inline-flex;

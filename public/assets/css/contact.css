@@ -10,11 +10,11 @@
 .breadcrumb a { color: var(--text-gray); }
 .breadcrumb a:hover { color: var(--teal); }
 .breadcrumb i { font-size: 10px; }
-.breadcrumb span { color: var(--navy); font-weight: 700; }
+.breadcrumb span { color: var(--heading-text); font-weight: 700; }
 
 /* ============ CONTACT PAGE ============ */
 .contact-head { text-align: center; max-width: 560px; margin: 0 auto 40px; }
-.contact-head h1 { font-size: 28px; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+.contact-head h1 { font-size: 28px; font-weight: 800; color: var(--heading-text); margin-bottom: 10px; }
 .contact-head p { color: var(--text-gray); font-size: 14px; line-height: 1.8; }
 
 .contact-layout {
@@ -82,7 +82,7 @@
   font-size: 16px;
   flex: none;
 }
-.contact-info-card strong { display: block; font-size: 14px; color: var(--navy); margin-bottom: 4px; }
+.contact-info-card strong { display: block; font-size: 14px; color: var(--heading-text); margin-bottom: 4px; }
 .contact-info-card p { font-size: 13px; color: var(--text-gray); }
 
 .contact-social {
@@ -92,7 +92,7 @@
   padding: 18px;
   text-align: center;
 }
-.contact-social span { display: block; font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+.contact-social span { display: block; font-size: 13px; font-weight: 700; color: var(--heading-text); margin-bottom: 12px; }
 .contact-social .social-icons { justify-content: center; }
 
 /* ============ RESPONSIVE ============ */

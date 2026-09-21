@@ -38,7 +38,12 @@
 <!-- ===================== STATS BAR ===================== -->
 <section class="stats-bar">
   <div class="stat-item">
+    <span class="stat-icon"><i class="fa-solid fa-book"></i></span>
     <div class="stat-text stat-text-lg"><strong class="stat-count" data-count="<?php echo e($booksCount); ?>">0</strong><span>كتاب متوفر</span></div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-icon"><i class="fa-solid fa-cloud-arrow-down"></i></span>
+    <div class="stat-text stat-text-lg"><strong class="stat-count" data-count="<?php echo e($downloadsSum); ?>">0</strong><span>إجمالي التحميلات</span></div>
   </div>
 </section>
 

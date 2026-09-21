@@ -76,6 +76,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ---- Theme toggle ----
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('nootabooks-theme', next);
+  });
+
   // ---- Mobile nav toggle ----
   const mobileNavToggle = document.getElementById('mobileNavToggle');
   const mainNav = document.getElementById('mainNav');

@@ -80,7 +80,7 @@ body { min-height: 100vh; }
   background: var(--cream);
 }
 .auth-form-box { width: 100%; max-width: 400px; }
-.auth-form-box h1 { font-size: 26px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+.auth-form-box h1 { font-size: 26px; font-weight: 800; color: var(--heading-text); margin-bottom: 8px; }
 .auth-subtitle { color: var(--text-gray); font-size: 14px; margin-bottom: 26px; }
 
 /* ============ SOCIAL BUTTONS ============ */
@@ -108,13 +108,13 @@ body { min-height: 100vh; }
 
 /* ============ FORM FIELDS ============ */
 .form-field { margin-bottom: 18px; }
-.form-field label { display: block; font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.form-field label { display: block; font-size: 13px; font-weight: 700; color: var(--heading-text); margin-bottom: 8px; }
 
 .input-with-icon {
   position: relative;
   display: flex;
   align-items: center;
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border-light);
   border-radius: 10px;
   padding: 0 14px;
@@ -132,11 +132,11 @@ body { min-height: 100vh; }
   font-family: inherit;
 }
 .toggle-password { color: var(--text-gray); font-size: 14px; padding: 4px; }
-.toggle-password:hover { color: var(--navy); }
+.toggle-password:hover { color: var(--heading-text); }
 
 .field-error {
   display: block;
-  color: #c0392b;
+  color: var(--danger);
   font-size: 12px;
   margin-top: 6px;
   min-height: 0;
@@ -166,7 +166,7 @@ body { min-height: 100vh; }
   align-items: center;
   gap: 8px;
   justify-content: center;
-  color: #2f7a4a;
+  color: var(--success);
   font-size: 13px;
   font-weight: 700;
   margin-top: 14px;
@@ -178,7 +178,7 @@ body { min-height: 100vh; }
 
 /* ============ PASSWORD STRENGTH ============ */
 .password-strength { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
-.strength-bar { flex: 1; height: 5px; border-radius: 4px; background: #e6e2d8; overflow: hidden; }
+.strength-bar { flex: 1; height: 5px; border-radius: 4px; background: var(--track-bg); overflow: hidden; }
 .strength-fill { height: 100%; width: 0; border-radius: 4px; transition: width .2s ease, background .2s ease; }
 .strength-label { font-size: 11px; font-weight: 700; color: var(--text-gray); min-width: 50px; }
 

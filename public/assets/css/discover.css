@@ -10,7 +10,7 @@
 .breadcrumb a { color: var(--text-gray); }
 .breadcrumb a:hover { color: var(--teal); }
 .breadcrumb i { font-size: 10px; }
-.breadcrumb span { color: var(--navy); font-weight: 700; }
+.breadcrumb span { color: var(--heading-text); font-weight: 700; }
 
 /* ============ LAYOUT ============ */
 .discover-layout {
@@ -32,7 +32,7 @@
   padding: 14px 18px;
   font-size: 14px;
   font-weight: 700;
-  color: var(--navy);
+  color: var(--heading-text);
   margin-bottom: 14px;
 }
 .filters-toggle-btn span { display: flex; align-items: center; gap: 8px; }
@@ -48,13 +48,13 @@
   top: 90px;
 }
 .filters-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-.filters-head h2 { font-size: 16px; font-weight: 800; color: var(--navy); }
+.filters-head h2 { font-size: 16px; font-weight: 800; color: var(--heading-text); }
 .clear-filters-btn { color: var(--teal); font-size: 12px; font-weight: 700; }
 .clear-filters-btn:hover { text-decoration: underline; }
 
 .filter-group { padding: 16px 0; border-bottom: 1px solid var(--border-light); }
 .filter-group:last-child { border-bottom: none; padding-bottom: 0; }
-.filter-group h3 { font-size: 13px; font-weight: 800; color: var(--navy); margin-bottom: 12px; }
+.filter-group h3 { font-size: 13px; font-weight: 800; color: var(--heading-text); margin-bottom: 12px; }
 
 .checkbox-row {
   display: flex;
@@ -79,7 +79,7 @@
   gap: 12px;
 }
 .results-count { font-size: 14px; font-weight: 400; color: var(--text-gray); }
-.results-count strong { color: var(--navy); }
+.results-count strong { color: var(--heading-text); }
 
 .sort-wrap { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-gray); }
 .sort-wrap select {
@@ -89,8 +89,8 @@
   font-family: inherit;
   font-size: 13px;
   font-weight: 700;
-  color: var(--navy);
-  background: #fff;
+  color: var(--heading-text);
+  background: var(--card-bg);
 }
 
 /* ============ RESULTS GRID ============ */
@@ -128,7 +128,7 @@
 
 /* ============ CATEGORY DISCOVERY LINKS ============ */
 .discover-categories { margin-top: 36px; }
-.discover-categories h2 { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 14px; }
+.discover-categories h2 { font-size: 16px; font-weight: 800; color: var(--heading-text); margin-bottom: 14px; }
 .category-links-row { display: flex; flex-wrap: wrap; gap: 10px; }
 .category-links-row a {
   background: var(--cream-alt);
@@ -139,11 +139,12 @@
   padding: 8px 16px;
   border-radius: 20px;
 }
-.category-links-row a:hover { background: #fff; border-color: var(--teal); }
+.category-links-row a:hover { background: var(--card-bg); border-color: var(--teal); }
+:root[data-theme="dark"] .category-links-row a { color: #fff; }
 
 /* ============ SEO INTRO TEXT ============ */
 .discover-seo-note { margin-top: 28px; max-width: 800px; }
-.discover-seo-note h2 { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+.discover-seo-note h2 { font-size: 16px; font-weight: 800; color: var(--heading-text); margin-bottom: 10px; }
 .discover-seo-note p { font-size: 14px; color: var(--text-gray); line-height: 1.9; }
 
 /* ============ RESPONSIVE ============ */

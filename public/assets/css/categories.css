@@ -10,7 +10,7 @@
 .breadcrumb a { color: var(--text-gray); }
 .breadcrumb a:hover { color: var(--teal); }
 .breadcrumb i { font-size: 10px; }
-.breadcrumb span { color: var(--navy); font-weight: 700; }
+.breadcrumb span { color: var(--heading-text); font-weight: 700; }
 
 /* ============ TOP CATEGORIES STRIP ============ */
 .top-categories-strip {
@@ -26,14 +26,14 @@
 .strip-label {
   font-weight: 800;
   font-size: 13px;
-  color: var(--navy);
+  color: var(--heading-text);
   display: flex;
   align-items: center;
   gap: 6px;
 }
 .strip-label i { color: #ef6c3a; }
 .strip-chip {
-  background: #fff;
+  background: var(--card-bg);
   border: 1px solid var(--border-light);
   color: var(--teal);
   font-size: 13px;
@@ -42,10 +42,11 @@
   border-radius: 20px;
 }
 .strip-chip:hover { background: var(--teal); color: #fff; border-color: var(--teal); }
+:root[data-theme="dark"] .strip-chip { color: #fff; }
 
 /* ============ CATEGORY CARDS ============ */
 .results-count { color: var(--text-gray); font-size: 13px; font-weight: 700; }
-.results-count #resultsCount { color: var(--navy); }
+.results-count #resultsCount { color: var(--heading-text); }
 
 .categories-full-grid {
   display: grid;
@@ -63,7 +64,7 @@
   padding: 18px;
   transition: transform .15s ease, box-shadow .15s ease;
 }
-.category-full-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(0,0,0,.06); background: #fff; }
+.category-full-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(var(--shadow-color),.06); background: var(--card-bg); }
 .cat-info { flex: 1; min-width: 0; }
 .cat-info h3, .cat-info p { overflow-wrap: break-word; }
 
@@ -84,7 +85,7 @@
 .cat-icon-circle.cat-brown { background: #5a3a24; }
 .cat-icon-circle.cat-gold { background: var(--gold-dark); }
 
-.category-full-card h3 { font-size: 15px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+.category-full-card h3 { font-size: 15px; font-weight: 800; color: var(--heading-text); margin-bottom: 4px; }
 .category-full-card p { font-size: 12px; color: var(--text-gray); }
 
 .category-full-card.is-empty { opacity: .55; }

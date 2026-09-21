@@ -11,8 +11,13 @@
 <header class="site-header">
   <div class="header-inner">
     <a href="<?php echo e(route('home')); ?>" class="logo">
-      <img src="<?php echo e(asset('assets/images/logo.png')); ?>" alt="نوته بوك" class="logo-icon">
+      <img src="<?php echo e(asset('assets/logos/light-logo-books-with-typo.png')); ?>" alt="نوته بوك" class="logo-icon logo-desktop logo-light">
+      <img src="<?php echo e(asset('assets/logos/dark-logo-books-with-typo.png')); ?>" alt="نوته بوك" class="logo-icon logo-desktop logo-dark">
+      <img src="<?php echo e(asset('assets/logos/light-logo-nootabooks.png')); ?>" alt="نوته بوك" class="logo-icon logo-mobile logo-light">
+      <img src="<?php echo e(asset('assets/logos/dark-logo-nootabooks.png')); ?>" alt="نوته بوك" class="logo-icon logo-mobile logo-dark">
     </a>
+
+    <span class="logo-brand-mobile" dir="ltr"><span class="brand-noota">Noota</span><span class="brand-books">Books</span></span>
 
     <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="menu" aria-expanded="false">
       <i class="fa-solid fa-bars"></i>
@@ -55,6 +60,10 @@
     </nav>
 
     <div class="header-icons">
+      <button class="icon-btn theme-toggle" id="themeToggle" aria-label="toggle theme">
+        <i class="fa-solid fa-moon"></i>
+        <i class="fa-solid fa-sun"></i>
+      </button>
       <?php if(auth()->guard()->check()): ?>
         <div class="dropdown notif-dropdown">
           <button class="icon-btn" aria-label="notifications" id="notifBtn">

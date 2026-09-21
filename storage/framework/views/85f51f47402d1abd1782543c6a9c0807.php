@@ -3,15 +3,34 @@
   <div class="footer-top">
     <div class="footer-brand">
       <a href="<?php echo e(route('home')); ?>" class="logo">
-        <img src="<?php echo e(asset('assets/images/logo.png')); ?>" alt="نوته بوك" class="logo-icon">
+        <img src="<?php echo e(asset('assets/logos/light-logo-nootabooks-with-slogan.png')); ?>" alt="نوته بوك" class="logo-icon logo-light">
+        <img src="<?php echo e(asset('assets/logos/dark-logo-nootabooks-with-slogan.png')); ?>" alt="نوته بوك" class="logo-icon logo-dark">
       </a>
       <p class="footer-about">منصة عربية تجمع عشاق القراءة، وتساعدك على اكتشاف الكتب وقراءتها أونلاين في مختلف المجالات.</p>
-      <div class="social-icons">
-        <a href="#"><i class="fa-brands fa-youtube"></i></a>
-        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-      </div>
+      <?php
+        $socialLinks = [
+          'youtube' => \App\Models\Setting::get('social_youtube'),
+          'instagram' => \App\Models\Setting::get('social_instagram'),
+          'twitter' => \App\Models\Setting::get('social_twitter'),
+          'facebook' => \App\Models\Setting::get('social_facebook'),
+        ];
+      ?>
+      <?php if(array_filter($socialLinks)): ?>
+        <div class="social-icons">
+          <?php if($socialLinks['youtube']): ?>
+            <a href="<?php echo e($socialLinks['youtube']); ?>" target="_blank" rel="noopener noreferrer" aria-label="يوتيوب"><i class="fa-brands fa-youtube"></i></a>
+          <?php endif; ?>
+          <?php if($socialLinks['instagram']): ?>
+            <a href="<?php echo e($socialLinks['instagram']); ?>" target="_blank" rel="noopener noreferrer" aria-label="انستغرام"><i class="fa-brands fa-instagram"></i></a>
+          <?php endif; ?>
+          <?php if($socialLinks['twitter']): ?>
+            <a href="<?php echo e($socialLinks['twitter']); ?>" target="_blank" rel="noopener noreferrer" aria-label="تويتر"><i class="fa-brands fa-twitter"></i></a>
+          <?php endif; ?>
+          <?php if($socialLinks['facebook']): ?>
+            <a href="<?php echo e($socialLinks['facebook']); ?>" target="_blank" rel="noopener noreferrer" aria-label="فيسبوك"><i class="fa-brands fa-facebook-f"></i></a>
+          <?php endif; ?>
+        </div>
+      <?php endif; ?>
     </div>
 
     <div class="footer-col">
