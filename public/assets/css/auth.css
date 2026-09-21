@@ -28,7 +28,11 @@ body { min-height: 100vh; }
   transform: translate(-50%, -50%);
   z-index: 1;
 }
-.auth-visual .logo-icon { height: 110px; }
+/* style.css's shared .logo-icon defaults to display:none (it's only
+   re-shown by the header's .logo-desktop/.logo-mobile light/dark rules) —
+   this page's logo is a single fixed image with no such class, so it needs
+   its own override or it stays invisible. */
+.auth-visual .logo-icon { display: block; height: 110px; }
 
 .auth-illustration { position: relative; flex: 1; }
 

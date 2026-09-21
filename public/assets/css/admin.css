@@ -52,7 +52,11 @@
   padding: 22px 22px 18px;
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
-.admin-sidebar-head .logo-icon { height: 44px; width: auto; flex: none; }
+/* style.css (also loaded on admin pages) defaults .logo-icon to
+   display:none for the public header's light/dark logo swap — this sidebar
+   logo is a single fixed image with no such class, so it needs its own
+   override or it stays invisible. */
+.admin-sidebar-head .logo-icon { display: block; height: 44px; width: auto; flex: none; }
 .admin-sidebar-head .logo-tagline { font-size: 11px; font-weight: 700; color: #9fb0ae; }
 .admin-sidebar-close { display: none; }
 
