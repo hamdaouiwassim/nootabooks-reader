@@ -225,12 +225,16 @@ img { display: block; }
 .logo-text { display: flex; flex-direction: column; line-height: 1.25; }
 .logo-tagline { font-size: 11px; color: var(--text-gray); }
 
-/* Two-tone "NootaBooks" wordmark shown beside the logo only on mobile (see
-   the 640px breakpoint below) — hidden on larger screens where the full
-   Arabic logo image already carries the brand name. */
+/* Two-tone "NootaBooks" wordmark shown between the logo and the hamburger
+   button only on mobile (see the 640px breakpoint below) — hidden on larger
+   screens where the full Arabic logo image already carries the brand name.
+   Sits in .header-inner (not inside .logo) so it can grow to fill the space
+   between the two and center itself in it. */
 .logo-brand-mobile {
   display: none;
+  flex: 1;
   align-items: center;
+  justify-content: center;
   font-size: 18px;
   font-weight: 800;
   letter-spacing: .2px;
