@@ -14,6 +14,18 @@ use Illuminate\Support\Facades\Storage;
 
 class AdvertisementController extends Controller
 {
+    /**
+     * Per-field max dimensions — admins upload an independent image for each
+     * device tier (not one source auto-resized into variants), but each
+     * upload still gets scaled down to a sane cap and converted to WebP via
+     * ImageOptimizer, same as every other image upload in this app.
+     */
+    private const array DIMENSIONS = [
+        'creative' => [1200, 630],
+        'creative_tablet' => [800, 420],
+        'creative_mobile' => [480, 252],
+    ];
+
     public function index(): View
     {
         return view('admin.advertisements.index', [
@@ -31,8 +43,16 @@ class AdvertisementController extends Controller
     {
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
-        $data['creative_path'] = $this->storeCreative($request->file('creative'), $data['type'], null);
-        unset($data['creative']);
+
+        $data['creative_path'] = $this->storeDeviceCreative($request->file('creative'), 'creative', $data['type'], null);
+
+        foreach (['creative_tablet' => 'creative_path_tablet', 'creative_mobile' => 'creative_path_mobile'] as $field => $column) {
+            if ($request->hasFile($field)) {
+                $data[$column] = $this->storeDeviceCreative($request->file($field), $field, $data['type'], null);
+            }
+        }
+
+        unset($data['creative'], $data['creative_tablet'], $data['creative_mobile']);
 
         Advertisement::create($data);
 
@@ -50,9 +70,16 @@ class AdvertisementController extends Controller
         $data['is_active'] = $request->boolean('is_active');
 
         if ($request->hasFile('creative')) {
-            $data['creative_path'] = $this->storeCreative($request->file('creative'), $data['type'], $advertisement->creative_path);
+            $data['creative_path'] = $this->storeDeviceCreative($request->file('creative'), 'creative', $data['type'], $advertisement->creative_path);
         }
-        unset($data['creative']);
+
+        foreach (['creative_tablet' => 'creative_path_tablet', 'creative_mobile' => 'creative_path_mobile'] as $field => $column) {
+            if ($request->hasFile($field)) {
+                $data[$column] = $this->storeDeviceCreative($request->file($field), $field, $data['type'], $advertisement->{$column});
+            }
+        }
+
+        unset($data['creative'], $data['creative_tablet'], $data['creative_mobile']);
 
         $advertisement->update($data);
 
@@ -70,10 +97,10 @@ class AdvertisementController extends Controller
 
     public function destroy(Advertisement $advertisement): RedirectResponse
     {
-        if ($relativePath = $this->relativeStoragePath($advertisement->creative_path)) {
-            Storage::disk('public')->delete($relativePath);
-            Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-md$1', $relativePath));
-            Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-sm$1', $relativePath));
+        foreach ([$advertisement->creative_path, $advertisement->creative_path_tablet, $advertisement->creative_path_mobile] as $value) {
+            if ($relativePath = $this->relativeStoragePath($value)) {
+                Storage::disk('public')->delete($relativePath);
+            }
         }
 
         $advertisement->delete();
@@ -82,38 +109,22 @@ class AdvertisementController extends Controller
     }
 
     /**
-     * Static ad types (image_banner/image_text) go through
-     * ImageOptimizer::optimizeResponsive() — same "-md"/"-sm" sibling-file
-     * convention as Writer::photo (see WriterController) — generating a
-     * desktop/tablet/mobile variant of the same upload so ad-slot.blade.php
-     * can serve the right size per viewport via <picture>.
-     *
-     * animated_banner deliberately bypasses ImageOptimizer entirely and
-     * gets no size variants — Intervention Image's GD driver only reads/
-     * re-encodes the first frame of an animated source, so resizing would
-     * mean re-encoding, which is exactly what would destroy the animation.
-     * It's stored raw and shown at one size everywhere.
+     * animated_banner bypasses ImageOptimizer entirely and is stored raw —
+     * Intervention Image's GD driver only reads/re-encodes the first frame
+     * of an animated source, so resizing would mean re-encoding, which is
+     * exactly what would destroy the animation.
      */
-    private function storeCreative(UploadedFile $file, string $type, ?string $oldValue): string
+    private function storeDeviceCreative(UploadedFile $file, string $field, string $type, ?string $oldValue): string
     {
         if ($relativePath = $this->relativeStoragePath($oldValue)) {
             Storage::disk('public')->delete($relativePath);
-            Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-md$1', $relativePath));
-            Storage::disk('public')->delete(preg_replace('/(\.\w+)$/', '-sm$1', $relativePath));
         }
 
         if ($type === 'animated_banner') {
             $path = $file->store('ads', 'public');
         } else {
-            // '' (1200x630) desktop, '-md' (800x420) tablet, '-sm' (480x252)
-            // mobile — same 1.9:1 banner aspect ratio at each size.
-            $paths = app(ImageOptimizer::class)->optimizeResponsive(
-                $file,
-                'ads',
-                ['' => [1200, 630], '-md' => [800, 420], '-sm' => [480, 252]],
-                82,
-            );
-            $path = $paths[''];
+            [$maxWidth, $maxHeight] = self::DIMENSIONS[$field];
+            $path = app(ImageOptimizer::class)->optimize($file, 'ads', $maxWidth, $maxHeight, 82);
         }
 
         return force_https_url(rtrim(config('app.url'), '/')).'/storage/'.$path;

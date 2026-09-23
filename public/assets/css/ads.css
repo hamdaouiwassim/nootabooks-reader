@@ -28,6 +28,8 @@
    directly in the layout with no such wrapper, so it gets its own spacing. */
 .ad-slot-home_top .ad-slot-creative,
 .ad-slot-home_middle .ad-slot-creative,
+.ad-slot-book_details_top .ad-slot-creative,
+.ad-slot-book_details_before_tabs .ad-slot-creative,
 .ad-slot-book_details_bottom .ad-slot-creative,
 .ad-slot-global_footer .ad-slot-creative {
   height: 180px;
@@ -55,6 +57,8 @@
 @media (max-width: 640px) {
   .ad-slot-home_top .ad-slot-creative,
   .ad-slot-home_middle .ad-slot-creative,
+  .ad-slot-book_details_top .ad-slot-creative,
+  .ad-slot-book_details_before_tabs .ad-slot-creative,
   .ad-slot-book_details_bottom .ad-slot-creative,
   .ad-slot-global_footer .ad-slot-creative {
     height: 120px;

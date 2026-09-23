@@ -96,6 +96,10 @@
   </nav>
 </div>
 
+<div class="section">
+  @include('partials.ad-slot', ['zone' => 'book_details_top'])
+</div>
+
 <!-- ===================== BOOK HERO ===================== -->
 <section class="section book-hero">
   <div class="book-hero-cover">
@@ -213,6 +217,10 @@
     </div>
   </div>
 </section>
+
+<div class="section">
+  @include('partials.ad-slot', ['zone' => 'book_details_before_tabs'])
+</div>
 
 <!-- ===================== TABS ===================== -->
 <section class="section tabs-section">

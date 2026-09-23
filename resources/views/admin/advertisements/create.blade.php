@@ -98,16 +98,39 @@
   </div>
 
   <div class="admin-form-section">
-    <h3>ملف الإعلان</h3>
-    <p style="font-size:11px; color:var(--text-gray); margin-bottom:14px; line-height:1.7;">صورة أو بانر متحرك (GIF) حسب النوع المختار أعلاه — يُضغط تلقائيًا إلا في حالة البانر المتحرك (لتفادي فقدان الحركة).</p>
-    <div>
-      <label class="admin-cover-upload" id="creativeUpload">
-        <i class="fa-solid fa-image"></i>
-        <span>اضغط لرفع ملف الإعلان</span>
-        <img id="creativePreview" alt="معاينة الإعلان" hidden>
-      </label>
-      <input type="file" id="creativeInput" name="creative" accept="image/*,.gif,.webp" required>
-      @error('creative')<span class="admin-field-error">{{ $message }}</span>@enderror
+    <h3>ملفات الإعلان</h3>
+    <p style="font-size:11px; color:var(--text-gray); margin-bottom:14px; line-height:1.7;">ارفع صورة مستقلة لكل نوع جهاز — تُضغط كل صورة تلقائيًا عند الرفع، إلا في حالة البانر المتحرك (GIF) حيث تُحفظ كما هي لتفادي فقدان الحركة. صورتا الأجهزة اللوحية والجوال اختياريتان: إن لم تُرفعا يُستخدم بدلًا منهما ملف سطح المكتب.</p>
+    <div class="admin-form-grid">
+      <div class="admin-form-field">
+        <label for="creativeInput">سطح المكتب</label>
+        <label class="admin-cover-upload" id="creativeUpload">
+          <i class="fa-solid fa-image"></i>
+          <span>اضغط لرفع صورة سطح المكتب</span>
+          <img id="creativePreview" alt="معاينة الإعلان" hidden>
+        </label>
+        <input type="file" id="creativeInput" name="creative" accept="image/*,.gif,.webp" required>
+        @error('creative')<span class="admin-field-error">{{ $message }}</span>@enderror
+      </div>
+      <div class="admin-form-field" id="creativeTabletField">
+        <label for="creativeTabletInput">الأجهزة اللوحية (اختياري)</label>
+        <label class="admin-cover-upload" id="creativeTabletUpload">
+          <i class="fa-solid fa-image"></i>
+          <span>اضغط لرفع صورة الأجهزة اللوحية</span>
+          <img id="creativeTabletPreview" alt="معاينة صورة الأجهزة اللوحية" hidden>
+        </label>
+        <input type="file" id="creativeTabletInput" name="creative_tablet" accept="image/*">
+        @error('creative_tablet')<span class="admin-field-error">{{ $message }}</span>@enderror
+      </div>
+      <div class="admin-form-field" id="creativeMobileField">
+        <label for="creativeMobileInput">الجوال (اختياري)</label>
+        <label class="admin-cover-upload" id="creativeMobileUpload">
+          <i class="fa-solid fa-image"></i>
+          <span>اضغط لرفع صورة الجوال</span>
+          <img id="creativeMobilePreview" alt="معاينة صورة الجوال" hidden>
+        </label>
+        <input type="file" id="creativeMobileInput" name="creative_mobile" accept="image/*">
+        @error('creative_mobile')<span class="admin-field-error">{{ $message }}</span>@enderror
+      </div>
     </div>
   </div>
 

@@ -12,14 +12,17 @@
     <span class="ad-slot-label">إعلان</span>
     <a href="{{ $ad->clickUrl() }}" target="_blank" rel="sponsored noopener" class="ad-slot-link">
       @if ($ad->type === 'animated_banner')
-        {{-- No size variants for animated ads — resizing would mean
-             re-encoding, which would destroy the animation. One file, every
-             viewport. --}}
+        {{-- Animated ads are one file for every device — no per-device
+             uploads for GIFs, since resizing would mean re-encoding, which
+             would destroy the animation. --}}
         <img src="{{ $ad->creative_url }}" alt="{{ $ad->alt_text }}" loading="lazy" class="ad-slot-creative">
       @else
+        {{-- Admin uploads an independent image per device (see the admin
+             form) rather than one source being auto-resized; each falls
+             back to the desktop image if that device's upload is empty. --}}
         <picture>
-          <source media="(max-width: 640px)" srcset="{{ $ad->creative_sm_url }}">
-          <source media="(max-width: 1024px)" srcset="{{ $ad->creative_md_url }}">
+          <source media="(max-width: 640px)" srcset="{{ $ad->creative_mobile_url }}">
+          <source media="(max-width: 1024px)" srcset="{{ $ad->creative_tablet_url }}">
           <img src="{{ $ad->creative_url }}" alt="{{ $ad->alt_text }}" loading="lazy" class="ad-slot-creative">
         </picture>
       @endif
