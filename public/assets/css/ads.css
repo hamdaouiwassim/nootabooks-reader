@@ -21,11 +21,30 @@
 .ad-slot-heading { display: block; font-size: 14px; font-weight: 800; color: var(--heading-text); margin-bottom: 4px; }
 .ad-slot-body { font-size: 12px; color: var(--text-gray); line-height: 1.7; }
 
-/* ============ BANNER ZONES (home top/middle, book-details bottom, footer) ============
-   home_top/home_middle/book_details_bottom are each wrapped in their own
-   <div class="section"> at the call site, which already contributes 48px of
-   vertical padding — no extra margin needed there. global_footer sits
-   directly in the layout with no such wrapper, so it gets its own spacing. */
+/* ============ BANNER ZONES (home top/middle, book-details, footer) ============
+   These are bare @include('partials.ad-slot', ...) calls with NO wrapping
+   <div class="section"> at the call site — ad-slot.blade.php renders
+   nothing at all when there's no active ad for the zone, so a wrapper div
+   would render as an empty, padded gap whenever a zone has no ad. Each zone
+   carries its own width/spacing instead, only ever present when an ad is. */
+.ad-slot-home_top,
+.ad-slot-home_middle,
+.ad-slot-book_details_top,
+.ad-slot-book_details_before_tabs,
+.ad-slot-book_details_bottom,
+.ad-slot-global_footer {
+  max-width: 1280px;
+  margin: 0 auto 26px;
+  padding: 0 32px;
+}
+.ad-slot-home_top .ad-slot,
+.ad-slot-home_middle .ad-slot,
+.ad-slot-book_details_top .ad-slot,
+.ad-slot-book_details_before_tabs .ad-slot,
+.ad-slot-book_details_bottom .ad-slot,
+.ad-slot-global_footer .ad-slot {
+  max-width: 100%;
+}
 .ad-slot-home_top .ad-slot-creative,
 .ad-slot-home_middle .ad-slot-creative,
 .ad-slot-book_details_top .ad-slot-creative,
@@ -33,14 +52,6 @@
 .ad-slot-book_details_bottom .ad-slot-creative,
 .ad-slot-global_footer .ad-slot-creative {
   height: 180px;
-}
-.ad-slot-global_footer {
-  max-width: 1280px;
-  margin: 0 auto 26px;
-  padding: 0 32px;
-}
-.ad-slot-global_footer .ad-slot {
-  max-width: 100%;
 }
 
 /* ============ SIDEBAR ZONES (discover, community) ============ */
@@ -63,5 +74,12 @@
   .ad-slot-global_footer .ad-slot-creative {
     height: 120px;
   }
-  .ad-slot-global_footer { padding: 0 16px; }
+  .ad-slot-home_top,
+  .ad-slot-home_middle,
+  .ad-slot-book_details_top,
+  .ad-slot-book_details_before_tabs,
+  .ad-slot-book_details_bottom,
+  .ad-slot-global_footer {
+    padding: 0 16px;
+  }
 }

@@ -96,9 +96,7 @@
   </nav>
 </div>
 
-<div class="section">
-  @include('partials.ad-slot', ['zone' => 'book_details_top'])
-</div>
+@include('partials.ad-slot', ['zone' => 'book_details_top'])
 
 <!-- ===================== BOOK HERO ===================== -->
 <section class="section book-hero">
@@ -218,9 +216,7 @@
   </div>
 </section>
 
-<div class="section">
-  @include('partials.ad-slot', ['zone' => 'book_details_before_tabs'])
-</div>
+@include('partials.ad-slot', ['zone' => 'book_details_before_tabs'])
 
 <!-- ===================== TABS ===================== -->
 <section class="section tabs-section">
@@ -397,9 +393,7 @@
   </div>
 </section>
 
-<div class="section">
-  @include('partials.ad-slot', ['zone' => 'book_details_bottom'])
-</div>
+@include('partials.ad-slot', ['zone' => 'book_details_bottom'])
 
 @if ($seriesBooks->count() > 1)
 <!-- ===================== SERIES BOOKS ===================== -->
