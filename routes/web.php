@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdClickController;
 use App\Http\Controllers\AuthPageController;
 use App\Http\Controllers\BookBookmarkController;
 use App\Http\Controllers\BookDownloadController;
@@ -47,6 +48,7 @@ Route::post('/books/{book}/reviews', [ReviewController::class, 'store'])
 Route::get('/read/{book?}', [PageController::class, 'read'])->name('read');
 Route::get('/books/{book}/stream', [BookDownloadController::class, 'stream'])->name('books.stream')->middleware('signed');
 Route::get('/books/{book}/download', [BookDownloadController::class, 'download'])->name('books.download')->middleware('signed');
+Route::get('/ads/{ad}/click', [AdClickController::class, 'redirect'])->name('ads.click')->middleware('signed');
 Route::post('/books/{book}/bookmark', [BookBookmarkController::class, 'toggle'])
     ->middleware('auth')
     ->name('books.bookmark');

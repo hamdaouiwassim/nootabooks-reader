@@ -184,6 +184,8 @@
   <!-- ---- Sidebar ---- -->
   <aside class="community-sidebar">
 
+    @include('partials.ad-slot', ['zone' => 'community_sidebar'])
+
     <div class="sidebar-card">
       <h2>نوادي القراءة النشطة</h2>
 

@@ -49,6 +49,10 @@
   </div>
 </section>
 
+<div class="section">
+  @include('partials.ad-slot', ['zone' => 'home_top'])
+</div>
+
 <!-- ===================== TRENDING BOOKS ===================== -->
 <section class="section trending-section home-books-section" aria-labelledby="trending-heading">
   <div class="section-head">
@@ -215,6 +219,10 @@
     </div>
   </section>
 </section>
+
+<div class="section">
+  @include('partials.ad-slot', ['zone' => 'home_middle'])
+</div>
 
 <!-- ===================== CATEGORIES ===================== -->
 <section class="section" aria-labelledby="categories-heading">

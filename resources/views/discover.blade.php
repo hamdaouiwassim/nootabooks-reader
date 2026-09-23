@@ -78,6 +78,8 @@
       <button type="button" class="clear-filters-btn" id="clearFilters" data-clear-url="{{ route('discover') }}">مسح الكل</button>
     </div>
 
+    @include('partials.ad-slot', ['zone' => 'discover_sidebar'])
+
     <div class="filter-group">
       <h3>التصنيف</h3>
       @foreach ($categories as $category)

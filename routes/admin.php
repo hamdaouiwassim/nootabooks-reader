@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdvertisementController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\BookController;
@@ -71,6 +72,14 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/quotes/{quote}/edit', [QuoteController::class, 'edit'])->name('quotes.edit');
     Route::put('/quotes/{quote}', [QuoteController::class, 'update'])->name('quotes.update');
     Route::delete('/quotes/{quote}', [QuoteController::class, 'destroy'])->name('quotes.destroy');
+
+    Route::get('/advertisements', [AdvertisementController::class, 'index'])->name('advertisements.index');
+    Route::get('/advertisements/create', [AdvertisementController::class, 'create'])->name('advertisements.create');
+    Route::post('/advertisements', [AdvertisementController::class, 'store'])->name('advertisements.store');
+    Route::get('/advertisements/{advertisement}/edit', [AdvertisementController::class, 'edit'])->name('advertisements.edit');
+    Route::put('/advertisements/{advertisement}', [AdvertisementController::class, 'update'])->name('advertisements.update');
+    Route::put('/advertisements/{advertisement}/active', [AdvertisementController::class, 'updateActive'])->name('advertisements.toggle-active');
+    Route::delete('/advertisements/{advertisement}', [AdvertisementController::class, 'destroy'])->name('advertisements.destroy');
 
     Route::get('/clubs', [ClubController::class, 'index'])->name('clubs.index');
     Route::get('/clubs/create', [ClubController::class, 'create'])->name('clubs.create');

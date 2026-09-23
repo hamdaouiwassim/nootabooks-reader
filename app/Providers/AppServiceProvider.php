@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Advertisement;
 use App\Models\Book;
 use App\Models\BookReport;
 use App\Models\Category;
@@ -49,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
                 'sidebarWritersCount' => Writer::count(),
                 'sidebarCategoriesCount' => Category::count(),
                 'sidebarQuotesCount' => Quote::count(),
+                'sidebarAdvertisementsCount' => Advertisement::count(),
                 'sidebarClubsCount' => Club::count(),
                 'sidebarDiscussionsCount' => Discussion::count(),
                 'sidebarCommentsCount' => DiscussionComment::count(),

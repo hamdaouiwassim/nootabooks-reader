@@ -389,6 +389,10 @@
   </div>
 </section>
 
+<div class="section">
+  @include('partials.ad-slot', ['zone' => 'book_details_bottom'])
+</div>
+
 @if ($seriesBooks->count() > 1)
 <!-- ===================== SERIES BOOKS ===================== -->
 <section class="section trending-section">

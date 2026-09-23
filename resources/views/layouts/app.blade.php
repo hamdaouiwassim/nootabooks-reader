@@ -43,6 +43,8 @@
 <noscript><link rel="stylesheet" href="{{ asset_min('assets/css/vendor/fontawesome/fontawesome.css') }}"></noscript>
 <link rel="preload" href="{{ asset_min('assets/css/style.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="{{ asset_min('assets/css/style.css') }}"></noscript>
+<link rel="preload" href="{{ asset_min('assets/css/ads.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ asset_min('assets/css/ads.css') }}"></noscript>
 @stack('styles')
 </head>
 <body>
@@ -54,6 +56,8 @@
 @include('partials.alert')
 
 @yield('content')
+
+@include('partials.ad-slot', ['zone' => 'global_footer'])
 
 @include('partials.footer')
 
