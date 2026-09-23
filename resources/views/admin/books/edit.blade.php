@@ -215,7 +215,7 @@
 
       <div class="admin-form-section">
         <h3>إحصائيات</h3>
-        <div class="admin-stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="admin-stats-grid cols-3">
           <div class="admin-stat-card">
             <div><strong>{{ number_format($book->downloads_count) }}</strong><span>تحميل</span></div>
           </div>

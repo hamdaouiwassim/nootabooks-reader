@@ -114,6 +114,7 @@
 .join-btn.joined { background: var(--teal); color: #fff; border-color: var(--teal); }
 
 .view-all-link { display: flex; align-items: center; gap: 6px; color: var(--teal); font-size: 13px; font-weight: 700; }
+:root[data-theme="dark"] .view-all-link { color: #fff; }
 
 /* ---- top contributors ---- */
 .contributor-item { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }

@@ -743,6 +743,7 @@ img { display: block; }
 .section-sub { color: var(--text-gray); font-size: 13px; margin-top: 4px; }
 .view-all { color: var(--teal); font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 6px; }
 .view-all i { font-size: 12px; }
+:root[data-theme="dark"] .view-all { color: #fff; }
 
 /* ============ TRENDING CAROUSEL ============ */
 .carousel-wrap { position: relative; display: flex; align-items: center; gap: 12px; }

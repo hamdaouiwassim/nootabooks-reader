@@ -97,7 +97,7 @@
   </div>
 </div>
 
-<div class="admin-stats-grid" style="grid-template-columns: repeat(2, 1fr);">
+<div class="admin-stats-grid cols-2">
   <div class="admin-panel">
     <div class="admin-panel-head">
       <h3>الأكثر تصنيفًا بالكتب</h3>

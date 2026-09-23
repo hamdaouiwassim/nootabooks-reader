@@ -35,7 +35,7 @@
   </div>
 </div>
 
-<div class="admin-stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+<div class="admin-stats-grid cols-3">
   <div class="admin-stat-card">
     <span class="admin-stat-icon tone-gold"><i class="fa-solid fa-cloud-arrow-down"></i></span>
     <div>

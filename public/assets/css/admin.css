@@ -165,6 +165,12 @@
 
 /* ============ STAT CARDS ============ */
 .admin-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 26px; }
+/* Modifiers for pages with fewer than 4 stat cards (was previously done via
+   an inline style="grid-template-columns:..." on the element, which — being
+   higher specificity than these class-level rules — permanently defeated
+   the responsive collapse below at every breakpoint). */
+.admin-stats-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.admin-stats-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
 .admin-stat-card {
   background: #fff;
   border: 1px solid var(--border-light);
@@ -318,7 +324,7 @@
 /* ============ PAGINATION ============ */
 .admin-pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
 .admin-pagination-info { font-size: 12px; color: var(--text-gray); }
-.admin-pagination-controls { display: flex; align-items: center; gap: 6px; }
+.admin-pagination-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; row-gap: 8px; }
 .admin-page-btn {
   width: 34px; height: 34px;
   border-radius: 8px;
@@ -556,7 +562,7 @@
 /* ============ RESPONSIVE ============ */
 @media (max-width: 1100px) {
   .admin-form-layout { grid-template-columns: 1fr; }
-  .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .admin-stats-grid, .admin-stats-grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 900px) {
@@ -577,7 +583,7 @@
 }
 
 @media (max-width: 640px) {
-  .admin-stats-grid { grid-template-columns: 1fr; }
+  .admin-stats-grid, .admin-stats-grid.cols-2, .admin-stats-grid.cols-3 { grid-template-columns: 1fr; }
   .admin-topbar { padding: 12px 16px; }
   .admin-topbar-user span { display: none; }
 }

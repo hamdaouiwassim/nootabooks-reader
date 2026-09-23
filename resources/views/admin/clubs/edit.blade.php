@@ -20,7 +20,7 @@
   <a href="{{ route('admin.clubs.index') }}" class="btn btn-outline"><i class="fa-solid fa-arrow-right"></i> العودة للقائمة</a>
 </div>
 
-<div class="admin-stats-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom:22px;">
+<div class="admin-stats-grid cols-2" style="margin-bottom:22px;">
   <div class="admin-stat-card">
     <div><strong>{{ number_format($club->members_count) }}</strong><span>عضو</span></div>
   </div>
