@@ -11,7 +11,18 @@
   <div class="ad-slot ad-slot-{{ $zone }}">
     <span class="ad-slot-label">إعلان</span>
     <a href="{{ $ad->clickUrl() }}" target="_blank" rel="sponsored noopener" class="ad-slot-link">
-      <img src="{{ $ad->creative_url }}" alt="{{ $ad->alt_text }}" loading="lazy" class="ad-slot-creative">
+      @if ($ad->type === 'animated_banner')
+        {{-- No size variants for animated ads — resizing would mean
+             re-encoding, which would destroy the animation. One file, every
+             viewport. --}}
+        <img src="{{ $ad->creative_url }}" alt="{{ $ad->alt_text }}" loading="lazy" class="ad-slot-creative">
+      @else
+        <picture>
+          <source media="(max-width: 640px)" srcset="{{ $ad->creative_sm_url }}">
+          <source media="(max-width: 1024px)" srcset="{{ $ad->creative_md_url }}">
+          <img src="{{ $ad->creative_url }}" alt="{{ $ad->alt_text }}" loading="lazy" class="ad-slot-creative">
+        </picture>
+      @endif
       @if ($ad->type === 'image_text')
         <div class="ad-slot-text">
           <strong class="ad-slot-heading">{{ $ad->heading }}</strong>
