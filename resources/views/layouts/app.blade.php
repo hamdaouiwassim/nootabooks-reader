@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 @include('partials.theme-init')
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@yield('title', 'نوته بوك - عالم من الكتب بين يديك')</title>
+<title>@yield('title', 'نوتابوكس - عالم من الكتب بين يديك')</title>
 @include('partials.favicons')
 @include('partials.google-analytics')
 @include('partials.google-adsense')
@@ -13,7 +13,7 @@
 {!! json_encode([
     '@@context' => 'https://schema.org',
     '@type' => 'WebSite',
-    'name' => 'نوته بوك',
+    'name' => 'نوتابوكس',
     'url' => url('/'),
     'description' => 'منصة عربية لاكتشاف الكتب والروايات وقراءتها أونلاين.',
     'inLanguage' => 'ar',
@@ -31,7 +31,7 @@
 {!! json_encode([
     '@@context' => 'https://schema.org',
     '@type' => 'Organization',
-    'name' => 'نوته بوك',
+    'name' => 'نوتابوكس',
     'url' => url('/'),
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>

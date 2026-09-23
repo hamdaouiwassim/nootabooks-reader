@@ -78,7 +78,7 @@ class BackupController extends Controller
     {
         $handle = fopen($path, 'w');
 
-        fwrite($handle, "-- نوته بوك database backup\n-- Generated: ".now()->toDateTimeString()."\n\n");
+        fwrite($handle, "-- نوتابوكس database backup\n-- Generated: ".now()->toDateTimeString()."\n\n");
         fwrite($handle, "SET FOREIGN_KEY_CHECKS=0;\nSET NAMES utf8mb4;\n\n");
 
         $pdo = DB::connection()->getPdo();

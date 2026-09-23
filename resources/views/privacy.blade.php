@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'سياسة الخصوصية - نوته بوك')
-@section('meta_description', 'اطّلع على سياسة الخصوصية الخاصة بمنصة نوته بوك وكيفية التعامل مع بياناتك الشخصية.')
+@section('title', 'سياسة الخصوصية - نوتابوكس')
+@section('meta_description', 'اطّلع على سياسة الخصوصية الخاصة بمنصة نوتابوكس وكيفية التعامل مع بياناتك الشخصية.')
 
 @push('styles')
 <link rel="preload" href="{{ asset_min('assets/css/legal.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -26,7 +26,7 @@
   <div class="legal-head">
     <h1>سياسة الخصوصية</h1>
     <p class="legal-updated">آخر تحديث: 1 سبتمبر 2026</p>
-    <p class="legal-intro">نحن في "نوته بوك" نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. توضح هذه السياسة كيفية جمعنا واستخدامنا وحمايتنا لمعلوماتك عند استخدامك لمنصتنا.</p>
+    <p class="legal-intro">نحن في "نوتابوكس" نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. توضح هذه السياسة كيفية جمعنا واستخدامنا وحمايتنا لمعلوماتك عند استخدامك لمنصتنا.</p>
   </div>
 
   <nav class="legal-toc">

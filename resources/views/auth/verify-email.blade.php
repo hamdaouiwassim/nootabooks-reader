@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'تفعيل الحساب - نوته بوك')
+@section('title', 'تفعيل الحساب - نوتابوكس')
 
 @section('content')
 <div class="auth-wrapper">
@@ -8,7 +8,7 @@
   <!-- ===================== VISUAL PANEL ===================== -->
   <div class="auth-visual register-visual">
     <a href="{{ route('home') }}" class="logo">
-      <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
+      <img src="{{ asset('assets/images/logo.png') }}" alt="نوتابوكس" class="logo-icon">
     </a>
 
     <h1 class="auth-visual-heading">تفعيل الحساب</h1>

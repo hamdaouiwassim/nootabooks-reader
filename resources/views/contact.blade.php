@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'تواصل معنا - نوته بوك')
-@section('meta_description', 'تواصل مع فريق نوته بوك لأي استفسار أو اقتراح أو مشكلة تقنية.')
+@section('title', 'تواصل معنا - نوتابوكس')
+@section('meta_description', 'تواصل مع فريق نوتابوكس لأي استفسار أو اقتراح أو مشكلة تقنية.')
 
 @push('styles')
 <link rel="preload" href="{{ asset_min('assets/css/auth.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'تحميل كتب وروايات '.$currentCategory->name.' للقراءة أونلاين | نوته بوك')
-@section('meta_description', 'تحميل مجموعة من كتب وروايات '.$currentCategory->name.' على نوته بوك، وتصفح الكتب حسب العنوان والمؤلف واقرأها أونلاين.')
+@section('title', 'تحميل كتب وروايات '.$currentCategory->name.' للقراءة أونلاين | نوتابوكس')
+@section('meta_description', 'تحميل مجموعة من كتب وروايات '.$currentCategory->name.' على نوتابوكس، وتصفح الكتب حسب العنوان والمؤلف واقرأها أونلاين.')
 @section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')
@@ -51,7 +51,7 @@
 
   <div class="writer-hero-info">
     <h1 class="writer-hero-name">{{ $currentCategory->name }}</h1>
-    <p class="writer-hero-desc">اكتشف مجموعة من الكتب في تصنيف {{ $currentCategory->name }} على نوته بوك، وتصفح الأعمال حسب العنوان والمؤلف.</p>
+    <p class="writer-hero-desc">اكتشف مجموعة من الكتب في تصنيف {{ $currentCategory->name }} على نوتابوكس، وتصفح الأعمال حسب العنوان والمؤلف.</p>
 
     <div class="writer-hero-meta" style="grid-template-columns: max-content;">
       <div class="meta-item"><i class="fa-solid fa-book"></i><span>عدد الكتب</span><strong>{{ format_count($currentCategory->books_count) }}</strong></div>

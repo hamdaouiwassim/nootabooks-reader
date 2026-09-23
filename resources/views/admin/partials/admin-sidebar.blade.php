@@ -1,6 +1,6 @@
 <aside class="admin-sidebar" id="adminSidebar">
   <div class="admin-sidebar-head">
-    <img src="{{ asset('assets/images/logo.png') }}" alt="نوته بوك" class="logo-icon">
+    <img src="{{ asset('assets/images/logo.png') }}" alt="نوتابوكس" class="logo-icon">
     <div class="logo-text">
       <span class="logo-tagline">لوحة التحكم</span>
     </div>

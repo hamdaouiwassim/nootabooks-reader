@@ -2,7 +2,7 @@
 
 return [
 
-    'name' => env('APP_NAME', 'نوته بوك'),
+    'name' => env('APP_NAME', 'نوتابوكس'),
 
     'env' => env('APP_ENV', 'production'),
 

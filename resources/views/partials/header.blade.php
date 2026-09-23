@@ -11,13 +11,13 @@
 <header class="site-header">
   <div class="header-inner">
     <a href="{{ route('home') }}" class="logo">
-      <img src="{{ asset('assets/logos/light-logo-books-with-typo.webp') }}" alt="نوته بوك" class="logo-icon logo-desktop logo-light">
-      <img src="{{ asset('assets/logos/dark-logo-books-with-typo.webp') }}" alt="نوته بوك" class="logo-icon logo-desktop logo-dark">
-      <img src="{{ asset('assets/logos/light-logo-nootabooks.webp') }}" alt="نوته بوك" class="logo-icon logo-mobile logo-light">
-      <img src="{{ asset('assets/logos/dark-logo-nootabooks.webp') }}" alt="نوته بوك" class="logo-icon logo-mobile logo-dark">
+      <img src="{{ asset('assets/logos/light-logo-books-with-typo.webp') }}" alt="نوتابوكس" class="logo-icon logo-desktop logo-light">
+      <img src="{{ asset('assets/logos/dark-logo-books-with-typo.webp') }}" alt="نوتابوكس" class="logo-icon logo-desktop logo-dark">
+      <img src="{{ asset('assets/logos/light-logo-nootabooks.webp') }}" alt="نوتابوكس" class="logo-icon logo-mobile logo-light">
+      <img src="{{ asset('assets/logos/dark-logo-nootabooks.webp') }}" alt="نوتابوكس" class="logo-icon logo-mobile logo-dark">
     </a>
 
-    <span class="logo-brand-mobile" dir="ltr"><span class="brand-noota">Noota</span><span class="brand-books">Books</span></span>
+    <a href="{{ route('home') }}" class="logo-brand-mobile" dir="ltr"><span class="brand-noota">Noota</span><span class="brand-books">Books</span></a>
 
     <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="menu" aria-expanded="false">
       <i class="fa-solid fa-bars"></i>

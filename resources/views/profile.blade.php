@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'الملف الشخصي - نوته بوك')
+@section('title', 'الملف الشخصي - نوتابوكس')
 @section('robots', 'noindex, nofollow')
 
 @push('styles')

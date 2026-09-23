@@ -131,7 +131,7 @@
         <div class="admin-form-grid">
           <div class="admin-form-field full">
             <label for="bookSeoTitle">عنوان السيو</label>
-            <input type="text" id="bookSeoTitle" name="seo_title" class="admin-input" value="{{ old('seo_title') }}" placeholder="مثال: تحميل رواية {{ old('title') ?: 'العنوان' }} PDF وقراءتها أونلاين | نوته بوك">
+            <input type="text" id="bookSeoTitle" name="seo_title" class="admin-input" value="{{ old('seo_title') }}" placeholder="مثال: تحميل رواية {{ old('title') ?: 'العنوان' }} PDF وقراءتها أونلاين | نوتابوكس">
           </div>
           <div class="admin-form-field full">
             <label for="bookSeoDescription">وصف السيو</label>

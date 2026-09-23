@@ -22,7 +22,7 @@ class EmailVerificationCodeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'رمز تفعيل الحساب - نوته بوك',
+            subject: 'رمز تفعيل الحساب - نوتابوكس',
         );
     }
 

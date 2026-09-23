@@ -1,6 +1,6 @@
 @php
-    $seoTitle = trim($__env->yieldContent('title')) ?: 'نوته بوك - عالم من الكتب بين يديك';
-    $seoDescription = trim($__env->yieldContent('meta_description')) ?: 'نوته بوك: منصة عربية لاكتشاف وقراءة وتحميل أفضل الكتب والروايات العربية، مع مراجعات القراء ومتابعة المؤلفين المفضلين لديك.';
+    $seoTitle = trim($__env->yieldContent('title')) ?: 'نوتابوكس - عالم من الكتب بين يديك';
+    $seoDescription = trim($__env->yieldContent('meta_description')) ?: 'نوتابوكس: منصة عربية لاكتشاف وقراءة وتحميل أفضل الكتب والروايات العربية، مع مراجعات القراء ومتابعة المؤلفين المفضلين لديك.';
     $seoRobots = trim($__env->yieldContent('robots')) ?: ($defaultRobots ?? 'index, follow');
     $seoImage = trim($__env->yieldContent('og_image')) ?: asset('assets/images/hero-section.jpg');
     $seoImageAlt = trim($__env->yieldContent('og_image_alt')) ?: null;
@@ -17,7 +17,7 @@
 <link rel="canonical" href="{{ $canonicalUrl }}">
 <meta name="robots" content="{{ $seoRobots }}">
 
-<meta property="og:site_name" content="نوته بوك">
+<meta property="og:site_name" content="نوتابوكس">
 <meta property="og:title" content="{{ $seoTitle }}">
 <meta property="og:description" content="{{ $seoDescription }}">
 <meta property="og:type" content="{{ $seoType }}">

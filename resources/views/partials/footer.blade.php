@@ -3,8 +3,8 @@
   <div class="footer-top">
     <div class="footer-brand">
       <a href="{{ route('home') }}" class="logo">
-        <img src="{{ asset('assets/logos/light-logo-nootabooks-with-slogan.webp') }}" alt="نوته بوك" class="logo-icon logo-light">
-        <img src="{{ asset('assets/logos/dark-logo-nootabooks-with-slogan.webp') }}" alt="نوته بوك" class="logo-icon logo-dark">
+        <img src="{{ asset('assets/logos/light-logo-nootabooks-with-slogan.webp') }}" alt="نوتابوكس" class="logo-icon logo-light">
+        <img src="{{ asset('assets/logos/dark-logo-nootabooks-with-slogan.webp') }}" alt="نوتابوكس" class="logo-icon logo-dark">
       </a>
       <p class="footer-about">منصة عربية تجمع عشاق القراءة، وتساعدك على اكتشاف الكتب وقراءتها أونلاين في مختلف المجالات.</p>
       @php
@@ -65,7 +65,7 @@
   </div>
 
   <div class="footer-bottom">
-    <p>نوته بوك © {{ date('Y') }}. جميع الحقوق محفوظة</p>
+    <p>نوتابوكس © {{ date('Y') }}. جميع الحقوق محفوظة</p>
     <div class="footer-legal">
       <a href="{{ route('privacy') }}">الخصوصية</a> | <a href="{{ route('terms') }}">الشروط</a> | <a href="{{ route('copyright') }}">حقوق النشر</a> | <a href="{{ route('contact') }}">اتصل بنا</a>
     </div>

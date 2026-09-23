@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', $club->name.' | نادي قراءة | نوته بوك')
+@section('title', $club->name.' | نادي قراءة | نوتابوكس')
 @section('meta_description', $club->description
     ? \Illuminate\Support\Str::limit($club->description, 155)
-    : 'انضم إلى نادي '.$club->name.' على نوته بوك وشارك القراء نقاشاتهم حول الكتب.')
+    : 'انضم إلى نادي '.$club->name.' على نوتابوكس وشارك القراء نقاشاتهم حول الكتب.')
 @section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')

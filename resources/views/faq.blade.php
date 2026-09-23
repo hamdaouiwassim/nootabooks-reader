@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'الأسئلة الشائعة - نوته بوك')
-@section('meta_description', 'إجابات على أكثر الأسئلة شيوعًا حول منصة نوته بوك: القراءة والتحميل، الحسابات، حقوق النشر، والدعم الفني.')
+@section('title', 'الأسئلة الشائعة - نوتابوكس')
+@section('meta_description', 'إجابات على أكثر الأسئلة شيوعًا حول منصة نوتابوكس: القراءة والتحميل، الحسابات، حقوق النشر، والدعم الفني.')
 
 @push('styles')
 <link rel="preload" href="{{ asset_min('assets/css/legal.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -27,15 +27,15 @@
 
   <div class="legal-head">
     <h1>الأسئلة الشائعة</h1>
-    <p class="legal-intro">إجابات على أكثر الأسئلة التي تصلنا حول استخدام منصة "نوته بوك".</p>
+    <p class="legal-intro">إجابات على أكثر الأسئلة التي تصلنا حول استخدام منصة "نوتابوكس".</p>
   </div>
 
   <div class="faq-list">
 
     <details class="faq-item" open>
-      <summary>ما هي منصة نوته بوك؟<i class="fa-solid fa-chevron-down"></i></summary>
+      <summary>ما هي منصة نوتابوكس؟<i class="fa-solid fa-chevron-down"></i></summary>
       <div class="faq-answer">
-        <p>"نوته بوك" منصة عربية تتيح لك اكتشاف الكتب والروايات في مختلف المجالات، وقراءتها مباشرة أونلاين أو تحميلها لقراءتها لاحقًا.</p>
+        <p>"نوتابوكس" منصة عربية تتيح لك اكتشاف الكتب والروايات في مختلف المجالات، وقراءتها مباشرة أونلاين أو تحميلها لقراءتها لاحقًا.</p>
       </div>
     </details>
 

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 @include('partials.theme-init')
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@yield('title', 'نوته بوك - عالم من الكتب بين يديك')</title>
+<title>@yield('title', 'نوتابوكس - عالم من الكتب بين يديك')</title>
 @include('partials.favicons')
 @include('partials.google-analytics')
 @include('partials.seo-meta', ['defaultRobots' => 'noindex, follow'])

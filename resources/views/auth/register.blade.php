@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'إنشاء حساب - نوته بوك')
+@section('title', 'إنشاء حساب - نوتابوكس')
 
 @section('content')
 <div class="auth-wrapper">
@@ -8,7 +8,7 @@
   <!-- ===================== VISUAL PANEL ===================== -->
   <div class="auth-visual register-visual">
     <a href="{{ route('home') }}" class="logo">
-      <img src="{{ asset('assets/logos/dark-logo-nootabooks.webp') }}" alt="نوته بوك" class="logo-icon">
+      <img src="{{ asset('assets/logos/dark-logo-nootabooks.webp') }}" alt="نوتابوكس" class="logo-icon">
     </a>
 
     <h1 class="auth-visual-heading">إنشاء حساب جديد</h1>

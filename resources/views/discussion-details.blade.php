@@ -4,7 +4,7 @@
   $discussionExcerpt = \Illuminate\Support\Str::limit(trim($discussion->body), 60);
 @endphp
 
-@section('title', $discussionExcerpt.' | مجتمع نوته بوك')
+@section('title', $discussionExcerpt.' | مجتمع نوتابوكس')
 @section('meta_description', \Illuminate\Support\Str::limit(trim($discussion->body), 155))
 @section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 

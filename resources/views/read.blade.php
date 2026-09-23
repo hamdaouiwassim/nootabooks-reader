@@ -1,6 +1,6 @@
 @extends('layouts.reader')
 
-@section('title', 'قراءة: '.$currentBook->title.' - نوته بوك')
+@section('title', 'قراءة: '.$currentBook->title.' - نوتابوكس')
 
 @section('content')
 

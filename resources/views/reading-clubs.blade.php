@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'نوادي القراءة - نوته بوك')
+@section('title', 'نوادي القراءة - نوتابوكس')
 @section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')

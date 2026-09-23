@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'تحميل كتب ومؤلفات '.$currentWriter->name.' | نوته بوك')
+@section('title', 'تحميل كتب ومؤلفات '.$currentWriter->name.' | نوتابوكس')
 @section('meta_description', $currentWriter->bio
-    ? 'تحميل كتب ومؤلفات '.$currentWriter->name.' على نوته بوك. '.\Illuminate\Support\Str::limit($currentWriter->bio, 100)
-    : 'تحميل كتب ومؤلفات '.$currentWriter->name.' على نوته بوك، وتعرف على أعماله وتصفح كتبه المتاحة للقراءة والتحميل أونلاين.')
+    ? 'تحميل كتب ومؤلفات '.$currentWriter->name.' على نوتابوكس. '.\Illuminate\Support\Str::limit($currentWriter->bio, 100)
+    : 'تحميل كتب ومؤلفات '.$currentWriter->name.' على نوتابوكس، وتعرف على أعماله وتصفح كتبه المتاحة للقراءة والتحميل أونلاين.')
 @section('robots', $isIndexable ? 'index, follow' : 'noindex, follow')
 
 @push('styles')

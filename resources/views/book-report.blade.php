@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'الإبلاغ عن حقوق النشر - '.$currentBook->title.' - نوته بوك')
-@section('meta_description', 'الإبلاغ عن انتهاك حقوق النشر لكتاب '.$currentBook->title.' على نوته بوك.')
+@section('title', 'الإبلاغ عن حقوق النشر - '.$currentBook->title.' - نوتابوكس')
+@section('meta_description', 'الإبلاغ عن انتهاك حقوق النشر لكتاب '.$currentBook->title.' على نوتابوكس.')
 @section('robots', 'noindex, follow')
 
 @push('styles')

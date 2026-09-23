@@ -245,7 +245,7 @@ class Book extends Model
 
             $readingSuffix = $this->type_label === 'رواية' ? 'وقراءتها أونلاين' : 'وقراءته أونلاين';
 
-            return "تحميل {$this->type_label} {$this->title} PDF {$readingSuffix} | نوته بوك";
+            return "تحميل {$this->type_label} {$this->title} PDF {$readingSuffix} | نوتابوكس";
         });
     }
 
@@ -275,7 +275,7 @@ class Book extends Model
 
             $ofSuffix = $this->type_label === 'رواية' ? 'الرواية ومؤلفها وتصنيفها' : 'الكتاب ومؤلفه وتصنيفه';
 
-            return \Illuminate\Support\Str::limit("{$intro} تعرّف على {$ofSuffix} واقرأه مباشرة على نوته بوك.", 160);
+            return \Illuminate\Support\Str::limit("{$intro} تعرّف على {$ofSuffix} واقرأه مباشرة على نوتابوكس.", 160);
         });
     }
 
