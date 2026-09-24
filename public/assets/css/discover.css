@@ -125,6 +125,9 @@
 .dcover-13 { background: linear-gradient(160deg,#3a5a7a,#0c1c2c); }
 
 .no-results { text-align: center; color: var(--text-gray); padding: 40px 0; }
+.did-you-mean { text-align: center; color: var(--text-gray); margin-top: -24px; padding-bottom: 24px; font-size: 14px; }
+.did-you-mean a { color: var(--gold-dark); font-weight: 700; text-decoration: underline; }
+.did-you-mean a:hover { color: var(--gold); }
 
 /* ============ CATEGORY DISCOVERY LINKS ============ */
 .discover-categories { margin-top: 36px; }

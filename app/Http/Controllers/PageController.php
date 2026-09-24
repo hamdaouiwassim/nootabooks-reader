@@ -11,6 +11,7 @@ use App\Models\Quote;
 use App\Models\SearchLog;
 use App\Models\User;
 use App\Models\Writer;
+use App\Services\Search\DidYouMeanSuggester;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -99,6 +100,10 @@ class PageController extends Controller
             SearchLog::record($search, $books->total());
         }
 
+        $suggestions = ($search !== '' && $books->isEmpty())
+            ? app(DidYouMeanSuggester::class)->suggest($search)
+            : collect();
+
         // Only the plain, unfiltered catalog (optionally paginated) is a
         // deliberate SEO landing page — any active search/category/language/
         // rating filter produces a near-duplicate slice of the same catalog
@@ -115,6 +120,7 @@ class PageController extends Controller
             'search' => $search,
             'sort' => $sort,
             'isFiltered' => $isFiltered,
+            'suggestions' => $suggestions,
         ]);
     }
 
@@ -159,6 +165,13 @@ class PageController extends Controller
             SearchLog::record($search, $categoryBooks->total());
         }
 
+        // Catalog-wide, not scoped to $currentCategory — a search inside one
+        // category should still be able to point to the right book even if
+        // it actually lives in a different category, rather than dead-ending.
+        $suggestions = ($search !== '' && $categoryBooks->isEmpty())
+            ? app(DidYouMeanSuggester::class)->suggest($search)
+            : collect();
+
         $similarCategories = Category::withCount(['books' => fn ($q) => $q->published()])
             ->where('id', '!=', $currentCategory->id)
             ->orderByDesc('books_count')
@@ -171,6 +184,7 @@ class PageController extends Controller
             'categoryBooks' => $categoryBooks,
             'similarCategories' => $similarCategories,
             'search' => $search,
+            'suggestions' => $suggestions,
             // A category with no published books yet is a thin page, and a
             // search within a category is a dynamic slice of it — neither
             // is a deliberate SEO landing page.

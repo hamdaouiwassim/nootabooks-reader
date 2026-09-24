@@ -160,6 +160,15 @@
 
     <p class="no-results" id="noResults" @unless ($books->isEmpty()) hidden @endunless>لا توجد كتب مطابقة لهذا البحث أو الفلاتر المحددة.</p>
 
+    @if ($search !== '' && $suggestions->isNotEmpty())
+      <p class="did-you-mean">
+        هل تقصد:
+        @foreach ($suggestions as $suggestion)
+          <a href="{{ route('book-details', $suggestion->slug) }}">{{ $suggestion->title }}</a>{{ $loop->last ? '؟' : '،' }}
+        @endforeach
+      </p>
+    @endif
+
     {{ $books->onEachSide(1)->links() }}
   </div>
 
