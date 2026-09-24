@@ -93,7 +93,7 @@
 
 .no-results { text-align: center; color: var(--text-gray); padding: 40px 0; }
 .did-you-mean { margin-top: 8px; padding-bottom: 24px; }
-.did-you-mean-title { text-align: center; color: var(--text-gray); font-size: 15px; font-weight: 700; margin-bottom: 18px; }
+.did-you-mean-title { text-align: right; color: var(--gold-dark); font-size: 15px; font-weight: 700; margin-bottom: 18px; }
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 1100px) {

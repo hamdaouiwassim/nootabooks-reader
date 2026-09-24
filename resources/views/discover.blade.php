@@ -158,7 +158,7 @@
 
     </div>
 
-    <p class="no-results" id="noResults" @unless ($books->isEmpty()) hidden @endunless>لا توجد كتب مطابقة لهذا البحث أو الفلاتر المحددة.</p>
+    <p class="no-results" id="noResults" @unless ($books->isEmpty() && $suggestions->isEmpty()) hidden @endunless>لا توجد كتب مطابقة لهذا البحث أو الفلاتر المحددة.</p>
 
     @if ($search !== '' && $suggestions->isNotEmpty())
       <div class="did-you-mean">

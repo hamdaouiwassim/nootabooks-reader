@@ -124,9 +124,9 @@
 .dcover-12 { background: linear-gradient(160deg,#2a4a3a,#0c1c14); }
 .dcover-13 { background: linear-gradient(160deg,#3a5a7a,#0c1c2c); }
 
-.no-results { text-align: center; color: var(--text-gray); padding: 40px 0; }
+.no-results { text-align: center; color: var(--danger); padding: 40px 0; }
 .did-you-mean { margin-top: 8px; padding-bottom: 24px; }
-.did-you-mean-title { text-align: center; color: var(--text-gray); font-size: 15px; font-weight: 700; margin-bottom: 18px; }
+.did-you-mean-title { text-align: right; color: var(--gold-dark); font-size: 15px; font-weight: 700; margin-bottom: 18px; }
 
 /* ============ CATEGORY DISCOVERY LINKS ============ */
 .discover-categories { margin-top: 36px; }
