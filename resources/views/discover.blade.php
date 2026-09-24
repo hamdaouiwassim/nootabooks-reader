@@ -161,12 +161,42 @@
     <p class="no-results" id="noResults" @unless ($books->isEmpty()) hidden @endunless>لا توجد كتب مطابقة لهذا البحث أو الفلاتر المحددة.</p>
 
     @if ($search !== '' && $suggestions->isNotEmpty())
-      <p class="did-you-mean">
-        هل تقصد:
-        @foreach ($suggestions as $suggestion)
-          <a href="{{ route('book-details', $suggestion->slug) }}">{{ $suggestion->title }}</a>{{ $loop->last ? '؟' : '،' }}
-        @endforeach
-      </p>
+      <div class="did-you-mean">
+        <p class="did-you-mean-title">هل تقصد:</p>
+        <div class="discover-grid">
+          @foreach ($suggestions as $book)
+            <article class="book-card" data-title="{{ $book->title }}" data-author="{{ $book->writer?->name }}" data-rating="{{ $book->rating_average }}" data-year="{{ $book->published_year }}">
+              @if ($book->cover_image)
+                <div class="cover-wrap">
+                  <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
+                    width="300" height="450" loading="lazy" decoding="async" alt="{{ $book->cover_alt }}">
+                  @if ($book->is_coming_soon)
+                    <span class="coming-soon-badge">قريبًا</span>
+                  @endif
+                </div>
+              @else
+                <div class="book-cover cover-{{ ($book->id % 5) + 1 }}">
+                  <span class="cover-badge">B</span>
+                  <span class="cover-title">{{ $book->title }}</span>
+                  <span class="brand-ribbon">nootabooks.com</span>
+                  @if ($book->is_coming_soon)
+                    <span class="coming-soon-badge">قريبًا</span>
+                  @endif
+                </div>
+              @endif
+              <h3><a href="{{ route('book-details', $book->slug) }}" class="stretched-link">{{ $book->title }}</a></h3>
+              @if ($book->writer)
+                <p class="author"><a href="{{ route('writer-details', $book->writer->slug) }}">{{ $book->writer->name }}</a></p>
+              @endif
+              @if ($book->rating_count > 0)
+                <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
+              @else
+                <p class="rating no-rating">لا توجد تقييمات بعد</p>
+              @endif
+            </article>
+          @endforeach
+        </div>
+      </div>
     @endif
 
     {{ $books->onEachSide(1)->links() }}

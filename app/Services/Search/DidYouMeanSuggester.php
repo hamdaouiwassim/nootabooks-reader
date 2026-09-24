@@ -30,14 +30,16 @@ class DidYouMeanSuggester
 
         // Fetched per word (not one combined OR query) so a common word
         // can't fill the whole candidate cap and crowd out a rarer word's
-        // correct match before it's ever scored.
+        // correct match before it's ever scored. Full models (not a column
+        // subset) since suggestions render as regular book cards.
         $candidates = collect();
         foreach ($words as $word) {
             $candidates = $candidates->concat(
                 Book::published()
+                    ->with('writer')
                     ->where('search_title', 'like', '%'.$word.'%')
                     ->limit(10)
-                    ->get(['id', 'title', 'slug', 'search_title'])
+                    ->get()
             );
         }
         $candidates = $candidates->unique('id')->take(50);

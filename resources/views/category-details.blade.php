@@ -120,12 +120,40 @@
     </p>
 
     @if ($search !== '' && $suggestions->isNotEmpty())
-      <p class="did-you-mean">
-        هل تقصد:
-        @foreach ($suggestions as $suggestion)
-          <a href="{{ route('book-details', $suggestion->slug) }}">{{ $suggestion->title }}</a>{{ $loop->last ? '؟' : '،' }}
-        @endforeach
-      </p>
+      <div class="did-you-mean">
+        <p class="did-you-mean-title">هل تقصد:</p>
+        <div class="writer-books-grid">
+          @foreach ($suggestions as $book)
+            <a href="{{ route('book-details', $book->slug) }}" class="book-card" data-year="{{ $book->published_year }}" data-downloads="{{ $book->downloads_count }}">
+              @if ($book->cover_image)
+                <div class="cover-wrap">
+                  <img class="book-cover cover-photo" src="{{ $book->cover_image_sm_url }}"
+                    width="300" height="450" loading="lazy" decoding="async" alt="{{ $book->cover_alt }}">
+                  @if ($book->is_coming_soon)
+                    <span class="coming-soon-badge">قريبًا</span>
+                  @endif
+                </div>
+              @else
+                <div class="book-cover cover-{{ ($book->id % 5) + 1 }}">
+                  <span class="cover-badge">B</span>
+                  <span class="cover-title">{{ $book->title }}</span>
+                  <span class="brand-ribbon">nootabooks.com</span>
+                  @if ($book->is_coming_soon)
+                    <span class="coming-soon-badge">قريبًا</span>
+                  @endif
+                </div>
+              @endif
+              <h3>{{ $book->title }}</h3>
+              <p class="author">{{ $book->writer?->name }}</p>
+              @if ($book->rating_count > 0)
+                <p class="rating"><i class="fa-solid fa-star"></i> {{ number_format($book->rating_average, 1) }}</p>
+              @else
+                <p class="rating no-rating">لا توجد تقييمات بعد</p>
+              @endif
+            </a>
+          @endforeach
+        </div>
+      </div>
     @endif
   @endif
 </section>
