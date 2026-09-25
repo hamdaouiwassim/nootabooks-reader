@@ -10,8 +10,11 @@ use App\Models\Club;
 use App\Models\Discussion;
 use App\Models\DiscussionComment;
 use App\Models\Quote;
+use App\Models\User;
 use App\Models\Writer;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -44,9 +47,20 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
+        // Fires from every successful web-guard authentication (Auth::attempt
+        // in AuthPageController::login(), plus the auto-login-after-register
+        // and auto-login-after-email-verification paths) — one listener
+        // covers all of them instead of touching each call site.
+        Event::listen(Login::class, function (Login $event): void {
+            if ($event->user instanceof User) {
+                $event->user->forceFill(['last_login_at' => now()])->saveQuietly();
+            }
+        });
+
         View::composer('admin.partials.admin-sidebar', function ($view) {
             $view->with([
                 'sidebarBooksCount' => Book::count(),
+                'sidebarUsersCount' => User::count(),
                 'sidebarWritersCount' => Writer::count(),
                 'sidebarCategoriesCount' => Category::count(),
                 'sidebarQuotesCount' => Quote::count(),

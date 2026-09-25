@@ -19,7 +19,7 @@
     <a href="{{ route('admin.advertisements.index') }}" @class(['active' => $activeNav === 'advertisements'])><i class="fa-solid fa-rectangle-ad"></i> الإعلانات <span class="badge-count">{{ $sidebarAdvertisementsCount }}</span></a>
 
     <span class="admin-nav-label">المجتمع</span>
-    <a href="{{ route('admin.users.index') }}" @class(['active' => $activeNav === 'users'])><i class="fa-solid fa-users"></i> المستخدمون</a>
+    <a href="{{ route('admin.users.index') }}" @class(['active' => $activeNav === 'users'])><i class="fa-solid fa-users"></i> المستخدمون <span class="badge-count">{{ $sidebarUsersCount }}</span></a>
     <a href="{{ route('admin.clubs.index') }}" @class(['active' => $activeNav === 'clubs'])><i class="fa-solid fa-people-group"></i> نوادي القراءة <span class="badge-count">{{ $sidebarClubsCount }}</span></a>
     <a href="{{ route('admin.discussions.index') }}" @class(['active' => $activeNav === 'discussions'])><i class="fa-solid fa-comments"></i> المناقشات <span class="badge-count">{{ $sidebarDiscussionsCount }}</span></a>
     <a href="{{ route('admin.comments.index') }}" @class(['active' => $activeNav === 'comments'])><i class="fa-solid fa-comment-dots"></i> التعليقات <span class="badge-count">{{ $sidebarCommentsCount }}</span></a>

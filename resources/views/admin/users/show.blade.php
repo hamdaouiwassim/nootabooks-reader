@@ -64,6 +64,16 @@
       <label>تاريخ التسجيل</label>
       <p style="font-size:14px; color:var(--text-dark);">{{ $user->created_at->format('Y-m-d H:i') }} ({{ $user->created_at->diffForHumans() }})</p>
     </div>
+    <div class="admin-form-field">
+      <label>آخر تسجيل دخول</label>
+      <p style="font-size:14px; color:var(--text-dark);">
+        @if ($user->last_login_at)
+          {{ $user->last_login_at->format('Y-m-d H:i') }} ({{ $user->last_login_at->diffForHumans() }})
+        @else
+          لم يسجل الدخول بعد
+        @endif
+      </p>
+    </div>
     @if ($user->bio)
       <div class="admin-form-field full">
         <label>نبذة تعريفية</label>

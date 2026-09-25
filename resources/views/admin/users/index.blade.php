@@ -33,6 +33,7 @@
         <th>النقاط</th>
         <th>الملف الشخصي</th>
         <th>تاريخ التسجيل</th>
+        <th>آخر تسجيل دخول</th>
         <th></th>
       </tr>
     </thead>
@@ -53,6 +54,7 @@
           <td>{{ number_format($user->points) }}</td>
           <td><span class="status-badge {{ $user->is_public ? 'published' : 'draft' }}">{{ $user->is_public ? 'عام' : 'خاص' }}</span></td>
           <td>{{ $user->created_at->diffForHumans() }}</td>
+          <td>{{ $user->last_login_at?->diffForHumans() ?? 'لم يسجل الدخول بعد' }}</td>
           <td>
             <div class="admin-row-actions">
               <a href="{{ route('admin.users.show', $user) }}" class="admin-icon-btn" title="عرض" aria-label="view"><i class="fa-regular fa-eye"></i></a>
@@ -66,7 +68,7 @@
         </tr>
       @empty
         <tr class="admin-empty-row">
-          <td colspan="6">لا يوجد مستخدمون مطابقون لبحثك</td>
+          <td colspan="7">لا يوجد مستخدمون مطابقون لبحثك</td>
         </tr>
       @endforelse
     </tbody>
