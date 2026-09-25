@@ -75,6 +75,7 @@ class BookController extends Controller
         $book = Book::create($data);
         $book->categories()->sync($this->resolveCategoryIds($request, $data['category_id']));
         $this->syncFaqs($book, $request);
+        $this->propagateToSeries($book);
 
         return redirect()->route('admin.books.edit', $book)->with('status', 'تم حفظ الكتاب بنجاح');
     }
@@ -164,6 +165,7 @@ class BookController extends Controller
         $book->update($data);
         $book->categories()->sync($this->resolveCategoryIds($request, $data['category_id']));
         $this->syncFaqs($book, $request);
+        $this->propagateToSeries($book);
 
         return redirect()->route('admin.books.edit', $book)->with('status', 'تم حفظ التعديلات بنجاح');
     }
@@ -209,6 +211,45 @@ class BookController extends Controller
         $extra = array_map('intval', $request->input('categories', []));
 
         return array_values(array_unique([$primaryCategoryId, ...$extra]));
+    }
+
+    /**
+     * Keeps a series' books in sync after one of them is saved: the writer
+     * and primary category are a single shared value per series, so the
+     * book just saved becomes the new source of truth and overwrites its
+     * siblings' — while the additional categories only ever grow, so a
+     * newly checked category is pushed into every sibling's own set
+     * without removing categories a sibling already had.
+     */
+    private function propagateToSeries(Book $book): void
+    {
+        if (! $book->series_id) {
+            return;
+        }
+
+        $siblings = Book::where('series_id', $book->series_id)
+            ->where('id', '!=', $book->id)
+            ->get();
+
+        if ($siblings->isEmpty()) {
+            return;
+        }
+
+        $newCategoryIds = $book->categories()->pluck('categories.id')->all();
+
+        foreach ($siblings as $sibling) {
+            $sibling->update([
+                'writer_id' => $book->writer_id,
+                'category_id' => $book->category_id,
+            ]);
+
+            $unionCategoryIds = array_values(array_unique([
+                ...$sibling->categories()->pluck('categories.id')->all(),
+                ...$newCategoryIds,
+            ]));
+
+            $sibling->categories()->sync($unionCategoryIds);
+        }
     }
 
     public function toggleCopyrightBlock(Book $book): RedirectResponse
