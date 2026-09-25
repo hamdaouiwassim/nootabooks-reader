@@ -33,6 +33,10 @@
     <option value="published" @selected(request('status') === 'published')>منشور</option>
     <option value="draft" @selected(request('status') === 'draft')>مخفي</option>
   </select>
+  <select class="admin-filter-select" name="coming_soon" onchange="this.form.submit()">
+    <option value="">كل الكتب</option>
+    <option value="1" @selected(request('coming_soon') === '1')>قريبًا فقط</option>
+  </select>
   <select class="admin-filter-select" name="sort" onchange="this.form.submit()">
     <option value="newest" @selected(request('sort', 'newest') === 'newest')>الأحدث إضافة</option>
     <option value="oldest" @selected(request('sort') === 'oldest')>الأقدم إضافة</option>

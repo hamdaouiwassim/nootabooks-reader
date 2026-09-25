@@ -30,6 +30,22 @@ class Book extends Model
             if ($book->isDirty('title')) {
                 $book->search_title = ArabicTextNormalizer::normalize($book->title);
             }
+
+            // Every book in a series shares one writer and one primary
+            // category, set by whichever book was added to the series
+            // first — so the admin only ever picks them once per series,
+            // and the rest of the series can never drift from that.
+            if ($book->series_id) {
+                $sibling = static::where('series_id', $book->series_id)
+                    ->when($book->exists, fn (Builder $q) => $q->where('id', '!=', $book->id))
+                    ->orderBy('id')
+                    ->first();
+
+                if ($sibling) {
+                    $book->writer_id = $sibling->writer_id;
+                    $book->category_id = $sibling->category_id;
+                }
+            }
         });
     }
 

@@ -83,6 +83,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupCombobox('writerCombobox', 'bookWriterSearch', 'bookWriterId', 'writerComboboxList');
 
+  // ---- Series-based writer/category auto-fill ----
+  // Every book in a series shares one writer and one primary category (see
+  // Book::booted() for the server-side guarantee) — once an existing
+  // series name is picked here, fill those two fields from it so the admin
+  // doesn't have to re-select them for every book after the first.
+  const seriesNameInput = document.getElementById('bookSeriesName');
+  const seriesMap = seriesNameInput ? JSON.parse(seriesNameInput.dataset.seriesMap || '{}') : {};
+
+  function applySeriesAutoFill() {
+    const entry = seriesMap[seriesNameInput.value.trim()];
+    if (!entry) return;
+
+    const writerSearch = document.getElementById('bookWriterSearch');
+    const writerId = document.getElementById('bookWriterId');
+    const category = document.getElementById('bookCategory');
+
+    if (writerSearch && writerId) {
+      writerSearch.value = entry.writerName || '';
+      writerId.value = entry.writerId || '';
+    }
+    if (category && entry.categoryId) {
+      category.value = entry.categoryId;
+    }
+  }
+
+  seriesNameInput?.addEventListener('change', applySeriesAutoFill);
+  seriesNameInput?.addEventListener('blur', applySeriesAutoFill);
+
   // ---- Book file upload: echo the chosen filename, reject oversized files early ----
   const bookFileInput = document.getElementById('bookFile');
   const bookFileName = document.getElementById('bookFileName');

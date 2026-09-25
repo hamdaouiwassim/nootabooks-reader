@@ -34,6 +34,7 @@ class BookController extends Controller
             })
             ->when($request->filled('category'), fn ($query) => $query->whereHas('categories', fn ($cq) => $cq->where('categories.id', $request->integer('category'))))
             ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')))
+            ->when($request->filled('coming_soon'), fn ($query) => $query->where('is_coming_soon', true))
             ->tap(function ($query) use ($request) {
                 match ($request->string('sort', 'newest')->toString()) {
                     'oldest' => $query->oldest(),
@@ -63,7 +64,7 @@ class BookController extends Controller
             'categories' => Category::orderBy('name')->get(),
             'writers' => Writer::orderBy('name')->get(),
             'selectedCategoryIds' => [],
-            'allSeries' => Series::orderBy('name')->get(),
+            'allSeries' => Series::orderBy('name')->with('books:id,series_id,writer_id,category_id')->get(),
         ]);
     }
 
@@ -97,7 +98,7 @@ class BookController extends Controller
             'categories' => Category::orderBy('name')->get(),
             'writers' => Writer::orderBy('name')->get(),
             'selectedCategoryIds' => $book->categories->pluck('id')->all(),
-            'allSeries' => Series::orderBy('name')->get(),
+            'allSeries' => Series::orderBy('name')->with('books:id,series_id,writer_id,category_id')->get(),
         ]);
     }
 

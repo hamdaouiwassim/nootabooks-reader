@@ -78,13 +78,32 @@
           </div>
           <div class="admin-form-field">
             <label for="bookSeriesName">السلسلة (اختياري)</label>
-            <input type="text" id="bookSeriesName" name="series_name" list="seriesDatalist" class="admin-input" value="{{ old('series_name') }}" placeholder="مثال: ثلاثية الأرض">
+            @php
+              // Every book in a series shares its writer/primary category
+              // (see Book::booted()) — this map lets the form auto-fill
+              // those two fields the moment an existing series is picked,
+              // so the admin only chooses them once per series.
+              $seriesAutoFillMap = $allSeries->mapWithKeys(function ($series) use ($writers) {
+                  $firstBook = $series->books->first();
+                  if (! $firstBook) {
+                      return [];
+                  }
+                  $writer = $writers->firstWhere('id', $firstBook->writer_id);
+
+                  return [$series->name => [
+                      'writerId' => $firstBook->writer_id,
+                      'writerName' => $writer ? $writer->name.($writer->name_en ? ' ('.$writer->name_en.')' : '') : '',
+                      'categoryId' => $firstBook->category_id,
+                  ]];
+              })->all();
+            @endphp
+            <input type="text" id="bookSeriesName" name="series_name" list="seriesDatalist" class="admin-input" value="{{ old('series_name') }}" placeholder="مثال: ثلاثية الأرض" data-series-map="{{ json_encode($seriesAutoFillMap, JSON_UNESCAPED_UNICODE) }}">
             <datalist id="seriesDatalist">
               @foreach ($allSeries as $series)
                 <option value="{{ $series->name }}">
               @endforeach
             </datalist>
-            <span class="hint">اكتب اسم سلسلة موجودة لربط الكتاب بها، أو اسمًا جديدًا لإنشاء سلسلة جديدة</span>
+            <span class="hint">اكتب اسم سلسلة موجودة لربط الكتاب بها، أو اسمًا جديدًا لإنشاء سلسلة جديدة — سيُستخدم نفس مؤلف وتصنيف السلسلة تلقائيًا</span>
           </div>
           <div class="admin-form-field">
             <label for="bookSeriesOrder">رقم الجزء</label>
