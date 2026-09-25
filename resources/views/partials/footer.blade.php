@@ -39,6 +39,7 @@
       <a href="{{ route('discover') }}">استكشاف</a>
       <a href="{{ route('categories') }}">التصنيفات</a>
       <a href="{{ route('my-library') }}">مكتبتي</a>
+      <a href="https://nootapedia.com" target="_blank" rel="noopener noreferrer">نوتابيديا</a>
     </div>
 
     <div class="footer-col">
