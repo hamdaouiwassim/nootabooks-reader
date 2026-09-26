@@ -14,7 +14,10 @@
     <h1>إدارة الكتب</h1>
     <p>عرض وتعديل وإضافة الكتب المتوفرة على المنصة ({{ $totalBooks }} كتاب)</p>
   </div>
-  <a href="{{ route('admin.books.create') }}" class="btn btn-gold"><i class="fa-solid fa-plus"></i> إضافة كتاب جديد</a>
+  <div style="display:flex; gap:10px;">
+    <a href="{{ route('admin.books.import.create') }}" class="btn btn-outline"><i class="fa-solid fa-file-csv"></i> استيراد من CSV</a>
+    <a href="{{ route('admin.books.create') }}" class="btn btn-gold"><i class="fa-solid fa-plus"></i> إضافة كتاب جديد</a>
+  </div>
 </div>
 
 <form class="admin-toolbar" method="GET" action="{{ route('admin.books.index') }}">

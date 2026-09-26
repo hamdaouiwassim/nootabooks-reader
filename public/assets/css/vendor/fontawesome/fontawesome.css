@@ -91,6 +91,7 @@
 .fa-feather:before { content: "\f52d"; }
 .fa-file-arrow-down:before { content: "\f56d"; }
 .fa-file-circle-exclamation:before { content: "\e4eb"; }
+.fa-file-csv:before { content: "\f6dd"; }
 .fa-file-lines:before { content: "\f15c"; }
 .fa-file-pdf:before { content: "\f1c1"; }
 .fa-fire:before { content: "\f06d"; }
@@ -136,6 +137,7 @@
 .fa-thumbs-up:before { content: "\f164"; }
 .fa-trash:before { content: "\f1f8"; }
 .fa-triangle-exclamation:before { content: "\f071"; }
+.fa-upload:before { content: "\f093"; }
 .fa-user:before { content: "\f007"; }
 .fa-user-plus:before { content: "\f234"; }
 .fa-users:before { content: "\f0c0"; }

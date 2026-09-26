@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdvertisementController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\BookImportController;
 use App\Http\Controllers\Admin\BookReportController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ClubController;
@@ -43,6 +44,8 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
     Route::post('/books', [BookController::class, 'store'])->name('books.store');
+    Route::get('/books/import', [BookImportController::class, 'create'])->name('books.import.create');
+    Route::post('/books/import', [BookImportController::class, 'store'])->name('books.import.store');
     Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
     Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
     Route::get('/books/{book}/stats', [BookController::class, 'stats'])->name('books.stats');
