@@ -56,7 +56,7 @@
 
         <div class="form-row-between">
           <label class="checkbox-row"><input type="checkbox" name="remember"> <span>تذكرني</span></label>
-          <a href="#" class="forgot-link">نسيت كلمة المرور؟</a>
+          <a href="{{ route('forgot-password') }}" class="forgot-link">نسيت كلمة المرور؟</a>
         </div>
 
         @include('partials.recaptcha')

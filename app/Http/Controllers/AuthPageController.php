@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\EmailVerificationCodeMail;
+use App\Mail\PasswordResetCodeMail;
 use App\Models\User;
 use App\Rules\Recaptcha;
 use Illuminate\Http\RedirectResponse;
@@ -181,6 +182,135 @@ class AuthPageController extends Controller
         ]);
 
         Mail::to($user->email)->send(new EmailVerificationCodeMail($user, $code, self::CODE_TTL_MINUTES));
+    }
+
+    public function showForgotPassword(): View
+    {
+        return view('auth.forgot-password');
+    }
+
+    public function submitForgotPassword(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'email'],
+            'g-recaptcha-response' => [new Recaptcha('forgot-password')],
+        ]);
+
+        // Never reveal whether the email is registered — always issue a
+        // pending code (with a null user when no match is found) and land
+        // on the same code-entry page either way, so the response gives an
+        // attacker no way to distinguish "wrong code" from "no such account".
+        $user = User::where('email', $validated['email'])->first();
+
+        $this->issueResetCode($request, $user, $validated['email']);
+
+        return redirect()->route('reset-password');
+    }
+
+    public function showResetPassword(Request $request): RedirectResponse|View
+    {
+        $pending = $request->session()->get('password_reset');
+
+        if (! $pending || now()->timestamp > $pending['expires_at']) {
+            $request->session()->forget('password_reset');
+
+            return redirect()->route('forgot-password')->withErrors([
+                'email' => 'انتهت صلاحية الرمز، يرجى طلب رمز جديد.',
+            ]);
+        }
+
+        return view('auth.reset-password', [
+            'maskedEmail' => $this->maskEmail($pending['email']),
+        ]);
+    }
+
+    public function submitResetPassword(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'code' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $pending = $request->session()->get('password_reset');
+
+        if (! $pending || now()->timestamp > $pending['expires_at']) {
+            $request->session()->forget('password_reset');
+
+            return redirect()->route('forgot-password')->withErrors([
+                'email' => 'انتهت صلاحية الرمز، يرجى طلب رمز جديد.',
+            ]);
+        }
+
+        // A null user_id (no matching account when the code was issued) is
+        // treated exactly like a wrong code — same error, same attempt
+        // counting — so there's no observable difference from a real typo.
+        if (! $pending['user_id'] || ! Hash::check($validated['code'], $pending['code'])) {
+            $attempts = ($pending['attempts'] ?? 0) + 1;
+
+            if ($attempts >= self::MAX_CODE_ATTEMPTS) {
+                $request->session()->forget('password_reset');
+
+                return redirect()->route('forgot-password')->withErrors([
+                    'email' => 'تم تجاوز عدد المحاولات المسموح به، يرجى طلب رمز جديد.',
+                ]);
+            }
+
+            $pending['attempts'] = $attempts;
+            $request->session()->put('password_reset', $pending);
+
+            return back()->withErrors([
+                'code' => 'الرمز الذي أدخلته غير صحيح.',
+            ]);
+        }
+
+        $user = User::findOrFail($pending['user_id']);
+        $user->forceFill(['password' => Hash::make($validated['password'])])->save();
+
+        $request->session()->forget('password_reset');
+        $request->session()->regenerate();
+
+        Auth::login($user);
+
+        return redirect()->route('home')->with('status', 'تم تحديث كلمة المرور بنجاح');
+    }
+
+    public function resendResetCode(Request $request): RedirectResponse
+    {
+        $pending = $request->session()->get('password_reset');
+
+        if (! $pending) {
+            return redirect()->route('forgot-password');
+        }
+
+        if (now()->timestamp < ($pending['last_sent_at'] + self::RESEND_COOLDOWN_SECONDS)) {
+            return back()->withErrors([
+                'code' => 'يرجى الانتظار قليلًا قبل طلب رمز جديد.',
+            ]);
+        }
+
+        $user = $pending['user_id'] ? User::find($pending['user_id']) : null;
+
+        $this->issueResetCode($request, $user, $pending['email']);
+
+        return redirect()->route('reset-password')->with('status', 'تم إرسال رمز جديد إلى بريدك الإلكتروني.');
+    }
+
+    private function issueResetCode(Request $request, ?User $user, string $email): void
+    {
+        $code = (string) random_int(100000, 999999);
+
+        $request->session()->put('password_reset', [
+            'user_id' => $user?->id,
+            'email' => $email,
+            'code' => Hash::make($code),
+            'expires_at' => now()->addMinutes(self::CODE_TTL_MINUTES)->timestamp,
+            'last_sent_at' => now()->timestamp,
+            'attempts' => 0,
+        ]);
+
+        if ($user) {
+            Mail::to($user->email)->send(new PasswordResetCodeMail($user, $code, self::CODE_TTL_MINUTES));
+        }
     }
 
     private function maskEmail(string $email): string

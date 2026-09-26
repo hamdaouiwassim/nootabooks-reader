@@ -109,4 +109,17 @@ Route::post('/register/verify', [AuthPageController::class, 'verifyEmail'])
 Route::post('/register/verify/resend', [AuthPageController::class, 'resendVerification'])
     ->middleware('throttle:5,1')
     ->name('register.verify.resend');
+
+Route::get('/forgot-password', [AuthPageController::class, 'showForgotPassword'])->name('forgot-password');
+Route::post('/forgot-password', [AuthPageController::class, 'submitForgotPassword'])
+    ->middleware('throttle:5,60')
+    ->name('forgot-password.submit');
+Route::get('/forgot-password/verify', [AuthPageController::class, 'showResetPassword'])->name('reset-password');
+Route::post('/forgot-password/verify', [AuthPageController::class, 'submitResetPassword'])
+    ->middleware('throttle:10,1')
+    ->name('reset-password.submit');
+Route::post('/forgot-password/resend', [AuthPageController::class, 'resendResetCode'])
+    ->middleware('throttle:5,1')
+    ->name('reset-password.resend');
+
 Route::post('/logout', [AuthPageController::class, 'logout'])->name('logout');
