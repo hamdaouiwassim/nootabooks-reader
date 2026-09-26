@@ -48,6 +48,7 @@ class Book extends Model
         'series_id',
         'series_order',
         'writer_id',
+        'translator_name',
         'title',
         'title_en',
         'slug',

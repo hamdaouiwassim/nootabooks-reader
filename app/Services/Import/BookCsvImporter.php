@@ -31,6 +31,8 @@ class BookCsvImporter
         'writer_is_new' => 'كاتب جديد',
         'category_is_new' => 'تصنيف جديد',
         'writer_name_en' => 'الكاتب بالإنجليزيّة',
+        'is_translated' => 'مترجم',
+        'translator_name' => 'إسم المترجم',
         'title_en' => 'عنوان الكتاب بالإنجليزية',
     ];
 
@@ -137,12 +139,16 @@ class BookCsvImporter
             // '1' = published and available now; '0' or blank = "coming soon".
             $isComingSoon = $cell('available') !== '1';
 
+            $isTranslated = $cell('is_translated') === '1';
+
             $book = Book::create([
                 'title' => $title,
                 'title_en' => $cell('title_en') ?: null,
                 'description' => $cell('description') ?: null,
                 'category_id' => $category->id,
                 'writer_id' => $writerId,
+                'translator_name' => $isTranslated ? ($cell('translator_name') ?: null) : null,
+                'language' => $isTranslated ? 'مترجم إلى العربية' : 'العربية',
                 'status' => 'published',
                 'is_coming_soon' => $isComingSoon,
             ]);

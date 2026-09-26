@@ -56,6 +56,11 @@
             </div>
           </div>
           <div class="admin-form-field">
+            <label for="bookTranslatorName">اسم المترجم (اختياري)</label>
+            <input type="text" id="bookTranslatorName" name="translator_name" class="admin-input" value="{{ old('translator_name') }}" placeholder="مثال: أحمد محمود">
+            <span class="hint">يُملأ فقط إذا كان الكتاب مترجمًا</span>
+          </div>
+          <div class="admin-form-field">
             <label for="bookCategory">التصنيف الأساسي</label>
             <select id="bookCategory" name="category_id" class="admin-select" required>
               <option value="" disabled selected>اختر التصنيف</option>

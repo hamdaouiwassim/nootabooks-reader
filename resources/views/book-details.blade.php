@@ -168,6 +168,9 @@
     <div class="book-meta-grid">
       <div class="meta-item"><i class="fa-solid fa-file-lines"></i><span>عدد الصفحات</span><strong>{{ $currentBook->pages_count ? format_count($currentBook->pages_count).' صفحة' : '—' }}</strong></div>
       <div class="meta-item"><i class="fa-solid fa-language"></i><span>اللغة</span><strong>{{ $currentBook->language }}</strong></div>
+      @if ($currentBook->translator_name)
+        <div class="meta-item"><i class="fa-solid fa-pen-nib"></i><span>المترجم</span><strong>{{ $currentBook->translator_name }}</strong></div>
+      @endif
       <div class="meta-item"><i class="fa-solid fa-calendar-days"></i><span>تاريخ النشر</span><strong>{{ $currentBook->published_year ?? '—' }}</strong></div>
       <div class="meta-item"><i class="fa-solid fa-file-arrow-down"></i><span>حجم الملف</span><strong>{{ format_file_size($currentBook->file_size_mb) ?? '—' }}</strong></div>
       <div class="meta-item"><i class="fa-solid fa-cloud-arrow-down"></i><span>مرات التحميل</span><strong>{{ format_count($currentBook->downloads_count) }}</strong></div>

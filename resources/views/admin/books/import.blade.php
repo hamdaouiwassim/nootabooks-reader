@@ -29,7 +29,7 @@
       <label for="csvFile">ملف CSV</label>
       <input type="file" id="csvFile" name="csv_file" accept=".csv,text/csv" class="admin-input" required>
       <span id="csvFileError" class="hint"></span>
-      <span class="hint">يجب أن يحتوي الملف على صف عناوين الأعمدة، ثم صف لكل كتاب: العنوان، وصف الكتاب، التصنيف، الكاتب، وصف الكاتب، الحالة (1 = متاح الآن، 0 = قريبًا)، كاتب جديد (1/0)، تصنيف جديد (1/0)، الكاتب بالإنجليزية، عنوان الكتاب بالإنجليزية.</span>
+      <span class="hint">يجب أن يحتوي الملف على صف عناوين الأعمدة، ثم صف لكل كتاب: العنوان، وصف الكتاب، التصنيف، الكاتب، وصف الكاتب، الحالة (1 = متاح الآن، 0 = قريبًا)، كاتب جديد (1/0)، تصنيف جديد (1/0)، الكاتب بالإنجليزية، مترجم (1/0)، إسم المترجم، عنوان الكتاب بالإنجليزية. ترتيب الأعمدة غير مهم، يتم التعرف عليها من عناوينها.</span>
     </div>
     <div class="admin-form-actions">
       <button type="submit" class="btn btn-gold"><i class="fa-solid fa-upload"></i> استيراد</button>

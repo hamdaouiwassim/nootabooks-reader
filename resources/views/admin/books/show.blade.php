@@ -79,6 +79,12 @@
       <label>اللغة</label>
       <p style="font-size:14px; color:var(--text-dark);">{{ $book->language }}</p>
     </div>
+    @if ($book->translator_name)
+      <div class="admin-form-field">
+        <label>اسم المترجم</label>
+        <p style="font-size:14px; color:var(--text-dark);">{{ $book->translator_name }}</p>
+      </div>
+    @endif
     <div class="admin-form-field">
       <label>عدد الصفحات</label>
       <p style="font-size:14px; color:var(--text-dark);">{{ $book->pages_count ? number_format($book->pages_count) : '—' }}</p>
