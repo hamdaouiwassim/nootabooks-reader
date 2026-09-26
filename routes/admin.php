@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\BookReportController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Admin\ContactMessageController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DiscussionController;
 use App\Http\Controllers\Admin\FileAuditController;
@@ -103,6 +104,10 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('/book-reports/{bookReport}', [BookReportController::class, 'show'])->name('book-reports.show');
     Route::put('/book-reports/{bookReport}/reviewed', [BookReportController::class, 'markReviewed'])->name('book-reports.mark-reviewed');
     Route::delete('/book-reports/{bookReport}', [BookReportController::class, 'destroy'])->name('book-reports.destroy');
+
+    Route::get('/contact-messages', [ContactMessageController::class, 'index'])->name('contact-messages.index');
+    Route::get('/contact-messages/{contactMessage}', [ContactMessageController::class, 'show'])->name('contact-messages.show');
+    Route::delete('/contact-messages/{contactMessage}', [ContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
 
     Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics');
     Route::get('/file-audit', [FileAuditController::class, 'index'])->name('file-audit');

@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactMessageMail;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Club;
+use App\Models\ContactMessage;
 use App\Models\Discussion;
 use App\Models\DownloadLog;
 use App\Models\Quote;
 use App\Models\SearchLog;
 use App\Models\User;
 use App\Models\Writer;
+use App\Rules\Recaptcha;
 use App\Services\Search\DidYouMeanSuggester;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class PageController extends Controller
@@ -605,15 +609,20 @@ class PageController extends Controller
 
     public function submitContact(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'subject' => ['required', 'string', 'max:255'],
             'message' => ['required', 'string', 'max:5000'],
+            'g-recaptcha-response' => [new Recaptcha('contact')],
         ]);
 
-        // NOTE: no mail/notification backend wired up yet — this is a UI-scope
-        // conversion. Hook a Mailable or notification here when ready.
+        $contactMessage = ContactMessage::create(
+            collect($validated)->only(['name', 'email', 'subject', 'message'])->all()
+        );
+
+        Mail::to(config('services.contact.recipient'))
+            ->send(new ContactMessageMail($contactMessage));
 
         return back()->with('contactSuccess', 'تم إرسال رسالتك بنجاح، سنتواصل معك قريبًا');
     }

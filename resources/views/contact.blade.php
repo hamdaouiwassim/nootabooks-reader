@@ -38,7 +38,7 @@
 
   <div class="contact-layout @unless ($showContactInfo) contact-layout-solo @endunless">
 
-    <form class="contact-form" id="contactForm" method="POST" action="{{ route('contact.submit') }}" novalidate>
+    <form class="contact-form" id="contactForm" method="POST" action="{{ route('contact.submit') }}" data-recaptcha-action="contact" novalidate>
       @csrf
       <div class="form-row">
         <div class="form-field">
@@ -80,6 +80,8 @@
         <textarea id="contactMessage" name="message" rows="6" placeholder="اكتب رسالتك هنا ..." required>{{ old('message') }}</textarea>
         <span class="field-error" id="contactMessageError">@error('message'){{ $message }}@enderror</span>
       </div>
+
+      @include('partials.recaptcha')
 
       <button type="submit" class="btn btn-teal full"><i class="fa-solid fa-paper-plane"></i> إرسال الرسالة</button>
       @if (session('contactSuccess'))

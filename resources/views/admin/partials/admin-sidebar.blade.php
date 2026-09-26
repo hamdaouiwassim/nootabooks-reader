@@ -24,6 +24,7 @@
     <a href="{{ route('admin.discussions.index') }}" @class(['active' => $activeNav === 'discussions'])><i class="fa-solid fa-comments"></i> المناقشات <span class="badge-count">{{ $sidebarDiscussionsCount }}</span></a>
     <a href="{{ route('admin.comments.index') }}" @class(['active' => $activeNav === 'comments'])><i class="fa-solid fa-comment-dots"></i> التعليقات <span class="badge-count">{{ $sidebarCommentsCount }}</span></a>
     <a href="{{ route('admin.book-reports.index') }}" @class(['active' => $activeNav === 'book-reports'])><i class="fa-solid fa-flag"></i> بلاغات حقوق النشر <span class="badge-count">{{ $sidebarBookReportsCount }}</span></a>
+    <a href="{{ route('admin.contact-messages.index') }}" @class(['active' => $activeNav === 'contact-messages'])><i class="fa-solid fa-envelope"></i> رسائل التواصل <span class="badge-count">{{ $sidebarContactMessagesCount }}</span></a>
 
     <span class="admin-nav-label">النظام</span>
     <a href="{{ route('admin.statistics') }}" @class(['active' => $activeNav === 'statistics'])><i class="fa-solid fa-chart-line"></i> الإحصائيات</a>

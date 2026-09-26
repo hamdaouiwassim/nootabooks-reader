@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\BookReport;
 use App\Models\Category;
 use App\Models\Club;
+use App\Models\ContactMessage;
 use App\Models\Discussion;
 use App\Models\DiscussionComment;
 use App\Models\Quote;
@@ -69,6 +70,7 @@ class AppServiceProvider extends ServiceProvider
                 'sidebarDiscussionsCount' => Discussion::count(),
                 'sidebarCommentsCount' => DiscussionComment::count(),
                 'sidebarBookReportsCount' => BookReport::where('status', 'pending')->count(),
+                'sidebarContactMessagesCount' => ContactMessage::where('status', 'unread')->count(),
             ]);
         });
     }

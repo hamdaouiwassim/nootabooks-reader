@@ -86,6 +86,7 @@
 .fa-crown:before { content: "\f521"; }
 .fa-database:before { content: "\f1c0"; }
 .fa-download:before { content: "\f019"; }
+.fa-envelope:before { content: "\f0e0"; }
 .fa-envelope-open-text:before { content: "\f658"; }
 .fa-expand:before { content: "\f065"; }
 .fa-feather:before { content: "\f52d"; }
@@ -123,6 +124,7 @@
 .fa-power-off:before { content: "\f011"; }
 .fa-quote-right:before { content: "\f10e"; }
 .fa-rectangle-ad:before { content: "\f641"; }
+.fa-reply:before { content: "\f3e5"; }
 .fa-right-to-bracket:before { content: "\f2f6"; }
 .fa-rotate-left:before { content: "\f2ea"; }
 .fa-scale-balanced:before { content: "\f24e"; }
@@ -145,7 +147,6 @@
 .fa-xmark:before { content: "\f00d"; }
 .fa-bell:before { content: "\f0f3"; }
 .fa-bell-slash:before { content: "\f1f6"; }
-.fa-envelope:before { content: "\f0e0"; }
 .fa-eye:before { content: "\f06e"; }
 .fa-eye-slash:before { content: "\f070"; }
 .fa-folder-open:before { content: "\f07c"; }
